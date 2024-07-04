@@ -187,14 +187,14 @@ function initMap() {
 			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom();
+			zoom_level = map.getZoom() as number;
 			// newBounds is true if only a center change and no follow-on zoom
 			window.newBounds = zoom_level >= zoomThresh ? true : false;
 			map.setCenter(location);
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			iw.open(map, this);
+			iw.open(map, marker);
 			locaters[itemno].clicked = true;
 		});
 	}
@@ -229,7 +229,7 @@ function initMap() {
 			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom();
+			zoom_level = map.getZoom() as number;
 			// newBounds is true if only a center change with no follow-on zoom
 			// this statement must precede the setCenter cmd.
 			window.newBounds = zoom_level >= zoomThresh ? true : false;
@@ -237,7 +237,7 @@ function initMap() {
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			iw.open(map, this);
+			iw.open(map, marker);
 			locaters[itemno].clicked = true;
 		});
 	}
@@ -351,7 +351,7 @@ function initMap() {
 		} else {
 			console.log('Idle');
 			var idle = google.maps.event.addListener(map, 'idle', async function () {
-				var curZoom = map.getZoom();
+				var curZoom = map.getZoom() as number;
 				var zoomTracks = curZoom >= zoomThresh ? true : false;	
 				var perim = String(map.getBounds());
 				// in case of intervening map event:
@@ -442,7 +442,7 @@ function drawTrack(json_filename:string, info_win:string, color:string,
 			let iw = new google.maps.InfoWindow({
 				content: info_win
 			});
-			sgltrack.addListener('mouseover', function(mo) {
+			sgltrack.addListener('mouseover', function(mo: any) {
 				let trkPtr = mo.latLng;
 				iw.setPosition(trkPtr);
 				iw.open(map);
@@ -495,7 +495,7 @@ function setupLoc() {
 				map: map,
 				icon: geoIcon,
 			});
-			var currzoom = map.getZoom();
+			var currzoom = map.getZoom() as number;
 			window.newBounds = currzoom >= zoomThresh ? true : false;
 			map.setCenter(newWPos);
 			if (!window.newBounds) {

@@ -30,6 +30,7 @@ var geoOptions: geoOptions = { enableHighAccuracy: true };
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
 var $map: JQuery = $('#map');
+var mapEl: HTMLElement = <HTMLElement> $map.get(0);
 var mapht: number;
 // track vars
 var drawnHikes: number[] = [];     // hike numbers which have had tracks created
@@ -99,12 +100,12 @@ const getIcon = (no_of_hikes: number) => {
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-	google.maps.Marker.prototype.clicked = false;  // used in sideTables.js
 	var clustererMarkerSet: google.maps.Marker[] = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
-	map = new google.maps.Map($map.get(0), {
+	map = new google.maps.Map(mapEl, {
 		center: nmCtr,
 		zoom: 7,
+		mapId: "39681f98dcd429f8",
 		// optional settings:
 		zoomControl: true,
 		scaleControl: true,
@@ -144,9 +145,9 @@ function initMap() {
 			icon: clicon,
 			title: group
 		});
-		marker.clicked = false;
-		let srchmrkr = {hikeid: group, pin: marker};
+		let srchmrkr = {hikeid: group, clicked: false, pin: marker};
 		locaters.push(srchmrkr);
+		let itemno = locaters.length -1;
 		clustererMarkerSet.push(marker);
 		
 		let iwContent = '<div id="iwCH">';
@@ -168,33 +169,35 @@ function initMap() {
 				maxWidth: 600
 		});
 		iw.addListener('closeclick', function() {
-			marker.clicked = false;
+			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom();
+			zoom_level = map.getZoom() as number;
 			// newBounds is true if only a center change and no follow-on zoom
 			window.newBounds = zoom_level >= zoomThresh ? true : false;
 			map.setCenter(location);
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			iw.open(map, this);
-			marker.clicked = true; // marker prototype property
+			iw.open(map, marker);
+			locaters[itemno].clicked = true;
 		});
 	}
 
 	// Normal Hike Markers
 	function AddHikeMarker(hikeobj: NM) {
+		let markerLoc = hikeobj.loc;
 		let nmicon = getIcon(1);
 		let marker = new google.maps.Marker({
-		  position: hikeobj.loc,
+		  position: markerLoc,
 		  map: map,
 		  icon: nmicon,
+		  // 'title' is what is displayed on mouseover of the marker
 		  title: hikeobj.name
 		});
-		marker.clicked = false;
-		let srchmrkr = {hikeid: hikeobj.name, pin: marker};
+		let srchmrkr = {hikeid: hikeobj.name, clicked: false, pin: marker};
 		locaters.push(srchmrkr);
+		let itemno = locaters.length -1;
 		clustererMarkerSet.push(marker);
 		// infoWin content: add data for this hike
 		var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
@@ -208,18 +211,19 @@ function initMap() {
 				maxWidth: 400
 		});
 		iw.addListener('closeclick', function() {
-			marker.clicked = false;
+			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom();
-			map.setCenter(hikeobj.loc);
+			zoom_level = map.getZoom() as number
 			// newBounds is true if only a center change with no follow-on zoom
-			window.newBounds = zoom_level >= zoomThresh ? true : false;
+			// this statement must precede the setCenter cmd.
+			window.newBounds = zoom_level >= zoomThresh ? true : false;;
+			map.setCenter(markerLoc);
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			iw.open(map, this);
-			marker.clicked = true; // marker prototype property
+			iw.open(map, marker);
+			locaters[itemno].clicked = true;
 		});
 	}
 
@@ -281,7 +285,7 @@ function initMap() {
 	 */
 	function setIdleListener() {
 		var idle = google.maps.event.addListener(map, 'idle', function () {
-			var curZoom = map.getZoom();
+			var curZoom = map.getZoom() as number;
 			if (curZoom >= zoomThresh) {	
 				var perim = String(map.getBounds());
 				zoomedHikes = tracksInBounds(perim);
@@ -406,7 +410,7 @@ function drawTrack(json_filename: string, info_win: string, color:string,
 					offset: '0%',
 					repeat: '15%' 
 				}],
-				path: trackDat,
+				path: trackDat.trk,
 				geodesic: true,
 				strokeColor: color,
 				strokeOpacity: .6,
@@ -418,7 +422,7 @@ function drawTrack(json_filename: string, info_win: string, color:string,
 			let iw = new google.maps.InfoWindow({
 				content: info_win
 			});
-			sgltrack.addListener('mouseover', function(mo) {
+			sgltrack.addListener('mouseover', function(mo: any) {
 				let trkPtr = mo.latLng;
 				iw.setPosition(trkPtr);
 				iw.open(map);
@@ -531,7 +535,7 @@ function setupLoc() {
 			map: map,
 			icon: "../images/currentLoc.png"
 		});
-		var currzoom = map.getZoom();
+		var currzoom = map.getZoom() as number;
 		window.newBounds = currzoom >= zoomThresh ? true : false;
 		map.setCenter(newWPos);
 		if (!window.newBounds) {
@@ -545,7 +549,7 @@ function setupLoc() {
 }
 
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
-$(document).bind(
+$(document).on(
 	'webkitfullscreenchange mozfullscreenchange fullscreenchange',
 	function() {
 		let thisMapDoc = <MapDoc>document;

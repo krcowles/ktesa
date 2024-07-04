@@ -220,7 +220,7 @@ function initMap() {
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, this);
+            iw.open(map, marker);
             locaters[itemno].clicked = true;
         });
     }
@@ -262,7 +262,7 @@ function initMap() {
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, this);
+            iw.open(map, marker);
             locaters[itemno].clicked = true;
         });
     }

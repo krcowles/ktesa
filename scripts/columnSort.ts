@@ -190,7 +190,7 @@ function scrollCheck(table_id: string) {
 		if (table_id === '#maintbl') {
 			if  ($('#tblfilter').css('display') === 'none') {
 				let $headers = $('#maintbl').find('th');
-				let title = $headers.get(0);
+				let title = $headers.get(0) as HTMLTableCellElement;
 				if ($(title).hasClass('ascending')) {
 					toggleScrollSelect(true);
 				} else {

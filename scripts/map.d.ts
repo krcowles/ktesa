@@ -1,4 +1,4 @@
-/// <reference types="googlemaps" />
+/// <reference types="google.maps" />
 /// <reference types="jquery" />
 // variables embedded via php on home.php
 declare var CL: Clusters;

@@ -29,6 +29,7 @@ var geoOptions = { enableHighAccuracy: true };
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
 var $map = $('#map');
+var mapEl = $map.get(0);
 var mapht;
 // track vars
 var drawnHikes = []; // hike numbers which have had tracks created
@@ -94,12 +95,12 @@ var getIcon = function (no_of_hikes) {
 };
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-    google.maps.Marker.prototype.clicked = false; // used in sideTables.js
     var clustererMarkerSet = [];
     var nmCtr = { lat: 34.450, lng: -106.042 };
-    map = new google.maps.Map($map.get(0), {
+    map = new google.maps.Map(mapEl, {
         center: nmCtr,
         zoom: 7,
+        mapId: "39681f98dcd429f8",
         // optional settings:
         zoomControl: true,
         scaleControl: true,
@@ -136,9 +137,9 @@ function initMap() {
             icon: clicon,
             title: group
         });
-        marker.clicked = false;
-        var srchmrkr = { hikeid: group, pin: marker };
+        var srchmrkr = { hikeid: group, clicked: false, pin: marker };
         locaters.push(srchmrkr);
+        var itemno = locaters.length - 1;
         clustererMarkerSet.push(marker);
         var iwContent = '<div id="iwCH">';
         if (page > 0) {
@@ -160,7 +161,7 @@ function initMap() {
             maxWidth: 600
         });
         iw.addListener('closeclick', function () {
-            marker.clicked = false;
+            locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
             zoom_level = map.getZoom();
@@ -170,22 +171,24 @@ function initMap() {
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, this);
-            marker.clicked = true; // marker prototype property
+            iw.open(map, marker);
+            locaters[itemno].clicked = true;
         });
     }
     // Normal Hike Markers
     function AddHikeMarker(hikeobj) {
+        var markerLoc = hikeobj.loc;
         var nmicon = getIcon(1);
         var marker = new google.maps.Marker({
-            position: hikeobj.loc,
+            position: markerLoc,
             map: map,
             icon: nmicon,
+            // 'title' is what is displayed on mouseover of the marker
             title: hikeobj.name
         });
-        marker.clicked = false;
-        var srchmrkr = { hikeid: hikeobj.name, pin: marker };
+        var srchmrkr = { hikeid: hikeobj.name, clicked: false, pin: marker };
         locaters.push(srchmrkr);
+        var itemno = locaters.length - 1;
         clustererMarkerSet.push(marker);
         // infoWin content: add data for this hike
         var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
@@ -199,18 +202,20 @@ function initMap() {
             maxWidth: 400
         });
         iw.addListener('closeclick', function () {
-            marker.clicked = false;
+            locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
             zoom_level = map.getZoom();
-            map.setCenter(hikeobj.loc);
             // newBounds is true if only a center change with no follow-on zoom
+            // this statement must precede the setCenter cmd.
             window.newBounds = zoom_level >= zoomThresh ? true : false;
+            ;
+            map.setCenter(markerLoc);
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, this);
-            marker.clicked = true; // marker prototype property
+            iw.open(map, marker);
+            locaters[itemno].clicked = true;
         });
     }
     // /////////////////////// Marker Grouping /////////////////////////
@@ -385,7 +390,7 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
                         offset: '0%',
                         repeat: '15%'
                     }],
-                path: trackDat,
+                path: trackDat.trk,
                 geodesic: true,
                 strokeColor: color,
                 strokeOpacity: .6,
@@ -522,7 +527,7 @@ function setupLoc() {
     }
 }
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
-$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
+$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
     var thisMapDoc = document;
     var isFullScreen = thisMapDoc.fullScreen ||
         thisMapDoc.mozFullScreen ||

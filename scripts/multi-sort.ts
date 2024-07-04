@@ -173,7 +173,7 @@ $('#sort').on('click', function() {
             var lastrow = (k === $rows.length -1) ? true : false;
             // what is this row's key1 value?
             if (icon) {
-                $sortCell = $($rows[k]).find('td').eq(lastkey).children();
+                $sortCell = $($rows[k]).find('td').eq(lastkey).children() as JQuery<HTMLTableCellElement>;
                 exposure = <string>$($sortCell[0]).attr('src');
                 key1val = iconType(exposure);
             } else {
