@@ -96,7 +96,7 @@ var locaters: MarkerIds = []; // global used to popup info window on map when hi
  * The arrays are mapped into markers for the markerClusterer
  */
 const getIcon = (no_of_hikes: number) => {
-	let icon = "../images/pins/nmf" + no_of_hikes + ".png";
+	let icon = "../images/pins/nmf" + no_of_hikes + ".jpg";
 	return icon;
 };
 const nm_marker_data = [] as Marker_Data[];
@@ -150,10 +150,11 @@ function initMap() {
 		zoom: 7,
 		mapId: "39681f98dcd429f8",  // vector map; all styling
 		// optional settings:
-		isFractionalZoomEnabled: true,
+		mapTypeControl: true,
+		//isFractionalZoomEnabled: false,
 		zoomControl: true,
-		scaleControl: true,
-		fullscreenControl: true,
+		//scaleControl: true,
+		//fullscreenControl: true,
 		streetViewControl: false,
 		rotateControl: false,
 	});
@@ -161,6 +162,7 @@ function initMap() {
 		url: "https://nmhikes.com/maps/NM_Borders.kml",
 		map: map
 	});
+
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	const infoWindow = new google.maps.InfoWindow({
 		content: "",

@@ -101,7 +101,7 @@ var locaters = []; // global used to popup info window on map when hike is searc
  * The arrays are mapped into markers for the markerClusterer
  */
 var getIcon = function (no_of_hikes) {
-    var icon = "../images/pins/nmf" + no_of_hikes + ".png";
+    var icon = "../images/pins/nmf" + no_of_hikes + ".jpg";
     return icon;
 };
 var nm_marker_data = [];
@@ -155,10 +155,11 @@ function initMap() {
         zoom: 7,
         mapId: "39681f98dcd429f8",
         // optional settings:
-        isFractionalZoomEnabled: true,
+        mapTypeControl: true,
+        //isFractionalZoomEnabled: false,
         zoomControl: true,
-        scaleControl: true,
-        fullscreenControl: true,
+        //scaleControl: true,
+        //fullscreenControl: true,
         streetViewControl: false,
         rotateControl: false
     });
