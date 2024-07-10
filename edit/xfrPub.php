@@ -7,11 +7,16 @@
  * set to the published indxNo. The user is then directed to either the
  * hike page editor or to the cluster page editor accordingly. When edits
  * are complete the admin can then publish the EHIKE which updates the
- * HIKES and associated tables with the newly edited data.
+ * HIKES and associated tables with the newly edited data. Note that for
+ * (non-cluster) pages, there may be fewer JSON files published than were
+ * originally posted: new JSON files may be added. For this reason,
+ * this script will track the original production json files in the file
+ * 'pub_xfrs.txt' for comparison during publication so that the admin can
+ * be advised of the necessary actions to take on git when it is updated
+ * on localhost.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -20,12 +25,13 @@ require "../php/global_boot.php";
 
 $getHike = filter_input(INPUT_GET, 'hikeNo'); // PUBLISHED indxNo
 $cluspg  = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
-$userid = $_SESSION['userid'];
+$userid  = $_SESSION['userid'];
+$xfrs    = "../admin/pub_xfrs.txt";
 
 /**
- * Since EHIKES depends on 'cname' to identify association w/new or
+ * Since `EHIKES` depends on `cname` to identify association w/new or
  * published cluster groups, it must be specified to ensure proper
- * transfer. HIKES no longer supports 'cname'.
+ * transfer. `HIKES` no longer supports `cname`.
  */ 
 $cname = '';
 $clusHikeStatReq = "SELECT `cluster` FROM `CLUSHIKES` WHERE " .
@@ -63,6 +69,12 @@ $indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0]; // EHIKES indxNo
 
 if (!$cluspg) {
+    if (file_exists($xfrs)) {
+        $existing_xfrs = file_get_contents($xfrs);
+        $json_xfrs = explode(",", $existing_xfrs);
+    } else {
+        $json_xfrs = [];
+    }
     /*
      * PLace TSV data into ETSV
      */
@@ -72,6 +84,7 @@ if (!$cluspg) {
         "`TSV` WHERE `indxNo` = ?;";
     $tsvq = $pdo->prepare($xfrTsvReq);
     $tsvq->execute([$hikeNo, $getHike]);
+
     /*
      * Place GPSDATA into EGPSDATA
      * NOTE: gpx/json for urls fixed later...
@@ -81,11 +94,21 @@ if (!$cluspg) {
         "`indxNo` = ?;";
     $gpsq = $pdo->prepare($gpsDatReq);
     $gpsq->execute([$hikeNo, $getHike]);
-
+    // track published json files in case of changes
+    $pubGPSDAT_Req
+        = "SELECT `url` FROM `GPSDAT` WHERE `indxNo`=? AND `label` LIKE 'GPX%';";
+    $pubGPSDAT = $pdo->prepare($pubGPSDAT_Req);
+    $pubGPSDAT->execute([$getHike]);
+    $xfrGPS = $pubGPSDAT->fetchAll(PDO::FETCH_COLUMN); // extract the json element...
+    $gps_xfrs = [];
+    foreach ($xfrGPS as $gjson) {
+        $gpx_json = getGPSurlData($gjson)[1]; // returns array
+        $gps_xfrs = array_merge($gps_xfrs, $gpx_json);
+    }
     /**
-     * Transfer published json files and reset gpx field in EHIKES;
+     * Transfer published 'gpx' json files and reset gpx field in EHIKES;
      */
-    $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0];
+    $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0]; // returns array
     $main_val = [];
     $add1_val = [];
     $add2_val = [];
@@ -96,7 +119,8 @@ if (!$cluspg) {
         $extension = substr($json, $dash_loc);
         $new_name  = "e" . $ftype . $hikeNo . $extension;
         $to_loc   = "../json/" . $new_name;
-        $from_loc = "../json/" . $json;  
+        $from_loc = "../json/" . $json;
+
         // Published hike still requires its files, so copy, not move!
         if (!copy($from_loc, $to_loc)) {
             throw new Exception("Could not relocate {$json}");
@@ -178,6 +202,10 @@ $refDatReq = "INSERT INTO `EREFS` (indxNo,rtype,rit1,rit2) SELECT " .
     "?,rtype,rit1,rit2 FROM `REFS` WHERE `indxNo` = ?;";
 $refq = $pdo->prepare($refDatReq);
 $refq->execute([$hikeNo, $getHike]);
+// Save info regarding transferred json files
+$json_xfrs = array_merge($json_xfrs, $gps_xfrs, $previousJson);
+$json_xfred = implode(",", $json_xfrs);
+file_put_contents($xfrs, $json_xfred);
 
 // Redirect to appropriate editor
 $redirect = $cluspg ?

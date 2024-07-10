@@ -632,6 +632,9 @@ $(function () {
     $('#pub').on('click', function () {
         window.open("reldel.php?act=rel", "_blank");
     });
+    $('#postpub').on('click', function () {
+        window.open("postPublish.php");
+    });
     // Delete a hike
     $('#ehdel').on('click', function () {
         window.open("reldel.php?act=del", "_blank");
