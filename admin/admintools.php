@@ -211,6 +211,9 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         <button id="pub" type="button" class="btn 
             btn-danger">Publish Page</button>&nbsp;
             (Move from EHIKES to HIKES)<br/>
+        <button id="postpub" type="button" class="btn
+            btn-danger">Git Actions</button>&nbsp;
+            (JSON File status post publish)<br />
         <button id="ehdel" type="button" class="btn 
             btn-danger">Remove Hike-in-Edit</button><br />
     </fieldset><br />
