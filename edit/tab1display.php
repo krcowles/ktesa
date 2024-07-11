@@ -47,13 +47,18 @@
     <input id="gpxfile1" type="file" name="newgpx" />
 </div>
 
-<?php if (count($additional_files) > 0) : ?>
+<?php
+if (!empty($additional_files[1]) 
+    || !empty($additional_files[2]) || !empty($additional_files[3])
+) : ?>
     The following files will also appear on the main hike page:
     <?=$adders;?>
 <?php endif; ?>
-<span>Note: you can add up to <span id="addno">3</span>
+<span id="display_adds">Note: you can add up to <span id="addno">3</span>
 additional gpx file[s] to be displayed on the hike page map simultaneously
 </span>
+<span id="nomore" style="display:none;">No more additional files may be specified
+    for this hike</span>
 <ul> 
     <li id="li1"><span class="brown">Additional track for main chart</span>
         <input id="gpxfile2" type="file" name="addgpx1" /></li>

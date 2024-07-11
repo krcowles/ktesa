@@ -177,18 +177,18 @@ if (user_alert !== '') {
 let listItems = $("#addlist").children();
 let count = listItems.length;
 if (count > 0 && count < 3) {
-    let addmore = 3 - count;
-    if (addmore > 0) { // can only be 1 or 2...
-        $('#addno').text(addmore);
-        if (addmore === 1) {
-            $('#li3').hide();
-            $('#li2').hide();
-        } else {
-            $('#li3').hide();
-        } 
-    } 
+    let addno = 3 - count;
+    $('#addno').text(addno);
+    listItems.each(function() {
+        let indx = this.id;
+        let fileno = indx.substring(5,6);
+        let li_id = "#li" + fileno;
+        $(li_id).hide();
+    });
 } else if (count === 3) {
     $('#addno').text('0');
+    $('#display_adds').hide();
+    $('#nomore').show();
     $('#li3').hide();
     $('#li2').hide();
     $('#li1').hide();

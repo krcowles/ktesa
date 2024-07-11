@@ -141,20 +141,19 @@ $(function () {
     var listItems = $("#addlist").children();
     var count = listItems.length;
     if (count > 0 && count < 3) {
-        var addmore = 3 - count;
-        if (addmore > 0) { // can only be 1 or 2...
-            $('#addno').text(addmore);
-            if (addmore === 1) {
-                $('#li3').hide();
-                $('#li2').hide();
-            }
-            else {
-                $('#li3').hide();
-            }
-        }
+        var addno = 3 - count;
+        $('#addno').text(addno);
+        listItems.each(function () {
+            var indx = this.id;
+            var fileno = indx.substring(5, 6);
+            var li_id = "#li" + fileno;
+            $(li_id).hide();
+        });
     }
     else if (count === 3) {
         $('#addno').text('0');
+        $('#display_adds').hide();
+        $('#nomore').show();
         $('#li3').hide();
         $('#li2').hide();
         $('#li1').hide();

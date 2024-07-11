@@ -61,18 +61,18 @@ if (empty($hike['gpx'])) {
 }
 // assign gpx data if present
 $curr_gpx  = empty($gpx_arr['main']) ? '' : array_keys($gpx_arr['main'])[0];
-$additional_files = [];
+$additional_files[1] = $addtional_files[2] = $addtional_files[3] = '';
 $add1 = $gpx_arr['add1'];
 $add2 = $gpx_arr['add2'];
 $add3 = $gpx_arr['add3'];
 if (!empty($add1)) {
-    array_push($additional_files, array_keys($add1)[0]);
+    $additional_files[1] = array_keys($add1)[0];
 }
 if (!empty($add2)) {
-    array_push($additional_files, array_keys($add2)[0]);
+    $additional_files[2] = array_keys($add2)[0];
 }
 if (!empty($add3)) {
-    array_push($additional_files, array_keys($add3)[0]);
+    $additional_files[3] = array_keys($add3)[0];
 }
 // remaining tab1 fields:
 $lat      = !empty($hike['lat']) ? $hike['lat']/LOC_SCALE : '';
@@ -94,11 +94,15 @@ foreach ($nonpubs as $unpub) {
 $newgrps = '[' . implode(",", $jsData) . ']';
 
 $adders = '<ul id="addlist" style="margin-top:4px;">' . PHP_EOL;
-for ($k=0; $k<count($additional_files); $k++) {
-    $adders .= '<li><em>' . $additional_files[$k] . '</em>&nbsp;&nbsp;<span ' .
-        'class="brown"> Do not include this file:&nbsp;&nbsp;' .
-        '<input type="checkbox" name="deladd[]" value="' . $additional_files[$k] .
-        '" />' . '</span></li>' . PHP_EOL;
+for ($j=1; $j<4; $j++) {
+    if (!empty($additional_files[$j])) {
+        $adders .= '<li id="adder' . $j . '"><em>' .
+            $additional_files[$j] . '</em>&nbsp;&nbsp;<span ' .
+            'class="brown"> Do not include this file:&nbsp;&nbsp;' .
+            '<input type="checkbox" name="deladd[]" value="' .
+            $additional_files[$j] .
+            '" />' . '</span></li>' . PHP_EOL;
+    }
 }
 $adders .= '</ul>' . PHP_EOL;
 
