@@ -154,7 +154,7 @@ var build_content = function (count) {
     var mrkr_txt = document.createTextNode(String(count));
     mrkr_cnt.appendChild(mrkr_txt);
     icon.style.zIndex = "900";
-    icon.src = "../images/pins/blacknm.png";
+    icon.src = "../images/pins/hiker_pin.png";
     content.appendChild(icon);
     content.appendChild(mrkr_cnt);
     return content;
