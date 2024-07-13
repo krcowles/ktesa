@@ -137,7 +137,7 @@ var infoWin = function (hike, loc) {
     for (var k = 0; k < locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
             if (locaters[k].clicked === false) {
-                google.maps.event.trigger(locaters[k].pin, 'click');
+                google.maps.event.trigger(markers[59], 'gmp-click');
             }
             else {
                 window.newBounds = true;

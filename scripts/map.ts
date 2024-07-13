@@ -1,4 +1,14 @@
 /// <reference path='./map.d.ts' />
+interface CustomMarker extends google.maps.Marker {
+	hikes?: number;
+}
+interface CustomAdvancedMarker extends google.maps.marker.AdvancedMarkerElement {
+	hikes?: number;
+}
+interface ClustererForRender extends CustomMarker{
+	markers: google.maps.Marker[];
+	_position: GPS_Coord;
+}
 /**
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
@@ -13,6 +23,8 @@
  * @version 9.0 New GoogleMap marker type (AdvancedMarkerElement)
  */
 
+var markers: google.maps.marker.AdvancedMarkerElement[];
+const initialValue = 0;
 const zoomThresh = 13;  // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 const colors = [
@@ -59,7 +71,6 @@ const initDivParms = () => {
 	return;
 }
 initDivParms();
-
 // Custom tick mark for map tracks
 var mapTick = {
     path: 'M 0,0 -5,11 0,8 5,11 Z',
@@ -82,9 +93,7 @@ function locateGeoSym() {
 }
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
-
 var geoIcon:string = "../images/currentLoc.png";
-
 /**
  * Use the arrays passed in to the home page by php: one for each type 
  * of marker to be displayed (Clustered, Normal):
@@ -99,27 +108,43 @@ var locaters: MarkerIds = []; // global used to popup info window on map when hi
  * Create the NM hikes marker data array and also the CL hikes marker data array
  * The arrays are mapped into markers for the markerClusterer
  */
-const getIcon = (no_of_hikes:number) => {
-	let icon = "../images/pins/nmf" + no_of_hikes + ".jpg";
-	return icon;
+const makeClusterLabel = (markers: CustomMarker[]) => {
+    var total: number[] = [];
+    markers.forEach(function(mrkr) {
+        total.push(Number(mrkr.hikes));
+    });
+    var hike_total = total.reduce(
+        (accumulator, currentValue) => accumulator + currentValue, 
+        initialValue
+    );
+    return  String(hike_total);
+}
+const build_content = (count: number) => {
+    const content = document.createElement("div");
+    const icon = document.createElement("img");
+    const mrkr_cnt = document.createElement("div");
+    const mrkr_txt = document.createTextNode(String(count));
+    mrkr_cnt.appendChild(mrkr_txt);
+    icon.style.zIndex = "900";
+    icon.src = "../images/pins/blacknm.png";
+    content.appendChild(icon);
+    content.appendChild(mrkr_cnt);
+    return content;
 };
-const nm_marker_data = [] as Marker_Data[];
+const nm_marker_data = [] as NM_Marker_Data[];
 NM.forEach(function(hikeobj) {
 	var mrkr_loc = hikeobj.loc;
 	var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
 			+ hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
-		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
-		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
-		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-	const nm_icon = document.createElement("IMG") as HTMLImageElement;
-	nm_icon.src = "../images/pins/greennm.png";
+	iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
+	iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
+	iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
+	iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
 	var nm_title = hikeobj.name;
-	var nm_marker = {position: mrkr_loc, iw_content: iwContent,
-			icon: nm_icon, title: nm_title};
+	var nm_marker = {position: mrkr_loc, iw_content: iwContent, title: nm_title};
 	nm_marker_data.push(nm_marker)
 });
-const cl_marker_data = [] as Marker_Data[];
+const cl_marker_data = [] as CL_Marker_Data[];
 CL.forEach(function(clobj) {
 	const mrkr_loc = clobj.loc;
 	const hikecnt = clobj.hikes.length;
@@ -139,10 +164,8 @@ CL.forEach(function(clobj) {
 		iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' + 
 			clobj.elev + ' ft; Diff: ' + clobj.diff;
 	});
-	const cl_icon = document.createElement("IMG") as HTMLImageElement;
-	cl_icon.src = getIcon(hikecnt);
 	var cl_marker = {position: mrkr_loc, iw_content: iwContent,
-			icon: cl_icon, title: clobj.group};
+		title: clobj.group, hikecnt: hikecnt};
 	cl_marker_data.push(cl_marker);
 });
 
@@ -175,23 +198,24 @@ function initMap() {
 		disableAutoPan: true,
 		maxWidth: 400
 	});
-	const nm_markers = nm_marker_data.map((mrkr_data: Marker_Data) => { // create array of markers
+	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => { // create array of markers
 		const position = mrkr_data.position as GPS_Coord;
-		const nm_icon = document.createElement("IMG") as HTMLImageElement;
-		nm_icon.src = "../images/pins/rednm.png";
 		const nm_title = mrkr_data.title;
 		// THE MARKER:
 		const marker = new google.maps.marker.AdvancedMarkerElement({
-		  position,
-		  content: nm_icon,
-		  title: nm_title
-		});
+		  position: position,
+		  map: map,
+		  content: build_content(1),
+		  title: nm_title,
+		  gmpClickable: true
+		}) as CustomAdvancedMarker;
+		marker.hikes = 1;
 		// MARKER SEARCH
 		const srchmrkr: MarkerId = {hikeid: mrkr_data.title, clicked: false, pin: marker};
 		locaters.push(srchmrkr);
 		const itemno = locaters.length -1;
 		// CLICK ON MARKER:
-		marker.addListener("click", () => {
+		marker.addListener("click", (): void => {
 			zoom_level = map.getZoom() as number;
 			// newBounds is true if only a center change with no follow-on zoom
 			// this statement must precede the setCenter cmd.
@@ -200,7 +224,8 @@ function initMap() {
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			locaters[itemno].clicked = true;
+			let this_mrkr = locaters[itemno];
+			this_mrkr.clicked = true;
 			infoWindow.setContent(mrkr_data.iw_content);
 			infoWindow.open(map, marker);
 		});
@@ -210,15 +235,19 @@ function initMap() {
 		});
 		return marker;
 	});
-	const cl_markers = cl_marker_data.map((mrkr_data: Marker_Data) => {
+	const cl_markers = cl_marker_data.map((mrkr_data: CL_Marker_Data) => {
 		const position = mrkr_data.position as GPS_Coord;
 		const cl_title = mrkr_data.title;
+		const hike_count = mrkr_data.hikecnt;
 		// THE MARKER:
 		const marker = new google.maps.marker.AdvancedMarkerElement({
-			position,
-		  	content: mrkr_data.icon,
-		  	title: cl_title
-		});
+			position: position,
+			map: map,
+		  	content: build_content(hike_count),
+		  	title: cl_title,
+			gmpClickable: true
+		}) as CustomAdvancedMarker;
+		marker.hikes = hike_count;
 		// MARKER SEARCH:
 		const srchmrkr: MarkerId = {hikeid: mrkr_data.title, clicked: false, pin: marker};
 		locaters.push(srchmrkr);
@@ -242,17 +271,33 @@ function initMap() {
 		});
 		return marker;
 	});
-	const markers = [...nm_markers, ...cl_markers];
-
+	markers = [...nm_markers, ...cl_markers];
+	const renderer = { // must be an object, here with key 'render'
+        /**
+         * render( CLUSTER, stats, map) where CLUSTER 'Accessors' are bounds, count, position
+         * and 'cluster' contains various properties, including _position, and markers[]
+         */
+        render: (cluster: ClustererForRender) => {
+            const marker_label = makeClusterLabel(cluster.markers);
+            return new google.maps.Marker({
+                label: { 
+                    text: marker_label,
+                    color: "white", 
+                    fontSize: "10px" },
+                position: cluster._position,
+                // adjust zIndex to be above other markers
+                zIndex: 50 //Number(google.maps.Marker.MAX_ZINDEX), // + count,
+            })
+        }
+    };
 	// Add a marker clusterer to manage the markers.
-	let clusterer_opts: MarkerOpts = {
-		gridSize: 50,
-		maxZoom: 12,
-		averageCenter: true,
-		zoomOnClick: true
-	};
-	new markerClusterer.MarkerClusterer({ markers, map, clusterer_opts });
-
+	// Add a marker clusterer to manage the markers (maxZoom doesn't seem to hold)
+    new markerClusterer.MarkerClusterer({
+        markers: markers,
+        map: map,
+        algorithmOptions: {maxZoom: 13},
+        renderer: renderer
+    });
 	// /////////////////////// Marker Grouping /////////////////////////
 	
 	//new markerClusterer.MarkerClusterer({mapMarkers, map});

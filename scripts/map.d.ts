@@ -113,9 +113,20 @@ interface JsonFile {
     name: string;
 	trk: JsonElement[];
 }
+interface NM_Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    title: string;
+}
+interface CL_Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    title: string;
+    hikecnt: number;
+}
 interface Marker_Data {
     position: GPS_Coord;
     iw_content: string;
-    icon: HTMLImageElement;
     title: string;
 }
+

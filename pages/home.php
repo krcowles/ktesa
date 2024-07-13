@@ -43,7 +43,12 @@ chdir($startDir);
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href=
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity
+        ="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
     <link href="../styles/home.css" rel="stylesheet" />    
     <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <?php require "../pages/iconLinks.html"; ?>
@@ -163,15 +168,17 @@ require "getFavorites.php";
     var hikeSources = <?=$jsItems;?>;
     window.newBounds = false;
 </script>
-<script src="../scripts/markerclusterer.min.js"></script>
-<!-- use the following to get the laterst release:
+<!--use the following to get the latest release:
 <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js">
 </script>
 -->
+<script src="../scripts/markerclusterer.min.js"></script>
 <script src="../scripts/map.js"></script>
 <script src="../scripts/sideTables.js"></script>
 <script src="../scripts/homepg_filter.js"></script>
 <script async src="<?=GOOGLE_MAP;?>"></script>
 
+
 </body>
-</html>
+
+</html
