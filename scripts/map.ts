@@ -191,13 +191,12 @@ function initMap() {
 		url: "https://nmhikes.com/maps/NM_Borders.kml",
 		map: map
 	});
-
-	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	const infoWindow = new google.maps.InfoWindow({
 		content: "",
 		disableAutoPan: true,
 		maxWidth: 400
 	});
+	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => { // create array of markers
 		const position = mrkr_data.position as GPS_Coord;
 		const nm_title = mrkr_data.title;
@@ -206,12 +205,15 @@ function initMap() {
 		  position: position,
 		  map: map,
 		  content: build_content(1),
-		  title: nm_title,
-		  gmpClickable: true
-		}) as CustomAdvancedMarker;
-		marker.hikes = 1;
-		// MARKER SEARCH
-		const srchmrkr: MarkerId = {hikeid: mrkr_data.title, clicked: false, pin: marker};
+		  title: nm_title
+		}) as CustomAdvancedMarker;;
+		marker.hikes = 1
+		// MARKER SEARCH:
+		const srchmrkr: MarkerId = {
+			hikeid: mrkr_data.title, 
+			clicked: false,
+			pin: marker
+		};
 		locaters.push(srchmrkr);
 		const itemno = locaters.length -1;
 		// CLICK ON MARKER:
@@ -249,7 +251,11 @@ function initMap() {
 		}) as CustomAdvancedMarker;
 		marker.hikes = hike_count;
 		// MARKER SEARCH:
-		const srchmrkr: MarkerId = {hikeid: mrkr_data.title, clicked: false, pin: marker};
+		const srchmrkr: MarkerId = {
+			hikeid: mrkr_data.title,
+			clicked: false,
+			pin: marker
+		};
 		locaters.push(srchmrkr);
 		const itemno = locaters.length -1;
 		// CLICK ON MARKER:

@@ -111,8 +111,9 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
     // clicking marker sets zoom
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
-            if (locaters[k].clicked === false) {               
-                google.maps.event.trigger(markers[59], 'gmp-click');
+            if (locaters[k].clicked === false) { 
+                let custom_mrkr = locaters[k].pin as CustomAdvancedMarker              
+                google.maps.event.trigger(custom_mrkr, 'click');
             } else {
                 window.newBounds = true;
                 map.setCenter(loc);

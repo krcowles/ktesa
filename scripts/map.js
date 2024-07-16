@@ -218,12 +218,12 @@ function initMap() {
         url: "https://nmhikes.com/maps/NM_Borders.kml",
         map: map
     });
-    // ///////////////////////////   MARKER CREATION   ////////////////////////////
     var infoWindow = new google.maps.InfoWindow({
         content: "",
         disableAutoPan: true,
         maxWidth: 400
     });
+    // ///////////////////////////   MARKER CREATION   ////////////////////////////
     var nm_markers = nm_marker_data.map(function (mrkr_data) {
         var position = mrkr_data.position;
         var nm_title = mrkr_data.title;
@@ -232,12 +232,16 @@ function initMap() {
             position: position,
             map: map,
             content: build_content(1),
-            title: nm_title,
-            gmpClickable: true
+            title: nm_title
         });
+        ;
         marker.hikes = 1;
-        // MARKER SEARCH
-        var srchmrkr = { hikeid: mrkr_data.title, clicked: false, pin: marker };
+        // MARKER SEARCH:
+        var srchmrkr = {
+            hikeid: mrkr_data.title,
+            clicked: false,
+            pin: marker
+        };
         locaters.push(srchmrkr);
         var itemno = locaters.length - 1;
         // CLICK ON MARKER:
@@ -275,7 +279,11 @@ function initMap() {
         });
         marker.hikes = hike_count;
         // MARKER SEARCH:
-        var srchmrkr = { hikeid: mrkr_data.title, clicked: false, pin: marker };
+        var srchmrkr = {
+            hikeid: mrkr_data.title,
+            clicked: false,
+            pin: marker
+        };
         locaters.push(srchmrkr);
         var itemno = locaters.length - 1;
         // CLICK ON MARKER:
