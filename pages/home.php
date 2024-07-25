@@ -168,7 +168,7 @@ require "getFavorites.php";
     var hikeSources = <?=$jsItems;?>;
     window.newBounds = false;
 </script>
-<!--use the following to get the latest release:
+<!--use the following to get the latest release: (saved as markerclusterer.min.js)
 <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js">
 </script>
 -->
@@ -177,7 +177,6 @@ require "getFavorites.php";
 <script src="../scripts/sideTables.js"></script>
 <script src="../scripts/homepg_filter.js"></script>
 <script async src="<?=GOOGLE_MAP;?>"></script>
-
 
 </body>
 

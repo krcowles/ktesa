@@ -1,29 +1,28 @@
 /// <reference path='./map.d.ts' />
-interface CustomMarker extends google.maps.Marker {
-	hikes?: number;
-}
 interface CustomAdvancedMarker extends google.maps.marker.AdvancedMarkerElement {
 	hikes?: number;
 }
-interface ClustererForRender extends CustomMarker{
-	markers: google.maps.Marker[];
+interface ClustererForRender extends CustomAdvancedMarker {
+	markers: google.maps.marker.AdvancedMarkerElement[];
 	_position: GPS_Coord;
 }
 /**
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
  * 		together, displaying the number of hikes in each cluster. It also draws hike
- * 		tracks when zoomed in, and afterwards when panned. The script relies on the
- * 		externally supplied lib 'markerclusterer.js'. That lib was modified slightly
- *      by adding a line specifying the state of boolean 'newBounds' to prevent
- *      duplicate calls to form a side table (see Pan and Zoom handlers below).
+ * 		tracks when zoomed in, and afterwards when panned. The clusterer is now
+ *      supported by the google maps javascript API. A window property (boolean
+ *      'newBounds') is used to prevent duplicate calls to form a side table
+ *      (see Pan and Zoom handlers below).
  * @author Ken Cowles
  *
  * @version 8.0 Major mods to improve side table formation when multiple map events occur
- * @version 9.0 New GoogleMap marker type (AdvancedMarkerElement)
+ * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
  */
 
-var markers: google.maps.marker.AdvancedMarkerElement[];
+const hike_mrkr_icon = "../images/blue_nobg.png";
+// <a href="https://www.vecteezy.com/free-vector/map-marker">Map Marker Vectors by Vecteezy</a>
+const clus_mrkr_icon = "../images/star8.png";
 const initialValue = 0;
 const zoomThresh = 13;  // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
@@ -31,8 +30,7 @@ const colors = [
 	'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
 const geoOpts: geoOptions = { enableHighAccuracy: true };
-
-// global vars:
+var markers: google.maps.marker.AdvancedMarkerElement[];
 var appMode = $('#appMode').text() as string;
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
@@ -58,7 +56,7 @@ var kill_table = false;
 
 /**
  * This function is called initially, and again when resizing the window;
- * Because the map, adjustWidth and sideTable divs are floats, height
+ * Because the map, adjustWidth, and sideTable divs are floats, height
  * needs to be specified for the divs to be visible; 'panel' is also used
  * in locateGeoSymbol().
  */
@@ -94,21 +92,12 @@ function locateGeoSym() {
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
 var geoIcon:string = "../images/currentLoc.png";
-/**
- * Use the arrays passed in to the home page by php: one for each type 
- * of marker to be displayed (Clustered, Normal):
- * 		CL Array: Clustered hike pages
- * 		NM Array: Normal hike pages
- * And one for creating tracks:
- * 		tracks Array: ordered list of json file names
- */
 var locaters: MarkerIds = []; // global used to popup info window on map when hike is searched
 
 /**
- * Create the NM hikes marker data array and also the CL hikes marker data array
- * The arrays are mapped into markers for the markerClusterer
+ * Collect the number of hikes associated with a clusterer for labelling purposes
  */
-const makeClusterLabel = (markers: CustomMarker[]) => {
+const makeClusterLabel = (markers: CustomAdvancedMarker[]) => {
     var total: number[] = [];
     markers.forEach(function(mrkr) {
         total.push(Number(mrkr.hikes));
@@ -117,21 +106,64 @@ const makeClusterLabel = (markers: CustomMarker[]) => {
         (accumulator, currentValue) => accumulator + currentValue, 
         initialValue
     );
-    return  String(hike_total);
-}
-const build_content = (count: number) => {
-    const content = document.createElement("div");
-    const icon = document.createElement("img");
-    const mrkr_cnt = document.createElement("div");
-    const mrkr_txt = document.createTextNode(String(count));
+    return  hike_total;
+};
+/**
+ * Create a DOM element containing a marker or clusterer icon with a mrkr_cnt div showing
+ * the number of hikes associated with it
+ */
+const build_content = (glyph: string, count: number) => {
+	var gtop;
+    var glft;
+    var gsize;
+    var gpadding = "0 3px 0 3px";
+    if (glyph === hike_mrkr_icon) { // single marker or cluster marker
+        gtop = "16px";
+        glft = "26px";
+        gsize = "11px";
+    } else {
+        gtop = "10px";
+        if (count < 10) {
+            glft = "12px";
+            gsize = "11px;"
+        } else if (count < 100) {
+            glft = "10px";
+            gsize = "10px;"
+            gpadding = "0 2px 0 2px";
+        } else {
+            gtop = "11px";
+            glft = "9px";
+            gsize = "9px";
+            gpadding = "0 2px 0 2px";
+        }
+    }
+    var content = document.createElement("div");
+    var icon = document.createElement("img");
+    var mrkr_cnt = document.createElement("div");
+    var mrkr_txt = document.createTextNode(String(count));
+    mrkr_cnt.style.background = "white";
+    mrkr_cnt.style.position = "absolute";
+    mrkr_cnt.style.top = gtop;
+    mrkr_cnt.style.left= glft;
+    mrkr_cnt.style.fontSize = gsize;
+    mrkr_cnt.style.padding = gpadding;
+    mrkr_cnt.style.borderRadius = "6px";
     mrkr_cnt.appendChild(mrkr_txt);
     icon.style.zIndex = "900";
-    icon.src = "../images/pins/hiker_pin.png";
+    icon.src = glyph;
     content.appendChild(icon);
     content.appendChild(mrkr_cnt);
     return content;
 };
-const nm_marker_data = [] as NM_Marker_Data[];
+/**
+ * Use the arrays passed in to the home page by php: one for each type 
+ * of marker to be displayed (Clustered, Normal):
+ *      NM Array: Objects describing 'normal' hikes (single tracks)
+ * 		CL Array: Objects describinb 'clustered' hikes (more than 1 track)
+ * And an array for creating tracks: (see track drawing near end of script)
+ * 		tracks Array: ordered list of json file names
+ */
+var nm_marker_data = [] as NM_Marker_Data[];
 NM.forEach(function(hikeobj) {
 	var mrkr_loc = hikeobj.loc;
 	var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
@@ -171,7 +203,6 @@ CL.forEach(function(clobj) {
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-	//const clustererMarkerSet:google.maps.marker.AdvancedMarkerElement[] = [];
 	const nmCtr = {lat: 34.450, lng: -106.042};
 	var options = {
 		center: nmCtr,
@@ -197,16 +228,16 @@ function initMap() {
 		maxWidth: 400
 	});
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
-	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => { // create array of markers
+	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => {
 		const position = mrkr_data.position as GPS_Coord;
 		const nm_title = mrkr_data.title;
 		// THE MARKER:
 		const marker = new google.maps.marker.AdvancedMarkerElement({
 		  position: position,
 		  map: map,
-		  content: build_content(1),
+		  content: build_content(hike_mrkr_icon, 1),
 		  title: nm_title
-		}) as CustomAdvancedMarker;;
+		}) as CustomAdvancedMarker;
 		marker.hikes = 1
 		// MARKER SEARCH:
 		const srchmrkr: MarkerId = {
@@ -245,7 +276,7 @@ function initMap() {
 		const marker = new google.maps.marker.AdvancedMarkerElement({
 			position: position,
 			map: map,
-		  	content: build_content(hike_count),
+		  	content: build_content(hike_mrkr_icon, hike_count),
 		  	title: cl_title,
 			gmpClickable: true
 		}) as CustomAdvancedMarker;
@@ -283,32 +314,25 @@ function initMap() {
          * render( CLUSTER, stats, map) where CLUSTER 'Accessors' are bounds, count, position
          * and 'cluster' contains various properties, including _position, and markers[]
          */
-        render: (cluster: ClustererForRender) => {
-            const marker_label = makeClusterLabel(cluster.markers);
-            return new google.maps.Marker({
-                label: { 
-                    text: marker_label,
-                    color: "white", 
-                    fontSize: "10px" },
+        render: function (cluster: ClustererForRender) {
+            var marker_label = makeClusterLabel(cluster.markers);
+            return new google.maps.marker.AdvancedMarkerElement({
                 position: cluster._position,
-                // adjust zIndex to be above other markers
-                zIndex: 50 //Number(google.maps.Marker.MAX_ZINDEX), // + count,
-            })
+                map: map,
+                content: build_content(clus_mrkr_icon, marker_label),
+                title: "Cluster"
+            });
         }
     };
-	// Add a marker clusterer to manage the markers.
-	// Add a marker clusterer to manage the markers (maxZoom doesn't seem to hold)
-    new markerClusterer.MarkerClusterer({
+    
+	// /////////////////////// Marker Grouping in Clusterer /////////////////////////
+	new markerClusterer.MarkerClusterer({
         markers: markers,
         map: map,
-        algorithmOptions: {maxZoom: 13},
+        algorithmOptions: {maxZoom: 12}, // no apparent effect...
         renderer: renderer
     });
-	// /////////////////////// Marker Grouping /////////////////////////
 	
-	//new markerClusterer.MarkerClusterer({mapMarkers, map});
-	//new MarkerClusterer(map, clustererMarkerSet, clusterer_opts);
-
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	/**
      * NOTE: Loading the map on page load/reload causes an initial center_change AND
