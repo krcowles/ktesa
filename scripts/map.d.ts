@@ -61,6 +61,13 @@ interface MapDoc extends Document {
     mozFullScreen: boolean;
     webkitIsFullScreen: boolean;
 }
+interface CustomAdvancedMarker extends google.maps.marker.AdvancedMarkerElement {
+	hikes?: number;
+}
+interface ClustererForRender extends CustomAdvancedMarker {
+	markers: google.maps.marker.AdvancedMarkerElement[];
+	_position: GPS_Coord;
+}
 interface MarkerId {
     hikeid: string;
     clicked?: boolean;

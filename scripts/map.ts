@@ -1,11 +1,4 @@
 /// <reference path='./map.d.ts' />
-interface CustomAdvancedMarker extends google.maps.marker.AdvancedMarkerElement {
-	hikes?: number;
-}
-interface ClustererForRender extends CustomAdvancedMarker {
-	markers: google.maps.marker.AdvancedMarkerElement[];
-	_position: GPS_Coord;
-}
 /**
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
