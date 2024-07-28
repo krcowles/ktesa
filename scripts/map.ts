@@ -14,7 +14,7 @@
  */
 
 const hike_mrkr_icon = "../images/blue_nobg.png";
-// <a href="https://www.vecteezy.com/free-vector/map-marker">Map Marker Vectors by Vecteezy</a>
+// <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
 const clus_mrkr_icon = "../images/star8.png";
 const initialValue = 0;
 const zoomThresh = 13;  // Default zoom level for drawing tracks
@@ -111,8 +111,8 @@ const build_content = (glyph: string, count: number) => {
     var gsize;
     var gpadding = "0 3px 0 3px";
     if (glyph === hike_mrkr_icon) { // single marker or cluster marker
-        gtop = "16px";
-        glft = "26px";
+        gtop = "10px";
+        glft = "13px";
         gsize = "11px";
     } else {
         gtop = "10px";
@@ -161,10 +161,12 @@ NM.forEach(function(hikeobj) {
 	var mrkr_loc = hikeobj.loc;
 	var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
 			+ hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
-	iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
-	iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
-	iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-	iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
+		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
+		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
+		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+	const nm_icon = document.createElement("IMG") as HTMLImageElement;
+	nm_icon.src = "../images/pins/greennm.png";
 	var nm_title = hikeobj.name;
 	var nm_marker = {position: mrkr_loc, iw_content: iwContent, title: nm_title};
 	nm_marker_data.push(nm_marker)
@@ -226,10 +228,10 @@ function initMap() {
 		const nm_title = mrkr_data.title;
 		// THE MARKER:
 		const marker = new google.maps.marker.AdvancedMarkerElement({
-		  position: position,
-		  map: map,
-		  content: build_content(hike_mrkr_icon, 1),
-		  title: nm_title
+			position: position,
+			map: map,
+			content: build_content(hike_mrkr_icon, 1),
+			title: nm_title
 		}) as CustomAdvancedMarker;
 		marker.hikes = 1
 		// MARKER SEARCH:

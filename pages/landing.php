@@ -81,7 +81,7 @@ require_once "../accounts/getLogin.php";
         </div>
         <div id="choice2">
             <p>Map &amp; markers</p>
-            <img id="map" src="../images/mapmrkrs.jpg" alt="map with markers" />
+            <img id="map" src="../images/newMap.jpg" alt="map with markers" />
         </div>
     </div><br />
 </div>

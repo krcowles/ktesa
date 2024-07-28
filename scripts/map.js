@@ -1,4 +1,18 @@
 "use strict";
+/// <reference path='./map.d.ts' />
+/**
+ * @fileoverview This routine initializes the google map to view the state
+ *		of New Mexico, places markers on hike locations, and clusters the markers
+ * 		together, displaying the number of hikes in each cluster. It also draws hike
+ * 		tracks when zoomed in, and afterwards when panned. The clusterer is now
+ *      supported by the google maps javascript API. A window property (boolean
+ *      'newBounds') is used to prevent duplicate calls to form a side table
+ *      (see Pan and Zoom handlers below).
+ * @author Ken Cowles
+ *
+ * @version 8.0 Major mods to improve side table formation when multiple map events occur
+ * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,7 +28,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -44,22 +58,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-/// <reference path='./map.d.ts' />
-/**
- * @fileoverview This routine initializes the google map to view the state
- *		of New Mexico, places markers on hike locations, and clusters the markers
- * 		together, displaying the number of hikes in each cluster. It also draws hike
- * 		tracks when zoomed in, and afterwards when panned. The clusterer is now
- *      supported by the google maps javascript API. A window property (boolean
- *      'newBounds') is used to prevent duplicate calls to form a side table
- *      (see Pan and Zoom handlers below).
- * @author Ken Cowles
- *
- * @version 8.0 Major mods to improve side table formation when multiple map events occur
- * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
- */
 var hike_mrkr_icon = "../images/blue_nobg.png";
-// <a href="https://www.vecteezy.com/free-vector/map-marker">Map Marker Vectors by Vecteezy</a>
+// <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
 var clus_mrkr_icon = "../images/star8.png";
 var initialValue = 0;
 var zoomThresh = 13; // Default zoom level for drawing tracks
@@ -150,8 +150,8 @@ var build_content = function (glyph, count) {
     var gsize;
     var gpadding = "0 3px 0 3px";
     if (glyph === hike_mrkr_icon) { // single marker or cluster marker
-        gtop = "16px";
-        glft = "26px";
+        gtop = "10px";
+        glft = "13px";
         gsize = "11px";
     }
     else {
@@ -207,6 +207,8 @@ NM.forEach(function (hikeobj) {
     iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
     iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
     iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+    var nm_icon = document.createElement("IMG");
+    nm_icon.src = "../images/pins/greennm.png";
     var nm_title = hikeobj.name;
     var nm_marker = { position: mrkr_loc, iw_content: iwContent, title: nm_title };
     nm_marker_data.push(nm_marker);
@@ -242,14 +244,14 @@ function initMap() {
     var options = {
         center: nmCtr,
         zoom: 7,
-        mapId: "39681f98dcd429f8",
+        mapId: "39681f98dcd429f8", // vector map; all styling
         // optional settings:
         isFractionalZoomEnabled: true,
         zoomControl: true,
         scaleControl: true,
         fullscreenControl: true,
         streetViewControl: false,
-        rotateControl: false
+        rotateControl: false,
     };
     map = new google.maps.Map(mapEl, options);
     new google.maps.KmlLayer({
@@ -362,7 +364,7 @@ function initMap() {
     new markerClusterer.MarkerClusterer({
         markers: markers,
         map: map,
-        algorithmOptions: { maxZoom: 12 },
+        algorithmOptions: { maxZoom: 12 }, // no apparent effect...
         renderer: renderer
     });
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////

@@ -1,5 +1,11 @@
 declare var previewSort: boolean;
 declare function assignPreviews(): void;
+type StandardNum = (a: string | number, b: string | number) => 0 | 1 | -1;
+type LikeANumber = (a: string, b: string) => 0 | 1 | -1;
+type IconString  = (a: string, b: string) => 0 | 1 | -1;
+type CompareType = {
+	[index:string]: StandardNum | LikeANumber | IconString;
+}
 
 /**
  * @fileoverview This reusable module specifies the sorting method for all
@@ -9,17 +15,8 @@ declare function assignPreviews(): void;
  * 
  * @author Ken Cowles
  * @version 1.0 Removes duplicate code in several modules
+ * @version 2.0 Eliminate 'hasKey' function to bypass typescript issues
  */
-
-/** To use a variable as an index into an object, the following helper function is
- * required to overcome [some] typescript complaints - compliments of
- * https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
- * Recently, however, typescript complains that type 'O' is not assignable
- * to type 'object' - I gave up trying to come up with a work-around!
- */
-function hasKey<O>(obj: O, key: keyof any): key is keyof O {
-	return key in obj;
-}
 
 /**
  * Global object used to define how table items get compared in a sort:
@@ -36,27 +33,32 @@ var compare = {
             return a > b ? 1 : 0;
         }
     },
-    lan: function(a: string, b: string) {    // "Like A Number": extract numeric portion for sort
-        // commas allowed in numbers, so;
+    lan: function(a: string, b: string) {
+		// "Like A Number": extract numeric portion for sort
+        // Commas allowed in numbers; nothing greater than 9,999
         var indx = a.indexOf(',');
-        if ( indx < 0 ) {
-            aout = parseFloat(a);
+        if ( indx === -1 ) {
+            aout = parseInt(a);
         } else {
-            noPart1 = 1000 * parseFloat(a);
-            let thou = a.substring(indx + 1, indx + 4);
+            noPart1 = 1000 * parseInt(a);
+            let thou = a.substring(indx + 1, indx + 4); 
             noPart2 = parseInt(thou);
             aout = noPart1 + noPart2;
         }
         indx = b.indexOf(',');
-        if ( indx < 0 ) {
-            bout = parseFloat(b);
+        if ( indx === -1 ) {
+            bout = parseInt(b);
         } else {
-            noPart1 = 1000 * parseFloat(b);
+            noPart1 = 1000 * parseInt(b);
             let thou = b.substring(indx + 1, indx + 4);
             noPart2 = parseInt(thou);
             bout = noPart1 + noPart2;
         }
-        return aout - bout;
+        if (aout < bout) {
+			return -1;
+		} else {
+			return aout > bout ? 1 : 0;
+		}
     },
     icn: function(a: string, b: string) {	// standard sorting - literal
         if ( a < b ) {
@@ -65,7 +67,7 @@ var compare = {
             return a > b ? 1 : 0;
         }
     },
-};  // end of COMPARE object
+} as CompareType;  // end of COMPARE object
 
 /**
  * This function translates an exposure icon (<img> src) into sortable text
@@ -88,9 +90,6 @@ var compare = {
  * Apply this function to a table to provide sortable headers (table columns)
  */
  function tableSort(tableid: string) {
-	/**
-	 * On table load only...
-	 */
 	let $table = $(tableid);
 	let $tbody = $table.find('tbody');
 	let $controls = $table.find('th');
@@ -106,10 +105,9 @@ var compare = {
 		});
 	}
 	$controls.each(function() {
-		// Setup Hike/Trail Name header w/class 'ascending', since hikes are pre-sorted on load
+		// Setup Hike/Trail Name header w/class 'ascending': hikes are pre-sorted on load
 		if ($(this).text() === 'Hike/Trail Name') {
 			$(this).addClass('ascending');
-			return;
 		}
 	}); 
 	let $grows = $tbody.find('tr').toArray();
@@ -158,7 +156,7 @@ var compare = {
 								bcell = bel.text();
 							}
 							let retval = 0;
-							if (hasKey(compare, order)) {
+							if (compare.hasOwnProperty(order)) {
 								retval = <number>compare[order](acell , bcell);
 							}
 							return retval;
