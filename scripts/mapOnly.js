@@ -70,7 +70,8 @@ $('#ctr').text(trail);
 // position searchbar
 var navheight = $('nav').height();
 var logoheight = $('#logo').height();
-var srchtop = navheight + 16 + logoheight + 14; // 16px padding on navbar
+// 16px padding on navbar, 42px to eliminate interference with maptype
+var srchtop = navheight + 16 + logoheight + 14 + 42;
 $('#search').css({
     top: srchtop,
     left: '40px'
@@ -80,8 +81,8 @@ $('#search').css({
  * left of the google map zoom control
  */
 function locateGeoSym() {
-    var winht = window.innerHeight - 64;
-    var mapwd = $('#map').width() - 80;
+    var winht = window.innerHeight - 90;
+    var mapwd = $('#map').width() - 120;
     $('#geoCtrl').css({
         top: winht,
         left: mapwd
@@ -206,14 +207,14 @@ function initMap() {
     var options = {
         center: nmCtr,
         zoom: 7,
-        mapId: "39681f98dcd429f8",
+        mapId: "39681f98dcd429f8", // vector map; all styling
         // optional settings:
         isFractionalZoomEnabled: true,
         zoomControl: true,
         scaleControl: true,
         fullscreenControl: true,
         streetViewControl: false,
-        rotateControl: false
+        rotateControl: false,
     };
     map = new google.maps.Map(mapEl, options);
     new google.maps.KmlLayer({
@@ -325,7 +326,7 @@ function initMap() {
     new markerClusterer.MarkerClusterer({
         markers: markers,
         map: map,
-        algorithmOptions: { maxZoom: 12 },
+        algorithmOptions: { maxZoom: 12 }, // no apparent effect...
         renderer: renderer
     });
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
@@ -492,7 +493,7 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
                         offset: '0%',
                         repeat: '15%'
                     }],
-                path: trackDat,
+                path: trackDat.trk,
                 geodesic: true,
                 strokeColor: color,
                 strokeOpacity: .6,

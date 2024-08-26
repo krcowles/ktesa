@@ -30,6 +30,9 @@ if (isset($_SESSION['userid'])) {
 ?>
 
 <script type="text/javascript">
+    <?php if ($mobileTesting) : ?>
+    var mobile = true;
+    <?php else : ?>
     var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
     isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
         true : false;
@@ -42,6 +45,7 @@ if (isset($_SESSION['userid'])) {
     isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
         true : false;
     mobile = isMobile && !isTablet;
+    <?php endif; ?>
     // New: Panel sub-menu js 
     document.addEventListener("DOMContentLoaded", function(){
         // make it as accordion for smaller screens

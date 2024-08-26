@@ -1,5 +1,4 @@
 "use strict";
-/// <reference types="bootstrap" />
 /**
  * @fileoverview This script utilizes the getLogin.php activity to determine which
  * menu items are to be activated, and which are to blocked (grayed out). The
@@ -10,11 +9,11 @@
  *
  * @version 1.0 Ported from menuControl.js for responsive design
  * @version 1.1 Typescripted
+ * @version 2.0 Rescripted owing to changed bootstrap support for menus
  */
 var cookies = navigator.cookieEnabled ? true : false;
 var html_cookie = document.getElementById('cookie_state');
 var user_cookie_state = html_cookie === null ? false : html_cookie.innerText;
-var renewp;
 // check to see if cookies are enabled for the browser
 if (cookies) {
     /**
@@ -57,35 +56,10 @@ else { // cookies disabled
  * Turn on menu items for registered members
  */
 function loggedInItems() {
-    $('#login').removeClass('active');
-    $('#login').addClass('disabled');
-    $('#logout').removeClass('disabled');
-    $('#logout').addClass('active');
-    $('#bam').removeClass('active');
-    $('#bam').addClass('disabled');
-    $('#chg').removeClass('disabled');
-    $('#chg').addClass('active');
+    $("#membership option[value='login']").remove();
+    $("#membership option[value='bam']").remove();
     return;
 }
-/**
- * Turn off menu items for resitered members
- */
 function notLoggedInItems() {
-    $('#login').removeClass('disabled');
-    $('#login').addClass('active');
-    $('#logout').addClass('disabled');
-    $('#logout').removeClass('active');
-    $('#bam').removeClass('disabled');
-    $('#bam').addClass('active');
-    $('#chg').removeClass('active');
-    $('#chg').addClass('disabled');
-    $('admin').css('display', 'none');
-    return;
-}
-/**
- * Enable admintools for admins
- */
-function adminLoggedIn() {
-    $('#admintools').css('display', 'block');
-    return;
+    $("#membership option[value='logout']").remove();
 }

@@ -53,13 +53,18 @@ body {
 }
 #center {
     float: left;
-    margin-top: 3px;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 #logo_right {
     clear: left;
     position: relative;
     top:  3px;
     z-index: 5;
+}
+#membership {
+    margin-top: -4px;
 }
 #tmap {
     margin-right: 8px;
@@ -93,6 +98,10 @@ h2 {
 }
 #choice1 {
     margin-right: 20px;
+}
+#choice2 {
+    position: relative;
+    top: -10px;
 }
 #choice1:hover, #choice2:hover {
     cursor: pointer;

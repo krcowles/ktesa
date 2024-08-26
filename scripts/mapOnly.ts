@@ -62,7 +62,8 @@ $('#ctr').text(trail);
 // position searchbar
 let navheight = <number>$('nav').height();
 let logoheight = <number>$('#logo').height();
-let srchtop = navheight + 16 + logoheight + 14; // 16px padding on navbar
+// 16px padding on navbar, 42px to eliminate interference with maptype
+let srchtop = navheight + 16 + logoheight + 14 + 42;
 $('#search').css({
 	top: srchtop,
 	left: '40px'
@@ -72,8 +73,8 @@ $('#search').css({
  * left of the google map zoom control 
  */
 function locateGeoSym() {
-	let winht = window.innerHeight - 64;
-	let mapwd = <number>$('#map').width() - 80;
+	let winht = window.innerHeight - 90;
+	let mapwd = <number>$('#map').width() - 120;
 	$('#geoCtrl').css({
 		top: winht,
 		left: mapwd
@@ -496,7 +497,7 @@ function drawTrack(json_filename: string, info_win: string, color:string,
 					offset: '0%',
 					repeat: '15%' 
 				}],
-				path: trackDat,
+				path: trackDat.trk,
 				geodesic: true,
 				strokeColor: color,
 				strokeOpacity: .6,
