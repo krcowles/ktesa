@@ -19,8 +19,6 @@ body {
     padding: 0px;
     width: 100%;
     height: 80px;
-    margin-bottom: 4px;
-    margin-right: 12px;
     background-color: #ffe866;
     z-index: 1;
     -moz-box-sizing: border-box;
@@ -33,8 +31,9 @@ body {
     background-repeat: repeat-x;
     background-attachment: scroll;
     margin-top: 2px;
+    margin-bottom: 8px;
     padding: 0px;
-    height: 24px;
+    height: 16px;
 }
 #pgheader {
     display: flex;
@@ -43,6 +42,7 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+/* The 3 elements [leftside, center, rightside] in 'pgheader' have widths = contents */
 #hikers {
     margin-left: 8px;
     z-index: 5;

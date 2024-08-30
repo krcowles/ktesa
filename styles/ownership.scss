@@ -16,6 +16,7 @@ body {
   }
 }
 
+/* "global" colors: local exceptions are contained in their respective modules */
 .navbar {
   background-color: darkslategray;
 }
@@ -213,18 +214,29 @@ input[id^=q] {
   margin-bottom: 4px;
 }
 
-#main {
-  margin-left: 24px;
-  width: 60%;
+#contents {
+  margin: 12px 24px 12px 24px;
 }
 
-#forceCheck {
-  margin-top: 0.6rem;
-  margin-bottom: 1rem;
+#message {
+  width: 80%;
+  height: 64px;
 }
 
-#extgpx, #mgpx, #megpx, #mgps, #megps, #extjson, #mjson {
-  margin-bottom: 1rem;
+input:focus, textarea:focus {
+  outline: none;
+  border-color: maroon;
+  border-width: 2px;
+  border-style: solid;
+  transition: border-color 1s;
+  background-color: antiquewhite;
 }
 
-/*# sourceMappingURL=cleanGpxJson.css.map */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: gray;
+  opacity: 1;
+  /* Firefox */
+}
+
+/*# sourceMappingURL=ownership.scss.map */

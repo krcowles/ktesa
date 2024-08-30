@@ -14,7 +14,7 @@
  * @license No license to date
  */
 define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
-$mobileTesting = true;
+$mobileTesting = false;
 
 // Locate site-specific private directories
 $documentRoot = $_SERVER['DOCUMENT_ROOT'];

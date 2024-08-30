@@ -40,7 +40,6 @@ require_once "../accounts/getLogin.php";
         
         <!-- minimal functionality menu -->
         <div id="center">
-            <label for="membership">Membership</label>&nbsp;&nbsp;
             <select id="membership">
                 <option id="sao"    value="sao">Select An Option:</option>
                 <option id="login"  value="login">Login          </option>

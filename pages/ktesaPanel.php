@@ -2,7 +2,8 @@
 /**
  * This script presents the html that comprises the top-of-the-page
  * menu-driven navigation bar and ktesa logo for every viewable page.
- * See ktesaNavbar.php for mobile implementation.
+ * See ktesaNavbar.php for mobile implementation. All bootstrap submenu
+ * operation derived from: https://bootstrap-menu.com/detail-multilevel.html
  * NOTE: Recent addition of 'Own This Site!' animation compliments of
  * https://alvarotrigo.com/blog/css-text-animations/ (with mods)
  * PHP Version 7.4
@@ -49,7 +50,7 @@ if (isset($_SESSION['userid'])) {
     // New: Panel sub-menu js 
     document.addEventListener("DOMContentLoaded", function(){
         // make it as accordion for smaller screens
-        if (window.innerWidth < 992) {
+        if (window.innerWidth < 800) {
             // close all inner dropdowns when parent is closed
             document.querySelectorAll('.navbar .dropdown').forEach(
                 function(everydropdown){
@@ -111,17 +112,18 @@ if (isset($_SESSION['userid'])) {
         }
  </style>
 
-<!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
+<!-- 'navbar-dark' class results in a light-colored collapsed icon ("hamburger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark">
     <div class="container-fluid"> 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#ktesaMenu" aria-controls="ktesaMenu"
-            aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+                data-bs-target="#ktesaMenu" aria-controls="ktesaMenu"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
+            <!-- Hidden brand when collapsed -->
             <a class="navbar-brand" href="../pages/about.php">
                 <img src="../images/logos/logo32.png" alt="Brand Icon" />
             </a>
@@ -180,7 +182,7 @@ if (isset($_SESSION['userid'])) {
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item"
-                        href="#">Filter Hikes... &raquo;</a>
+                        href="#">Filter Hikes... &rArr;</a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" id="fhmiles"
                                 href="#">Miles from hike</a></li>
@@ -189,7 +191,7 @@ if (isset($_SESSION['userid'])) {
                         </ul>
                     </li>
                     <li><a id="sorter" class="dropdown-item"
-                        href="#">Sort Options... &raquo;</a>
+                        href="#">Sort Options... &rArr;</a>
                         <ul class="submenu dropdown-menu">
                             <li><a class="dropdown-item" id="sort_rev"
                                 href="#">Reverse Sort Order</a></li>
