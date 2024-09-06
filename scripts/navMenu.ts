@@ -1,5 +1,9 @@
 /// <reference types="bootstrap" />
 declare var mobile: boolean;
+interface LockResults {
+    result: string;
+    minutes: number;
+}
 /**
  * @fileoverview Navbar menu actions where href="#"
  * 
@@ -24,16 +28,33 @@ if (choice === 'accept') {
 var chg_modal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'), {
     keyboard: false
 });
+var lockout   = new bootstrap.Modal(<HTMLElement>document.getElementById('lockout'));
 var ajaxerror = new bootstrap.Modal(<HTMLElement>document.getElementById('ajaxerr'));
-
 // Setup modal as a user presentation for any ajax errors.
 var ajaxerror = new bootstrap.Modal(<HTMLElement>document.getElementById('ajaxerr'), {
     keyboard: false
 });
 
+
 /**
  * Menu operation
  */
+$('#login').on('click', function() {
+    $.get('../accounts/lockStatus.php', function(lock_status: LockResults) {
+        if (lock_status.result !== "ok") {
+            $('.lomin').text(lock_status.minutes);
+            lockout.show();
+        } else {
+            localStorage.removeItem('lockout');
+            window.open("../accounts/unifiedLogin.php?form=log");
+        }
+    }, "json");
+});
+$('#force_reset').on('click', function() {
+    //lockout.hide();
+    chg_modal.show();
+    return;
+});
 $('#logout').on('click', function() {
     let ajax = {expire: 'N'};
     $.ajax({
@@ -71,7 +92,7 @@ $('#chg').on('click', function() {
 $('#send').on('click', function(ev) {
     ev.preventDefault();
     let email = $('#cpwmail').val();
-    let data = {form: 'req', email: email};
+    let data = {form: 'chg', email: email};
     $.ajax({
         url: '../accounts/resetMail.php',
         data: data,

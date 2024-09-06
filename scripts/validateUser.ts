@@ -1,3 +1,7 @@
+interface LockResults {
+    status: string;
+    minutes: number;
+}
 /**
  * @fileoverview This function invokes an ajax call to the
  * authenticate.php script in an effort to validate membership.
@@ -10,19 +14,6 @@
  * @version 5.0 Upgraded security with encryption and 2FA
  */
 var appMode = $('#appMode').text() as string;
-// See if lockout prevails
-$.get('../accounts/lockStatus.php', function(status) {
-    if (status !== "ok") {
-        alert("Your 60 minute lockout period has not expired;\nTry again later");
-        $('#username').val("");
-        $('#username').css('background-color', 'lightgray');
-        $('#password').val("");
-        $('#password').css('background-color', 'lightgray');
-        $('#formsubmit').prop('disabled', 'disabled');
-        $('#logger').html("Reset Password");
-    }
-}, "text");
-
 /**
  * This section provides functionality to manage security questions and answers.
  * If a user has not previously provided security info, he/she will be able to
@@ -34,6 +25,58 @@ var sec0 = false;
 // Security Question
 var question = new bootstrap.Modal(<HTMLElement>document.getElementById('twofa'));
 var updates  = new bootstrap.Modal(<HTMLElement>document.getElementById('security'));
+var lockout  = new bootstrap.Modal(<HTMLElement>document.getElementById('lockout'));
+var resetPassModal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'));
+$('#force_reset').on('click', function() { // button in lockout modal
+    resetPassModal.show();
+    return;
+});
+$('#send').on('click', function(ev) {
+    ev.preventDefault();
+    let email = $('#rstmail').val();
+    let data = {form: 'chg', email: email};
+    $.ajax({
+        url: '../accounts/resetMail.php',
+        data: data,
+        dataType: 'text',
+        method: 'post',
+        success: function(result) {
+            if (result === 'OK') {
+                alert("An email has been sent: these sometimes " +
+                    "take awhile\nYou are logged out and can log in" +
+                    " again\nwhen your email is received");
+                $.get({
+                    url: '../accounts/logout.php',
+                    success: function() {
+                        window.open('../pages/landing.php', '_self');
+                    }
+                });
+                resetPassModal.hide();
+            } else {
+                alert(result);
+            }
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            $('#email').css('color', 'red');
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to send 'Reset Password' email\n" +
+                        "Error text: " + _textStatus + "; Error: " +
+                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
+        }
+    });
+});
 const requiredAnswers = 3;
 /**
  * This function counts the number of security questions and returns
@@ -168,7 +211,6 @@ $('#submit_answer').on('click', function() {
  * are removed from the database.
  */
 function validateUser(user: string, password: string) {
-    let resetPass = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'));
     let ajaxdata = {usr_name: user, usr_pass: password};
     let validator = "../accounts/authenticate.php";
     $.ajax( {
@@ -212,14 +254,35 @@ function validateUser(user: string, password: string) {
                 if (json.fail_cnt >= 3) {
                     $('#username').val("");
                     $('#username').css('background-color', 'lightgray');
+                    $('#username').prop('disabled', true);
                     $('#password').val("");
                     $('#password').css('background-color', 'lightgray');
+                    $('#password').prop('disabled', true);
                     $('#formsubmit').prop('disabled', 'disabled');
-                    alert("Too many unsuccessful login attempts:\n" +
-                        "You will be locked out for 1 hour, or you may\n" +
-                        "reset your password via the dialog box shown");
-                    resetPass.show();
-                    // "Send" button code: see sendResetMail.ts/js
+                    $('#logger').html("Reset Password");
+                    $('.lomin').text("60");
+                    $('#lotime').css('display', 'inline');
+                    localStorage.setItem('lockout', 'yes');
+                    lockout.show();
+                    // auto reset fields if page still active
+                    var lotimeout = setInterval(function() {
+                        $.get("../accounts/lockStatus.php",function(result) {
+                            if (result.status === 'ok') {
+                                $('#lotime').css('display', 'none');
+                                $('#username').css('background-color', 'transparent');
+                                $('#username').prop('disabled', false);
+                                $('#password').css('background-color', 'transparent');
+                                $('#password').prop('disabled', false);
+                                $('#formsubmit').prop('disabled', false);
+                                lockout.hide();
+                                localStorage.removeItem('lockout');
+                                clearInterval(lotimeout);
+                                alert("You may now login");
+                            } else {
+                                $('.lomin').text(result.minutes);
+                            }
+                        }, "json"); 
+                    },100000)
                 } else {
                     alert("Invalid login credentials: try again");
                 }

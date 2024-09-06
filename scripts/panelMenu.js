@@ -10,6 +10,7 @@
  * @version 7.1 Added 'Membership Benefits' to navbar
  * @version 7.2 Added 'Latest Additions' to navbar
  * @version 7.3 Updated ajax error handling
+ * @version 8.0 Revised login to pre-scan for lockout condition
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -30,6 +31,7 @@ $(function () {
     var $benmo = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
         "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
         "color:darkslategray;'>Free Membership<br />Click for Benefits</div>");
+    var lockout = new bootstrap.Modal(document.getElementById('lockout'));
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not
@@ -228,6 +230,95 @@ $(function () {
         $('#backurl').val(uricode);
         gpxedit.hide();
         return;
+    });
+    $('#login').on('click', function () {
+        $.get('../accounts/lockStatus.php', function (lock_status) {
+            if (lock_status.status !== "ok") {
+                $('.lomin').text(lock_status.minutes);
+                lockout.show();
+            }
+            else {
+                localStorage.removeItem('lockout');
+                window.open("../accounts/unifiedLogin.php?form=log");
+            }
+        }, "json");
+    });
+    $('#force_reset').on('click', function () {
+        //lockout.hide();
+        resetPassModal.show();
+        return;
+    });
+    $('#send').on('click', function (ev) {
+        ev.preventDefault();
+        var email = $('#rstmail').val();
+        var data = { form: 'chg', email: email };
+        $.ajax({
+            url: '../accounts/resetMail.php',
+            data: data,
+            dataType: 'text',
+            method: 'post',
+            success: function (result) {
+                if (result === 'OK') {
+                    alert("An email has been sent: these sometimes " +
+                        "take awhile\nYou are logged out and can log in" +
+                        " again\nwhen your email is received");
+                    $.get({
+                        url: '../accounts/logout.php',
+                        success: function () {
+                            window.open('../pages/home.php', '_self');
+                        }
+                    });
+                    resetPassModal.hide();
+                }
+                else {
+                    alert(result);
+                }
+            },
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                $('#email').css('color', 'red');
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to send 'Reset Password' email\n" +
+                        "Error text: " + _textStatus + "; Error: " +
+                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
+            }
+        });
+    });
+    $('#cookies').on('click', function () {
+        var newchoice;
+        var changeto = $(this).text();
+        if (changeto == 'Accept Cookies') {
+            newchoice = 'accept';
+        }
+        else {
+            newchoice = 'reject';
+        }
+        var change = { choice: newchoice };
+        $.ajax({
+            url: '../accounts/member_cookies.php',
+            method: 'post',
+            dataType: 'text',
+            data: change,
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Error retrieving member cookies - admin notified");
+                var err = { err: "Mobile member_cookies.php error" };
+                $.post('../php/ajaxError.php', err);
+            }
+        });
     });
     $('#logout').on('click', function () {
         $.ajax({

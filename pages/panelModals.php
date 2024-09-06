@@ -9,7 +9,7 @@
  * @license No license to date
  */
 ?>
-<!-- Filter Hikes Modals -->
+<!-- Filter Hikes Modals (2) -->
 <div id="bymiles" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -136,12 +136,41 @@
                 hike, a good description, and external references, if
                 any (books, weblinks, blogs, etc).</p>
             <p>Another benefit is that you can save 'favorites' and map
-                them on a separate page (Explore->Show Favorites)</p>
+                them on a separate page (Explore->Show Favorites). Other
+                member benefits are being added, such as auto-saving certain
+                preferences, (e.g. preferred GPS formats), etc.
+            </p>
             <p>Join now and start creating!</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                     data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login modal when lockout condition is encountered -->
+<div class="modal fade" id="lockout" tabindex="-1"
+    aria-labelledby="Lockout" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    You are locked out</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You are currently locked out and can login again in 
+                <span class="lomin"></span> minutes. You may continue
+                to wait, or you may reset your password by selecting
+                that option below.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Wait</button>
+                <button id="force_reset" type="button" class="btn btn-success">
+                    Reset my password</button>
             </div>
         </div>
     </div>
@@ -158,8 +187,8 @@
                     data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Enter your email below. You will receive an email link to 
-                reset your password. It will also contain your username.<br /><br />
+            You will receive an email to reset/change your password<br />
+            Enter email:<br /><br />
                 <input id="rstmail" type="email" style="width:360px"
                     required placeholder="Enter your email" /><br /><br />
             </div>

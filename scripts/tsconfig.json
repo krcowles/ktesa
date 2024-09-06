@@ -67,7 +67,6 @@
     /* ktesaPanel */
     "menuControl.ts",
     "panelMenu.ts",
-    "sendResetMail.ts",
     /* 'About' page */
     "about.ts",
     /* Accounts */

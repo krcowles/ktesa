@@ -230,7 +230,7 @@ if (isset($_SESSION['userid'])) {
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a id="login" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=log">Login</a>
+                            href="#">Login</a>
                         </li>
                         <li><a id="logout" class="dropdown-item"
                             href="#">Logout</a>
@@ -302,4 +302,3 @@ if (isset($_SESSION['userid'])) {
 
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>
-<script src="../scripts/sendResetMail.js"></script>

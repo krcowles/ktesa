@@ -107,6 +107,16 @@ $policy = urlencode("PrivacyPolicy.pdf");
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
+
+<!-- login data -->
+<p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
+<?php if (isset($_SESSION['cookies'])) : ?>
+<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
+<?php endif; ?>
+<?php if (isset($admin) && $admin) : ?>
+<p id="admin">admin</p>
+<?php endif; ?>
+
 <!-- Change Password Modal -->
 <div id="cpw" class="modal" tabindex="-1">
     <div class="modal-dialog">
@@ -130,15 +140,32 @@ $policy = urlencode("PrivacyPolicy.pdf");
         </div>
     </div>
 </div>
-<!-- login data -->
-<p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
-<?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
-<?php endif; ?>
-<?php if (isset($admin) && $admin) : ?>
-<p id="admin">admin</p>
-<?php endif; ?>
-
+<!-- Login modal when lockout condition is encountered -->
+<div class="modal fade" id="lockout" tabindex="-1"
+    aria-labelledby="Lockout" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    You are locked out</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You are currently locked out and can login again in 
+                <span class="lomin"></span> minutes. You may continue
+                to wait, or you may reset your password by selecting
+                that option below.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Wait</button>
+                <button id="force_reset" type="button" class="btn btn-success">
+                    Reset my password</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- info modal when ajax errors occur -->
 <div id="ajaxerr" class="modal" tabindex="-1">
     <div class="modal-dialog">

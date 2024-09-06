@@ -15,6 +15,7 @@ $ip = getIpAddress();
 $ip = $ip === '::1' ? '127.0.0.1' : $ip; // Chrome localhost id is "different"
 $now = new DateTime("now", new DateTimeZone('America/Denver'));
 $result = "wait";
+$delay = 0;
 
 $tables = $pdo->query("SHOW TABLES LIKE 'Locks';")->fetchAll(PDO::FETCH_NUM);
 if (count($tables) > 0) {
@@ -24,7 +25,21 @@ if (count($tables) > 0) {
         $expired = $entries[$ip];
         if (!empty($expired)) {
             $expiry = new DateTime($expired, new DateTimeZone('America/Denver'));
-            $result = $now > $expiry ? 'ok' : 'wait';
+            if ($now < $expiry) {
+                $diff = $expiry->diff($now, true);
+                if ($diff->d === 0 && $diff->h === 0 && $diff->i < 60) {
+                    $delay = $diff->i;
+                    $result = 'wait';
+                } else {
+                    // obsolete entry - remove
+                    $pdo->query("DELETE FROM `LOCKS` WHERE `ipaddr`='{$ip}';");
+                    $result = 'ok';
+                }
+            } else {
+                // obsolete entry - remove
+                $pdo->query("DELETE FROM `LOCKS` WHERE `ipaddr`='{$ip}';");
+                $result = 'ok';
+            }
         } else {
             $result = "ok";
         }
@@ -34,4 +49,4 @@ if (count($tables) > 0) {
 } else {
     $result = "ok";
 }
-echo $result;
+echo json_encode(["status"=>$result, "minutes"=>$delay]);

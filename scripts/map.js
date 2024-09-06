@@ -252,6 +252,15 @@ function initMap() {
         fullscreenControl: true,
         streetViewControl: false,
         rotateControl: false,
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+            mapTypeIds: [
+                google.maps.MapTypeId.TERRAIN,
+                google.maps.MapTypeId.SATELLITE
+            ]
+        },
+        mapTypeId: 'terrain',
     };
     map = new google.maps.Map(mapEl, options);
     new google.maps.KmlLayer({
