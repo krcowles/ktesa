@@ -36,10 +36,11 @@ $(function () {
     $('#login').on('click', function () {
         $.get('../accounts/lockStatus.php', function (lock_status) {
             if (lock_status.result !== "ok") {
-                $('#lominutes').text(lock_status.minutes);
+                $('.lomin').text(lock_status.minutes);
                 lockout.show();
             }
             else {
+                localStorage.removeItem('lockout');
                 window.open("../accounts/unifiedLogin.php?form=log");
             }
         }, "json");
@@ -86,7 +87,7 @@ $(function () {
     $('#send').on('click', function (ev) {
         ev.preventDefault();
         var email = $('#cpwmail').val();
-        var data = { form: 'req', email: email };
+        var data = { form: 'chg', email: email };
         $.ajax({
             url: '../accounts/resetMail.php',
             data: data,

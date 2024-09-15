@@ -203,20 +203,11 @@ CL.forEach(function (clobj) {
 });
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-<<<<<<< HEAD
-    var clustererMarkerSet = [];
-    var nmCtr = { lat: 34.450, lng: -106.042 };
-    map = new google.maps.Map(mapEl, {
-        center: nmCtr,
-        zoom: 7,
-        mapId: "39681f98dcd429f8",
-=======
     var nmCtr = { lat: 34.450, lng: -106.042 };
     var options = {
         center: nmCtr,
         zoom: 7,
         mapId: "39681f98dcd429f8", // vector map; all styling
->>>>>>> googleMapUpdates
         // optional settings:
         isFractionalZoomEnabled: true,
         zoomControl: true,
@@ -246,35 +237,6 @@ function initMap() {
             content: build_content(hike_mrkr_icon, 1),
             title: nm_title
         });
-<<<<<<< HEAD
-        var srchmrkr = { hikeid: group, clicked: false, pin: marker };
-        locaters.push(srchmrkr);
-        var itemno = locaters.length - 1;
-        clustererMarkerSet.push(marker);
-        var iwContent = '<div id="iwCH">';
-        if (page > 0) {
-            var link_1 = "hikePageTemplate.php?clus=y&hikeIndx=";
-            iwContent += '<br /><a href="' + link_1 + page + '">' + group + '</a>';
-        }
-        else {
-            iwContent += '<br />' + group;
-        }
-        var link = "responsivePage.php?hikeIndx=";
-        clhikes.forEach(function (clobj) {
-            iwContent += '<br /><a href="' + link + clobj.indx + '">' +
-                clobj.name + '</a>';
-            iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
-                clobj.elev + ' ft; Diff: ' + clobj.diff;
-        });
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 600
-        });
-        iw.addListener('closeclick', function () {
-            locaters[itemno].clicked = false;
-        });
-        marker.addListener('click', function () {
-=======
         marker.hikes = 1;
         // MARKER SEARCH
         var srchmrkr = {
@@ -286,7 +248,6 @@ function initMap() {
         var itemno = locaters.length - 1;
         // CLICK ON MARKER:
         marker.addListener("click", function () {
->>>>>>> googleMapUpdates
             zoom_level = map.getZoom();
             // newBounds is true if only a center change with no follow-on zoom
             // this statement must precede the setCenter cmd.
@@ -295,53 +256,6 @@ function initMap() {
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-<<<<<<< HEAD
-            iw.open(map, marker);
-            locaters[itemno].clicked = true;
-        });
-    }
-    // Normal Hike Markers
-    function AddHikeMarker(hikeobj) {
-        var markerLoc = hikeobj.loc;
-        var nmicon = getIcon(1);
-        var marker = new google.maps.Marker({
-            position: markerLoc,
-            map: map,
-            icon: nmicon,
-            // 'title' is what is displayed on mouseover of the marker
-            title: hikeobj.name
-        });
-        var srchmrkr = { hikeid: hikeobj.name, clicked: false, pin: marker };
-        locaters.push(srchmrkr);
-        var itemno = locaters.length - 1;
-        clustererMarkerSet.push(marker);
-        // infoWin content: add data for this hike
-        var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
-            + hikeobj.indx + '">' + hikeobj.name + '</a><br />';
-        iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
-        iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
-        iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-        iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 400
-        });
-        iw.addListener('closeclick', function () {
-            locaters[itemno].clicked = false;
-        });
-        marker.addListener('click', function () {
-            zoom_level = map.getZoom();
-            // newBounds is true if only a center change with no follow-on zoom
-            // this statement must precede the setCenter cmd.
-            window.newBounds = zoom_level >= zoomThresh ? true : false;
-            ;
-            map.setCenter(markerLoc);
-            if (!window.newBounds) {
-                map.setZoom(zoomThresh);
-            }
-            iw.open(map, marker);
-            locaters[itemno].clicked = true;
-=======
             locaters[itemno].clicked = true;
             infoWindow.setContent(mrkr_data.iw_content);
             infoWindow.open(map, marker);
@@ -385,7 +299,6 @@ function initMap() {
             locaters[itemno].clicked = true;
             infoWindow.setContent(mrkr_data.iw_content);
             infoWindow.open(map, marker);
->>>>>>> googleMapUpdates
         });
         // INFO WINDOW CLOSE:
         infoWindow.addListener('closeclick', function () {
