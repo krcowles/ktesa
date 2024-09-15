@@ -10,6 +10,7 @@
  * @version 1.1 Typescripted
  * @version 2.0 Rescripted owing to changed bootstrap support for menus
  */
+var page_type = location.href;
 var cookies = navigator.cookieEnabled ? true : false;
 var html_cookie = document.getElementById('cookie_state');
 var user_cookie_state = html_cookie === null ? false : <string>html_cookie.innerText;
@@ -53,10 +54,25 @@ else { // cookies disabled
  * Turn on menu items for registered members
  */
 function loggedInItems() {
-    $("#membership option[value='login']").remove();
-    $("#membership option[value='bam']").remove();
+    if (page_type.indexOf('landing') !== -1) {
+        $("#membership option[value='login']").remove();
+        $("#membership option[value='bam']").remove();
+    } else {
+        $('#login').addClass('disabled');
+        $('#bam').addClass('disabled');
+        $('#logout').removeClass('disabled');
+        $('#chg').removeClass('disabled');
+    }
     return;
 }
+// Non-members or not logged in
 function notLoggedInItems() {
-    $("#membership option[value='logout']").remove();
+    if (page_type.indexOf('landing') !== -1) {
+        $("#membership option[value='logout']").remove();
+    } else {
+        $('#login').removeClass('disabled');
+        $('#bam').removeClass('disabled');
+        $('#logout').addClass('disabled');
+        $('#chg').addClass('disabled');
+    }
 }
