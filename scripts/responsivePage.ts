@@ -29,12 +29,12 @@ var canvasEl: HTMLCanvasElement;
 
 // Establish the placement of the map & chart in the viewport on load & resize
 const setMobileView = () => {
-    var canvasWidth
+    var canvasWidth: number;
     // Height calcs
     var vpHeight = window.innerHeight;
     var consumed = <number>$('#nav').height() + <number>$('#logo').height();
     var usable = vpHeight - consumed;
-    var mapHt = Math.floor(0.65 * usable);
+    var mapHt = Math.floor(0.64 * usable);
     var chartHt = Math.floor(0.35 * usable);
     $mapEl.height(mapHt);
     $chartEl.height(chartHt);

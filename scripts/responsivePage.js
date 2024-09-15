@@ -29,7 +29,7 @@ var setMobileView = function () {
     var vpHeight = window.innerHeight;
     var consumed = $('#nav').height() + $('#logo').height();
     var usable = vpHeight - consumed;
-    var mapHt = Math.floor(0.65 * usable);
+    var mapHt = Math.floor(0.64 * usable);
     var chartHt = Math.floor(0.35 * usable);
     $mapEl.height(mapHt);
     $chartEl.height(chartHt);

@@ -1,21 +1,13 @@
 "use strict";
 /**
  * @fileoverview This module is responsible for placing and displaying photo captions
- * one the photo rows have been established (using deferred 'picSetupDone')
+ * once the photo rows have been established (using deferred 'picSetupDone')
  *
  * @author Ken Cowles
  * @version 2.0 Added responsive design capability
  * @version 2.1 Typescripted
  */
 $.when(picSetupDone, docReady).then(function () {
-    var vpHeight = window.innerHeight;
-    var navbarht = $('nav').height();
-    var logo_ht = $('#logo').height();
-    var mapHt = vpHeight - (navbarht + logo_ht);
-    //var chartHt = Math.floor(0.5 * mapHt);
-    var mapHeight = mapHt + 'px';
-    //var chartHeight = chartHt + 'px';
-    $('#mapline').css('height', mapHeight);
     /**
      * Find photos and add captioning display on touch
      */
