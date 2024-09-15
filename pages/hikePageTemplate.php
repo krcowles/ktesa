@@ -54,24 +54,22 @@ if ($mobileTesting) {
         isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
             true : false;
         mobile = isMobile && !isTablet;
+        if (mobile) {
+            // redirect to mobile page
+            window.open(
+                "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>",
+                "_self"
+            ); // Safari did not got to the mobile page with target of "_blank"
+    }
     </script>
 </head>
      
 <body>
-<script type="text/javascript">
-    if (mobile) {
-        // redirect to mobile page
-        window.open(
-            "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>", "_blank"
-        );
-    }
-</script>
-
 <?php if (strpos($hikeTitle, '[Proposed]') !== false) : ?>
 <script> 
-function off() {
-    document.getElementById("overlay").style.display = "none";
-}
+    function off() {
+        document.getElementById("overlay").style.display = "none";
+    }
 </script>
 <div id="overlay" onclick="off()">
     <div id="text">Warning! This is a draft hike page.<br />

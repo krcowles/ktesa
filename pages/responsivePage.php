@@ -77,39 +77,6 @@ function off() {
 <!-- Hike Stats -->
 <div id="hike_stats"></div>
 
-<div id="sidePanel">
-    <?php if (!$clusterPage) : ?> 
-        <p id="scrollmsg">Scroll down to see images, hike description,
-            reference sources and additonal information as applicable
-        </p>
-        <p id="problems">If you are having problems with this page, please: 
-            <a href="mailto:krcowles29@gmail.com">send us a note!</a>
-        </p>
-    <?php else : ?>
-        <?php include "relatedInfo.php"; ?>
-        <p id="mlnk">View <a href="<?= $fpLnk;?>" target="_blank">
-            Full Page Map</a></p><br />
-        <p id="directions">The following link provides on-line directions to
-            the area:</p>
-        <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
-            Google Directions</a>
-        </p>
-        <p id="cdesc"><a href="#hikeInfo">
-            Area Description & Links</a> Below</p>
-        <div><div id="crefs">For photos and more:</div>
-            <fieldset>
-            <legend>See pages:</legend>
-            <?=$relHikes;?>
-            </fieldset>
-        </div>
-        <div id="trknote">NOTE: The <span id="top">topmost</span> checked
-            item in the 'Tracks' box (in the upper right-hand corner of the
-            map) will display its elevation chart and hike data.
-            Uncheck boxes to see other items.
-        </div>
-    <?php endif; ?>
-</div>
-
 <iframe id="mapline" src="<?=$tmpMap;?>"></iframe>
 <div data-gpx="<?=$gpxfile;?>" id="chartline"><canvas id="grph"></canvas></div>
 

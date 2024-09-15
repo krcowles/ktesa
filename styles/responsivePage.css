@@ -1,382 +1,449 @@
 .navbar {
-    background-color: darkslategray;
+  background-color: darkslategray;
 }
 
+/* No longer a text item
 .navbar-brand {
-    color: #bfd9bf !important;
+    color: $brand !important;
     font-style: italic;
 }
-
+*/
 .nav-link {
-    color: whitesmoke !important;
+  color: whitesmoke !important;
 }
 
 ul.dropdown-menu {
-    background-color: whitesmoke !important;
+  background-color: whitesmoke !important;
 }
 
 /* Logo */
 #logo {
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 52px;
-    margin-bottom: 6px;
-    margin-right: 12px;
-    background-color: #ffe866;
-    z-index: 1;
-    text-align: center;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #pattern {
-    background-image: url("../images/southwest_pattern.png");
-    background-repeat: repeat-x;
-    background-attachment: scroll;
-    margin-top: 2px;
-    padding: 0px;
-    height: 16px;
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 16px;
 }
 
 .logo_items {
-    display: inline-block;
+  display: inline-block;
 }
 
 #leftside {
-    float: left;
-    margin-bottom: 0px;
+  float: left;
+  margin-bottom: 0px;
 }
 
 #ctr {
-    clear: both;
-    margin-top: 4px;
-    margin-bottom: 0px;
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 0px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #rightside {
-    float: right;
-    margin-bottom: 0px;
+  float: right;
+  margin-bottom: 0px;
 }
 
 #hikers {
-    float: left;
-    margin-top: 3px;
-    margin-left: 10px;
-    z-index: 100;
+  float: left;
+  margin-top: 3px;
+  margin-left: 10px;
+  z-index: 100;
 }
 
 #tmap {
-    float: right;
-    margin-right: 8px;
-    margin-top: 4px;
-    z-index: 100;
+  float: right;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 100;
 }
 
 #logo_left {
-    float: left;
-    margin-left: 12px;
-    margin-top: 4px;
-    color: darkslategray;
-    z-index: 5;
-}
-
-#ctr {
-    font-size: 18px;
-    font-weight: bold;
+  float: left;
+  margin-left: 12px;
+  margin-top: 4px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #logo_right {
-    float: right;
-    margin-right: 10px;
-    margin-top: 5px;
-    color: darkslategray;
-    z-index: 5;
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #trail {
-    clear: both;
-    text-align: center;
-    font-weight: bold;
+  clear: both;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Sub-menu for filter/sort */
+@media all and (min-width: 800px) {
+  .dropdown-menu li {
+    position: relative;
+  }
+
+  .nav-item .submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+  }
+
+  .nav-item .submenu-left {
+    right: 100%;
+    left: auto;
+  }
+
+  .dropdown-menu > li:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown-menu > li:hover > .submenu {
+    display: block;
+  }
+}
+/* desktop view .end */
+/* small devices */
+@media (max-width: 799px) {
+  .dropdown-menu .dropdown-menu {
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+}
+/* New: Filtering on Home Page */
+#homepgfilt {
+  display: none;
+}
+
+#misfromh, #misfroml {
+  width: 36px;
+  padding-left: 4px;
+}
+
+.spinicons {
+  display: inline-block;
+  position: relative;
+  top: 9px;
+}
+
+.uparw {
+  cursor: pointer;
+  width: 0px;
+  height: 0px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid black;
+}
+
+.separator {
+  max-height: 4px;
+}
+
+.dwnarw {
+  cursor: pointer;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid black;
 }
 
 /* login elements */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-    display: none;
+  display: none;
 }
 
 /* modals */
 .modal-header, .modal-footer {
-    background-color: #e7f8ee;
-    color: black;
+  background-color: #dfe9e3;
+  color: black;
 }
 
 .modal-body {
-    color: black;
-    text-align: left;
+  color: black;
+  text-align: left;
 }
 
 input[id^=q] {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
 html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 body {
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    font-family: Arial, Verdana;
-    background-color: #eaeaea;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: Arial, Verdana;
+  background-color: #eaeaea;
 }
 
 #trail {
-    display: none;
+  display: none;
 }
 
 /* Hike Stats Div */
 #hinfo, #favs {
-    position: absolute;
-}
-
-#sidePanel {
-    display: none;
+  position: absolute;
 }
 
 .sumClr {
-    color: Brown;
+  color: Brown;
 }
 
 #mlnk {
-    text-align: center;
-    margin-top: 4px;
-    margin-bottom: 6px;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
 }
 
 #albums {
-    margin-top: 0px;
-    text-align: center;
+  margin-top: 0px;
+  text-align: center;
 }
 
 #directions {
-    margin-top: -12px;
-    text-align: center;
+  margin-top: -12px;
+  text-align: center;
 }
 
 #dlnk {
-    margin-top: -12px;
-    text-align: center;
+  margin-top: -12px;
+  text-align: center;
 }
 
 #scrollmsg {
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 #cdesc {
-    text-align: center;
+  text-align: center;
 }
 
 #trknote {
-    padding: 0px 8px 0px 8px;
+  padding: 0px 8px 0px 8px;
 }
 
 #top {
-    font-style: italic;
+  font-style: italic;
 }
 
 iframe {
-    position: relative;
-    top: -6px;
-    min-height: 200px;
-    width: 100%;
+  position: relative;
+  top: -6px;
+  min-height: 200px;
+  width: 100%;
 }
 
 #chartline {
-    position: relative;
-    top: -12px;
-    background-color: white;
-    width: 100%;
+  position: relative;
+  top: -12px;
+  background-color: white;
+  width: 100%;
 }
 
 #hikeInfo {
-    margin-top: 0px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-style: outset;
-    border-width: 2px;
-    border-color: #d4e8d4;
-    padding: 10px;
-    background-color: #c5d5d5;
-    line-height: 1.3em;
+  margin-top: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #d4e8d4;
+  padding: 10px;
+  background-color: #c5d5d5;
+  line-height: 1.3em;
 }
 
 fieldset {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 8px;
-    padding: 16px;
-    padding-top: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  padding: 16px;
+  padding-top: 8px;
 }
 
 #fldrefs {
-    font-size: 18px;
-    color: Teal;
+  font-size: 18px;
+  color: Teal;
 }
 
 #flddat {
-    color: Teal;
+  color: Teal;
 }
 
 .boptag {
-    font-size: 14px;
-    font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 #refs {
-    margin-top: 12px;
-    margin-bottom: 0px;
-    padding-right: 10px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  padding-right: 10px;
 }
 
 #related {
-    margin-top: 0px;
-    margin-bottom: 8px;
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
 
 #gps {
-    margin-top: 0px;
-    margin-bottom: 8px;
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
 
 /* image alignment and pop-up caption styles */
 .ImgRow {
-    overflow: hidden;
-    text-align: center;
-    margin-bottom: 1px;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 1px;
 }
 
 img[id^=pic] {
-    position: relative;
-    margin-bottom: 0px;
+  position: relative;
+  margin-bottom: 0px;
 }
 
 p[id^=pup] {
-    background-color: white;
-    display: none;
-    position: absolute;
+  background-color: white;
+  display: none;
+  position: absolute;
 }
 
 .mobile {
-    text-align: left;
-    padding-left: 14px;
+  text-align: left;
+  padding-left: 14px;
 }
 
 iframe {
-    border: none;
+  border: none;
 }
 
 .popupCap {
-    margin: 0px;
-    display: none;
-    position: absolute;
-    width: 300px;
-    top: 0px;
-    left: 0px;
+  margin: 0px;
+  display: none;
+  position: absolute;
+  width: 300px;
+  top: 0px;
+  left: 0px;
 }
 
 .capLine {
-    margin: 0px;
-    font-weight: bold;
-    background-color: #eaeaea;
+  margin: 0px;
+  font-weight: bold;
+  background-color: #eaeaea;
 }
 
 /* details about the hike */
 #trailTips {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    padding-top: 10px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 10px;
-    border-style: inset;
-    border-width: 2px;
-    border-color: Brown;
-    line-height: 1.4em;
-    min-height: 84px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 10px;
+  border-style: inset;
+  border-width: 2px;
+  border-color: Brown;
+  line-height: 1.4em;
+  min-height: 84px;
 }
 
 #tipPic {
-    float: left;
-    padding: 0 20px 0 0;
+  float: left;
+  padding: 0 20px 0 0;
 }
 
 #tipHdr {
-    color: Brown;
-    font-weight: bold;
-    font-size: 20px;
+  color: Brown;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 #albumlinks {
-    color: DarkBlue;
-    margin-bottom: 12px;
+  color: DarkBlue;
+  margin-bottom: 12px;
 }
 
 div em {
-    color: DarkGreen;
+  color: DarkGreen;
 }
 
 #tips {
-    text-align: left;
+  text-align: left;
 }
 
 #hdesc {
-    text-align: left;
+  text-align: left;
 }
 
 #problems {
-    margin-left: 12px;
-    margin-right: 12px;
-    padding: 10px;
-    background-color: #c5d5d5;
-    border-style: outset;
-    border-width: 2px;
-    border-color: #c9d7e8;
+  margin-left: 12px;
+  margin-right: 12px;
+  padding: 10px;
+  background-color: #c5d5d5;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #c9d7e8;
 }
 
 #overlay {
-    position: fixed;
-    display: block;
-    width: 100%;
-    height: 98%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(200, 200, 200, 0.5);
-    z-index: 10000;
-    cursor: pointer;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 98%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(200, 200, 200, 0.5);
+  z-index: 10000;
+  cursor: pointer;
 }
 
 #text {
-    position: absolute;
-    top: 50%;
-    left: 60%;
-    font-size: 50px;
-    color: DarkSlateGray;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  font-size: 50px;
+  color: DarkSlateGray;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
 /*# sourceMappingURL=responsivePage.css.map */
