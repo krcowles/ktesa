@@ -42,7 +42,7 @@ if ($type === 'own') {
             "was received.<br />" . "To reset your password, your one-time code is ";
         $subj = "Password Reset for NM Hikes";
     } else {
-        echo "Bad form type submitted: " . $form;
+        echo "Bad form type submitted: " . $type;
         exit;
     }
 

@@ -26,11 +26,11 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EHIKES VALUES
-('16','Rio Cebolla','2','0','Jemez Springs','','Out-and-back','5.99','350','Easy','None','Stream, Pond and Green valley','Not Winter','Full sun','{\"main\":{\"RioCebolla.gpx\":[\"emn16_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','359357789','-1066834010',NULL,NULL,NULL,'https://www.google.com/maps/dir//35.935779,-106.683401/@35.9127256,-106.7231428,13.24z?entry=ttu',NULL,NULL,'2024-05-22');
+('1','Rio Cebolla','2','0','Jemez Springs','','Out-and-back','5.99','350','Easy','None','Stream, Pond and Green valley','Not Winter','Full sun','{\"main\":{\"RioCebolla.gpx\":[\"emn16_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','359357789','-1066834010',NULL,NULL,NULL,'https://www.google.com/maps/dir//35.935779,-106.683401/@35.9127256,-106.7231428,13.24z?entry=ttu',NULL,NULL,'2024-05-22');
 
 
 
@@ -437,7 +437,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -453,7 +453,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -481,12 +481,12 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=662 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO ETSV VALUES
-('293','16',NULL,'e-rio-cebolla-20240522_145718','Y','Y','','359450844','-1066725622','4313',NULL,'2024-05-22 14:57:18','e-rio-cebolla-20240522_145718','480','640',NULL,'0'),
-('294','16',NULL,'e-mackinny-pond-20240522_143052','Y','Y','','359520027','-1066735532','4314',NULL,'2024-05-22 14:30:53','e-mackinny-pond-20240522_143052','480','640',NULL,'1');
+('1','1',NULL,'e-rio-cebolla-20240522_145718','Y','Y','','359450844','-1066725622','4313',NULL,'2024-05-22 14:57:18','e-rio-cebolla-20240522_145718','480','640',NULL,'0'),
+('2','1',NULL,'e-mackinny-pond-20240522_143052','Y','Y','','359520027','-1066735532','4314',NULL,'2024-05-22 14:30:53','e-mackinny-pond-20240522_143052','480','640',NULL,'1');
 
 
 
@@ -502,7 +502,7 @@ CREATE TABLE `EWAYPTS` (
   PRIMARY KEY (`wptId`),
   KEY `EWAYPTS_Constraint` (`indxNo`),
   CONSTRAINT `EWAYPTS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -974,7 +974,7 @@ CREATE TABLE `LOCKS` (
   `fails` smallint(6) DEFAULT 0,
   `lockout` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 

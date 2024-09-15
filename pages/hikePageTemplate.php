@@ -14,6 +14,17 @@ session_start();
 $geoloc = "../../images/geoloc.png";
 require "../php/global_boot.php";
 require "hikePageData.php";
+if ($mobileTesting) {
+    $hdr = "../pages/responsivePage.php?hikeIndx={$hikeIndexNo}";
+    if ($ehikes) {
+        $hdr .= "&tbl={$tbl}";
+    }
+    if ($clusterPage) {
+        $hdr .= "&clus={$clusterPage}";
+    }
+    header("Location: {$hdr}");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -30,9 +41,32 @@ require "hikePageData.php";
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
+    <script type="text/javascript">
+        var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
+        isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
+            true : false;
+        isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
+            true : false;
+        isAndroid = navigator.userAgent.toLowerCase().match(/android/i) ?
+            true : false;
+        isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i) ?
+            true : false;
+        isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
+            true : false;
+        mobile = isMobile && !isTablet;
+    </script>
 </head>
      
 <body>
+<script type="text/javascript">
+    if (mobile) {
+        // redirect to mobile page
+        window.open(
+            "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>", "_blank"
+        );
+    }
+</script>
+
 <?php if (strpos($hikeTitle, '[Proposed]') !== false) : ?>
 <script> 
 function off() {
@@ -50,14 +84,6 @@ function off() {
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
 
-<script type="text/javascript">
-if (mobile) {
-    // redirect to mobile page
-    window.open(
-        "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>", "_blank"
-    );
-}
-</script>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
 <p id="gpx" style="display:none;"><?=$gpxfile;?></p>

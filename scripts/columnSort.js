@@ -7,13 +7,8 @@
  *
  * @author Ken Cowles
  * @version 1.0 Removes duplicate code in several modules
+ * @version 2.0 Eliminate 'hasKey' function to bypass typescript issues
  */
-// To use a variable as an index into an object, the following helper function is
-// required to overcome typescript complaints - compliments of
-// https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
-function hasKey(obj, key) {
-    return key in obj;
-}
 /**
  * Global object used to define how table items get compared in a sort:
  */
@@ -31,28 +26,34 @@ var compare = {
         }
     },
     lan: function (a, b) {
-        // commas allowed in numbers, so;
+        // "Like A Number": extract numeric portion for sort
+        // Commas allowed in numbers; nothing greater than 9,999
         var indx = a.indexOf(',');
-        if (indx < 0) {
-            aout = parseFloat(a);
+        if (indx === -1) {
+            aout = parseInt(a);
         }
         else {
-            noPart1 = 1000 * parseFloat(a);
+            noPart1 = 1000 * parseInt(a);
             var thou = a.substring(indx + 1, indx + 4);
             noPart2 = parseInt(thou);
             aout = noPart1 + noPart2;
         }
         indx = b.indexOf(',');
-        if (indx < 0) {
-            bout = parseFloat(b);
+        if (indx === -1) {
+            bout = parseInt(b);
         }
         else {
-            noPart1 = 1000 * parseFloat(b);
+            noPart1 = 1000 * parseInt(b);
             var thou = b.substring(indx + 1, indx + 4);
             noPart2 = parseInt(thou);
             bout = noPart1 + noPart2;
         }
-        return aout - bout;
+        if (aout < bout) {
+            return -1;
+        }
+        else {
+            return aout > bout ? 1 : 0;
+        }
     },
     icn: function (a, b) {
         if (a < b) {
@@ -61,7 +62,7 @@ var compare = {
         else {
             return a > b ? 1 : 0;
         }
-    }
+    },
 }; // end of COMPARE object
 /**
  * This function translates an exposure icon (<img> src) into sortable text
@@ -86,9 +87,6 @@ function iconText(imgsrc) {
  * Apply this function to a table to provide sortable headers (table columns)
  */
 function tableSort(tableid) {
-    /**
-     * On table load only...
-     */
     var $table = $(tableid);
     var $tbody = $table.find('tbody');
     var $controls = $table.find('th');
@@ -104,10 +102,9 @@ function tableSort(tableid) {
         });
     }
     $controls.each(function () {
-        // Setup Hike/Trail Name header w/class 'ascending', since hikes are pre-sorted on load
+        // Setup Hike/Trail Name header w/class 'ascending': hikes are pre-sorted on load
         if ($(this).text() === 'Hike/Trail Name') {
             $(this).addClass('ascending');
-            return;
         }
     });
     var $grows = $tbody.find('tr').toArray();
@@ -160,7 +157,7 @@ function tableSort(tableid) {
                                 bcell = bel.text();
                             }
                             var retval = 0;
-                            if (hasKey(compare, order)) {
+                            if (compare.hasOwnProperty(order)) {
                                 retval = compare[order](acell, bcell);
                             }
                             return retval;

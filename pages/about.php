@@ -41,39 +41,40 @@ require "../php/global_boot.php";
     </p>
     <div id="intro">
         <p id="introp">The intention of this site is to provide you, the viewer,
-            a look at a variety of hikes, all undertaken by the authors in 
+            a look at a variety of hikes, all undertaken by the authors and
+            contributing members in 
             <em class="blue">The Land of Enchantment</em>. These hikes cover a broad,
             cross-state array of possibilities, all found in the diverse terrain of
             New Mexico - from short treks, to longer, uphill/downhill adventures.
         </p> 
         <p id="features">
             One of the features of this site 
-            is that not all of the hikes listed can be found in popular hiking books,
+            is that many of the hikes listed cannot be found in popular hiking books,
             or even in on-line trail apps! Check out "What You Will See" below.
         </p>
     </div>
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
-        <p><img id="mrkrs" src="../images/mapmrkrs.jpg" alt="map symbols"
+        <p><img id="mrkrs" src="../images/newMap.jpg" alt="map symbols"
         align="left" />
             The home page for this site displays a large map with <em class="red">
-            red</em>, <em class="blue">blue</em>, or <em class="green">green</em>
-            'cluster' markers indicating the number of hikes to be found in that
-            area. Clicking on a cluster marker will zoom in on the map and
-            decompose the cluster markers into groups of smaller clusters, until
-            they appear as non-reducible <em class="purple">purple</em> markers.
-            When a purple marker is displayed, it cannot be further decomposed,
-            and will indicate the actual number of hikes in that location.
-            Clicking on a purple marker will display an information window about
-            the hike(s). 
+            red</em>&nbsp;&nbsp;'starbursts', or <em class="blue">blue</em>
+            map markers. Each
+            icon contains text indicating the number of hikes to be found there.
+            Blue markers are 'end point' markers, and indicate trail heads.
+            Starbursts are groups of markers - click on any starburst and it will
+            zoom in and decompose into map markers (and possibly more starbursts). 
         </p>
         <p>The home page also shows a side table of all hikes appearing in the
             currently viewable portion of the map. Each hike has essential statistics
             listed, along with a 'preview' image on the right side. If you mouse over
-            that image, you will see a bigger, more viewable image of it. You may
-            zoom in on any given hike, mark it as a favorite, or go directly to the
-            hike's page. You can also change the side table's width by dragging it's
-            left edge.
+            that image, you will see a bigger, more viewable image of it. The icons
+            in the side table provide an easy way to zoom into a hike (magnifying
+            glass icon) or mark it as a favorite (yellow star - members only). All
+            of your favorites can be displayed on a separate page by selecting 
+            <em>Explore->Show Favorites</em> in the menu bar. Clicking on the
+            trailname hyperlink takes you directly to the hike page. You can also
+            change the side table's width by dragging it's left edge.
         </p>
 
         <div id="n" class="twisty-right"></div>
@@ -85,7 +86,7 @@ require "../php/global_boot.php";
             <li>The 'Explore' menu allows a user to select the home page or the
                 table page (see below). When a user becomes a member, a third option
                 is enabled: 'Show Favorites', which brings up a page showing only the
-                member's favorite hikes. 
+                member's marked favorite hikes. 
             </li>
             <li>The 'Contribute' menu is only enabled for members to: 1) Create a 
                 new hike page; 2) Continue editing a page already in-edit; 3) Edit
@@ -94,19 +95,22 @@ require "../php/global_boot.php";
                 pubished when editing is completed.
             </li>
             <li>The 'Filter/Sort' menu offers options for displaying the side table
-                on the home page. The menu only appears when the home page is
+                on the home page. The menu item only appears when the home page is
                 displayed.
             <li>Any user or member can upload and edit a gpx file - delete, add, or
                 move trackpoints - and save the edited version without changing the
                 original.
             </li>
             <li>A user may sign up for free with no obligations by selecting the
-                'Members->Become a member' menu item, and existing members will find
-                other options under the 'Members' menu.
+                '<em>Members->Become a member</em>' menu item, and existing members
+                will find other options under the 'Members' menu.
             </li>
             <li>To get a list of the 10 most recent hikes taken by the authors,
                 select the corresponding 'More...' menu item, where a few other
                 miscellaneous options appear
+            </li>
+            <li>If you are interested in stewardship of this site, click on 
+                "Own This Site"!
             </li>
         </ul>
 
@@ -118,7 +122,7 @@ require "../php/global_boot.php";
                 control, and a drop-down box allowing the user to select either the
                 'Terrain' display or the 'Satellite' view.
             </li>
-            <li>Marker pins (purple) display an "info-window" when clicked. That
+            <li>Marker pins (blue) display an "info-window" when clicked. That
                 window shows hike details, and contains links to the corresponding
                 hike page, as well as Google directions to the location of the hike's
                 trail head.
@@ -142,11 +146,17 @@ require "../php/global_boot.php";
             <li>A powerful feature of the home page is the search bar, where a 
                 user may begin typing and a list of hikes will appear whose
                 name contains the sequence of letters typed. It is not necessary
-                to capitalize names.
+                to capitalize names. Selecting one of the available choices will
+                populate the searchbar and zoom to the hike selected, also showing
+                its info window.
             </li>
             <li>Users may zoom in on any hike by clicking the magnifying glass
-                icon adjacent to a hike in the side table. Members can also 
+                icon adjacent to a hike in the side table. Members (only) can also 
                 designate a 'favorite' by clicking the star above that icon.
+                A yellow star is not marked as a favorite, while a red star
+                indicates that the member has marked the hike as a favorite.
+                A separate page showing only the favorites can be displayed by
+                selecting the <em>Explore->Show Favorites</em> meny item.
             </li>
         </ul>
 
@@ -159,9 +169,9 @@ require "../php/global_boot.php";
             </li>
             <li>The table of hikes initially displayed is sorted in ascending
                 alphabetic order, but clicking on any column header (excepting
-                the 'By Car' directions column) allows alphabetical (or numerical)
-                sorting of the column. The first click will sort in ascending
-                order, each successive click will reverse the sort order.
+                the 'By Car' Google directions column) allows alphabetical (or
+                numerical) sorting of the column. The first click will sort in
+                ascending order, each successive click will reverse the sort order.
             </li>
             <li>You will see a 'Table Options' header above the table, offering
                 different ways to view the data, described next:
@@ -227,12 +237,18 @@ require "../php/global_boot.php";
         </p>
         <p id="disclaimers">Some of the hikes occurred prior to
             certain environmental changes which have rendered them no longer
-            accessible, or accessible only in modified form. Primarily:</p>
+            accessible, or accessible only in modified form. These are not
+            always marked as such, so please check on a trail's accessibility
+            prior to undertaking it. Notably, the following events have
+            occurred altering accessibility:
+        </p>
         <ul id="disasters">
             <li> Fires: Cerro Grande (Los Alamos, 2000); Los Conchas (Valles Caldera,
             2011); Gila (2012); Dog Head (Monzano Mtns, 2016); Cerro Pelado, Cook's
             Peak, Calf Canyon/Hermit's Peak (SF Nat'l Forest, 2022), Black (Gila
-            Nat'l Forest, 2022)</li>
+            Nat'l Forest, 2022); Ruidoso/Salt Fire (Lincoln Nat'l Forest, 2024); and
+            other smaller fires
+        </li>
             <li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
             <li> Volcanoes & Earthquakes: we hope not!</li>
         </ul>

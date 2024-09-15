@@ -183,7 +183,9 @@ if ($newusr) {
                 name="oldpass" placeholder="Password" size="20"
                 autocomplete="password" required/><br /><br />
             <button id="formsubmit" type="submit" class="btn btn-secondary">
-                Submit</button><br /><br />
+                Submit</button><br />
+            <span id="lotime">You may login in approx <span class="lomin"></span>
+                minutes</span><br /><br />
         </form>
         <!-- For 'Forgot password' and 'Renew password Modal -->
         <button id="logger" type="button" class="btn btn-outline-secondary"
@@ -212,7 +214,6 @@ if ($newusr) {
 
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/validateUser.js"></script>
-<script src="../scripts/sendResetMail.js"></script>
 <script src="../scripts/passwordStrength.js"></script>
 <script src="unifiedLogin.js"></script>
 

@@ -1,3 +1,6 @@
+declare var picSetupDone: JQuery.Deferred<any, any, any>;
+declare var docReady: JQuery.Deferred<any, any, any>;
+declare var capbtn: string;
 /**
  * @fileoverview This module is responsible for placing and displaying photo captions
  * one the photo rows have been established (using deferred 'picSetupDone')

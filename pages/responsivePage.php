@@ -39,7 +39,10 @@ if (isset($_SESSION['userid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/responsivePage.css" rel="stylesheet" />
-    <script type="text/javascript">var iframeWindow;</script>
+    <script type="text/javascript">
+        var iframeWindow;
+        var mobile = true;
+    </script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
 </head>
@@ -64,13 +67,7 @@ function off() {
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php";?>
-<script type="text/javascript">
-if (!mobile) {
-    window.open(
-        "hikePageTemplate.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?=$tbl;?>", "_blank"
-    )
-}
-</script>
+
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="gpx" style="display:none">$gpxfile;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>

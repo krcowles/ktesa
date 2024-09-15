@@ -135,8 +135,8 @@ if ($msgout == '') {
      * exx.json file may already exist on localhost owing to a long time residency
      * of a hike-in-edit. 
      */ 
-    $deleted_Ejson = []; 
-    $added_or_chgd_Pjson = [];
+    $deleted_json = [];
+    $added_or_chgd_json = [];
     // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
@@ -191,7 +191,8 @@ if ($msgout == '') {
         if ($status > 0) {
             $pub_main_files = getTrackFileNames($pdo, $indxNo, 'pub')[0];
             foreach ($pub_main_files as $old) {
-                unlink("../json/" . $old); // already tracked in pub_xfrs.txt
+                unlink("../json/" . $old);
+                array_push($deleted_json, $old);
             }
         }
         /**
@@ -240,8 +241,8 @@ if ($msgout == '') {
             if (!rename($old_loc, $new_loc)) {
                 throw new Exception("Could not move {$fname}");
             }
-            array_push($deleted_Ejson, $fname);
-            array_push($added_or_chgd_Pjson, $new_fname);
+            array_push($deleted_json, $fname);
+            array_push($added_or_chgd_json, $new_name);
         }
         $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
         $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
@@ -273,6 +274,7 @@ if ($msgout == '') {
                 $gpsUrlData = getGPSurlData($pub['url']);
                 foreach ($gpsUrlData[1] as $json) {
                     unlink('../json/' . $json);
+                    array_push($deleted_json, $json);
                 }
             }
             $query = "DELETE FROM `GPSDAT` WHERE `indxNo` = :pubNo;";
@@ -300,8 +302,8 @@ if ($msgout == '') {
                         $old_loc = '../json/' . $json;
                         $new_loc = '../json/' . $new_name;
                         rename($old_loc, $new_loc); 
-                        array_push($deleted_Ejson, $json);
-                        array_push($added_or_chgd_Pjson, $new_name);
+                        array_push($deleted_json, $json);
+                        array_push($added_or_chgd_json, $new_name);
                     }
                     $new_url = [$url_gpx => $new_arr];
                     $db_entry = [
@@ -409,13 +411,8 @@ if ($msgout == '') {
     $dele = $pdo->prepare($query);
     $dele->bindValue(":ehikeNo", $hikeNo);
     $dele->execute();
-    // Save file changes
-    $allDeletes = array_merge($prevDeletes, $deleted_Ejson);
-    $allChanges = array_merge($prevChgs, $added_or_chgd_Pjson);
-    $newDeletes = implode(",", $allDeletes);
-    $newChanges = implode(",", $allChanges);
-    file_put_contents("deleted.txt", $newDeletes);
-    file_put_contents("changed.txt", $newChanges);
+    file_put_contents("deleted.txt", implode(",", $deleted_json));
+    file_put_contents("changed.txt", implode(",", $added_or_chgd_json));
 }
 ?>
 <!DOCTYPE html>

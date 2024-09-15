@@ -10,14 +10,12 @@ declare var pages: string[];
 declare var pgnames: string[];
 declare type ClustererType = {
     map: google.maps.Map;
-    clusterSet: google.maps.Marker[];
+    clusterSet: google.maps.marker.AdvancedMarkerElement[];
     options: MarkerOpts;
 };
 declare var newBounds: boolean;
 // external lib
-declare class MarkerClusterer {
-    constructor(map: google.maps.Map, clusterSet: google.maps.Marker[], options: MarkerOpts);
-}
+declare var markerClusterer: any; // no type def for this in google.maps
 interface Clusters extends Array<CL> {
     [index: number]: CL;
 }
@@ -63,10 +61,17 @@ interface MapDoc extends Document {
     mozFullScreen: boolean;
     webkitIsFullScreen: boolean;
 }
+interface CustomAdvancedMarker extends google.maps.marker.AdvancedMarkerElement {
+	hikes?: number;
+}
+interface ClustererForRender extends CustomAdvancedMarker {
+	markers: google.maps.marker.AdvancedMarkerElement[];
+	_position: GPS_Coord;
+}
 interface MarkerId {
     hikeid: string;
     clicked?: boolean;
-    pin: google.maps.Marker;
+    pin: google.maps.marker.AdvancedMarkerElement;
 }
 interface MarkerIds extends Array<MarkerId> {
     //[index: number]: MarkerId;
@@ -80,10 +85,9 @@ interface Hilite_Obj {
     type?: string;
 }
 interface MarkerOpts {
-    imagePath: string;
     gridSize: number;
     maxZoom: number;
-    averageCenter: boolean;
+    averageCenter?: boolean;
     zoomOnClick: boolean;
 }
 interface NewTracksArray {
@@ -116,3 +120,20 @@ interface JsonFile {
     name: string;
 	trk: JsonElement[];
 }
+interface NM_Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    title: string;
+}
+interface CL_Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    title: string;
+    hikecnt: number;
+}
+interface Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    title: string;
+}
+

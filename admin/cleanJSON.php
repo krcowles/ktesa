@@ -88,7 +88,7 @@ foreach ($dir_iterator as $file) {
 $trackfiles = scandir('../json');
 foreach ($dbJSON as $db_entry) {
     if (!in_array($db_entry, $trackfiles)) {
-        array_push($missingTracks, $db_entry[0]);
+        array_push($missingTracks, $db_entry);
     }
 }
 ?>

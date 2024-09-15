@@ -13,20 +13,24 @@
  * @version 1.0 Responsive design intro (new menu, etc.)
  * @version 1.1 Typescripted
  * @version 2.0 Rework asynchronous map handlers per map.ts
+ * @version 3.0 Support for New GoogleMap marker type (AdvancedMarkerElement)
  */
 
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
+const hike_mrkr_icon = "../images/blue_nobg.png";
+// <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
+const clus_mrkr_icon = "../images/star8.png";
+const initialValue = 0;
 const zoomThresh = 13;  // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 const colors = [
 	'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
-var appMode = $('#appMode').text() as string;
 var geoOptions: geoOptions = { enableHighAccuracy: true };
-
-//globals
+var markers: google.maps.marker.AdvancedMarkerElement[];
+var appMode = $('#appMode').text() as string;
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
 var $map: JQuery = $('#map');
@@ -36,7 +40,6 @@ var mapht: number;
 var drawnHikes: number[] = [];     // hike numbers which have had tracks created
 var drawnTracks: HikeTrackObj[] = [];    // array of objects: {hike:hikeno , track:polyline}
 var zoomedHikes: [number[], string[], string[]];
-var zoomdone: JQuery.Deferred<void>;
 // globals to register when a zoom needs to call highlightTrack
 var applyHighlighting = false;
 var hilite_obj: Hilite_Obj = {};     // global object holding hike object & marker type
@@ -59,7 +62,8 @@ $('#ctr').text(trail);
 // position searchbar
 let navheight = <number>$('nav').height();
 let logoheight = <number>$('#logo').height();
-let srchtop = navheight + 16 + logoheight + 14; // 16px padding on navbar
+// 16px padding on navbar, 42px to eliminate interference with maptype
+let srchtop = navheight + 16 + logoheight + 14 + 42;
 $('#search').css({
 	top: srchtop,
 	left: '40px'
@@ -69,8 +73,8 @@ $('#search').css({
  * left of the google map zoom control 
  */
 function locateGeoSym() {
-	let winht = window.innerHeight - 64;
-	let mapwd = <number>$('#map').width() - 80;
+	let winht = window.innerHeight - 90;
+	let mapwd = <number>$('#map').width() - 120;
 	$('#geoCtrl').css({
 		top: winht,
 		left: mapwd
@@ -80,6 +84,69 @@ function locateGeoSym() {
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
 
+var locaters: MarkerIds = []; // global used to popup info window on map when hike is searched
+
+/**
+ * Collect the number of hikes associated with a clusterer for labelling purposes
+ */
+const makeClusterLabel = (markers: CustomAdvancedMarker[]) => {
+    var total: number[] = [];
+    markers.forEach(function(mrkr) {
+        total.push(Number(mrkr.hikes));
+    });
+    var hike_total = total.reduce(
+        (accumulator, currentValue) => accumulator + currentValue, 
+        initialValue
+    );
+    return  hike_total;
+};
+/**
+ * Create a DOM element containing a marker or clusterer icon with a mrkr_cnt div showing
+ * the number of hikes associated with it
+ */
+const build_content = (glyph: string, count: number) => {
+	var gtop;
+    var glft;
+    var gsize;
+    var gpadding = "0 3px 0 3px";
+    if (glyph === hike_mrkr_icon) { // single marker or cluster marker
+        gtop = "10px";
+        glft = "13px";
+        gsize = "11px";
+    } else {
+        gtop = "10px";
+        if (count < 10) {
+            glft = "12px";
+            gsize = "11px;"
+        } else if (count < 100) {
+            glft = "10px";
+            gsize = "10px;"
+            gpadding = "0 2px 0 2px";
+        } else {
+            gtop = "11px";
+            glft = "9px";
+            gsize = "9px";
+            gpadding = "0 2px 0 2px";
+        }
+    }
+    var content = document.createElement("div");
+    var icon = document.createElement("img");
+    var mrkr_cnt = document.createElement("div");
+    var mrkr_txt = document.createTextNode(String(count));
+    mrkr_cnt.style.background = "white";
+    mrkr_cnt.style.position = "absolute";
+    mrkr_cnt.style.top = gtop;
+    mrkr_cnt.style.left= glft;
+    mrkr_cnt.style.fontSize = gsize;
+    mrkr_cnt.style.padding = gpadding;
+    mrkr_cnt.style.borderRadius = "6px";
+    mrkr_cnt.appendChild(mrkr_txt);
+    icon.style.zIndex = "900";
+    icon.src = glyph;
+    content.appendChild(icon);
+    content.appendChild(mrkr_cnt);
+    return content;
+};
 /**
  * Use the arrays passed in to the home page by php: one for each type 
  * of marker to be displayed (Clustered, Normal):
@@ -88,155 +155,175 @@ $('#geoCtrl').on('click', setupLoc);
  * And one for creating tracks:
  * 		tracks Array: ordered list of json file names
  */
-var locaters: MarkerIds = []; // global used to popup info window on map when hike is searched
-
-/**
- * A simple function which correlates the number of hikes in a group to its icon
- */
-const getIcon = (no_of_hikes: number) => {
-	let icon = "../images/pins/hike" + no_of_hikes + ".png";
-	return icon;
-};
-
-// //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-function initMap() {
-	var clustererMarkerSet: google.maps.Marker[] = [];
-	var nmCtr = {lat: 34.450, lng: -106.042};
-	map = new google.maps.Map(mapEl, {
-		center: nmCtr,
-		zoom: 7,
-		mapId: "39681f98dcd429f8",
-		// optional settings:
-		zoomControl: true,
-		scaleControl: true,
-		mapTypeControl: true,
-		mapTypeControlOptions: {
-			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-			mapTypeIds: [
-				// only two of these show, don't know why...
-				google.maps.MapTypeId.ROADMAP,
-				google.maps.MapTypeId.TERRAIN,
-				google.maps.MapTypeId.SATELLITE,
-				google.maps.MapTypeId.HYBRID
-			]
-		},
-		fullscreenControl: true,
-		streetViewControl: false,
-		rotateControl: false,
-		mapTypeId: google.maps.MapTypeId.TERRAIN
-	});
-
-	// ///////////////////////////   MARKER CREATION   ////////////////////////////
-	CL.forEach(function(clobj) {
-		AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
-	});
-	NM.forEach(function(nmobj) {
-		AddHikeMarker(nmobj);
-	});
-
-	// Cluster Markers:
-	function AddClusterMarker(location: GPS_Coord, group: string,
-		clhikes: NM[], page: number) {
-		let hikecnt = clhikes.length;
-		let clicon = getIcon(hikecnt);
-		let marker = new google.maps.Marker({
-			position: location,
-			map: map,
-			icon: clicon,
-			title: group
-		});
-		let srchmrkr = {hikeid: group, clicked: false, pin: marker};
-		locaters.push(srchmrkr);
-		let itemno = locaters.length -1;
-		clustererMarkerSet.push(marker);
-		
-		let iwContent = '<div id="iwCH">';
-		if (page > 0) {
-			let link = "hikePageTemplate.php?clus=y&hikeIndx=";	
-			iwContent += '<br /><a href="' + link + page + '">' + group + '</a>';
-		} else {
-			iwContent += '<br />' + group;
-		}
-		let link = "responsivePage.php?hikeIndx=";
-		clhikes.forEach(function(clobj) {
-			iwContent += '<br /><a href="' + link + clobj.indx + '">' +
-				clobj.name + '</a>';
-			iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' + 
-				clobj.elev + ' ft; Diff: ' + clobj.diff;
-		});
-		let iw = new google.maps.InfoWindow({
-				content: iwContent,
-				maxWidth: 600
-		});
-		iw.addListener('closeclick', function() {
-			locaters[itemno].clicked = false;
-		});
-		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom() as number;
-			// newBounds is true if only a center change and no follow-on zoom
-			window.newBounds = zoom_level >= zoomThresh ? true : false;
-			map.setCenter(location);
-			if (!window.newBounds) {
-				map.setZoom(zoomThresh);
-			}
-			iw.open(map, marker);
-			locaters[itemno].clicked = true;
-		});
-	}
-
-	// Normal Hike Markers
-	function AddHikeMarker(hikeobj: NM) {
-		let markerLoc = hikeobj.loc;
-		let nmicon = getIcon(1);
-		let marker = new google.maps.Marker({
-		  position: markerLoc,
-		  map: map,
-		  icon: nmicon,
-		  // 'title' is what is displayed on mouseover of the marker
-		  title: hikeobj.name
-		});
-		let srchmrkr = {hikeid: hikeobj.name, clicked: false, pin: marker};
-		locaters.push(srchmrkr);
-		let itemno = locaters.length -1;
-		clustererMarkerSet.push(marker);
-		// infoWin content: add data for this hike
-		var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
-			+ hikeobj.indx + '">' + hikeobj.name + '</a><br />';
+const nm_marker_data = [] as Marker_Data[];
+NM.forEach(function(hikeobj) {
+	var mrkr_loc = hikeobj.loc;
+	var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
+			+ hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
 		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
 		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
 		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
 		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-		var iw = new google.maps.InfoWindow({
-				content: iwContent,
-				maxWidth: 400
-		});
-		iw.addListener('closeclick', function() {
-			locaters[itemno].clicked = false;
-		});
-		marker.addListener( 'click', function() {
-			zoom_level = map.getZoom() as number
+	const nm_icon = document.createElement("IMG") as HTMLImageElement;
+	nm_icon.src = "../images/pins/greennm.png";
+	var nm_title = hikeobj.name;
+	var nm_marker = {position: mrkr_loc, iw_content: iwContent, title: nm_title};
+	nm_marker_data.push(nm_marker)
+});
+const cl_marker_data = [] as CL_Marker_Data[];
+CL.forEach(function(clobj) {
+	const mrkr_loc = clobj.loc;
+	const hikecnt = clobj.hikes.length;
+	let iwContent = '<div id="iwCH">';
+	var link: string;
+	if (clobj.page > 0) {
+		link = "hikePageTemplate.php?clus=y&hikeIndx=";	
+		iwContent += '<a href="' + link + clobj.page + '">' + 
+			clobj.group + '</a>';
+	} else {
+		iwContent += clobj.group + "<br/>";
+	}
+	link = "hikePageTemplate.php?hikeIndx=";
+	clobj.hikes.forEach(function(clobj) {
+		iwContent += '<br/><a href="' + link + clobj.indx + '" target="_blank">' +
+			clobj.name + '</a>';
+		iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' + 
+			clobj.elev + ' ft; Diff: ' + clobj.diff;
+	});
+	var cl_marker = {position: mrkr_loc, iw_content: iwContent,
+		title: clobj.group, hikecnt: hikecnt};
+	cl_marker_data.push(cl_marker);
+});
+
+// //////////////////////////  INITIALIZE THE MAP /////////////////////////////
+function initMap() {
+	const nmCtr = {lat: 34.450, lng: -106.042};
+	var options = {
+		center: nmCtr,
+		zoom: 7,
+		mapId: "39681f98dcd429f8",  // vector map; all styling
+		// optional settings:
+		isFractionalZoomEnabled: true,
+		zoomControl: true,
+		scaleControl: true,
+		fullscreenControl: true,
+		streetViewControl: false,
+		rotateControl: false,
+	};
+	map = new google.maps.Map(mapEl, options);
+
+	new google.maps.KmlLayer({
+		url: "https://nmhikes.com/maps/NM_Borders.kml",
+		map: map
+	});
+	const infoWindow = new google.maps.InfoWindow({
+		content: "",
+		disableAutoPan: true,
+		maxWidth: 400
+	});
+	// ///////////////////////////   MARKER CREATION   ////////////////////////////
+	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => { // create array of markers
+		const position = mrkr_data.position as GPS_Coord;
+		const nm_title = mrkr_data.title;
+		// THE MARKER:
+		const marker = new google.maps.marker.AdvancedMarkerElement({
+			position: position,
+			map: map,
+			content: build_content(hike_mrkr_icon, 1),
+			title: nm_title
+		}) as CustomAdvancedMarker;
+		marker.hikes = 1;
+		// MARKER SEARCH
+		const srchmrkr: MarkerId = {
+			hikeid: mrkr_data.title, 
+			clicked: false,
+			pin: marker
+		};
+		locaters.push(srchmrkr);
+		const itemno = locaters.length -1;
+		// CLICK ON MARKER:
+		marker.addListener("click", () => {
+			zoom_level = map.getZoom() as number;
 			// newBounds is true if only a center change with no follow-on zoom
 			// this statement must precede the setCenter cmd.
-			window.newBounds = zoom_level >= zoomThresh ? true : false;;
-			map.setCenter(markerLoc);
+			window.newBounds = zoom_level >= zoomThresh ? true : false;
+			map.setCenter(mrkr_data.position);
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
-			iw.open(map, marker);
 			locaters[itemno].clicked = true;
+			infoWindow.setContent(mrkr_data.iw_content);
+			infoWindow.open(map, marker);
 		});
-	}
-
-
-	// /////////////////////// Marker Grouping /////////////////////////
-	new MarkerClusterer(map, clustererMarkerSet,
-		{
-			imagePath: '../images/markerclusters/m',
-			gridSize: 50,
-			maxZoom: 12,
-			averageCenter: true,
-			zoomOnClick: true
+		// INFO WINDOW CLOSE:
+		infoWindow.addListener('closeclick', function() {
+			locaters[itemno].clicked = false;
 		});
+		return marker;
+	});
+	const cl_markers = cl_marker_data.map((mrkr_data: CL_Marker_Data) => {
+		const position = mrkr_data.position as GPS_Coord;
+		const cl_title = mrkr_data.title;
+		const hike_count = mrkr_data.hikecnt;
+		// THE MARKER:
+		const marker = new google.maps.marker.AdvancedMarkerElement({
+			position: position,
+			map: map,
+		  	content: build_content(hike_mrkr_icon, hike_count),
+		  	title: cl_title,
+			gmpClickable: true
+		}) as CustomAdvancedMarker;
+		marker.hikes = hike_count;
+		// MARKER SEARCH:
+		const srchmrkr: MarkerId = {
+			hikeid: mrkr_data.title,
+			clicked: false,
+			pin: marker
+		};
+		locaters.push(srchmrkr);
+		const itemno = locaters.length -1;
+		// CLICK ON MARKER:
+		marker.addListener("click", () => {
+			zoom_level = map.getZoom() as number;
+			// newBounds is true if only a center change and no follow-on zoom
+			window.newBounds = zoom_level >= zoomThresh ? true : false;
+			map.setCenter(position);
+			if (!window.newBounds) {
+				map.setZoom(zoomThresh);
+			}
+			locaters[itemno].clicked = true;
+			infoWindow.setContent(mrkr_data.iw_content);
+			infoWindow.open(map, marker);
+		});
+		// INFO WINDOW CLOSE:
+		infoWindow.addListener('closeclick', function() {
+			locaters[itemno].clicked = false;
+		});
+		return marker;
+	});
+	const markers = [...nm_markers, ...cl_markers];
+	const renderer = { // must be an object, here with key 'render'
+        /**
+         * render( CLUSTER, stats, map) where CLUSTER 'Accessors' are bounds, count, position
+         * and 'cluster' contains various properties, including _position, and markers[]
+         */
+        render: function (cluster: ClustererForRender) {
+            var marker_label = makeClusterLabel(cluster.markers);
+            return new google.maps.marker.AdvancedMarkerElement({
+                position: cluster._position,
+                map: map,
+                content: build_content(clus_mrkr_icon, marker_label),
+                title: "Cluster"
+            });
+        }
+    };
+	// Add a marker clusterer to manage the markers.
+	new markerClusterer.MarkerClusterer({
+        markers: markers,
+        map: map,
+        algorithmOptions: {maxZoom: 12}, // no apparent effect...
+        renderer: renderer
+    });
 
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	/**

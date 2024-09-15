@@ -119,9 +119,9 @@ var getXInc = function () {
         }
     }
     return {
-        XaxisPx: pxPerInc,
-        XaxisVal: incr,
-        MaxXIncs: noOfRegIncs,
+        XaxisPx: pxPerInc, // value in pixels for each incremental x-axis "tick"
+        XaxisVal: incr, // value in miles for each incremental x-axis "tick"
+        MaxXIncs: noOfRegIncs, // max no of ticks on x-axis for given track
         LastXVal: lastX // the last x position value (miles)
     };
 };

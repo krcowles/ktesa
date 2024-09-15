@@ -130,7 +130,7 @@ ul.dropdown-menu {
 }
 
 /* Sub-menu for filter/sort */
-@media all and (min-width: 992px) {
+@media all and (min-width: 799px) {
     .dropdown-menu li {
         position: relative;
     }
@@ -157,7 +157,7 @@ ul.dropdown-menu {
 }
 /* desktop view .end */
 /* small devices */
-@media (max-width: 991px) {
+@media (max-width: 799px) {
     .dropdown-menu .dropdown-menu {
         margin-left: 0.7rem;
         margin-right: 0.7rem;

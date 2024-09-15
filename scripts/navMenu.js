@@ -24,6 +24,7 @@ $(function () {
     var chg_modal = new bootstrap.Modal(document.getElementById('cpw'), {
         keyboard: false
     });
+    var lockout = new bootstrap.Modal(document.getElementById('lockout'));
     var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'));
     // Setup modal as a user presentation for any ajax errors.
     var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'), {
@@ -32,6 +33,22 @@ $(function () {
     /**
      * Menu operation
      */
+    $('#login').on('click', function () {
+        $.get('../accounts/lockStatus.php', function (lock_status) {
+            if (lock_status.result !== "ok") {
+                $('#lominutes').text(lock_status.minutes);
+                lockout.show();
+            }
+            else {
+                window.open("../accounts/unifiedLogin.php?form=log");
+            }
+        }, "json");
+    });
+    $('#force_reset').on('click', function () {
+        //lockout.hide();
+        chg_modal.show();
+        return;
+    });
     $('#logout').on('click', function () {
         var ajax = { expire: 'N' };
         $.ajax({

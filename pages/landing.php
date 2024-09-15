@@ -14,13 +14,18 @@ require_once "../accounts/getLogin.php";
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-<title>New Mexico Hikes</title>
+    <title>New Mexico Hikes</title>
     <meta charset="utf-8" />
     <meta name="description" content="Mobile site for New Mexico Hikes" />
     <meta name="author" content="Ken Cowles" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/landing.css" type="text/css" rel="stylesheet" />
+    <style>
+        #membership {
+            width: 200px; height: 34px; color: darkgreen;
+            font-size: 18px; font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,26 +38,14 @@ require_once "../accounts/getLogin.php";
             <span id="logo_left">Hike New Mexico</span>
         </div>
         
-        <!-- minimal functionality "navbar" -->
-        <div id="center" class="dropdown">
-            <button class="btn-sm btn-secondary dropdown-toggle" type="button"
-                id="memberOpts" data-bs-toggle="dropdown" aria-expanded="false">
-                Membership
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="memberOpts">
-                <a id="login" class="dropdown-item"
-                    href="../accounts/unifiedLogin.php?form=log"
-                    target="_self">Login</a>
-                <a id= "logout" class="dropdown-item" href="#">Logout</a>
-                <a id="bam" class="dropdown-item"
-                    href="../accounts/unifiedLogin.php?form=reg"
-                    target="_self">Become a member</a>
-                <div id="admintools">
-                    <div class="dropdown-divider"></div>
-                    <a id="adminmenu" class="dropdown-item"
-                        href="../admin/admintools.php">Admintools</a>
-                </div>
-            </ul>
+        <!-- minimal functionality menu -->
+        <div id="center">
+            <select id="membership">
+                <option id="sao"    value="sao">Select An Option:</option>
+                <option id="login"  value="login">Login          </option>
+                <option id="logout" value="logout">Logout        </option>
+                <option id="bam"    value="bam">Become a member  </option>>      
+            </select>
         </div>
 
         <div id="rightside">
@@ -81,32 +74,11 @@ require_once "../accounts/getLogin.php";
         </div>
         <div id="choice2">
             <p>Map &amp; markers</p>
-            <img id="map" src="../images/mapmrkrs.jpg" alt="map with markers" />
+            <img id="map" src="../images/newMap.jpg" alt="map with markers" />
         </div>
     </div><br />
 </div>
-<div id="ajaxerr" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">An Error Has Occurred</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                We are sorry, but an error has occurred. The admin has been notified.
-                We apologize for any inconvenience.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<script src="../scripts/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
 <script src="../scripts/jquery.js"></script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/landing.js"></script>

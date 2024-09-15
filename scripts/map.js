@@ -4,13 +4,14 @@
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
  * 		together, displaying the number of hikes in each cluster. It also draws hike
- * 		tracks when zoomed in, and afterwards when panned. The script relies on the
- * 		externally supplied lib 'markerclusterer.js'. That lib was modified slightly
- *      by adding a line specifying the state of boolean 'newBounds' to prevent
- *      duplicate calls to form a side table (see Pan and Zoom handlers below).
+ * 		tracks when zoomed in, and afterwards when panned. The clusterer is now
+ *      supported by the google maps javascript API. A window property (boolean
+ *      'newBounds') is used to prevent duplicate calls to form a side table
+ *      (see Pan and Zoom handlers below).
  * @author Ken Cowles
  *
  * @version 8.0 Major mods to improve side table formation when multiple map events occur
+ * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -27,7 +28,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -48,13 +49,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var hike_mrkr_icon = "../images/blue_nobg.png";
+// <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
+var clus_mrkr_icon = "../images/star8.png";
+var initialValue = 0;
 var zoomThresh = 13; // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
 var geoOpts = { enableHighAccuracy: true };
-// global vars:
+var markers;
 var appMode = $('#appMode').text();
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
@@ -79,7 +93,7 @@ var panning = false;
 var kill_table = false;
 /**
  * This function is called initially, and again when resizing the window;
- * Because the map, adjustWidth and sideTable divs are floats, height
+ * Because the map, adjustWidth, and sideTable divs are floats, height
  * needs to be specified for the divs to be visible; 'panel' is also used
  * in locateGeoSymbol().
  */
@@ -114,40 +128,130 @@ function locateGeoSym() {
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
 var geoIcon = "../images/currentLoc.png";
+var locaters = []; // global used to popup info window on map when hike is searched
+/**
+ * Collect the number of hikes associated with a clusterer for labelling purposes
+ */
+var makeClusterLabel = function (markers) {
+    var total = [];
+    markers.forEach(function (mrkr) {
+        total.push(Number(mrkr.hikes));
+    });
+    var hike_total = total.reduce(function (accumulator, currentValue) { return accumulator + currentValue; }, initialValue);
+    return hike_total;
+};
+/**
+ * Create a DOM element containing a marker or clusterer icon with a mrkr_cnt div showing
+ * the number of hikes associated with it
+ */
+var build_content = function (glyph, count) {
+    var gtop;
+    var glft;
+    var gsize;
+    var gpadding = "0 3px 0 3px";
+    if (glyph === hike_mrkr_icon) { // single marker or cluster marker
+        gtop = "10px";
+        glft = "13px";
+        gsize = "11px";
+    }
+    else {
+        gtop = "10px";
+        if (count < 10) {
+            glft = "12px";
+            gsize = "11px;";
+        }
+        else if (count < 100) {
+            glft = "10px";
+            gsize = "10px;";
+            gpadding = "0 2px 0 2px";
+        }
+        else {
+            gtop = "11px";
+            glft = "9px";
+            gsize = "9px";
+            gpadding = "0 2px 0 2px";
+        }
+    }
+    var content = document.createElement("div");
+    var icon = document.createElement("img");
+    var mrkr_cnt = document.createElement("div");
+    var mrkr_txt = document.createTextNode(String(count));
+    mrkr_cnt.style.background = "white";
+    mrkr_cnt.style.position = "absolute";
+    mrkr_cnt.style.top = gtop;
+    mrkr_cnt.style.left = glft;
+    mrkr_cnt.style.fontSize = gsize;
+    mrkr_cnt.style.padding = gpadding;
+    mrkr_cnt.style.borderRadius = "6px";
+    mrkr_cnt.appendChild(mrkr_txt);
+    icon.style.zIndex = "900";
+    icon.src = glyph;
+    content.appendChild(icon);
+    content.appendChild(mrkr_cnt);
+    return content;
+};
 /**
  * Use the arrays passed in to the home page by php: one for each type
  * of marker to be displayed (Clustered, Normal):
- * 		CL Array: Clustered hike pages
- * 		NM Array: Normal hike pages
- * And one for creating tracks:
+ *      NM Array: Objects describing 'normal' hikes (single tracks)
+ * 		CL Array: Objects describinb 'clustered' hikes (more than 1 track)
+ * And an array for creating tracks: (see track drawing near end of script)
  * 		tracks Array: ordered list of json file names
  */
-var locaters = []; // global used to popup info window on map when hike is searched
-/**
- * A simple function which correlates the number of hikes in a group to its icon
- */
-var getIcon = function (no_of_hikes) {
-    var icon = "../images/pins/hike" + no_of_hikes + ".png";
-    return icon;
-};
+var nm_marker_data = [];
+NM.forEach(function (hikeobj) {
+    var mrkr_loc = hikeobj.loc;
+    var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
+        + hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
+    iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
+    iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
+    iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
+    iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+    var nm_icon = document.createElement("IMG");
+    nm_icon.src = "../images/pins/greennm.png";
+    var nm_title = hikeobj.name;
+    var nm_marker = { position: mrkr_loc, iw_content: iwContent, title: nm_title };
+    nm_marker_data.push(nm_marker);
+});
+var cl_marker_data = [];
+CL.forEach(function (clobj) {
+    var mrkr_loc = clobj.loc;
+    var hikecnt = clobj.hikes.length;
+    var iwContent = '<div id="iwCH">';
+    var link;
+    if (clobj.page > 0) {
+        link = "hikePageTemplate.php?clus=y&hikeIndx=";
+        iwContent += '<a href="' + link + clobj.page + '">' +
+            clobj.group + '</a>';
+    }
+    else {
+        iwContent += clobj.group + "<br/>";
+    }
+    link = "hikePageTemplate.php?hikeIndx=";
+    clobj.hikes.forEach(function (clobj) {
+        iwContent += '<br/><a href="' + link + clobj.indx + '" target="_blank">' +
+            clobj.name + '</a>';
+        iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
+            clobj.elev + ' ft; Diff: ' + clobj.diff;
+    });
+    var cl_marker = { position: mrkr_loc, iw_content: iwContent,
+        title: clobj.group, hikecnt: hikecnt };
+    cl_marker_data.push(cl_marker);
+});
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-    var clustererMarkerSet = [];
     var nmCtr = { lat: 34.450, lng: -106.042 };
-    var json_style_array = [
-        { "featureType": "poi", "stylers": [{ "visibility": "off" }] }
-    ];
-    /* For reasons unknown, placing the options object directly within the
-     * google.maps.Map argument seems to ignore all mapTypeControl settings
-     */
     var options = {
         center: nmCtr,
         zoom: 7,
-        mapId: "39681f98dcd429f8",
+        mapId: "39681f98dcd429f8", // vector map; all styling
         // optional settings:
         isFractionalZoomEnabled: true,
         zoomControl: true,
         scaleControl: true,
+        fullscreenControl: true,
+        streetViewControl: false,
+        rotateControl: false,
         mapTypeControl: true,
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -156,125 +260,122 @@ function initMap() {
                 google.maps.MapTypeId.SATELLITE
             ]
         },
-        fullscreenControl: true,
-        streetViewControl: false,
-        rotateControl: false,
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
-        styles: json_style_array
+        mapTypeId: 'terrain',
     };
     map = new google.maps.Map(mapEl, options);
     new google.maps.KmlLayer({
         url: "https://nmhikes.com/maps/NM_Borders.kml",
         map: map
     });
+    var infoWindow = new google.maps.InfoWindow({
+        content: "",
+        disableAutoPan: true,
+        maxWidth: 400
+    });
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
-    CL.forEach(function (clobj) {
-        AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
-    });
-    NM.forEach(function (nmobj) {
-        AddHikeMarker(nmobj);
-    });
-    var iwContent;
-    // Cluster Markers:
-    function AddClusterMarker(location, group, clhikes, page) {
-        var hikecnt = clhikes.length;
-        var clicon = getIcon(hikecnt);
-        var marker = new google.maps.Marker({
-            position: location,
+    var nm_markers = nm_marker_data.map(function (mrkr_data) {
+        var position = mrkr_data.position;
+        var nm_title = mrkr_data.title;
+        // THE MARKER:
+        var marker = new google.maps.marker.AdvancedMarkerElement({
+            position: position,
             map: map,
-            icon: clicon,
-            title: group
+            content: build_content(hike_mrkr_icon, 1),
+            title: nm_title
         });
-        var srchmrkr = { hikeid: group, clicked: false, pin: marker };
+        marker.hikes = 1;
+        // MARKER SEARCH:
+        var srchmrkr = {
+            hikeid: mrkr_data.title,
+            clicked: false,
+            pin: marker
+        };
         locaters.push(srchmrkr);
         var itemno = locaters.length - 1;
-        clustererMarkerSet.push(marker);
-        iwContent = '<div id="iwCH">';
-        var link;
-        if (page > 0) {
-            link = "hikePageTemplate.php?clus=y&hikeIndx=";
-            iwContent += '<br /><a href="' + link + page + '">' + group + '</a>';
-        }
-        else {
-            iwContent += '<br />' + group;
-        }
-        link = "hikePageTemplate.php?hikeIndx=";
-        clhikes.forEach(function (clobj) {
-            iwContent += '<br /><a href="' + link + clobj.indx + '" target="_blank">' +
-                clobj.name + '</a>';
-            iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
-                clobj.elev + ' ft; Diff: ' + clobj.diff;
-        });
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 600
-        });
-        iw.addListener('closeclick', function () {
-            locaters[itemno].clicked = false;
-        });
-        marker.addListener('click', function () {
-            zoom_level = map.getZoom();
-            // newBounds is true if only a center change and no follow-on zoom
-            window.newBounds = zoom_level >= zoomThresh ? true : false;
-            map.setCenter(location);
-            if (!window.newBounds) {
-                map.setZoom(zoomThresh);
-            }
-            iw.open(map, marker);
-            locaters[itemno].clicked = true;
-        });
-    }
-    // Normal Hike Markers
-    function AddHikeMarker(hikeobj) {
-        var markerLoc = hikeobj.loc;
-        var nmicon = getIcon(1);
-        var marker = new google.maps.Marker({
-            position: markerLoc,
-            map: map,
-            icon: nmicon,
-            // 'title' is what is displayed on mouseover of the marker
-            title: hikeobj.name
-        });
-        var srchmrkr = { hikeid: hikeobj.name, clicked: false, pin: marker };
-        locaters.push(srchmrkr);
-        var itemno = locaters.length - 1;
-        clustererMarkerSet.push(marker);
-        // infoWin content: add data for this hike
-        var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
-            + hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
-        iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
-        iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
-        iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-        iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 400
-        });
-        iw.addListener('closeclick', function () {
-            locaters[itemno].clicked = false;
-        });
-        marker.addListener('click', function () {
+        // CLICK ON MARKER:
+        marker.addListener("click", function () {
             zoom_level = map.getZoom();
             // newBounds is true if only a center change with no follow-on zoom
             // this statement must precede the setCenter cmd.
             window.newBounds = zoom_level >= zoomThresh ? true : false;
-            map.setCenter(markerLoc);
+            map.setCenter(mrkr_data.position);
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, marker);
-            locaters[itemno].clicked = true;
+            var this_mrkr = locaters[itemno];
+            this_mrkr.clicked = true;
+            infoWindow.setContent(mrkr_data.iw_content);
+            infoWindow.open(map, marker);
         });
-    }
-    // /////////////////////// Marker Grouping /////////////////////////
-    var clusterer_opts = {
-        imagePath: '../images/markerclusters/m',
-        gridSize: 50,
-        maxZoom: 12,
-        averageCenter: true,
-        zoomOnClick: true
+        // INFO WINDOW CLOSE:
+        infoWindow.addListener('closeclick', function () {
+            locaters[itemno].clicked = false;
+        });
+        return marker;
+    });
+    var cl_markers = cl_marker_data.map(function (mrkr_data) {
+        var position = mrkr_data.position;
+        var cl_title = mrkr_data.title;
+        var hike_count = mrkr_data.hikecnt;
+        // THE MARKER:
+        var marker = new google.maps.marker.AdvancedMarkerElement({
+            position: position,
+            map: map,
+            content: build_content(hike_mrkr_icon, hike_count),
+            title: cl_title,
+            gmpClickable: true
+        });
+        marker.hikes = hike_count;
+        // MARKER SEARCH:
+        var srchmrkr = {
+            hikeid: mrkr_data.title,
+            clicked: false,
+            pin: marker
+        };
+        locaters.push(srchmrkr);
+        var itemno = locaters.length - 1;
+        // CLICK ON MARKER:
+        marker.addListener("click", function () {
+            zoom_level = map.getZoom();
+            // newBounds is true if only a center change and no follow-on zoom
+            window.newBounds = zoom_level >= zoomThresh ? true : false;
+            map.setCenter(position);
+            if (!window.newBounds) {
+                map.setZoom(zoomThresh);
+            }
+            locaters[itemno].clicked = true;
+            infoWindow.setContent(mrkr_data.iw_content);
+            infoWindow.open(map, marker);
+        });
+        // INFO WINDOW CLOSE:
+        infoWindow.addListener('closeclick', function () {
+            locaters[itemno].clicked = false;
+        });
+        return marker;
+    });
+    markers = __spreadArray(__spreadArray([], nm_markers, true), cl_markers, true);
+    var renderer = {
+        /**
+         * render( CLUSTER, stats, map) where CLUSTER 'Accessors' are bounds, count, position
+         * and 'cluster' contains various properties, including _position, and markers[]
+         */
+        render: function (cluster) {
+            var marker_label = makeClusterLabel(cluster.markers);
+            return new google.maps.marker.AdvancedMarkerElement({
+                position: cluster._position,
+                map: map,
+                content: build_content(clus_mrkr_icon, marker_label),
+                title: "Cluster"
+            });
+        }
     };
-    new MarkerClusterer(map, clustererMarkerSet, clusterer_opts);
+    // /////////////////////// Marker Grouping in Clusterer /////////////////////////
+    new markerClusterer.MarkerClusterer({
+        markers: markers,
+        map: map,
+        algorithmOptions: { maxZoom: 12 }, // no apparent effect...
+        renderer: renderer
+    });
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
     /**
      * NOTE: Loading the map on page load/reload causes an initial center_change AND
@@ -519,10 +620,9 @@ function setupLoc() {
         var geoLat = geoPos.latitude;
         var geoLng = geoPos.longitude;
         var newWPos = { lat: geoLat, lng: geoLng };
-        new google.maps.Marker({
+        new google.maps.marker.AdvancedMarkerElement({
             position: newWPos,
-            map: map,
-            icon: geoIcon
+            map: map
         });
         var currzoom = map.getZoom();
         window.newBounds = currzoom >= zoomThresh ? true : false;

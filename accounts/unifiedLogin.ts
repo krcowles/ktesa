@@ -2,8 +2,13 @@ declare function validateUser(user: string, pass: string): void;
 declare const countAns: () => boolean;
 declare var appMode: string;
 declare var mobile: boolean;
-declare var updates: Bootstrap.Modal;
+declare var updates: bootstrap.Modal;
 declare var tbl_indx: string;
+declare var lockout: bootstrap.Modal
+interface Lockouts {
+    result: string;
+    minutes: number;
+}
 /**
  * @fileoverview Adjust page according to form type
  * 
@@ -413,24 +418,71 @@ switch (formtype) {
         });
         break;
     case 'log':
+        /** 
+         * This form should show only when no lockouts exist for the user.
+         * However, if locked out during attempted login, and user does a
+         * page refresh, this code will continue to show the locked out state:
+         * the 'lockout' var in local storage will have been set by original
+         * page's validate.ts/js. If the original locked out login page is NOT
+         * closed, 'lockout' will be cleared when lockout time has expired
+         * (1 hour) -  validate.ts/js will clear it. If otherwise this page is
+         * closed or the user attempts to login via another tab, the login code
+         * in the new tab's menu (panelMenu.ts/js or navMenu.ts/js [mobile])
+         * will prevent login until the lockout time has expired, at which point
+         * the menu code will clear 'lockout'.
+         */
         $container.css({
             top: log.top,
             height: log.height
         });
+        var lostate = localStorage.getItem('lockout');
         $('#cookie_banner').hide();
-        $('#form').on('submit', function(ev) {
-            ev.preventDefault();
-            let user = <string>$('#username').val();
-            let pass = <string>$('#password').val();
-            if (user === '' || pass === '') {
-                alert("Both username and password must be specified");
-                return false;
-            }
-            validateUser(user, pass);
-            var nothing = <HTMLElement>document.getElementById("password");
-            nothing.focus();
-            return;
-        });
+        if (typeof lostate !== 'undefined' && lostate === 'yes') {
+            $('#username').val("");
+            $('#username').css('background-color', 'lightgray');
+            $('#username').prop('disabled', true);
+            $('#password').val("");
+            $('#password').css('background-color', 'lightgray');
+            $('#password').prop('disabled', true);
+            $('#formsubmit').prop('disabled', 'disabled');
+            $('.lomin').text("60");
+            $('#lotime').css('display', 'inline');
+            $('#logger').text("Reset Password");
+            // auto reset fields if page still loaded
+            var lotimeout = setInterval(function() {
+                $.get("../accounts/lockStatus.php",function(result) {
+                    if (result.status === 'ok') {
+                        $('#username').css('background-color', 'transparent');
+                        $('#username').prop('disabled', false);
+                        $('#password').css('background-color', 'transparent');
+                        $('#password').prop('disabled', false);
+                        $('#formsubmit').prop('disabled', false);
+                        lockout.hide(); // if still showing
+                        localStorage.removeItem('lockout');
+                        $('#lotime').css('display', 'none');
+                        clearInterval(lotimeout);
+                        alert("You may now login");
+                        location.replace(location.href); 
+                    } else {
+                        $('#lomin').text(result.minutes);
+                    }
+                }, "json"); 
+            },100000);
+        } else {
+            $('#form').on('submit', function(ev) {
+                ev.preventDefault();
+                let user = <string>$('#username').val();
+                let pass = <string>$('#password').val();
+                if (user === '' || pass === '') {
+                    alert("Both username and password must be specified");
+                    return false;
+                }
+                validateUser(user, pass);
+                var nothing = <HTMLElement>document.getElementById("password");
+                nothing.focus();
+                return;
+            });
+        }
         break;
 }
  

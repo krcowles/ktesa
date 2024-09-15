@@ -41,6 +41,32 @@
         </div>
     </div>
 </div>
+<!-- Login modal when lockout condition is encountered -->
+<div class="modal fade" id="lockout" tabindex="-1"
+    aria-labelledby="Lockout" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    You are locked out</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You are currently locked out and can login again in 
+                <span class="lomin"></span> minutes. You may continue
+                to wait, or you may reset your password by selecting
+                that option below.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Wait</button>
+                <button id="force_reset" type="button" class="btn btn-success">
+                    Reset my password</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- For 'Forgot password', 'Renew password' & 'Change password' Modal -->
 <div class="modal fade" id="cpw" tabindex="-1"
     aria-labelledby="ResetPassword" aria-hidden="true">

@@ -70,8 +70,11 @@ $modal: #dfe9e3;
     z-index: 5;
 }
 
-#appMode {
+#appMode, #lotime {
     display: none;
+}
+#lotime {
+    font-size: 16px;
 }
 /* ALL FORMS */
 #container {

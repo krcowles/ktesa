@@ -24,7 +24,7 @@ html, body {
 	z-index: 200;
 }
 #map {
-	height: 100%;
+	height: calc(100% - 112px);
 	width: 100%;
 }
 #srch {
