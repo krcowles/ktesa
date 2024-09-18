@@ -40,6 +40,7 @@ interface CL {
     hikes: NM[];
 }
 interface NM {
+    bounds: number[];
     name: string;
     indx: number;
     lgth: number;
