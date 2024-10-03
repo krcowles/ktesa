@@ -151,7 +151,7 @@ if (!$cluspg) {
     $old_gpx_array["main"] = array($main_gpx => $main_val);
     $old_gpx_array["add1"] = empty($add1_gpx) ? [] : array($add1_gpx => $add1_val);
     $old_gpx_array["add2"] = empty($add2_gpx) ? [] : array($add2_gpx => $add2_val);
-    $old_gpx_array["add1"] = empty($add3_gpx) ? [] : array($add3_gpx => $add1_val);
+    $old_gpx_array["add3"] = empty($add3_gpx) ? [] : array($add3_gpx => $add3_val);
     $new_gpx_array = json_encode($old_gpx_array);
     $updateGpxReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo`=?;";
     $updateGpx = $pdo->prepare($updateGpxReq);
