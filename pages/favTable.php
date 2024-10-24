@@ -25,6 +25,7 @@ if ($favmode === 'yes') {
     $favarray = $modal_hikes;
 }
 
+
 /**
  * >>> NOTE: This page does not call mapJsData.php but rather creates data below.
  * Get hike data for each favorite (this should be a rather small list!);
@@ -33,11 +34,22 @@ if ($favmode === 'yes') {
  */ 
 $hikeobj = [];
 $tracks = [];
+$min_south = 37.0000;
+$max_north = 31.3333;
+$min_west  = -103.000;
+$max_east  = -109.0500;
+
 foreach ($favarray as $hike) {
     $fhikereq = "SELECT * FROM `HIKES` WHERE `indxNo` = :hno;";
     $fhike = $pdo->prepare($fhikereq);
     $fhike->execute(["hno" => $hike]);
     $hikedat = $fhike->fetch(PDO::FETCH_ASSOC);
+    // get bounds for the hike:
+    $box = explode(",", $hikedat['bounds']); // [n,s,e,w]
+    $max_north = $box[0] > $max_north ? $box[0] : $max_north;
+    $min_south = $box[1] < $min_south ? $box[1] : $min_south;
+    $max_east  = $box[2] > $max_east  ? $box[2] : $max_east;
+    $min_west  = $box[3] < $min_west  ? $box[3] : $min_west;
     $hike_tracks = getTrackFileNames($pdo, $hike, 'pub')[0];
     $str_name = '"' . $hike_tracks[0] . '"'; // just main tracks
     array_push($tracks, $str_name);
@@ -47,24 +59,16 @@ foreach ($favarray as $hike) {
         $hikedat['miles'] . ',elev:' . $hikedat['feet'] . ',diff:"' . 
         $hikedat['diff'] . '",dirs:"' . $hikedat['dirs'] . '",prev:"' .
         $hikedat['preview'] . '"}';
-    array_push($hikeobj, $fav);
-    
-}
-$locaters = [];
-$nmindx = 0;
-for ($j=0; $j<count($favarray); $j++) {
-    $locater = '{type:"nm",group:' . $nmindx++ . '}';
-    array_push($locaters, $locater);
+    array_push($hikeobj, $fav); 
 }
 // locate the 'thumbs' dir:
 $zsizedir = getPicturesDirectory();
 $thumbdir = '"' . str_replace('zsize', 'thumbs', $zsizedir) . '"';
-
 $jsHikes  = '[' . implode(",", $hikeobj) . ']';
 $allHikes = '[' . implode(",", $favarray) . ']';
-$jsLocs   = '[' . implode(",", $locaters) . ']';
 $jsTracks = '[' . implode(",", $tracks)   . ']';
-
+$jsBounds = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
+    $min_south . ",west:" . $min_west . "}";
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -129,13 +133,12 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <script>
     var NM = <?=$jsHikes;?>;
     var allHikes = <?=$allHikes;?>;
-    var locations = <?=$jsLocs;?>;
     var tracks = <?=$jsTracks;?>;
     var thumb = <?=$thumbdir;?>;
+    var mapBounds = <?=$jsBounds;?>;
 </script>
 <script src="../scripts/favSideTable.js"></script>
 <script src="../scripts/fmap.js"></script>
-<script src="../scripts/markerclusterer.js"></script>
 <script async defer src="<?=GOOGLE_MAP;?>"></script>
 </body>
 </html>
