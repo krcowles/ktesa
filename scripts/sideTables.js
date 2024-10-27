@@ -59,6 +59,9 @@ var alltrails = new bootstrap.Modal(document.getElementById('alltrails'), {
 $('#advantages').on('click', function () {
     alltrails.show();
 });
+// Globals for IdTableElements
+var singles; // all hike numbers to be included in side table
+var hikeInfoWins; // info window content for each hikeno in singles
 // Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function () {
     $('#search').val("");
@@ -610,16 +613,63 @@ function compareObj(a, b) {
     return comparison;
 }
 /**
- * A function to find elements within current map bounds and display them in
+ * Functions to find elements within current map bounds and display them in
  * the side table. This is invoked by either a pan or a zoom on the map (see
  * map.js for listeners). This function also returns a set of hikenumbers for
  * making tracks when the map zoom >= 13. Clusters are 'segregated' so that the
  * entire set of hikes in the cluster can be drawn, each with a unique color.
  */
-var IdTableElements = function (boundsStr, zoom) {
-    var singles = []; // individual hike nos
+var IncludedHike = function (hike, zoom, north, south, east, west) {
+    var isInBounds = false;
+    if (zoom >= zoomThresh) {
+        // test if displayed track's corner is in bounds
+        var map_box = hike.bounds;
+        var nw_corner = { lat: map_box[0], lng: map_box[3] };
+        var ne_corner = { lat: map_box[0], lng: map_box[2] };
+        var sw_corner = { lat: map_box[1], lng: map_box[3] };
+        var se_corner = { lat: map_box[1], lng: map_box[2] };
+        if (nw_corner.lat <= north && nw_corner.lat >= south &&
+            nw_corner.lng <= east && nw_corner.lng >= west ||
+            ne_corner.lat <= north && ne_corner.lat >= south &&
+                ne_corner.lng <= east && ne_corner.lng >= west ||
+            sw_corner.lat <= north && sw_corner.lat >= south &&
+                sw_corner.lng <= east && sw_corner.lng >= west ||
+            se_corner.lat <= north && se_corner.lat >= south &&
+                se_corner.lng <= east && se_corner.lng >= west) {
+            isInBounds = true;
+        }
+    }
+    else {
+        // tracks not displayed
+        var lat = hike.loc.lat;
+        var lng = hike.loc.lng;
+        if (lng <= east && lng >= west && lat <= north && lat >= south) {
+            isInBounds = true;
+        }
+    }
+    return isInBounds;
+};
+var addHikeToTable = function (zoom, hike, type) {
+    var hikeindx = allHikes.indexOf(hike.indx);
+    var hikeobj = locations[hikeindx];
+    var data = idHike(allHikes[hikeindx], hikeobj);
+    hikearr.push(data);
+    var iw = type === 'CL' ? '<div id="iwCH">' : '<div id="iwNH">';
+    if (zoom) {
+        var iw_data = iw + '<a href="../pages/hikePageTemplate.php?hikeIndx=' +
+            hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
+            hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
+            '<br />Difficulty: ' + hike.diff + '</div>';
+        singles.push(hike.indx);
+        hikeInfoWins.push(iw_data);
+    }
+};
+var IdTableElements = function (boundsStr, zoom, zoom_level) {
+    // initialize globals for each invocation
+    hikearr = [];
+    singles = [];
+    hikeInfoWins = [];
     var trackColors = []; // for clusters, tracks get unique colors
-    var hikeInfoWins = []; // info window content for each hikeno in singles
     // ESTABLISH CURRENT VIEWPORT BOUNDS:
     var beginA = boundsStr.indexOf('((') + 2;
     var leftParm = boundsStr.substring(beginA, boundsStr.length);
@@ -634,52 +684,26 @@ var IdTableElements = function (boundsStr, zoom) {
     var eastStr = rightParm.substring(eastIndx, rightParm.length);
     var east = parseFloat(eastStr);
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
-    var hikearr = [];
     var max_color = colors.length - 1;
     var color_indx = Math.floor(Math.random() * max_color); // min is always 0
+    // bounds are: north, south, east, west...
     CL.forEach(function (clus) {
         clus.hikes.forEach(function (hike) {
-            var lat = hike.loc.lat;
-            var lng = hike.loc.lng;
-            if (lng <= east && lng >= west && lat <= north && lat >= south) {
-                var hikeindx = allHikes.indexOf(hike.indx);
-                var hikeobj = locations[hikeindx];
-                var data_1 = idHike(allHikes[hikeindx], hikeobj);
-                hikearr.push(data_1);
-                if (zoom) {
-                    var cliw = '<div id="iwCH"><a href="../pages/hikePageTemplate.php?hikeIndx=' +
-                        hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
-                        hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
-                        '<br />Difficulty: ' + hike.diff + '</div>';
-                    singles.push(hike.indx);
-                    hikeInfoWins.push(cliw);
-                    trackColors.push(colors[color_indx++]);
-                    if (color_indx > max_color) { // rotate through colors
-                        color_indx = 0;
-                    }
+            if (IncludedHike(hike, zoom_level, north, south, east, west)) {
+                addHikeToTable(zoom, hike, 'CL');
+                trackColors.push(colors[color_indx++]);
+                if (color_indx > max_color) { // rotate through colors
+                    color_indx = 0;
                 }
             }
         });
     });
     NM.forEach(function (hike) {
-        var lat = hike.loc.lat;
-        var lng = hike.loc.lng;
-        if (lng <= east && lng >= west && lat <= north && lat >= south) {
-            var hikeindx = allHikes.indexOf(hike.indx);
-            var hikeobj = locations[hikeindx];
-            var data_2 = idHike(allHikes[hikeindx], hikeobj);
-            hikearr.push(data_2);
-            if (zoom) {
-                var nmiw = '<div id="iwNH"><a href="../pages/hikePageTemplate.php?hikeIndx=' +
-                    hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
-                    hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
-                    '<br />Difficulty: ' + hike.diff + '</div>';
-                singles.push(hike.indx);
-                hikeInfoWins.push(nmiw);
-                trackColors.push(colors[color_indx++]);
-                if (color_indx > max_color) { // rotate through colors
-                    color_indx = 0;
-                }
+        if (IncludedHike(hike, zoom_level, north, south, east, west)) {
+            addHikeToTable(zoom, hike, 'NM');
+            trackColors.push(colors[color_indx++]);
+            if (color_indx > max_color) { // rotate through colors
+                color_indx = 0;
             }
         }
     });

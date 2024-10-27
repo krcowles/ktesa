@@ -67,6 +67,7 @@ var zoomThresh = 13; // Default zoom level for drawing tracks
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
+var hikearr; // array of hike objects used to form side table
 var geoOpts = { enableHighAccuracy: true };
 var markers;
 var appMode = $('#appMode').text();
@@ -468,7 +469,7 @@ function initMap() {
                 kill_table = false;
                 first_load = false;
                 var bounds = String(map.getBounds());
-                var hike_result = IdTableElements(bounds, false);
+                var hike_result = IdTableElements(bounds, false, 7);
                 formTbl(hike_result[0]);
                 google.maps.event.removeListener(init_idle);
             });
@@ -486,7 +487,7 @@ function initMap() {
                                 perim = String(map.getBounds());
                                 // in case of intervening map event:
                                 kill_table = false;
-                                zoomedHikes = IdTableElements(perim, zoomTracks);
+                                zoomedHikes = IdTableElements(perim, zoomTracks, curZoom);
                                 return [4 /*yield*/, formTbl(zoomedHikes[0])];
                             case 1:
                                 _a.sent();

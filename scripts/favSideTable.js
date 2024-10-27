@@ -2,18 +2,44 @@
 /**
  * @file This file was created as a simplification of sideTables.ts/js code,
  * which contains a significant amount of code not required by the Favorites page.
- * favTable.php now calles favSideTable.js instead of sideTables.js
+ * favTable.php calls favSideTable.js instead of sideTables.js
  *
  * @author Ken Cowles
- * @version 1.0 Simplify and fix the display of the Favorites page after having modified
- * sideTables.ts/js to add thumbnail images;
  * @version 1.1 Change <a> links to open new tab
  * @version 2.0 Allow user to select which favorites are displayed on the page (some may
  * be far apart, making it difficult to view the desired hikes)
+ * @version 3.0 Switch to new google maps Marker, general reorg of code and cleanup.
  */
+// Modal allowing user to select which favorites are displayed when there are multiple
 var subset_modal = new bootstrap.Modal(document.getElementById('favlimit'), {
     keyboard: false
 });
+/**
+ * NOTE: If there is more than one favorite, no side table elements are displayed
+ *       until after modal selection; Map & page display are controlled by fmap.js
+ */
+// GLOBALS:
+var subsize = 10;
+var display_table_items = NM.length > 1 && $('#favmode').text() === 'no' ? false : true;
+var appMode = $('#appMode').text();
+var init_fload = true;
+/**
+ * The html 'wrapper' for each item included in the side table
+ */
+var indexer;
+var done = false;
+var tblItemHtml;
+// one tableItem div for each side table hike
+tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
+// the div holding the favorites icon and the zoom-to-map icon
+tblItemHtml += '<div class="icons">';
+tblItemHtml += '<img class="like" src="../images/favoritesRed.png" alt="favorites icon" />';
+tblItemHtml += '<br /><img class="zoomers" src="../images/mapZoom.png" alt="zoom symbol" />';
+tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
+tblItemHtml += '</div>';
+// the div holding the hike-specific data
+tblItemHtml += '<div class="content">';
+// User clicks on choice in modal...
 $('body').on('click', '#show_limited', function () {
     var keepAll = false;
     var items = $('input.mod_chk');
@@ -51,7 +77,8 @@ $('body').on('click', '#show_limited', function () {
         window.open(redo, "_self");
     }
 });
-if (NM.length > 1 && $('#favmode').text() === 'no') { // modal not previously displayed
+// If modal has not yet been displayed and there are multiple favorites...
+if (!display_table_items) { // modal not previously displayed
     // create list
     var modalHikes = '<li><input id="0" class="mod_chk" type="checkbox" />&nbsp;&nbsp;' +
         'Keep All Hikes</li>';
@@ -63,14 +90,18 @@ if (NM.length > 1 && $('#favmode').text() === 'no') { // modal not previously di
     subset_modal.show();
 }
 /**
- * This function [coupled with infoWin()] 'clicks' the infoWin
+ * This function centers on the hike, zooms as needed, and clicks 'infoWin'
  * for the corresponding hike
  */
 function popupHikeName(hikename) {
     var found = false;
     for (var k = 0; k < NM.length; k++) {
         if (NM[k].name == hikename) {
-            infoWin(NM[k].name, NM[k].loc);
+            map.setCenter(NM[k].loc);
+            var czoom = map.getZoom();
+            if (czoom <= 13) {
+                map.setZoom(13);
+            }
             found = true;
             break;
         }
@@ -81,38 +112,8 @@ function popupHikeName(hikename) {
     return;
 }
 /**
- * This function will click the argument's infoWindow;
- * Note the use of 'setCenter': when NOT panning, as in this case, setCenter
- * will wait for the deferred 'zoomdone' to be resolved. If the marker has
- * already been clicked (infoWin present), there is no need to re-zoom, so
- * 'zoomdone' get resolved immediately.
- */
-var infoWin = function (hike, loc) {
-    // clicking marker sets zoom
-    for (var k = 0; k < locaters.length; k++) {
-        if (locaters[k].hikeid == hike) {
-            if (locaters[k].clicked === false) {
-                google.maps.event.trigger(locaters[k].pin, 'click');
-            }
-            else {
-                map.setCenter(loc);
-            }
-            var czoom = map.getZoom();
-            if (czoom <= 13) {
-                map.setZoom(13);
-            }
-            break;
-        }
-    }
-    return;
-};
-/**
- * The side table includes all hikes on page load; on pan/zoom it will include only those
- * hikes within the map bounds. In the following code, the variables 'allHikes' and
- * 'locations' are declared on home.php (and created by mapJsData.php):
- * allHikes:  an array of the current user favorite hikes
- * locations: a one-to-one correspondence to allHikes; an array of objects containing
- * the object type of the hike (NM) and its index in that array.
+ * The side table includes all favorites hikes on page load; on pan/zoom it will
+ * include only those hikes within the map bounds.
  */
 function compareObj(a, b) {
     var hikea = a.name;
@@ -127,24 +128,6 @@ function compareObj(a, b) {
     return comparison;
 }
 /**
- * The html 'wrapper' for each item included in the side table
- */
-var subsize = 10;
-var appMode = $('#appMode').text();
-var indexer;
-var done = false;
-var tblItemHtml;
-// one tableItem div for each side table hike
-tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
-// the div holding the favorites icon and the zoom-to-map icon
-tblItemHtml += '<div class="icons">';
-tblItemHtml += '<img class="like" src="../images/favoritesRed.png" alt="favorites icon" />';
-tblItemHtml += '<br /><img class="zoomers" src="../images/mapZoom.png" alt="zoom symbol" />';
-tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
-tblItemHtml += '</div>';
-// the div holding the hike-specific data
-tblItemHtml += '<div class="content">';
-/**
  * The DOM elements for the side table are created and attached in this function;
  * To reduce apparent 'thumb image' load times, the table is created 'subsize'
  * elements at a time, per interval. The table will populate the topmost items
@@ -157,7 +140,7 @@ function appendSegment(subset) {
         var hno = obj.indx;
         var tbl = tblItemHtml;
         var lnk = '<a class="stlinks" href="../pages/hikePageTemplate.php?hikeIndx=' +
-            obj.indx + '" target="_blank">' + obj.name + '</a>';
+            hno + '" target="_blank">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
             + obj.lgth + ' miles';
@@ -180,24 +163,7 @@ function appendSegment(subset) {
 }
 function formTbl(indxArray) {
     $('#sideTable').empty();
-    var primeArray = indxArray.slice(0, subsize);
-    appendSegment(primeArray);
-    indexer = subsize;
-    var loadSpreader = setInterval(function () {
-        var end = indexer + subsize;
-        if (end >= indxArray.length) {
-            end = indxArray.length;
-            done = true;
-        }
-        var nextArray = indxArray.slice(indexer, end);
-        appendSegment(nextArray);
-        indexer += subsize;
-        if (done) {
-            clearInterval(loadSpreader);
-            loadSpreader = undefined;
-            done = false;
-        }
-    }, 500);
+    appendSegment(indxArray);
     return;
 }
 /**
@@ -385,7 +351,6 @@ function enableZoom(items) {
 /**
  * The following function returns the appropriate hike object based on the
  * incoming object (obj) and the subject hike number (indx) in that object.
- * Note that CL objects can have an array of hikes in their corresponding objects.
  * It is invoked by the IdTableElements function.
  */
 function idHike(indx, obj) {
@@ -405,12 +370,12 @@ function idHike(indx, obj) {
 }
 /**
  * A function to find elements within current map bounds and display them in
- * the side table. This is invoked by either a pan or a zoom on the map (see
- * map.js for listeners). This function also returns a set of hikenumbers for
- * making tracks when the map zoom >= 13. Clusters are 'segregated' so that the
+ * the side table. The function is invoked in fmap.ts when map is idle.
+ * This function returns a set of hikenumbers for making tracks when the
+ *  map zoom >= 13. Clusters are 'segregated' so that the
  * entire set of hikes in the cluster can be drawn, each with a unique color.
  */
-var IdTableElements = function (boundsStr, zoom) {
+function IdTableElements(boundsStr, zoom) {
     var singles = []; // individual hike nos
     var trackColors = []; // for clusters, tracks get unique colors
     var hikeInfoWins = []; // info window content for each hikeno in singles
@@ -429,15 +394,11 @@ var IdTableElements = function (boundsStr, zoom) {
     var east = parseFloat(eastStr);
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var hikearr = [];
-    var max_color = colors.length - 1;
     NM.forEach(function (hike) {
         var lat = hike.loc.lat;
         var lng = hike.loc.lng;
         if (lng <= east && lng >= west && lat <= north && lat >= south) {
-            var hikeindx = allHikes.indexOf(hike.indx);
-            var hikeobj = locations[hikeindx];
-            var data = idHike(allHikes[hikeindx], hikeobj);
-            hikearr.push(data);
+            hikearr.push(hike);
             if (zoom) {
                 var nmiw = '<div id="iwNH"><a href="../pages/hikePageTemplate.php?hikeIndx=' +
                     hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
@@ -456,11 +417,17 @@ var IdTableElements = function (boundsStr, zoom) {
         $('#sideTable').html(nohikes);
     }
     else {
-        hikearr.sort(compareObj);
-        formTbl(hikearr);
+        if (display_table_items) {
+            hikearr.sort(compareObj);
+            formTbl(hikearr);
+            if (init_fload) {
+                map.fitBounds(map_bounds); // after initial load, don't reset!
+                init_fload = false;
+            }
+        }
     }
     return [singles, hikeInfoWins, trackColors];
-};
+}
 var grabber = document.getElementById('adjustWidth');
 grabber.addEventListener('mousedown', changeWidth, false);
 /**

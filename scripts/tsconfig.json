@@ -88,6 +88,10 @@
     "filter.ts",
     "multi-sort.ts",
     "map-multiples.ts",
+    /* Favorites page
+      NOTE: due to conflicts with mobile, 
+      transpile fmap.ts and favSideTable.ts separately!
+     */
     /* Password Strength Indicator */
     "passwordStrength.ts",
     /* Request for new ownership */

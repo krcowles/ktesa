@@ -39,7 +39,7 @@ $clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES` WHERE `pub`='Y';";
 $clushikes 
     = $pdo->query($clushike_req)->fetchAll(PDO::FETCH_ASSOC);
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
-    "`preview`,`dirs` FROM `HIKES` ORDER BY `pgTitle`;";
+    "`bounds`,`preview`,`dirs` FROM `HIKES` ORDER BY `pgTitle`;";
 $hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
 $noOfHikes = count($hikes);
 
@@ -131,7 +131,7 @@ foreach ($hikes as $hike) {
                     $hike['indxNo'] . ',lgth:' . $hike['miles'] . ',elev:' .
                     $hike['feet'] . ',diff:"' . $hike['diff'] . '",loc:{lat:' .
                     $hike['lat']/LOC_SCALE . ',lng:' . $hike['lng']/LOC_SCALE .
-                    '},' . 'prev:"' . $hike['preview'] . '"}';
+                    '},bounds:['. $hike['bounds'] . '],prev:"' . $hike['preview'] . '"}';
                 if (substr($clusterObjs[$clusGroupNo], -1) == '}') {
                     $clusterObjs[$clusGroupNo] .= ',' . $chikeObj;
                 } else {
@@ -143,10 +143,10 @@ foreach ($hikes as $hike) {
             array_push($locaters, $locater);
             $hikeObj = '{name:"' . $hike['pgTitle'] . '",indx:' .
                 $hike['indxNo'] . ',loc:{lat:' . $hike['lat']/LOC_SCALE .
-                ',lng:' . $hike['lng']/LOC_SCALE . '},lgth:' .
-                $hike['miles'] . ',elev:' . $hike['feet'] . ',diff:"' .
-                $hike['diff'] . '",prev:"' . $hike['preview'] . '",dirs:"' .
-                $hike['dirs'] . '"}';
+                ',lng:' . $hike['lng']/LOC_SCALE . '},bounds:[' .
+                $hike['bounds'] . '],lgth:' . $hike['miles'] . ',elev:' .
+                $hike['feet'] . ',diff:"' . $hike['diff'] . '",prev:"' .
+                $hike['preview'] . '",dirs:"' . $hike['dirs'] . '"}';
             array_push($normalObjs, $hikeObj);
         }
     }

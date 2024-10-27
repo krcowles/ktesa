@@ -162,8 +162,12 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         <button id="reload" type="button" class="btn 
             btn-danger">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
+        <button id="hard_reload" type="button" class="btn btn-danger">
+            Hard Reload</button>&nbsp;&nbsp;<span style="color:brown;">
+            No checks! Emergency only</span><br />
         <button id="drall" type="button" class="btn 
             btn-danger">Drop All Tables</button><br />
+        </button>
         <button id="ldall" type="button" class="btn 
             btn-danger">Load All Tables</button>&nbsp;&nbsp;
             [NOTE: Tables must not exist]<br />

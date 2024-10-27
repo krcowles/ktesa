@@ -162,7 +162,7 @@ $(function () {
             }
             if (ajax) {
                 $('#loading').show();
-                var postdata = { install: copyloc, "delete": deletions };
+                var postdata = { install: copyloc, delete: deletions };
                 $.ajax({
                     url: 'install.php',
                     method: "post",
@@ -509,6 +509,12 @@ $(function () {
                 }
             }
         });
+    });
+    $('#hard_reload').on('click', function () {
+        var ans = confirm("No checks performed: are you sure?");
+        if (ans) {
+            window.open('drop_all_tables.php', "_blank");
+        }
     });
     // Drop All Tables (only - not a part of "Reload Database")
     $('#drall').on('click', function () {

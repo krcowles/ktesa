@@ -523,6 +523,13 @@ $('#reload').on('click', function() {
     });
 });
 
+$('#hard_reload').on('click', function() {
+    let ans = confirm("No checks performed: are you sure?");
+    if (ans) {
+        window.open('drop_all_tables.php', "_blank");
+    }
+});
+
 // Drop All Tables (only - not a part of "Reload Database")
 $('#drall').on('click', function() {
     var testSums = $.Deferred();

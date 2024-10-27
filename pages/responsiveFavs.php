@@ -16,38 +16,49 @@ $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
 $usrfavs = $pdo->prepare($favreq);
 $usrfavs->execute(["uid" => $userid]);
 $favarray = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
-/**
- * Get hike data for each favorite (this should be a rather small list!);
- * Form js arrays for side table and marker creation (akin to jsMapData.php 
- * on home.php). No VC or CL hikes on this page.
- */ 
-$hikeobj = [];
+$modal_hikes = isset($_GET['modal_hikes']) ? $_GET['modal_hikes'] : false;
+$favmode = $modal_hikes ? 'yes' : 'no';
+if ($favmode === 'yes') {
+    $favarray = $modal_hikes;
+}
+$min_south = 37.0000;
+$max_north = 31.3333;
+$min_west  = -103.000;
+$max_east  = -109.0500;
+$hnames = [];
 $tracks = [];
+$marker_locs = [];
 foreach ($favarray as $hike) {
-    $fhikereq = "SELECT * FROM `HIKES` WHERE `indxNo` = :hno;";
+    $fhikereq = "SELECT `pgTitle`,`lat`,`lng`,`bounds` FROM `HIKES` WHERE " .
+        "`indxNo` = :hno;";
     $fhike = $pdo->prepare($fhikereq);
     $fhike->execute(["hno" => $hike]);
     $hikedat = $fhike->fetch(PDO::FETCH_ASSOC);
+    // hike names
+    $str_name = '"' . $hikedat['pgTitle'] . '"';
+    array_push($hnames, $str_name);
+    // marker positions
+    $mpos = "{lat:" . $hikedat['lat']/LOC_SCALE . ",lng:" .
+        $hikedat['lng']/LOC_SCALE . "}";
+    array_push($marker_locs, $mpos);
+    // get json files for main track
     $hike_tracks = getTrackFileNames($pdo, $hike, 'pub')[0];
     $str_name = '"' . $hike_tracks[0] . '"'; // just main tracks
     array_push($tracks, $str_name);
-    $hike = '{name:"' . $hikedat['pgTitle'] . '",indx:' . $hikedat['indxNo'] .
-        ',loc:{lat:' . $hikedat['lat']/LOC_SCALE . ',lng:' .
-        $hikedat['lng']/LOC_SCALE . '},lgth:' .
-        $hikedat['miles'] . ',elev:' . $hikedat['feet'] . ',diff:"' . 
-        $hikedat['diff'] . '",dir:"' . $hikedat['dirs'] . '"}';
-    array_push($hikeobj, $hike);
+    // get bounds for the hike: (bounds -> sw, ne)
+    $box = explode(",", $hikedat['bounds']); // [n,s,e,w]
+    $max_north = $box[0] > $max_north ? $box[0] : $max_north;
+    $min_south = $box[1] < $min_south ? $box[1] : $min_south;
+    $max_east  = $box[2] > $max_east  ? $box[2] : $max_east;
+    $min_west  = $box[3] < $min_west  ? $box[3] : $min_west;
 }
-$locaters = [];
-$nmindx = 0;
-for ($j=0; $j<count($favarray); $j++) {
-    $locater = '{type:"nm",group:' . $nmindx++ . '}';
-    array_push($locaters, $locater);
-}
-$jsHikes  = '[' . implode(",", $hikeobj)  . ']';
-$allHikes = '[' . implode(",", $favarray) . ']';
-$jsLocs   = '[' . implode(",", $locaters) . ']';
-$jsTracks = '[' . implode(",", $tracks)   . ']';
+
+$allHikes  = '[' . implode(",", $favarray) . ']';
+$jsHnames  = '[' . implode(",", $hnames) . ']';
+$jsMarkers = '[' . implode(",", $marker_locs) . ']';
+$jsTracks  = '[' . implode(",", $tracks) . ']';
+$jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
+    $min_south . ",west:" . $min_west . "}";
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -70,6 +81,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php"; ?>
 <p id="trail">Your Favorites</p>
+<p id="favmode" style="display:none;"><?=$favmode;?></p>
 
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
@@ -120,18 +132,42 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
         </div>
     </div>
 </div>
- 
+
+<!-- 'Limit Hikes Shown' Modal -->
+<div id="favlimit" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Limit Hikes Shown</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Limit the hikes shown on this page by checking the corresponding
+                    boxes:</p>
+                <ul id="show_only">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button id="show_limited" type="button" class="btn btn-success">
+                    Display selected hikes
+                </button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    var VC = [];
-    var CL = [];
-    var NM = <?=$jsHikes;?>;
     var allHikes = <?=$allHikes;?>;
-    var locations = <?=$jsLocs;?>;
+    var hikeNames = <?=$jsHnames;?>;
+    var marker_pos = <?=$jsMarkers;?>;
     var tracks = <?=$jsTracks;?>;
+    var google_bounds = <?=$jsBounds;?>;
 </script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/responsiveFmap.js"></script>
-<script src="../scripts/markerclusterer.js"></script>
 <script async defer src="<?=GOOGLE_MAP;?>"></script>
 </body>
 </html>
