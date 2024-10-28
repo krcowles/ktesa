@@ -111,7 +111,7 @@ if (!$admin) {
      * which is a free downloaded library not requiring http:// lookups.
      */
     $user_ip = getIpAddress(); // can be null!
-    $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
+    $user_ip = $user_ip ?? 'no ipaddr';
     if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
         die("Access not permitted");
     }
@@ -142,7 +142,7 @@ if (!$admin) {
     date_default_timezone_set('America/Denver');
     $visit_time = date('Y-m-d h:i:s');
     $vpage = selfURL(); // can be null
-    $vpage = isset($vpage) ? $vpage : "no page";
+    $vpage = $vpage ?? "no page";
     $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
         "`vplatform`,`vdatetime`,`vpage`) VALUES (?,?,?,?,?,?);";
     $visitor_data = $pdo->prepare($visitor_data_req);

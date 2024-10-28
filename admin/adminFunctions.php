@@ -84,9 +84,9 @@ function reverseTrack($trknodes, $trkno)
         $newseg = $track->ownerDocument->createElement('trkseg');
         $track->appendChild($newseg); // will not append identical children
         for ($k=$actualPts; $k>0; $k--) {
-            $next = $newseg->appendChild($pts->item($k));
+            $newseg->appendChild($pts->item($k));
         }
-        $remd = $track->removeChild($segNodes[$j]);
+        $track->removeChild($segNodes[$j]);
     }
 }
 /**
@@ -152,7 +152,7 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
         }
         $content .= "\n\n\n";
     }
-    $backup_name = $backup_name ? $backup_name : $name.".sql";
+    $backup_name = $backup_name ?: "{$name}.sql";
     if ($dwnld !== 'N' && $dwnld !== 'V') {
         // save the new db to the standard data directory
         $loc = sys_get_temp_dir() . '/' . $backup_name;
@@ -273,12 +273,28 @@ function reduceLocks($count, $ipadd, $pdo)
     }
 }
 /**
+ * This function removes nulls from an array
+ * 
+ * @param string[] $array The array from which nulls are to be removed
+ * 
+ * @return string[];
+ */
+function removeNulls($array) 
+{
+    $filtered = array_filter(
+        $array, static function ($var){
+            return $var !== null;
+        }
+    );
+    return $filtered;
+}
+/**
  * A function to id the visitors browser type.
  * NOTE: this code did not pass certain use cases as copied from
  * https://stackoverflow.com/questions/2199793/php-get-the-browser-name
  * and has thus been modified to improve rigor
  * 
- * @return string browser type
+ * @return string[] browser type
  */
 function getBrowserType()
 {

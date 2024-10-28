@@ -41,7 +41,8 @@ $ehikesPrev      = $pdo->query($ehikesPrevReq)->fetchAll(PDO::FETCH_COLUMN);
 $hikesPrev       = $pdo->query($hikesPrevReq)->fetchAll(PDO::FETCH_COLUMN);
 $allPrevVals     = array_merge($hikesPrev, $ehikesPrev);
 // NOTE: cluster pages have no previews, and will return a null value, so:
-$allPrevs        = array_filter($allPrevVals, 'strlen');
+$allPrevs = removeNulls($allPrevVals);
+
 
 /**
  * By comparing the file system to the 'expected' files listed in the database
@@ -119,15 +120,32 @@ array_shift($prevPix);  // eliminate '..'
 if ($prevPix[0] == '.DS_Store') {  // MacOS 
     array_shift($prevPix);
 }
+
+/**
+ * Need to normalize O/S string representationa and DB string representation:
+ * Strings may not be represented the same way and thus appear to be different
+ * when in fact they are the same
+ */
+$previews = [];
+foreach ($allPrevs as $prev) {
+    $norm = normalizer_normalize($prev, Normalizer::FORM_C);
+    array_push($previews, $norm);
+}
+$pimages = [];
+foreach ($prevPix as $ppic) {
+    $norm = normalizer_normalize($ppic, Normalizer::FORM_C);
+    array_push($pimages, $norm);
+}
 // any preview pix not assigned in the HIKES/EHIKES tables?
-foreach ($prevPix as $pImage) {
-    if (!in_array($pImage, $allPrevs)) {
+foreach ($pimages as $pImage) {
+    if (!in_array($pImage, $previews)) {
+        // may need to normalize strings...
         array_push($prev_candidates, $pImage);
     }
 }
 // does every table entry have a corresponding previews pic?
-foreach ($allPrevs as $tableItem) {
-    if (!in_array($tableItem, $prevPix)) {
+foreach ($previews as $tableItem) {
+    if (!in_array($tableItem, $pimages)) {
         array_push($prev_noshows, $tableItem);
     }
 }
@@ -139,15 +157,23 @@ array_shift($thPix);  // eliminate '..'
 if ($thPix[0] == '.DS_Store') {  // MacOS 
     array_shift($thPix);
 }
+
+// Normalization is also required for thumbs...
+$thumbs = [];
+foreach ($thPix as $thumb) {
+    $norm = normalizer_normalize($thumb, Normalizer::FORM_C);
+    array_push($thumbs, $norm);
+}
+
 // any thumbs pix not assigned in the HIKES/EHIKES tables?
-foreach ($thPix as $tImage) {
-    if (!in_array($tImage, $allPrevs)) {
+foreach ($thumbs as $tImage) {
+    if (!in_array($tImage, $previews)) {
         array_push($th_candidates, $tImage);
     }
 }
 // does every table entry have a corresponding thumbs pic?
-foreach ($allPrevs as $tableItem) {
-    if (!in_array($tableItem, $thPix)) {
+foreach ($previews as $tableItem) {
+    if (!in_array($tableItem, $thumbs)) {
         array_push($th_noshows, $tableItem);
     }
 }
