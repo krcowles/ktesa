@@ -35,7 +35,8 @@ if ($picq->rowCount() === 0) {
             array_push($photos, $item);
         } 
     }
-    if (count($photos) > 0 && strlen(($photos[0]['org'])) > 0) {
+    // New in php8 - null not allowed in strlen - switched to test for null...
+    if (count($photos) > 0 && !is_null($photos[0]['org'])) {
         usort($photos, "cmp");
     }
     /**
