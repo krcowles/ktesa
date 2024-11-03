@@ -70,13 +70,9 @@ legend {
 #test, #real {
     font-weight: bold;
 }
-#skipsites {
-    position: relative;
-    top: 4px;
-    width: 240px;
-    height: 32px;
+#psel, #dsel {
+    font-weight: bold;
 }
-
 /* Visitor Data Fieldset */
 #vdata {
     display: flex;

@@ -49,6 +49,7 @@ if (isset($_SESSION['alerts'][0])) {
 }
 $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     'test' : 'main';
+$whichSite = $testSite ? 'test site' : 'main site';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -83,6 +84,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Site Administration Tools</p>
 <p id="active" style="display:none">Admin</p>
+<p id="siteType" style="display:none;"><?=$whichSite;?></p>
 
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
     <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
@@ -127,7 +129,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             directories (comma-separated list)<br />[NOTE:]
             the <em>install</em> directory is always saved</span>
             <br /><textarea id="sites" cols="80"></textarea>
-            <br /><span>Install from:</span>
+            <br /><span style="font-weight:bold;">Install from:</span>
             <input id="copyloc" class="installdat" type="text"
                 placeholder="Test Site" /><br />
         </div><br />
@@ -139,14 +141,14 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 
         <span class="cats">Downloads:</span><br />
         <button id="chgs" type="button" class="btn 
-            btn-secondary">Changes Only</button>&nbsp;[Archive is too
+            btn-secondary">Changes Only</button>&nbsp;&nbsp;[Archive is too
                 big to download; Saved location will be printed;
                 use 'unzip -qq']<br />
         <button id="npix" type="button" class="btn 
             btn-secondary">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload: Max 20MB]<br />
         <button id="rel2pic" type="button" class="btn 
-            btn-secondary">Pictures newer than:</button>&nbsp;&nbsp;
+            btn-secondary">Pictures newer than &hellip;</button>&nbsp;&nbsp;
             <span id="psel">Select a file from the 'pictures' directory</span>
                 &nbsp;&nbsp;<input id="cmppic" type="file" /><br />
             <span id="dsel">OR specify calendar date&nbsp;&nbsp;
@@ -154,10 +156,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
                 class="datepicker" type="text" name="datepicker" /></span><br />
         <span class="cats">Listings:</span><br />
         <button id="lst" type="button" class="btn btn-secondary">List New Files
-        </button>&nbsp;&nbsp;<span id="lister">[Specify Test Sites to Skip]</span>
-            &nbsp;&nbsp;<textarea id="skipsites"
-                placeholder="Comma separated list"></textarea><br />
-
+        </button>&nbsp;&nbsp;[File changes since last Site upload]<br />
         <span id="mgmt" class="cats">Database Management Tools:</span><br />
         <button id="reload" type="button" class="btn 
             btn-danger">Reload Database</button>&nbsp;

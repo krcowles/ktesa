@@ -22,7 +22,7 @@ if (!$link) {
     );
 }
 if (!mysqli_set_charset($link, "utf8")) {
-    throw new Exeption(
+    throw new Exception(
         "Function mysqli_set_charset failed when called from file " .
         __FILE__ . " line " . mysqli_error($link)
     );

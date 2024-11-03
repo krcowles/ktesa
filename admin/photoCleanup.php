@@ -32,9 +32,9 @@ if (strpos($action, "Create") !== false) {
 } // otherwise $shell remains false
 
 // 'p' and 't' prefixes indicate 'preview' and 'thumb' respectively
-$checkboxes  = isset($_POST['checkboxes']) ? $_POST['checkboxes'] : null;
-$pcheckboxes = isset($_POST['pcheckboxes']) ? $_POST['pcheckboxes'] : null;
-$tcheckboxes = isset($_POST['tcheckboxes']) ? $_POST['tcheckboxes'] : null;
+$checkboxes  = $_POST['checkboxes'] ?? null;
+$pcheckboxes = $_POST['pcheckboxes'] ?? null;
+$tcheckboxes = $_POST['tcheckboxes'] ?? null;
 $deleted = [];
 $failures = [];
 $msg = '';

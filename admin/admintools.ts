@@ -26,6 +26,12 @@ if (admin_alert !== '') {
 if (typeof(nopix) !== 'undefined') {
     alert(nopix);
 }
+// disable pic/file downloads for test sites:
+if ($('#siteType').text() === 'test site') {
+    $('#npix').prop("disabled", true);
+    $('#rel2pic').prop("disabled", true);
+    $('#lst').prop("disabled", true);
+}
 
 var chksum_results = new bootstrap.Modal(<HTMLElement>document.getElementById('chksum_results'), {
     keyboard: false
@@ -217,7 +223,7 @@ $('#chgs').on('click', function() {
 $('#npix').on('click', function() {
     window.open('list_new_files.php?request=pictures', "_self");
 });
-// Pictures newer than
+// 'Pictures newer than' specified by browse button:
 var picfile = '';
 var pselLoc = <JQuery.Coordinates>$('#psel').offset();
 var dselLoc = <JQuery.Coordinates>$('#dsel').offset();
@@ -228,12 +234,17 @@ $('#cmppic').on('change', function(ev: Event) { // input select file
     let filearray = targ.files;
     picfile = filearray[0].name;
 });
+// Pictures newer than date-time from calendar
 $('#rel2pic').on('click', function() {
     picloc = '';
     var dateSelected = $('#pic_sel').val();
     if (picfile === '' && dateSelected === '') {
         alert("No image or date has been selected");
     } else {
+        /**
+         * If photo is specified, picloc will hold directory location, dateSelected is empty
+         * If date is selected, picloc is empty and dateSelected is specified
+         */
         if (picfile !== '') {
             var picloc = "pictures/zsize/" + picfile;
             $('#cmppic').val('');
@@ -248,14 +259,8 @@ $('#rel2pic').on('click', function() {
 /**
  * Listings
  */
-// List new files
 $('#lst').on('click', function() {
-    let list = $('#skipsites').text();
-    if (list === '') {
-        window.open("list_new_files.php?request=files", "_blank")
-    } else {
-        window.open("list_new_files.php?request=files&tsites=" + list, "_blank")
-    }
+    window.open("list_new_files.php?request=files", "_blank")
 });
 
 /**

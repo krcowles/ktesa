@@ -199,7 +199,7 @@ function showTables($pdo, $table)
             array_push($tbl_list, $row[0]); 
         }
     }
-    return array($tbl_list, $errmsg);
+    return [$tbl_list, $errmsg];
 }
 /**
  * This function will list the contents (fields) of the specified
@@ -383,13 +383,13 @@ function getBrowserType()
         $platform = "Not found";
         $pattern   = "No Pattern";
     }
-    return array(
+    return [
         'userAgent' => $u_agent,
         'name'      => $bname,
         'version'   => $version,
         'platform'  => $platform,
         'pattern'   => $pattern
-    );
+    ];
 }
 /**
  * Discover which page is being visited by the visitor

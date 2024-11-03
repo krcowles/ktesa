@@ -84,7 +84,7 @@ function prepareUpload($input_file_name)
         $_FILES[$input_file_name]['error'] : UPLOAD_ERR_NO_FILE;
     $extension = $requested ?
         strToLower(pathinfo($user_file, PATHINFO_EXTENSION)) : '';
-    $upload_data = array(
+    $upload_data = [
         'ureq' => $requested,
         'ifn'  => $input_file_name,
         'err'  => $error_stat,
@@ -92,7 +92,7 @@ function prepareUpload($input_file_name)
         'ext'  => $extension,
         'type' => '',
         'apos' => 0 // default index into user_alerts[]
-    );
+    ];
     if (strpos($input_file_name, "addgpx") !== false) {
         $upload_data['apos'] = intval(substr($input_file_name, -1));
     } elseif ($upload_data['ifn'] === 'newmap') {
@@ -151,7 +151,7 @@ function uploadFile($upload, $elev=false, $syms=false)
     if ($file_type === 'unknown') {
         // remove unknonwn file type's $tmpfile (type not based on file extension)
         unlink($tmpfile);
-        $_SESSION['alerts'][$upload['apos']] = "The file type for {$filename} " .
+        $_SESSION['alerts'][$upload['apos']] = "The file type for {$tmpfile} " .
             "is not permitted; ";
         return 'none';
     } 
@@ -224,13 +224,13 @@ function processGpx($pdo, $upload, $ifiles, $jfiles, $hikeNo)
         $pdo, $org_key, $upload['ufn'], $tmpfile, $hikeNo
     );
     if ($org_key === 'main') {
-        $gpx_data = simplexml_load_file($tmpfile);
-        $calcs = getGpxStats($gpx_data, 0);
-        $newstatsReq
-            = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
-              "`indxNo`=?;";
-        $newstats = $pdo->prepare($newstatsReq);
-        $newstats->execute([$calcs[0], $calcs[1], $hikeNo]);
+            $gpx_data = simplexml_load_file($tmpfile);
+            $calcs = getGpxStats($gpx_data, 0);
+            $newstatsReq
+                = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
+                "`indxNo`=?;";
+            $newstats = $pdo->prepare($newstatsReq);
+            $newstats->execute([$calcs[0], $calcs[1], $hikeNo]);
     }
     if (!unlink($tmpfile)) {
         new Exception("Failed to delete temporary gpx {$tmpfile}");
@@ -275,7 +275,7 @@ function resetSymfault($input_file)
  * @param boolean $elev      Test for elevation data if true, ignore otherwise
  * @param boolean $symbols   Test for supported waypoint symbols if true
  * 
- * @return array The client filename that was uploaded & server location
+ * @return string The client filename that was uploaded & server location
  */
 function validateUpload($ifn, $filename, $type, $alert_pos, $elev, $symbols)
 {
@@ -341,6 +341,7 @@ function uploadErr($errdat)
     if ($errdat === UPLOAD_ERR_EXTENSION) {
         return 'A PHP extension stopped the upload';
     }
+    return 'No matching error found';
 }
 /**
  * This function attempts to qualify the mime type against the whitelist:
@@ -502,7 +503,7 @@ function displayXmlError($error)
 function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false) 
 {
     $ftype = ''; // will be the 1st 3 chars in json filename
-    $fno   = $ext ? $ext : 1;  // suffix indicating file no. (when multiple tracks)
+    $fno   = $ext ?: 1;  // suffix indicating file no. (when multiple tracks)
     switch ($type) {
     case 'main':
         $ftype = 'emn';
@@ -557,7 +558,6 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
     $trk_array   = []; // json file names for all tracks of this gpx
     $track_names = []; // <name> for each track
     $org_name    = []; // name of gpx file & associated tracks
-    $org_dat     = []; // <input> type and its associated gpx data
     $trkcnt = $gpxdat->trk->count();
     for ($j=0; $j<$trkcnt; $j++) {
         $trkname= $gpxdat->trk[$j]->name->__toString();
@@ -695,8 +695,8 @@ function getTrackFileNames($pdo, $hikeNo, $state)
  * Note, for any gpx file w/multiple trkseg's in a trk, all
  * trkpt's will be assembled in one array ($track_pts);
  * 
- * @param SimpleXML $xml_data Pre-loaded xml data from gpx file
- * @param int       $track_no Which track in the data to use
+ * @param SimpleXMLElement $xml_data Pre-loaded xml data from gpx file
+ * @param int              $track_no Which track in the data to use
  * 
  * @return array $data Hike distance (miles) and elevation change (feet)
  */
@@ -930,8 +930,8 @@ function createPseudoJson($clat, $clng)
  * NOTE: if there are multiple segments within a track, they are effectively
  * combined into one segment.
  * 
- * @param SimpleXML $gpxdat       Pre-loaded simplexml for gpx file
- * @param int       $no_of_tracks Write one json file per track
+ * @param SimpleXMLElement $gpxdat       Pre-loaded simplexml for gpx file
+ * @param int              $no_of_tracks Write one json file per track
  * 
  * @return array $track_data
  */
@@ -1021,7 +1021,7 @@ function distance($lat1, $lon1, $lat2, $lon2)
  * This module will replace all occurances of <rtept> in a gpx
  * file with <trkpt> tags.
  * 
- * @param string $rtefile simpleXML file object from gpx file
+ * @param SimpleXMLElement $rtefile simpleXML file object from gpx file
  * 
  * @return string $newfile with trkpt tags instead of rtepts
  */
@@ -1044,7 +1044,7 @@ function convertRtePts($rtefile)
     $step2 = str_replace("rtept", "trkpt", $step1);
     $step3 = str_replace("</rte>", "</trkseg>\n</trk>", $step2);
     $trkPtFile = simplexml_load_string($step3);
-    return($trkPtFile);
+    return $trkPtFile;
 }
 /**
  * This generator extracts and yields elevation, latitude and longitude info 
@@ -1081,7 +1081,7 @@ function getPicturesDirectory()
 {
     $picdir = "";
     $current = getcwd();
-    $prev = $current;
+    $prev = $current; // return to $prev when done
     while (!in_array('pictures', scandir($current))) {
         $picdir .= "../";
         chdir('..');
@@ -1124,64 +1124,44 @@ function mapChar($mb_utf8)
         switch ($loc) {
         case ($loc < 192) :
             return "Bad";
-            break;
         case ($loc < 199) :
             return "A";
-            break;
         case ($loc === 199) :
             return "C";
-            break;
         case ($loc < 204) :
             return "E";
-            break;
         case ($loc < 208) :
             return "I";
-            break;
         case ($loc === 208) :
             return "Bad";
-            break;
         case ($loc === 209) :
             return "N";
-            break;
         case ($loc < 215) :
             return "O";
-            break;
         case ($loc === 215 || $loc === 216) :
             return "Bad";
-            break;
         case ($loc < 221) :
             return "U";
-            break;
         case ($loc < 224) :
             return "Bad";
-            break;
         case ($loc < 231) :
             return "a";
-            break;
         case ($loc === 231) :
             return "c";
-            break;
         case ($loc < 236) :
             return "e";
-            break;
         case ($loc < 240) :
             return "i";
-            break;
         case ($loc === 240) :
             return "Bad";
-            break;
         case ($loc === 241) :
             return "n";
-            break;
         case ($loc < 247) :
             return "o";
-            break;
         case ($loc === 247 || $loc === 248) :
             return "Bad";
-            break;
         case ($loc < 253) :
             return "u";
-            break;
         default :
             return "Bad";
         }

@@ -23,8 +23,10 @@ $sitePrivateDir = dirname($documentRoot, 1) . "/ktprivate";
 $thisSitePrivateDir = $sitePrivateDir . "/" . basename($thisSiteRoot);
 $siteUrl = (empty($_SERVER['HTTPS']) ? "http://" : "https://") .
     $_SERVER['SERVER_NAME'];
+$testSite = false;
 if (strlen($thisSiteRoot) > strlen($documentRoot)) { // test site?
     $thisSiteUrl = $siteUrl . "/" . basename($thisSiteRoot);
+    $testSite = true;
 } else {
     $thisSiteUrl = $siteUrl;
 }
