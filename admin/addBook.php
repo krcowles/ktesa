@@ -39,7 +39,7 @@ require "../php/global_boot.php";
     book - both fields must be present:</strong></p>
 <form action="updteBks.php" method="POST">
 <fieldset>
-<legend style="fint-size:16px;color:brown;">New Book Data</legend>
+<legend style="font-size:16px;color:brown;">New Book Data</legend>
 <label style="font-size:18px;">Enter the Author's Name: [200 Characters Max]</label>
 <input style="font-size:14px;" id="auth" type="text" name="author" 
     size="40" maxlength="200" /><br /><br />

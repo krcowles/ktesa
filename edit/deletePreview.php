@@ -19,7 +19,7 @@ if (!unlink($prevloc)) {
     throw New Exception("Could not delete preview image");
 }
 if (!unlink($thmbloc)) {
-    throw New Excepption("Could not delete thumb image");
+    throw New Exception("Could not delete thumb image");
 }
 $clearPreviewReq = "UPDATE `EHIKES` SET `preview` = null WHERE `indxNo` = ?;";
 $clearPreview = $pdo->prepare($clearPreviewReq);

@@ -6,16 +6,16 @@ $page-margin: 0;
 $page-bg: #eaeaea;
 
 body {
-    @media only screen and (max-width: 600px) {
-        width: 100%;
-    }
-    @media only screen and (min-width: 980px) {
-        min-width: $page-min-large;
-    }
     background-color: $page-bg;
     margin: $page-margin;
     font: {
         family: $page-fonts;
         size: $page-fontsize;
+    }
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
+    @media only screen and (min-width: 980px) {
+        min-width: $page-min-large;
     }
 }
