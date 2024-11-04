@@ -15,6 +15,10 @@
  */
 define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
 $mobileTesting = false;
+// For local machine only (file not in git) to identify consts used in settings.php
+if (file_exists('../VSCodeConsts.php')) {
+    //include "../VSCodeConsts.php";
+}
 
 // Locate site-specific private directories
 $documentRoot = $_SERVER['DOCUMENT_ROOT'];

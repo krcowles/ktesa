@@ -124,6 +124,9 @@ if ($clusterPage) {
     if (empty($ehike['preview'])) {
         $msgout .= '<p class="brown">Missing preview/thumb data</p>';
     }
+    if (empty($ehike['bounds'])) {
+        $msgout .= '<p class="brown">Missing hike bounds box</p>';
+    }
 }
 if (empty($ehike['dirs'])) {
     $msgout .= '<p class="brown">Missing directions link</p>';

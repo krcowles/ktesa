@@ -202,7 +202,7 @@ for ($j=0; $j<count($clickText); $j++) {
             $json_files = explode(",", $del_value[$j]);
             foreach ($json_files as $file) {
                 if (!unlink("../json/" . $file)) {
-                    throw new Excdeption("Could not remove {$file}");
+                    throw new Exception("Could not remove {$file}");
                 }
             }
         } else {

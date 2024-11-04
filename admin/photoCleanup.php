@@ -150,7 +150,7 @@ if (!isset($checkboxes) && !isset($pcheckboxes) && !isset($zcheckboxes)) {
     </ul>
         
     <?php if (count($failures) > 0) : ?>
-    <span style="color:brown;font-size=18px;">The following files were 
+    <span style="color:brown;font-size:18px;">The following files were 
         unable to be deleted:
         <ul style="list-style-type:square">
         <?php for ($k=0; $k<count($failures); $k++) : ?>

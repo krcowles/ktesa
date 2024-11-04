@@ -565,10 +565,9 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
         array_push($track_names, $track_name);
     }
     /**
-     * This next function call extracts lats/lngs/eles from the gpx track.
-     * Each track has one set of three arrays [one each for lats, lngs, eles]
-     * containing this data. All tracks are therefore returned as an array
-     * of arrays.
+     * Each track in $trkcnt has a corresponding array of lats, lngs, eles;
+     * The last entry ($trkcnt) is the total hike bounds for the combined tracks
+     * and is the last entry in $track_files, since returned tracks are 0->$trkcnt-1
      */
     $track_files = gpxLatLng($gpxdat, $trkcnt);
     for ($k=0; $k<$trkcnt; $k++) {
@@ -587,7 +586,7 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
         file_put_contents($jname, $jdat);
         array_push($trk_array, $basename);
  
-        // for main gpx file only, record new lat/lng (only 1st track is used)
+        // for main gpx file only, record new lat/lng (1st track) & bounds
         if ($k === 0 && $ftype === 'emn') {
             $trk_loc = strpos($jdat, '"trk":[{');
             $latlng_str = substr($jdat, $trk_loc+14, 70);
@@ -596,9 +595,11 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
             $lat = (int) ($trklat * LOC_SCALE);
             $trklng = (float) substr($latlng_arr[1], 6);
             $lng = (int) ($trklng * LOC_SCALE);
-            $newdatReq = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
+            $bounds = $track_files[$trkcnt];
+            $newdatReq
+                = "UPDATE `EHIKES` SET `lat`=?,`lng`=?,`bounds`=? WHERE `indxNo`=?;";
             $newdat = $pdo->prepare($newdatReq);
-            $newdat->execute([$lat, $lng, $hikeNo]);
+            $newdat->execute([$lat, $lng, $bounds, $hikeNo]);
         }
     }
     $org_name[$gpxfile] = $trk_array;
@@ -946,6 +947,11 @@ function gpxLatLng($gpxdat, $no_of_tracks)
     $gpxelev = [];
     $plat = 0;
     $plng = 0;
+    // for bounds determination...
+    $maxlat = 0;
+    $minlat = 100;
+    $maxlng = -110;
+    $minlng = -106;
     for ($i=0; $i<$no_of_tracks; $i++) {
         foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
             foreach ($trackdat->trkpt as $datum) {
@@ -954,6 +960,21 @@ function gpxLatLng($gpxdat, $no_of_tracks)
                     $plng = $datum['lon'];
                     array_push($gpxlats, (float)$plat);
                     array_push($gpxlons, (float)$plng);
+                    // update bounds
+                    $blat = round((float)$plat, 5);
+                    $blng = round((float)$plng, 5);
+                    if ($blat > $maxlat) {
+                        $maxlat = $blat;
+                    }
+                    if ($blat < $minlat) {
+                        $minlat = $blat;
+                    }
+                    if ($blng > $maxlng) {
+                        $maxlng = $blng;
+                    }
+                    if ($blng < $minlng) {
+                        $minlng = $blng;
+                    }
                     $meters = $datum->ele;
                     $feet = round(3.28084 * (float)($meters[0]), 1);
                     array_push($gpxelev, $feet);
@@ -968,6 +989,8 @@ function gpxLatLng($gpxdat, $no_of_tracks)
         $gpxlons = [];
         $gpxelev = [];
     }
+    $bounds = "{$maxlat},{$minlat},{$maxlng},{$minlng}"; // all tracks combined
+    array_push($track_data, $bounds);
     return $track_data;
 }
 /**
@@ -1205,8 +1228,10 @@ function gpxToJason($gpxfile, $jsonType, $hikeNo, $forceExtension=false)
     $trackFileExt = $forceExtension ? $forceExtension : 1;
     for ($j=0; $j<$noOfTracks; $j++) {
         $trk_name = $gpxdat->trk[$j]->name;
-        // $track_files has an array for each track,
-        // containing arrays of lats, lngs, eles
+        /**
+         * Each track in $noOfTracks has a corresponding array of lats, lngs, eles;
+         * The last entry ($noOfTracks + 1) is the total hike bounds for the track(s)
+         */
         $track_files = gpxLatLng($gpxdat, $noOfTracks);
         $json_array = $track_files[$j]; // this track's set of arrays
         $no_of_entries = count($json_array[0]); // cnt lats/lngs/eles

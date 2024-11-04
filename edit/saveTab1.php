@@ -314,7 +314,7 @@ if (!$form_saved) {
      * may still be valid and are not deleted. The user can alter as he/she sees fit.
      * However, if this file had database waypoints, they will be deleted, as they
      * are generally associated with a track. If a new upload is being requested and
-     * a main file already existed, the previous main will be deleted ($replace_main).
+     * a main file already exists, the previous main will be deleted ($replace_main).
      */
     $mainkey = empty($main) ? '' : array_keys($main)[0];
     $add1key = empty($add1) ? '' : array_keys($add1)[0];
@@ -468,7 +468,7 @@ foreach ($file_uploads as &$upload) {
                 $upload['ureq'] = false;
                 if (file_exists($tmpfile)) {
                     if (!unlink($tmpfile)) {
-                        throw new Exception("Could not remove tmp file {$badfile}");
+                        throw new Exception("Could not remove tmp file {$tmpfile}");
                     }
                 }
             } elseif (!(isset($_SESSION['symfault']) && $upload['ext'] === 'gpx'
@@ -517,7 +517,7 @@ if (isset($_SESSION['symfault']) && $_SESSION['symfault'] !== '') {
     exit;
 } 
 
-// write out the updated gpx file and track info:
+// write out the updated gpx file and track info; calculate and save hike bounds
 $newgpx = json_encode($tab1_file_data['org_gpx']);
 $newlistReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo` =?;";
 $newlist = $pdo->prepare($newlistReq);

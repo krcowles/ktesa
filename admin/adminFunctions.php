@@ -102,7 +102,7 @@ function reverseTrack($trknodes, $trkno)
  * @param array  $tables      An array containg table names to export
  * @param string $dwnld       N->not a download; C->changes only; S->site dwnld
  *                            V->only the VISITORS table
- * @param bool   $backup_name Backup name, if used
+ * @param string $backup_name Backup name, if used
  * 
  * @return null;
  */
@@ -282,7 +282,7 @@ function reduceLocks($count, $ipadd, $pdo)
 function removeNulls($array) 
 {
     $filtered = array_filter(
-        $array, static function ($var){
+        $array, static function ($var) {
             return $var !== null;
         }
     );

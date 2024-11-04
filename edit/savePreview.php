@@ -18,12 +18,12 @@ $suffix = bin2hex(random_bytes(3));
 $fname = $prefix . $suffix . '.jpg';
 if (($prev = file_get_contents($previewImg)) === false) {
     throw new Exception(
-        "Uploaded server data could not be retrieved for {$fanme}\n"
+        "Uploaded server data could not be retrieved for {$fname}\n"
     );
 }
 if (($thmb = file_get_contents($thumbImg)) === false) {
     throw new Exception(
-        "Uploaded server data could not be retrieved for {$fanme}\n"
+        "Uploaded server data could not be retrieved for {$fname}\n"
     );
 }
 $pictures_directory = getPicturesDirectory();

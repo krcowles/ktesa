@@ -53,10 +53,10 @@ if (count($clusHike) > 0) {
 
 $xfrReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`locale`," .
     "`cname`,`logistics`,`miles`,`feet`,`diff`,`fac`,`wow`,`seasons`," .  
-    "`expo`,`gpx`,`lat`,`lng`,`preview`,`purl1`,`purl2`,`dirs`,`tips`," .
+    "`expo`,`gpx`,`lat`,`lng`,`bounds`,`preview`,`purl1`,`purl2`,`dirs`,`tips`," .
     "`info`,`last_hiked`)" .
     "SELECT `pgTitle`,?,?,`locale`,?,`logistics`,`miles`,`feet`,`diff`," .
-    "`fac`,`wow`,`seasons`,`expo`,`gpx`,`lat`,`lng`,`preview`,`purl1`," .
+    "`fac`,`wow`,`seasons`,`expo`,`gpx`,`lat`,`lng`,`bounds`,`preview`,`purl1`," .
     "`purl2`,`dirs`,`tips`,`info`,`last_hiked` " .
     "FROM `HIKES` WHERE `indxNo` = ?;";
 $query = $pdo->prepare($xfrReq);
