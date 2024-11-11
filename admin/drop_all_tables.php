@@ -14,7 +14,7 @@
  */
 session_start();
 require "../php/global_boot.php";
-$tables = array();
+$tables = [];
 $data = $pdo->query("SHOW TABLES");
 $tbl_list = $data->fetchALL(PDO::FETCH_NUM);
 foreach ($tbl_list as $row) {
@@ -25,7 +25,7 @@ foreach ($tbl_list as $row) {
 // due to database FOREIGN KEY constraints, EHIKES must be last
 array_push($tables, 'EHIKES');
 $tblcnt = count($tables); // total number of database tables
-if (isset($_REQUEST['no'])) {
+if (isset($_REQUEST['no'])) { // 'no' => not a reload
     $action = 'Drop All Tables';
 } else {
     $action = "Reload Database";
@@ -67,7 +67,7 @@ if (isset($_REQUEST['no'])) {
 for ($i=0; $i<$tblcnt; $i++) {
     echo "Dropping {$tables[$i]}: ... ";
     try {
-        $pdo->query("DROP TABLE {$tables[$i]};");
+        $pdo->query("DROP TABLE IF EXISTS {$tables[$i]};");
     } catch (PDOException $pdoe) {
         // do nothing
     }

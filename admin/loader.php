@@ -14,6 +14,7 @@
  * @license No license to date
  */
 
+ require_once "../php/global_boot.php";
 // Read in entire file; whether a reload of main, or test db, input file is:
 $dbFile = "../data/nmhikesc_main.sql";
 $db_contents = file($dbFile);
@@ -25,15 +26,16 @@ if (!$db_contents) {
     );
 }
 $totalQs = 0; // total Queries
+
 // remove the lines containing VISITORS table data
 for ($k=0; $k<count($db_contents); $k++) {
-    if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false 
-        || strpos($db_contents[$k], "INSERT INTO VISITORS") !== false
-    ) {
-        // continue to skip lines until ";" is encountered
-        while (strpos($db_contents[$k], ";") === false) {
+    if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false) {
+        // continue to skip lines until next "CREATE TABLE" is encountered
+        $k++;
+        while (strpos($db_contents[$k], "CREATE TABLE") === false) {
             $k++;
         }
+        $k -= 3; // back up to include CREATE TABLE and some blank lines...
     } else {
         array_push($lines, $db_contents[$k]);
     }
@@ -52,6 +54,7 @@ echo "<script type='text/javascript'>var totq = {$totalQs};</script>";
 $qcnt = 0;
 $msg_out = false;
 $line_cnt = count($lines);
+
 for ($i=0; $i<$line_cnt; $i++) {
     // Skip it if it's empty or a comment
     if (substr($lines[$i], 0, 2) == '--' || trim($lines[$i]) == '') {
