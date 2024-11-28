@@ -41,10 +41,10 @@ require "respTableData.php";
 <div id="floater">
     <div id="opts" class="dropdown">
         <button class="btn-sm btn-secondary dropdown-toggle" type="button"
-            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             Table Options
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a id="all" class="dropdown-item" href="#">All Hikes</a></li>
             <li><a id="reg" class="dropdown-item" href="#">Hikes by Region</a></li>
             <li><a id="cls" class="dropdown-item" href="#">Hikes Within ...</a></li>
@@ -52,10 +52,10 @@ require "respTableData.php";
     </div>
     <div id="areas" class="dropdown">
         <button class="btn-sm btn-secondary dropdown-toggle" type="button"
-            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
             Locales
         </button>
-        <ul id="alist" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <ul id="alist" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
             <?=$ddlist;?>
         </ul>
     </div>
@@ -93,8 +93,8 @@ require "respTableData.php";
     </div>
 </div>
 
-<div id="near" class="modal" tabindex="-1">
-    <div class="modal-dialog">
+<div id="near" class="modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Hikes within radius</h5>
