@@ -20,8 +20,8 @@ window.matchMedia("(orientation: portrait)").addEventListener("change", function
 });
 var wht = window.innerHeight;
 var wwd = window.innerWidth;
-var choices_pos = $('.usr_choices').offset() as JQuery.Coordinates;
-var choices_ht = $('.usr_choices').height() as number;
+var choices_pos = $('.usr_choices').offset();
+var choices_ht = $('.usr_choices').height();
 var bottom = choices_pos.top + choices_ht + 12; // 12 for margin
 // manage logo items (want hoisting here, so no arrow function)
 function logoMgr() {
