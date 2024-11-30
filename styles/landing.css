@@ -1,197 +1,200 @@
 body {
-    background-color: #fcf4e8;
-    margin: 0;
-    font-family: arial, verdana;
-    font-size: 16px;
-    overflow: hidden;
+  background-color: #fcf4e8;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
+  overflow: hidden;
 }
 
 /* Logo and login bar */
 #logo {
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 68px;
-    margin-bottom: 4px;
-    margin-right: 12px;
-    background-color: #ffe866;
-    z-index: 1;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 68px;
+  margin-bottom: 4px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #pattern {
-    background-image: url("../images/southwest_pattern.png");
-    background-repeat: repeat-x;
-    background-attachment: scroll;
-    margin-top: 2px;
-    padding: 0px;
-    height: 24px;
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 24px;
 }
 
 #pgheader {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/* The 3 elements [leftside, center, rightside] in 'pgheader' have widths = contents */
 #hikers {
-    margin-left: 8px;
-    z-index: 5;
+  margin-left: 8px;
+  z-index: 5;
 }
 
 #logo_left {
-    position: relative;
-    top: 1px;
+  position: relative;
+  top: 1px;
 }
 
 #center {
-    float: left;
-    margin-top: 3px;
+  float: left;
+  margin-top: 3px;
 }
 
 #logo_right {
-    clear: left;
-    position: relative;
-    top: 3px;
-    z-index: 5;
+  clear: left;
+  position: relative;
+  top: 3px;
+  z-index: 5;
 }
 
 #tmap {
-    margin-right: 8px;
-    margin-top: 4px;
-    z-index: 5;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 5;
 }
 
-#cookie_state, #cookies_choice, #admin, #admintools {
-    display: none;
+#cookie_state, #cookies_choice {
+  display: none;
 }
 
 /* Main body section */
 #bg {
-    position: absolute;
-    top: 70px;
-    bottom: 0;
-    opacity: 0.4;
+  position: absolute;
+  top: 70px;
+  bottom: 0;
+  opacity: 0.4;
 }
+
 #welcome {
-    text-align: center;
+  text-align: center;
+  font-weight: bold;
 }
+
 #welcome, #detail, #usrview {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .landing_content {
-    position: relative;
-    clear: both;
-    text-align: center;
-    color: black;
-    font-size: 20px;
+  position: relative;
+  clear: both;
+  text-align: center;
+  color: black;
+  font-size: 20px;
 }
+
 h2 {
-    padding-top: 6px;
-    font-family: cursive;
+  padding-top: 6px;
+  font-family: cursive;
 }
+
 ::placeholder {
-    color: gray;
+  color: gray;
 }
+
 p {
-    margin-bottom: 2px;
+  margin-bottom: 2px;
 }
+
 #opts {
-    margin-top: 2px !important;
+  margin-top: 2px !important;
 }
 
 .flexitem {
-    display: block;
+  display: block;
 }
-.pair  {
-    display: inline-block;
-    font-size: 1rem;
+
+.pair {
+  display: inline-block;
+  font-size: 1rem;
 }
+
 .pair:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #home {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
 #choice1, #choice3 {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 #create, #utilize, #map {
-    border-style: solid;
-    border-width: 2px;
-    border-color: darkblue;
+  border-style: solid;
+  border-width: 2px;
+  border-color: darkblue;
 }
-#map {
-    border-width: 1px;
-    border-color: dimgray;
-}
-#utilize {
-    border-color: darkgreen;
 
+#map {
+  border-width: 1px;
+  border-color: dimgray;
+}
+
+#utilize {
+  border-color: darkgreen;
 }
 
 @media screen and (max-width: 390px) and (min-width: 316px) {
-    .icons {
-        width: 110px;
-    }
+  .icons {
+    width: 110px;
+  }
 }
 @media screen and (min-width: 400px) {
-    .icons {
-        width: 146px;
-    }
+  .icons {
+    width: 146px;
+  }
 }
-@media screen and (min-width:600px) {
-    .icons {
-        width: 160px;
-    }
+@media screen and (min-width: 600px) {
+  .icons {
+    width: 160px;
+  }
 }
 @media screen and (max-width: 1000px) and (min-width: 475px) {
-    .landing_content {
-        width: 100%;
-    }
-    .flexitem {
-        display: inline-block;
-    }
-    #choice3 {
-        margin-left: 20px;
-    }
+  .landing_content {
+    width: 100%;
+  }
+  .flexitem {
+    display: inline-block;
+  }
+  #choice3 {
+    margin-left: 20px;
+  }
 }
 #bennies {
-    display: none;
-    width: max-content;
-    font-size: 0.92rem;
-    padding: 6px;
-    line-height: 1.3rem;
-    text-align: left;
-    margin-top: 0.8rem;
-    margin-left: auto;
-    margin-right: auto;
-    border-style: solid;
-    border-color: darkblue;
-    border-width: 1px;
+  display: none;
+  width: max-content;
+  font-size: 0.92rem;
+  padding: 6px;
+  line-height: 1.3rem;
+  text-align: left;
+  margin-top: 0.8rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-color: darkblue;
+  border-width: 1px;
 }
+
 #memlist {
-    margin-bottom: 0px;
-}
-#tmp {
-    position:absolute;
-    top:260px;
-    left:80px
-}
-#sizes {
-    height: 2rem;
-    width: 5rem;
+  margin-bottom: 0px;
 }
 
 /*# sourceMappingURL=landing.css.map */

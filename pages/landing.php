@@ -69,7 +69,7 @@ require_once "../accounts/getLogin.php";
 <p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
 <?php endif;?>
     
-<h2 id="welcome">The New Mexico Hiking Site</h2>
+<h2 id="welcome"><strong>The New Mexico Hiking Site</strong></h2>
 <div class="landing_content">
     <h4 id="detail">(A free site)</h4> 
     <p id="opts">Choose from the following

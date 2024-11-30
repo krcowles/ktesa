@@ -30,6 +30,7 @@ function logoMgr() {
         $('#logo_left').css('font-size', '.8rem');
         $('#logo_right').text('NM');
         $('#logo_right').css('font-size', '.8rem;');
+        $('#detail').show();
         $('#vopts').hide();
         if (wht - bottom > 220) {
             $('#bennies').show();
@@ -45,6 +46,7 @@ function logoMgr() {
         $('#logo_right').css('font-size', '1rem;');
         $('#vopts').show();
         $('#bennies').hide();
+        $('#detail').hide();
     }
     return;
 }
