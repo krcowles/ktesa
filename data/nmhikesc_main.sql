@@ -27,7 +27,7 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EHIKES VALUES
@@ -41,7 +41,7 @@ CREATE TABLE `BOOKS` (
   `title` varchar(200) NOT NULL,
   `author` varchar(200) NOT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO BOOKS VALUES
@@ -79,7 +79,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=246 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -311,7 +311,10 @@ INSERT INTO CLUSHIKES VALUES
 ('239','88','Y','73'),
 ('240','87','Y','73'),
 ('241','365','Y','74'),
-('242','332','Y','74');
+('242','332','Y','74'),
+('243','366','Y','75'),
+('244','342','Y','75'),
+('245','368','Y','75');
 
 
 
@@ -324,7 +327,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -400,7 +403,8 @@ INSERT INTO CLUSTERS VALUES
 ('71','Perchas Group','360421900','-1067915500','Y','0'),
 ('72','Las Vacas Group','360273120','-1068468280','Y','0'),
 ('73','July 4th Group','347839000','-1063803600','Y','0'),
-('74','Ojito Northwest Group','355201100','-1069626500','Y','0');
+('74','Ojito Northwest Group','355201100','-1069626500','Y','0'),
+('75','Red Mesa Group','355423070','-1068386840','Y','0');
 
 
 
@@ -411,27 +415,28 @@ CREATE TABLE `Checksums` (
   `chksum` bigint(20) DEFAULT NULL,
   `creation` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2024-11-27 17:10:57'),
-('2','CLUSHIKES','1819306368','2024-11-27 17:10:57'),
-('3','CLUSTERS','2342364365','2024-11-27 17:10:57'),
-('4','EGPSDAT','0','2024-11-27 17:10:57'),
-('5','EHIKES','3902886998','2024-11-27 17:10:57'),
-('6','EREFS','0','2024-11-27 17:10:57'),
-('7','ETSV','3305244503','2024-11-27 17:10:57'),
-('8','EWAYPTS','0','2024-11-27 17:10:57'),
-('9','FAVORITES','3651041965','2024-11-27 17:10:57'),
-('10','GPSDAT','2943847214','2024-11-27 17:10:57'),
-('11','HIKES','1073474997','2024-11-27 17:10:57'),
-('12','LOCKS','995418726','2024-11-27 17:10:57'),
-('13','MEMBER_PREFS','945859736','2024-11-27 17:10:57'),
-('14','REFS','2477969840','2024-11-27 17:10:57'),
-('15','TSV','3334055470','2024-11-27 17:10:57'),
-('16','USERS','3709523294','2024-11-27 17:10:57'),
-('17','WAYPTS','2397409926','2024-11-27 17:10:57');
+('1','BOOKS','381683775','2025-01-02 10:42:01'),
+('2','CLUSHIKES','2952685872','2025-01-02 10:42:01'),
+('3','CLUSTERS','2570333961','2025-01-02 10:42:01'),
+('4','EGPSDAT','0','2025-01-02 10:42:01'),
+('5','EHIKES','3902886998','2025-01-02 10:42:01'),
+('6','EREFS','0','2025-01-02 10:42:01'),
+('7','ETSV','3305244503','2025-01-02 10:42:01'),
+('8','EWAYPTS','0','2025-01-02 10:42:01'),
+('9','FAVORITES','3651041965','2025-01-02 10:42:01'),
+('10','GPSDAT','2943847214','2025-01-02 10:42:01'),
+('11','HIKES','145635938','2025-01-02 10:42:01'),
+('12','LOCKS','995418726','2025-01-02 10:42:01'),
+('13','MEMBER_PREFS','945859736','2025-01-02 10:42:01'),
+('14','POLYLINES','0','2025-01-02 10:42:01'),
+('15','REFS','3634037717','2025-01-02 10:42:01'),
+('16','TSV','1852550823','2025-01-02 10:42:01'),
+('17','USERS','3709523294','2025-01-02 10:42:01'),
+('18','WAYPTS','1327628446','2025-01-02 10:42:01');
 
 
 
@@ -461,7 +466,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -489,7 +494,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=452 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO ETSV VALUES
@@ -510,7 +515,7 @@ CREATE TABLE `EWAYPTS` (
   PRIMARY KEY (`wptId`),
   KEY `EWAYPTS_Constraint` (`indxNo`),
   CONSTRAINT `EWAYPTS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -616,7 +621,7 @@ CREATE TABLE `HIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=366 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=369 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO HIKES VALUES
@@ -770,7 +775,7 @@ INSERT INTO HIKES VALUES
 ('151','Dome Wilderness','2','Los Alamos','Out-and-back','5.56','317','Moderate','None','Wilderness Views','Not Summer','Full sun','{\"main\":{\"Dome_Wilderness.GPX\":[\"pmn151_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','357117262','-1063842839','35.72819,35.71171,-106.36584,-106.38435','dome.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157688101713282','https://www.flickr.com/photos/159672980@N03/albums/72157667151848629','https://www.google.com/maps/dir//35.7116667,-106.3841667/@35.6924128,-106.4039245,13.19z','<p>About 0.9 miles past the Cochiti Golf Club on NM 22, FR289 heads north into the <span style=\"color: #1428d2;\"><em>Dome Wilderness</em></span> - the smallest Wilderness Area in the Southwest at about 5,200 acres. FR289 can be a real challenge, and 4-wheel drive is an absolute must. Early on, in an area that was formerly part of Dixon Orchards, the road dips and follows a stream bed for a short, but muddy distance. Check before traversing this section, as summer flooding can make the road treacherous and unmanageable. People have gotten stuck. After leaving the stream behind, the road surface can still be rippled and rocky.</p>','<p>This area is not heavily visited (possibly due in part to road conditions), but the trailhead is clearly marked. After about 2 1/4 miles, the trail splits at a T-junction. (see the blue flag on the interactive map, above). The authors continued straight, as described in the book reference below, rather than turning left up the <span style=\"color: #1428d2;\"><em>St. Peter\'s Dome Trail</em><span style=\"color: #000000;\">.</span></span></p>\r\n<p>The <span style=\"color: #1428d2;\"><em>Dome Wilderness Area</em></span> still shows scars from the <em>Las Conchas Fire</em> of 2011 and further, heavy flooding in 2014. But most of the scars are healing to the point where they mainly accentuate the spectacular views of canyons, mesas, meadows, and the surrounding <em>Jemez</em> mountains. The trail leads down into and back out of canyons and across mesas. About 1.5 miles in, the trail approaches and crosses an 80-foot waterfall. Hikers get to see it from many angles, including straight down from the top.This is a hike that will not be soon forgotten.</p>','2017-12-05'),
 ('152','La Bajada East','2','Santa Fe','Out-and-back','3.72','483','Easy-Moderate','None','Views','Winter','Full sun','{\"main\":{\"BajadaHistoricalArea.gpx\":[\"pmn152_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355554290','-1061968919','35.56064,35.5495,-106.19366,-106.20465','bajeast.jpg','https://www.flickr.com/photos/30474783@N06/albums/72157663820381968','https://www.flickr.com/photos/139088815@N08/albums/72157690676862374','https://www.google.com/maps/place/35%C2%B033\'19.7%22N+106%C2%B011\'48.8%22W/@35.55547,-106.19688,17z/data=!3m1!1e3?authuser=0&hl=en','<p>The road to the two parking spots for this hike is severely rutted in places. 4-wheel drive is highly recommended, and a sturdy off-road vehicle might be required after any significant precipitation. Driving in some of these areas is also prohibited without a special permit from the Forest Service. Consult Forest Service signs and paper maps to be sure. Also note this is a two-part hike with a short drive between the two \"trail heads\" - one hike is on the mesa top and the other is in the valley. The drive shows up on the map as two straight sections making an inverted \"V\".</p>','<p><span style=\"color: #1428d2;\"><em>La Bajada - East </em></span>is scenic two-part hike with gorgeous views and hundreds of years of history to contemplate. The <em>Royal Road</em> (<em>El Camino Real</em>) once followed the Santa Fe River on its way to Santa Fe. Remnants of dwellings from the <em>Tsinat Pueblo</em> and other peoples appear in the valley and on the mesa top. Agricultural improvements also reveal themselves to the trained eye.</p>\r\n<p>The <em>Tsinat</em> built miles of one-rock dams on the mesa top. These helped the infrequent rains sink into the soil. The <em>Tsinat</em> also built hundreds of knee-high rock pyramids to create microclimates for their corn, squash and beans. More recently, cattlemen have made trail improvements and built fences and wells. It wasn\'t all work, though. The many pottery sherds and petroglyphs in the area tell us that the <em>Tsinat</em> and others had time and talent for creating beautiful art.</p>','2018-10-19'),
 ('153','Twin Hills Peaks','2','Santa Fe','Loop','5.20','770','Moderate','None','Volcanic Features','Not Summer','Full sun','{\"main\":{\"The_Twins.GPX\":[\"pmn153_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','357036028','-1061261150','35.7115,35.70326,-106.12611,-106.16504','thpeaks.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157674263303274','https://www.flickr.com/photos/30474783@N06/albums/72157677808580075','https://www.google.com/maps/place/35%C2%B042\'15.4%22N+106%C2%B007\'26.8%22W/@35.6938831,-106.119556,13z','<p>Similar to the other hikes in the <em>Chino Mesa</em> group, this hike is also accessed via the scarcely maintained FR 24 off of NM 62. Traveling up to the point where the turnoff to <em>Twin Hills</em> occurs can be managed by a standard vehicle, though FR 24 can be a bit rough. Once leaving FR 24, a four-wheel vehicle with reasonable clearance is definitely required. How far one follows the two-track is up to the driver, but further travel means less hiking up to the <em>Twin Hills</em>.</p>','<p>There are no trails in this area, though the early part of this <em><span style=\"color: #1428d2;\">Twin Hills Peaks</span></em> hike can follow the double-track dirt road towards the hills. There is no trail ascending either of the <em>Twin Hills</em>, so one must choose the least steep and precarious route based on observation. The north hill nonetheless gets steep near the top.</p>\r\n<p>On a previous hike to the area, the authors chose to follow the instructions in the book reference below, but on this hike chose to explore the peaks themselves. The views from the top are expansive and one can see a good part of the <em>Chino Mesa,&nbsp;</em>its volcanic features, and surrounding areas.</p>','2017-12-12'),
-('154','White Mesa Bike Trails East','2','San Ysidro','Out-and-back','4.13','256','Easy-Moderate','None','Ojito Wilderness Area','Not Summer','Full sun','{\"main\":{\"Bike_Trails_East.GPX\":[\"pmn154_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','354984486','-1068414976','35.5137,35.49843,-106.83449,-106.84152','wmesaeast.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','<p>Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with some clearance is recommended.</p>','<p>The <span style=\"color: #1428d2;\"><em>White Mesa Bike Trails</em></span> area is a very scenic wilderness area, beginning from the intersection of <span style=\"color: #1428d2;\"><em>Dragon\'s Back</em></span> and the <span style=\"color: #1428d2;\"><em>Bike Trails East</em></span>. A short jaunt from the parking lot takes you to the top of a gorgeous canyon ridge, where the two trails diverge. Unexpectedly, the <span style=\"color: #1428d2;\"><em>Bike Trails East</em></span> provides a significantly different view than <span style=\"color: #1428d2;\"><em>Dragon\'s Back</em></span>, and is rich with variety.</p>\r\n<p>As it meanders along the edge of the canyon, multiple trails provide different views of the canyon. After leaving the canyon edge and following the eastern ridge, new formations appear along with views to the east, including hoodoos and multi-colored hills. While the authors did not choose to \'go the distance\' on this windy day, the hike can easily be extend almost to US 550 to the north. See the <span style=\"color: #1428d2;\"><em>White Mesa Bike Trails Loop</em></span> hike (<strong>Related Hikes</strong>, below) for a longer option.</p>','2018-01-02'),
+('154','Ojito East Trails and Valley','2','San Ysidro','Loop','5.05','373','Med-Difficult','None','Canyons and Formations','Not Summer','Full sun','{\"main\":{\"OjitoValleyLoop.GPX\":[\"pmn154_1.json\"]},\"add1\":{\"Bike_Trails_East.GPX\":[\"pa1154_1.json\"]},\"add2\":[],\"add3\":[]}','354985141','-1068413977','35.52416,35.49851,-106.83448,-106.8451','wmesaeast.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','<p>&nbsp;Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with fair clearance is recommended.</p>','<p>The <span style=\"color: #1428d2;\"><em>White Mesa Bike Trails</em></span> area is a very scenic wilderness area, beginning from the intersection of <span style=\"color: #1428d2;\"><em>Dragon\'s Back</em></span> and the <span style=\"color: #1428d2;\"><em>Bike Trails East</em></span>. A short jaunt from the parking lot takes you to the top of a gorgeous canyon ridge, where two trails diverge. Also from here, the geology of an old eroded anticine is revealed, showing layers of the Morrison and Chinle formations. Unexpectedly, the <span style=\"color: #1428d2;\"><em>Bike Trails East</em></span> provides a significantly different view than <span style=\"color: #1428d2;\"><em>Dragon\'s Back</em></span>, and is rich with variety.</p>\r\n<p>As it meanders along the edge of the canyon, multiple trails provide different views of the area. After leaving the canyon edge and following the eastern ridge, new formations appear along with views to the east, including hoodoos and multi-colored hills. There are multiple hikes available from here, and the <em><span style=\"color: #5a51d9;\">Ojito Canyon Loop</span></em> is a moderate and fascinating journey from the ridgetop to the lower valley, with great multi-colored views. Please note that the return route taken on this loop has some extremely steep sections, hence the \'Medium-Difficult\' rating. Other routes back may be preferable.</p>','2024-12-31'),
 ('155','Boundary - Juan Tabo Loop','2','Albuquerque','Loop','4.48','1006','Moderate','None','Rincon Ridge Views','Not Summer','Full sun','{\"main\":{\"Boundary_Juan_Tabo.GPX\":[\"pmn155_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352023997','-1065042512','35.22228,35.20239,-106.48868,-106.50434','boundj.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157691826344904','https://www.flickr.com/photos/30474783@N06/albums/72157664988826358','https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'<p>The start of the <span style=\"color: #1428d2;\"><em>Boundary - Juan Tabo Trail</em></span> (and related trails) begins opposite a dirt parking area about 1/4 mile north of Tramway Blvd on FR333. The trail immediately ascends a low ridge, and while a bit steep, is relatively short. From there at least two options can be seen. One option immediately climbs higher on the ridge, while the subject hike follows a more level route along its contour.</p>\r\n<p>The trail soon dips down into a low canyon (<em>Jaral Canyon</em>) and follows the arroyo north a short distance. Before long, after a sharp bend, a short scramble up some low limestone cliffs (perhaps 5 ft.) is required to continue. At the top of that rock wall more options occur. Continuing up the arroyo leads to a companion hike (<em><span style=\"color: #1428d2;\">Boundary Loop Trail</span></em>), while this hike ventures up the eastern ridge to explore the great views of the Sandias. This hike requires more ascent/descent than <span style=\"color: #1428d2;\"><em>Boundary Loop</em></span>, but also affords multiple views not provided by that hike. The ridge continues north, and eventually leads down into the valley where it intersects the <em><span style=\"color: #1428d2;\">Juan Tabo Canyon Trail</span></em>. That trail is also found on this site, and ventures further down the canyon than this hike. Eventually, after finding a way back up the ridge, the trail rejoins the companion <em><span style=\"color: #1428d2;\">Boundary Loop Trail </span></em>where it returns to the trail head - after providing some great views of <em>Juan Tabo Canyon</em>.</p>','2018-01-23'),
 ('156','Water Canyon','2','White Rock','Out-and-back','6.33','198','Easy-Moderate','None','Canyon Views','Not Summer','Full sun','{\"main\":{\"Water_Canyon.GPX\":[\"pmn156_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','358036545','-1062457870','35.80561,35.78941,-106.20989,-106.24644','watercan.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157694377471505','https://www.flickr.com/photos/30474783@N06/albums/72157692553848481','https://www.google.com/maps/place/35%C2%B048\'13.7%22N+106%C2%B014\'45.2%22W/@35.8038143,-106.248094,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d35.80381!4d-106.2459?hl=en&authuser=0','<p>The trail head parking is basically off to the side of Highway 4 and can be a little difficult to find. The trail itself is mostly easy to follow and well marked, but keep an eye on the GPS track, especially at the many intersections with other trails.</p>','<p><span style=\"color: #1428d2;\"><em>Water Canyon</em></span> is a relatively easy hike along the mesa top through a variety of scenery including Ponderosa, pinon, and juniper trees, as well as open meadows. The track in some places follows what must be ancient trails, as the soft rock is worn into trenches whose walls are sometimes more than knee high.</p>\r\n<p>At several points along the way, and especially at the end, you\'ll be rewarded with spectacular views down into and across the <em>Rio Grand Valley</em>.</p>','2018-03-09'),
 ('157','Juan Tabo Canyon','2','Albuquerque','Out-and-back','5.87','650','Easy-Moderate','None','Cliff VIews','Not summer','Full sun','{\"main\":{\"JuanTaboCanyon.gpx\":[\"pmn157_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352167850','-1064875740','35.2321,35.21555,-106.48747,-106.50295','jtcan.jpg','https://www.flickr.com/photos/159672980@N03/albums/72157666204367189','https://www.flickr.com/photos/139088815@N08/albums/72157662703906638','https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','<p>This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the <em>Sandia Pueblo</em>. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.</p>','<p>A great hike for exploring various spurs in and around <em><span style=\"color: #1428d2;\">Juan Tabo Canyon</span></em>. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to the <em>Rincon Ridge</em> and down into Albuquerque.</p>','2017-11-10'),
@@ -975,7 +980,10 @@ INSERT INTO HIKES VALUES
 ('362','Upper Clear Creek','2','Cuba','Out-and-back','12.12','1170','Moderate','Outdoor Facilities','Streams and Meadows','Not Winter','Mixed sun/shade','{\"main\":{\"ClearCreek.gpx\":[\"pmn362_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','360273120','-1068468280','36.09493,36.0273,-106.83961,-106.85331','Uppeb4e27d.jpg',NULL,NULL,'https://www.google.com/maps/dir//36.027312,-106.846828/@36.0020393,-106.9430429,12.44z?entry=ttu&g_ep=EgoyMDI0MDkxMC4wIKXMDSoASAFQAw%3D%3D','<p>&nbsp;The dirt road (FR70) leading to the trail head is relatively well-maintained - minimal ground clearance is required.</p>','<p>The <em><span style=\"color: #5a51d9;\">Upper Clear Creek Trail,</span></em> though somewhat long, heads north on a moderate-to-easy grade, and the views en route are quite appealing. In addition to the very-clear creek itself, there are beautiful expansive meadows lined with tall spruce, fir and aspens. Shade is available for a good deal of the hike, and meadows can be skirted for additional shade. This is also a rather isolated trail as you proceed north, and you will be able to enjoy nature without interruption. Note that at some points the meadows can be quite saturated, so be prepared for occasionally squishy shoes.</p>','2024-07-29'),
 ('363','Autumn Near Cerro Blanco','2','Tajique','Out-and-back','5.21','451','Easy-Moderate','None','Gorgeous Autumn Foliage','Fall','Mixed sun/shade','{\"main\":{\"AutumnMapleTour.GPX\":[\"pmn363_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','347801087','-1063869412','34.78063,34.76677,-106.38688,-106.40104','Autu82b813.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.7801111,-106.3869444/@34.7849603,-106.393522,14.72z?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D','<p>The road to the parking area, shortly after Fourth of July Campground, can be rather rough - a high-clearance all-wheel vehicle is strongly recommended</p>','<p>The road leading to the the <span style=\"color: #5a51d9;\"><em>Cerro Blanco</em></span> trail head (FS-55) enters a large area of hardwoods, and this hike leads south on that road to explore the autumn display. All along the road on both sides are beautifully colored maples of almost every color. Here and there a side road was explored, sometimes leading to even more beauty - and sometimes not... Either way, the trip is magnificent and full of wonder. This is a hike that should be taken in the peak fall season to make for an unforgettable experience. With most travellers heading to the <em>Fourth of July Trail</em>, the road on this hike is virtually devoid of people. Take your time - you will find yourself taking countless photos!</p>','2024-10-16'),
 ('364','Blind Canyon','2','Valles Caldera','Out-and-back','5.68','641','Moderate','None','Valleys filled with spruce, aspen and pine','Not winter','Mixed sun/shade','{\"main\":{\"BlindCanyon.GPX\":[\"pmn364_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','359134910','-1066393773','35.93704,35.91348,-106.62692,-106.64005','Blinb06b87.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.9134911,-106.6393773/@35.8831752,-106.673925,13.45z?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"color: #5a51d9;\"><em>Blind Canyon </em></span>area just west of the Valles Caldera comprises multiple canyons aligned in a somewhat random fashion. The area holds multiple exploratory possibilities and can be hiked in multiple seasons. It is an area where you will not likely find other hikers. From the entrance point, the changes in elevation result in a varying variety of trees making for an interesting hike. Each section along the way sustains a unique character and has it own natural beauty.</p>','2024-10-29'),
-('365','Ojito Northwest Upper','2','San Ysidro','Loop','6.43','283','Med-Difficult','None','Hoodoo-filled Canyons','Spring/Fall','Full sun','{\"main\":{\"OjitoNNW.gpx\":[\"pmn365_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355351500','-1069686866','35.53655,35.51591,-106.93959,-106.9689','Ojit9dbf7a.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.5351501,-106.9686866/@35.5186972,-106.9669937,14z?entry=ttu&g_ep=EgoyMDI0MTExOS4wIKXMDSoASAFQAw%3D%3D','<p>Pipeline Road at the Western edge of the Ojito Wilderness can be very challenging - rutted and bumpy, and muddy in areas. A high clearance vehicle is required to access this area, and preferably one with large tires. This hike begins at the fenceline of a very rough two-track off of Pipeline Road.</p>','<p>The Northwest Corner of the <span style=\"color: #5a51d9;\"><em>Ojito Wilderness</em></span> is rarely visited, and holds many surprises, ranging from deep-walled canyons to hoodoos to colorful arroyos. As you might expect, there are no trails in this area, and subsequently there are almost never other hikers. When descending the canyons, look for areas where animal trails go down, or other places where you can see a reasonable, though potentially steep, descent. There are few options, and care must be taken.</p>\r\n<p>Eventually, the canyon floor leads to a remarkable hoodoo-filled area before continuing on to another point of descent into a section of additional hoodoos. And that\'s not the last area! A third area of hoodoos is encountered before closing the loop. While the first valley of hoodoos is mostly white sandstone, the second has a great deal of iron-rich red stone. The final section is&nbsp; more neutral in color; each section holds unique shapes and sculpts, and never repeats. This is a most enjoyable hike - well worth the effort - though the first and last sections traverse scrubby terrain.</p>','2024-11-12');
+('365','Ojito Northwest Upper','2','San Ysidro','Loop','6.43','283','Med-Difficult','None','Hoodoo-filled Canyons','Spring/Fall','Full sun','{\"main\":{\"OjitoNNW.gpx\":[\"pmn365_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355351500','-1069686866','35.53655,35.51591,-106.93959,-106.9689','Ojit9dbf7a.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.5351501,-106.9686866/@35.5186972,-106.9669937,14z?entry=ttu&g_ep=EgoyMDI0MTExOS4wIKXMDSoASAFQAw%3D%3D','<p>Pipeline Road at the Western edge of the Ojito Wilderness can be very challenging - rutted and bumpy, and muddy in areas. A high clearance vehicle is required to access this area, and preferably one with large tires. This hike begins at the fenceline of a very rough two-track off of Pipeline Road.</p>','<p>The Northwest Corner of the <span style=\"color: #5a51d9;\"><em>Ojito Wilderness</em></span> is rarely visited, and holds many surprises, ranging from deep-walled canyons to hoodoos to colorful arroyos. As you might expect, there are no trails in this area, and subsequently there are almost never other hikers. When descending the canyons, look for areas where animal trails go down, or other places where you can see a reasonable, though potentially steep, descent. There are few options, and care must be taken.</p>\r\n<p>Eventually, the canyon floor leads to a remarkable hoodoo-filled area before continuing on to another point of descent into a section of additional hoodoos. And that\'s not the last area! A third area of hoodoos is encountered before closing the loop. While the first valley of hoodoos is mostly white sandstone, the second has a great deal of iron-rich red stone. The final section is&nbsp; more neutral in color; each section holds unique shapes and sculpts, and never repeats. This is a most enjoyable hike - well worth the effort - though the first and last sections traverse scrubby terrain.</p>','2024-11-12'),
+('366','Step Canyon Red Mesa','2','San Ysidro','Loop','6.22','922','Difficult','None','Great Canyon Views','Not Winter','Full sun','{\"main\":{\"Step_Canyon.gpx\":[\"pmn366_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355423070','-1068386840','35.56915,35.54226,-106.83598,-106.84654','Stepda4e75.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B032\'32.6%22N+106%C2%B050\'19.6%22W/@35.5402248,-106.8432118,13746m/data=!3m1!1e3!4m4!3m3!8m2!3d35.5423889!4d-106.8387778?entry=ttu&g_ep=EgoyMDI0MTEyNC4xIKXMDSoASAFQAw%3D%3D','<p>The access to this hike is directly off of NM 550 north of San Ysidro. It is a very small access to a fence and small dirt parking lot and entrance. It is easy to miss, so use of this site\'s directions link would be helpful.</p>','<p>The <em><span style=\"color: #5a51d9;\">Step Canyon</span></em> hike explores some of the <em>Red Mesa</em>\'s canyon area. After ascending to the top of the mesa, the canyon is accessed by looping around a northeasterly branch of the canyon and then descending the canyon to the west. It requires Class 3 scrambling at points, and is difficult terrain, but with fascinating features and views. It is rarely visited and makes for a unique and scenic experience. It is recommended you have other hikers along as a measure of safety. The hike area is just south of the Jemez Pueblo-owned land, so excursions further north are not available.</p>\r\n<p>Note: a number of the photos were taken by group members and do not contain location data, so they do not appear as markers on the map.</p>','2024-11-30'),
+('367','Lower Pine Trail','2','Tijeras','Loop','8.99','582','Moderate','None','Variety of Eastern Sandia and Manzanitas views','Any','Mixed sun/shade','{\"main\":{\"Lower_Pine.GPX\":[\"pmn367_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','350972443','-1063308626','35.09747,35.05907,-106.31438,-106.33097','Lowe7a68d6.jpg',NULL,NULL,'https://www.google.com/maps/place/Lower+Pine+Trailhead/@35.0912759,-106.3744098,13.63z/data=!4m6!3m5!1s0x8718bcd965300045:0x89259b1bf7ad8fca!8m2!3d35.0973037!4d-106.3308817!16s%2Fg%2F11b5pjl3z2?entry=ttu&g_ep=EgoyMDI0MTIwMy4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"color: #5a51d9;\"><em>Lower Pine Trail </em></span>is tucked away to the East of the Manzanitas and affords nice views of the area and of the eastern slopes of the Sandias. It has easy and well-marked access near Zuzax off of I-40, and has parking sufficient for 6-8 cars, though it most often has few. This hike took place in the early winter and the author encountered no one on the trails until the afternoon, when some locals were walking their dogs on the beginning parts of the trail.</p>\r\n<p>The hike makes a rather long loop around the canyon, affording some views in multiple directions. The views would be even more enjoyable when the meadows are green and wildflowers are in bloom. Too much snow would make the trail undesirable for hiking, as the sandy areas become moist and mud clings to the boots.</p>','2024-12-03'),
+('368','Ojito Gypsum Slot Canyon','2','San Ysidro','Out-and-back','7.12','542','Med-Difficult','None','Narrow slot canyon and canyon views','Not Summer','Full sun','{\"main\":{\"TravertineSlot.gpx\":[\"pmn368_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355421753','-1068388733','35.54227,35.5215,-106.82499,-106.84628','Ojit304bd5.jpg',NULL,NULL,'https://www.google.com/maps/dir/The+Home+Depot,+US+Highway+550+Northeast,+Rio+Rancho,+NM/35.5421754,-106.8388733/@35.4532844,-106.8075315,11.48z/data=!4m8!4m7!1m5!1m1!1s0x87228e8cb4e98f41:0x6b97a8a541491cfe!2m2!1d-106.5782673!2d35.3329378!1m0?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D','<p>&nbsp;Parking access may be difficult to spot, and is immediately off of US 550. There is a very small dirt parking area near an access gate on the north side of the road.</p>','<p>The <em><span style=\"color: #5a51d9;\">Ojito Gypsum Slot Canyon</span></em> hike was inspired by Doug Scott\'s \'<em>New Mexico Slot Canyons</em>\' book, labelled the \"Gypsum Slot Canyon\" (see References below for a link). The access route was planned by the hike leader (<em>Continental Divide Trail Angels</em>), Rock Cogar, and takes the hiker up through a beautiful access canyon on the north end of the <em>Ojito Wilderness.</em> The route up is moderately challenging but fascinating, encountering colorful rock formations, great views and even arches. Once the high ground is reached, an old two-track can be followed to the point where the descent into the canyon area begins. Note that the better access route on the map is denoted with a yellow triangle - it was uncovered on the return leg of the trip. Parts of the descent are rather steep.</p>\r\n<p>The slot canyon itself is a beautiful and narrow, winding route through steep gypsum walls. The scenery constantly changes making for a superb visual treat. Once the canyon began to open up at its north-eastern end, the way was blocked by an immense tangle of tumbleweeds. It appeared, nonetheless, that the most interesting part of the trip was behind. This hike is truly a worthwhile endeavor for those seeking an unusual and satisfying experience.</p>','2024-12-23');
 
 
 
@@ -1010,6 +1018,19 @@ INSERT INTO MEMBER_PREFS VALUES
 
 
 
+CREATE TABLE `POLYLINES` (
+  `userid` smallint(6) NOT NULL,
+  `created` date NOT NULL,
+  `mapName` varchar(100) NOT NULL,
+  `polyline` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+
+
+
+
+
 CREATE TABLE `REFS` (
   `refId` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
@@ -1017,7 +1038,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3480 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3489 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO REFS VALUES
@@ -1801,10 +1822,6 @@ INSERT INTO REFS VALUES
 ('2932','95','Book: ','7',NULL),
 ('2933','95','Website: ','http://www.sandiahiking.com/trailguide.html','Site accompanying above book'),
 ('2934','95','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-007','Trails.com'),
-('2945','154','Book:','2',NULL),
-('2946','154','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
-('2947','154','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
-('2948','154','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails'),
 ('2952','226','Book:','2',NULL),
 ('2953','226','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
 ('2954','226','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
@@ -1827,12 +1844,12 @@ INSERT INTO REFS VALUES
 ('2996','262','Website:','https://www.hikingproject.com/trail/7038410/bill-spring-trail','REI Hiking Project'),
 ('2997','262','App:','https://www.alltrails.com/trail/us/new-mexico/bill-spring-196-oso-corredor-265-and-tree-spring-147','AllTrails.com'),
 ('3008','264','Book:','22',NULL),
-('3009','264','App:','https://www.alltrails.com/trail/us/new-mexico/rito-de-los-indios','AllTrails.com');
-INSERT INTO REFS VALUES
+('3009','264','App:','https://www.alltrails.com/trail/us/new-mexico/rito-de-los-indios','AllTrails.com'),
 ('3010','264','Website:','https://www.nps.gov/vall/planyourvisit/moderate-hikes.htm','Natl Park Service'),
 ('3011','265','App:','https://www.alltrails.com/explore/us/new-mexico/cedar-crest?b_tl_lat=35.140759986293645&b_tl_lng=-106.37196555281791&b_br_lat=35.12468092603041&b_br_lng=-106.34798826419168','AllTrails.com'),
 ('3012','265','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','East Mtn Open Space: ABQ Parks'),
-('3027','268','Book:','22',NULL),
+('3027','268','Book:','22',NULL);
+INSERT INTO REFS VALUES
 ('3028','266','Book:','22',NULL),
 ('3029','266','App:','https://www.alltrails.com/trail/us/new-mexico/south-mountain-trail-vc-02','AllTrails.com'),
 ('3030','266','Blog:','https://aschg.org/hike/valles-caldera-national-preserve-south-mountain/','Albuquerque Seniors Hiking Group'),
@@ -1928,12 +1945,12 @@ INSERT INTO REFS VALUES
 ('3182','293','App:','https://www.alltrails.com/trail/us/new-mexico/cerro-la-garita--3','AllTrails.com'),
 ('3183','263','Book:','7',NULL),
 ('3184','263','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
-('3185','263','App:','https://www.alltrails.com/trail/us/new-mexico/cienaga-faulty-and-bill-spring-trail-loop','AllTrails.com');
-INSERT INTO REFS VALUES
+('3185','263','App:','https://www.alltrails.com/trail/us/new-mexico/cienaga-faulty-and-bill-spring-trail-loop','AllTrails.com'),
 ('3186','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
 ('3191','243','App:','https://www.alltrails.com/trail/us/new-mexico/kiwanis-cabin-via-south-crest-trail','AllTrails.com'),
 ('3192','243','Website:','https://www.hikingproject.com/photo/7004174/view-of-kiwanis-cabin-on-sandia-peak','Hiking Project'),
-('3193','243','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','US Forest Service'),
+('3193','243','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','US Forest Service');
+INSERT INTO REFS VALUES
 ('3194','295','App:','https://trailsofenchantment.com/corralitos-trail-trail-452/','AllTrails'),
 ('3196','267','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64226','USDA Forest Service'),
 ('3197','267','App:','https://www.alltrails.com/trail/us/new-mexico/otero-canyon-east','AllTrails.com'),
@@ -2029,12 +2046,12 @@ INSERT INTO REFS VALUES
 ('3351','323','App:','https://www.alltrails.com/trail/us/new-mexico/osha-trail--2','AllTrails.com'),
 ('3352','324','App:','https://www.alltrails.com/trail/us/new-mexico/cairn-loop','AllTrails.com'),
 ('3356','326','Book:','24',NULL),
-('3357','327','Book:','24',NULL);
-INSERT INTO REFS VALUES
+('3357','327','Book:','24',NULL),
 ('3358','307','Website:','https://www.lamountaineers.org/drupal7/node/341','Los Alamos Mountaineers'),
 ('3359','207','Book:','2',NULL),
 ('3360','63','Book: ','5',NULL),
-('3361','63','Website: ','https://www.blm.gov/visit/san-lorenzo-canyon','BLM: San Lorenzo Canyon Recreation Area'),
+('3361','63','Website: ','https://www.blm.gov/visit/san-lorenzo-canyon','BLM: San Lorenzo Canyon Recreation Area');
+INSERT INTO REFS VALUES
 ('3362','63','Website: ','http://www.fws.gov/uploadedFiles/San Lorenzo Fact Sheet 2009 reduced size.pdf','Wildlife Service'),
 ('3363','63','Website: ','http://www.explorenm.com/hikes/SanLorenzo/','Explore New Mexico'),
 ('3364','63','Website: ','http://www.socorronm.org/attractions/san-lorenzo-canyon/','Visit Socorro'),
@@ -2114,11 +2131,17 @@ INSERT INTO REFS VALUES
 ('3471','87','Book:','6','Craig Martin'),
 ('3472','87','Book:','3','Laurence Parent'),
 ('3473','87','App:','https://www.alltrails.com/trail/us/new-mexico/albuquerque-trail--3','AllTrails.com'),
-('3474','342','App:','https://www.alltrails.com/trail/us/new-mexico/red-mesa-loop-san-ysidro','AllTrails.com'),
-('3475','342','Website:','https://www.trailforks.com/region/red-mesa-trails-28314/?activitytype=1&z=12.9&lat=35.56636&lon=-106.82582&content=trails,labels,nst,region,poi,directory,polygon,waypoint','Trail Forks - Bike Trails'),
-('3476','342','Website:','https://www.theoutbound.com/new-mexico/hiking/red-mesa-loop-san-ysidro','Outbound'),
 ('3477','317','Website:','https://aschg.org/hike/la-mesita-blanca-northeast/','ABQ Senior Centers Hiking Group'),
-('3478','317','Website:','https://en.wikipedia.org/wiki/La_Mesita_Blanca','Wikipedia');
+('3478','317','Website:','https://en.wikipedia.org/wiki/La_Mesita_Blanca','Wikipedia'),
+('3480','342','App:','https://www.alltrails.com/trail/us/new-mexico/red-mesa-loop-san-ysidro','AllTrails.com'),
+('3481','342','Website:','https://www.trailforks.com/region/red-mesa-trails-28314/?activitytype=1&z=12.9&lat=35.56636&lon=-106.82582&content=trails,labels,nst,region,poi,directory,polygon,waypoint','Trail Forks - Bike Trails'),
+('3482','342','Website:','https://www.theoutbound.com/new-mexico/hiking/red-mesa-loop-san-ysidro','Outbound'),
+('3483','368','Website:','http://www.dougscottart.com/hobbies/SlotCanyons/Travertine.htm','Doug Scott\'s Canyon Photos'),
+('3484','368','Book:','24',NULL),
+('3485','154','Book:','2',NULL),
+('3486','154','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
+('3487','154','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
+('3488','154','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails');
 
 
 
@@ -2142,7 +2165,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=12572 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12662 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO TSV VALUES
@@ -4517,18 +4540,6 @@ INSERT INTO TSV VALUES
 ('8866','95','Folder1','AutumnCascade','Y','Y','A lovely fall view of the waterfall','352299305','-1064765333','509','72157676230377366','2016-11-08 11:36:38','30237160834_346c7260d8','240','320','orange',NULL),
 ('8867','95','Folder1','FirstFalls','Y','N','The first of several falls?','352299999','-1064764944','510','72157676230377366','2016-11-08 11:24:48','30869379085_5e7d659456','320','240','orange',NULL),
 ('8868','95','Folder1','Trailhead','Y','Y','The beginning of the Piedra Lisa trail','352231416','-1064833138','511','72157676230377366','2016-11-08 12:31:44','30568162750_77389dea4c','240','320','orange',NULL),
-('8907','154','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','355031055','-1068400944','1076','72157690464992781','2018-01-02 10:52:54','39592999432_8478fee0ab','2448','3264','red',NULL),
-('8908','154','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','355071222','-1068391416','1077','72157690464992781','2018-01-02 11:26:46','24754386487_4d74dbbca8','2448','3264','red',NULL),
-('8909','154','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','355070138','-1068374722','1078','72157690464992781','2018-01-02 11:33:43','39592996762_e71141b058','2448','3264','red',NULL),
-('8910','154','Folder1','Towards550','Y','Y','A long look ahead to the east','355071749','-1068373944','1079','72157690464992781','2018-01-02 11:36:26','38726200645_54208983ce','2448','3264','red',NULL),
-('8911','154','Folder1','ConvolutedValley','Y','Y','Shallow canyons present bumpy terrain','355062972','-1068348916','1080','72157690464992781','2018-01-02 11:54:42','39593008342_b297fb3135','2448','3264','red',NULL),
-('8912','154','Folder1','CrustyWalls','Y','Y','Angled rock protects the hillside','355073500','-1068345111','1081','72157690464992781','2018-01-02 11:59:48','24754398997_eb7ca4d4e2','2448','3264','red',NULL),
-('8913','154','Folder1','RedValley','Y','Y','A hidden canyon comes into view','355077638','-1068346333','1082','72157690464992781','2018-01-02 12:01:21','24754377177_72ca9e84d5','2448','3264','red',NULL),
-('8914','154','Folder1','AlongTheTrail','Y','Y','Each trail segment seems to have another spectacle to behold.','355084194','-1068344944','1083','72157690464992781','2018-01-02 12:03:35','27845265979_d4703d249b','2448','3264','red',NULL),
-('8915','154','Folder1','WindbreakerWall','Y','Y','This natural wall stands out as an unusual trail feature','355093111','-1068346555','1084','72157690464992781','2018-01-02 12:06:48','39593004692_e065af935d','2448','3264','red',NULL),
-('8916','154','Folder2','IMG_20180102_122410','Y','Y','Colors and texture add to the scenery','355129444','-1068380194','1085','72157691097601614','2018-01-02 12:24:12','25589956788_84d598a729','1512','2688','red',NULL),
-('8917','154','Folder1','ValleyOverview','Y','Y','Looking down at a former hike\'s dead end','355122916','-1068377222','1086','72157690464992781','2018-01-02 12:28:31','24754395327_1453066494','2448','3264','red',NULL),
-('8918','154','Folder1','Hoodoos','Y','Y','Every angle has it own feature','355098500','-1068346472','1087','72157690464992781','2018-01-02 12:52:08','38726197775_4f87007444','2448','3264','red',NULL),
 ('8922','226','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','355031055','-1068400944','1076','72157690464992781','2018-01-02 10:52:54','39592999432_8478fee0ab','2448','3264','red',NULL),
 ('8923','226','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','355071222','-1068391416','1077','72157690464992781','2018-01-02 11:26:46','24754386487_4d74dbbca8','2448','3264','red',NULL),
 ('8924','226','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','355070138','-1068374722','1078','72157690464992781','2018-01-02 11:33:43','39592996762_e71141b058','2448','3264','red',NULL),
@@ -4568,8 +4579,7 @@ INSERT INTO TSV VALUES
 ('8962','159','Folder1','TheDescent','Y','Y','Coming down Embudito, a look into the valley','351340055','-1064721222','1202','72157665054248387','2018-02-23 15:47:34','39206607880_c2f8d25d4d','2448','3264','',NULL),
 ('8963','159','Folder1','EmbuditoBehind','Y','Y','After the descent, a view backwards towards Embudito','351371472','-1064787611','1203','72157665054248387','2018-02-23 16:05:39','40973538692_4b950b540a','2448','3264','',NULL),
 ('8964','159','Folder1','IMG_20180223_123256','Y','Y','Whose woods?','351169222','-1064650361','1204','72157664050556197','2018-02-23 12:32:57','26576451788_beaf5406e0','1512','2688','',NULL),
-('8965','159','Folder1','IMG_20180223_125045','Y','Y','Bentley on a snowy perch','351197888','-1064603361','1205','72157664050556197','2018-02-23 12:50:47','26576461078_484cd29aaa','1512','2688','',NULL);
-INSERT INTO TSV VALUES
+('8965','159','Folder1','IMG_20180223_125045','Y','Y','Bentley on a snowy perch','351197888','-1064603361','1205','72157664050556197','2018-02-23 12:50:47','26576461078_484cd29aaa','1512','2688','',NULL),
 ('8966','159','Folder1','IMG_20180223_125943','Y','N','Colors','351180361','-1064580500','1206','72157664050556197','2018-02-23 12:59:44','38636941770_4926ca83ec','2688','1512','',NULL),
 ('8967','159','Folder1','IMG_20180223_130638','Y','Y','Ken with a view','351172916','-1064573861','1207','72157664050556197','2018-02-23 13:06:41','40447408731_9b7cfef988','1512','2688','',NULL),
 ('8968','159','Folder1','IMG_20180223_135757','N','Y','Junction','351178222','-1064431527','1208','72157664050556197','2018-02-23 13:57:59','38636954940_75bef7f49c','2688','1512','',NULL),
@@ -4581,7 +4591,8 @@ INSERT INTO TSV VALUES
 ('8989','166','Folder2','IMG_20180410_152529438','N','N','','360258060','-1078700290','1349','72157689905412180','2018-04-10 15:25:29','41471984571_4c58acb42d','2448','3264','',NULL),
 ('8990','166','Folder1','CanyonRuins','N','N','From local stone - a natural camoflage','360261166','-1078694750','1350','72157693819242451','2018-04-10 15:26:37','39624351100_a72ecdc756','2448','3264','',NULL),
 ('8991','166','Folder1','WijijiWalls','Y','Y','Wijiji Walls were three feet thick!','360262555','-1078693916','1351','72157693819242451','2018-04-10 15:27:47','27560904038_1163e70f98','2448','3264','',NULL),
-('8992','166','Folder2','IMG_20180410_152802214','N','N','','360261879','-1078696190','1352','72157689905412180','2018-04-10 15:28:02','27600768458_b11bdc1a51','1836','3264','',NULL),
+('8992','166','Folder2','IMG_20180410_152802214','N','N','','360261879','-1078696190','1352','72157689905412180','2018-04-10 15:28:02','27600768458_b11bdc1a51','1836','3264','',NULL);
+INSERT INTO TSV VALUES
 ('8993','166','Folder2','IMG_20180410_153546197_HDR','Y','N','A long view of thick-walled ruins','360264639','-1078691139','1353','72157689905412180','2018-04-10 15:35:48','41429469682_62706e6acc','2268','4032','',NULL),
 ('8994','166','Folder2','IMG_20180410_162320865_HDR','Y','Y','Who would expect ruins out here?','360324219','-1078916940','1354','72157689905412180','2018-04-10 16:23:23','26600301027_12aa3a7469','2268','4032','',NULL),
 ('9029','261',NULL,'IMG_4013','Y','Y','Travertine caves formed by falls','350950667','-1063936611','2',NULL,'2021-07-16 07:35:04','IMG_4013','480','640',NULL,NULL),
@@ -4669,8 +4680,7 @@ INSERT INTO TSV VALUES
 ('9226','270',NULL,'IMG_4309','Y','Y','A \'Gambel Oak\' sign next to a Gambel Oak','350093500','-1063206472','2922',NULL,'2021-09-22 09:53:34','IMG_4309','480','640',NULL,'2'),
 ('9227','270',NULL,'IMG_4306','Y','Y','Typical scenery en route','350222750','-1063185667','2923',NULL,'2021-09-22 09:24:26','IMG_4306','480','640',NULL,'1'),
 ('9228','270',NULL,'IMG_4303','Y','Y','The trail head proceeds south into the open forest','350343444','-1063203972','2924',NULL,'2021-09-22 08:58:37','IMG_4303','480','640',NULL,'0'),
-('9229','270',NULL,'IMG_4310','Y','Y','Ponderosas and blue skies','350069167','-1063200222','2925',NULL,'2021-09-22 09:58:12','IMG_4310','480','640',NULL,'3');
-INSERT INTO TSV VALUES
+('9229','270',NULL,'IMG_4310','Y','Y','Ponderosas and blue skies','350069167','-1063200222','2925',NULL,'2021-09-22 09:58:12','IMG_4310','480','640',NULL,'3'),
 ('9230','270',NULL,'IMG_4311','Y','N','An eagle checks out the author','350068972','-1063200694','2926',NULL,'2021-09-22 09:58:43','IMG_4311','480','640',NULL,'4'),
 ('9231','270',NULL,'IMG_4316','Y','Y','Looking towards Sandia\'s eastern slope','350065167','-1063213194','2927',NULL,'2021-09-22 10:03:08','IMG_4316','480','640',NULL,'5'),
 ('9232','270',NULL,'IMG_4314','Y','N','Scenic views are often blocked by the trees','350068389','-1063203500','2928',NULL,'2021-09-22 10:00:55','IMG_4314','480','640',NULL,'6'),
@@ -4682,7 +4692,8 @@ INSERT INTO TSV VALUES
 ('9253','274',NULL,'IMG_4395','Y','Y','Pleasant foothills','350382583','-1063189000','2947',NULL,'2021-10-07 09:18:08','IMG_4395','480','640',NULL,'1'),
 ('9254','274',NULL,'IMG_4403','Y','Y','Catching the eastern slopes of the Sandia','350547972','-1063121861','2948',NULL,'2021-10-07 10:29:53','IMG_4403','480','640',NULL,'5'),
 ('9255','274',NULL,'IMG_4402','Y','N','A good view, and with the tower, good cell service!','350553167','-1063120889','2949',NULL,'2021-10-07 10:28:34','IMG_4402','480','640',NULL,'6'),
-('9256','274',NULL,'IMG_4407','Y','Y','A glimpse of the Manzanos in the distance','350393639','-1063293222','2950',NULL,'2021-10-07 13:08:07','IMG_4407','480','640',NULL,'7'),
+('9256','274',NULL,'IMG_4407','Y','Y','A glimpse of the Manzanos in the distance','350393639','-1063293222','2950',NULL,'2021-10-07 13:08:07','IMG_4407','480','640',NULL,'7');
+INSERT INTO TSV VALUES
 ('9257','274',NULL,'IMG_4394','Y','Y','A long look eastward','350371167','-1063207083','2951',NULL,'2021-10-07 09:14:45','IMG_4394','480','640',NULL,'0'),
 ('9258','274',NULL,'IMG_4397','Y','Y','Early on, much open space','350446139','-1063106167','2952',NULL,'2021-10-07 09:43:29','IMG_4397','480','640',NULL,'2'),
 ('9259','274',NULL,'IMG_4401','Y','Y','A beautiful autumn meadow','350483889','-1063058028','2953',NULL,'2021-10-07 09:58:19','IMG_4401','480','640',NULL,'4'),
@@ -4770,8 +4781,7 @@ INSERT INTO TSV VALUES
 ('9441','280',NULL,'IMG_4631','Y','Y','North to the San Pedros and South Mountain','350979083','-1064008472','3047',NULL,'2021-11-10 12:08:09','IMG_4631','480','640',NULL,'5'),
 ('9442','280',NULL,'IMG_4629','Y','Y','A corrugated closuep','350896806','-1064243250','3048',NULL,'2021-11-10 11:05:50','IMG_4629','480','640',NULL,'10'),
 ('9443','280',NULL,'IMG_4630','Y','Y','Looking back on the Manzanos','350895778','-1064212583','3049',NULL,'2021-11-10 11:16:18','IMG_4630','480','640',NULL,'9'),
-('9448','275',NULL,'IMG_4450','Y','Y','Begin the hike with a great view of the Sandia\'s','350634333','-1063685833','2955',NULL,'2021-10-15 09:18:02','IMG_4450','480','640',NULL,'0');
-INSERT INTO TSV VALUES
+('9448','275',NULL,'IMG_4450','Y','Y','Begin the hike with a great view of the Sandia\'s','350634333','-1063685833','2955',NULL,'2021-10-15 09:18:02','IMG_4450','480','640',NULL,'0'),
 ('9449','275',NULL,'IMG_4453','Y','Y','Once on the trail, the first section is easy and pleasant','350645861','-1063583833','2956',NULL,'2021-10-15 09:38:14','IMG_4453','480','640',NULL,'1'),
 ('9450','275',NULL,'IMG_4454','Y','Y','A touch of autumn along the arroyo','350640444','-1063572389','2957',NULL,'2021-10-15 09:40:14','IMG_4454','480','640',NULL,'2'),
 ('9451','275',NULL,'IMG_4455','Y','Y','The scenery changes with the appearance of rock formations','350637167','-1063513417','2958',NULL,'2021-10-15 09:49:29','IMG_4455','480','640',NULL,'3'),
@@ -4783,7 +4793,8 @@ INSERT INTO TSV VALUES
 ('9457','275',NULL,'IMG_4474','Y','Y','To close the loop, back on the Chamisoso','350579806','-1063703389','2964',NULL,'2021-10-15 12:11:32','IMG_4474','480','640',NULL,'10'),
 ('9458','275',NULL,'IMG_4468','Y','N','Somebody forgot something!','350484278','-1063654333','2965',NULL,'2021-10-15 11:44:26','IMG_4468','480','640',NULL,'6'),
 ('9463','281',NULL,'IMG_4651','Y','Y','Roadside view from the parking area','350347028','-1063206111','3050',NULL,'2021-11-17 09:28:02','IMG_4651','480','640',NULL,'0'),
-('9464','281',NULL,'IMG_4654','Y','Y','A northeasterly view from Bear Scat','350382500','-1063188472','3051',NULL,'2021-11-17 09:37:52','IMG_4654','480','640',NULL,'1'),
+('9464','281',NULL,'IMG_4654','Y','Y','A northeasterly view from Bear Scat','350382500','-1063188472','3051',NULL,'2021-11-17 09:37:52','IMG_4654','480','640',NULL,'1');
+INSERT INTO TSV VALUES
 ('9465','281',NULL,'IMG_4665','Y','Y','A distant view','350527611','-1063027722','3052',NULL,'2021-11-17 10:36:48','IMG_4665','640','480',NULL,'6'),
 ('9466','281',NULL,'IMG_4661','Y','Y','One of many downhill sections','350444361','-1063067778','3053',NULL,'2021-11-17 10:08:15','IMG_4661','640','480',NULL,'3'),
 ('9467','281',NULL,'IMG_4664','Y','Y','Fall gambel oaks along the trail','350509444','-1063039389','3054',NULL,'2021-11-17 10:31:05','IMG_4664','480','640',NULL,'5'),
@@ -4871,8 +4882,7 @@ INSERT INTO TSV VALUES
 ('9659','116','Folder1','AlligatorFind','N','N','An unexpected alligator juniper','351597416','-1063735055','609','72157682544866506','2017-04-14 10:49:36','33903057612_73d1da6e74','240','320','pink','5'),
 ('9660','116',NULL,'IMG_4475','Y','Y','One of the areas mysterious \'tree medallions\'','351558750','-1063894889','2771',NULL,'2017-04-14 11:36:57','IMG_4475','480','640',NULL,'6'),
 ('9661','116',NULL,'IMG_4483','Y','Y','An interior view of the eastern ridge of the Sandias','351685250','-1063875500','2772',NULL,'2017-04-14 12:29:54','IMG_4483','480','640',NULL,'7'),
-('9662','116',NULL,'IMG_4480','Y','Y','Looking out from the Faulty','351664361','-1063879250','2773',NULL,'2017-04-14 12:22:46','IMG_4480','480','640',NULL,'8');
-INSERT INTO TSV VALUES
+('9662','116',NULL,'IMG_4480','Y','Y','Looking out from the Faulty','351664361','-1063879250','2773',NULL,'2017-04-14 12:22:46','IMG_4480','480','640',NULL,'8'),
 ('9663','116',NULL,'IMG_4951','Y','Y','View on Cienega Horse Bypass','351666139','-1063704917','3141',NULL,'2022-03-26 09:13:49','IMG_4951','480','640',NULL,'9'),
 ('9664','116',NULL,'IMG_4952','Y','Y','Alligator Junipers appear along the trail','351666250','-1063697667','3142',NULL,'2022-03-26 09:15:03','IMG_4952','640','480',NULL,'10'),
 ('9665','116',NULL,'IMG_4954','N','Y','See \"Sulphur Canyon Multi-Trail\" page','351628611','-1063693083','3143',NULL,'2022-03-26 09:32:00','IMG_4954','480','640',NULL,'11'),
@@ -4884,7 +4894,8 @@ INSERT INTO TSV VALUES
 ('9671','116',NULL,'IMG_4962','Y','Y','Natural steps on the faulty','351701222','-1063878556','3149',NULL,'2022-03-26 11:04:09','IMG_4962','640','480',NULL,'17'),
 ('9672','116',NULL,'IMG_4964','Y','Y','The distant Monzanos','351722694','-1063819278','3150',NULL,'2022-03-26 11:15:42','IMG_4964','480','640',NULL,'18'),
 ('9673','287',NULL,'IMG_4970','Y','Y','The views evolve and shapes appear','355010306','-1068321389','3152',NULL,'2022-04-03 08:52:07','IMG_4970','480','640',NULL,'1'),
-('9674','287',NULL,'IMG_4973','Y','Y','A gorgeous multi-colored entrance into the area','355021111','-1068334278','3153',NULL,'2022-04-03 08:55:53','IMG_4973','480','640',NULL,'2'),
+('9674','287',NULL,'IMG_4973','Y','Y','A gorgeous multi-colored entrance into the area','355021111','-1068334278','3153',NULL,'2022-04-03 08:55:53','IMG_4973','480','640',NULL,'2');
+INSERT INTO TSV VALUES
 ('9675','287',NULL,'IMG_4974','Y','N','Crazy formations are all around!','355021750','-1068335278','3154',NULL,'2022-04-03 08:56:09','IMG_4974','480','640',NULL,'3'),
 ('9676','287',NULL,'IMG_4968','Y','Y','Right from the start, it gets interesting.','354998694','-1068321000','3155',NULL,'2022-04-03 08:49:45','IMG_4968','480','640',NULL,'0'),
 ('9677','287',NULL,'IMG_4975','Y','Y','More striking colors appears as you proceed inward','355027056','-1068344111','3156',NULL,'2022-04-03 08:57:43','IMG_4975','480','640',NULL,'4'),
@@ -4972,8 +4983,7 @@ INSERT INTO TSV VALUES
 ('9787','289',NULL,'IMG_5139','Y','Y','A shady spot for peaceful viewing','351462583','-1066601861','3220',NULL,'2022-05-02 09:07:43','IMG_5139','480','640',NULL,'2'),
 ('9788','289',NULL,'IMG_5138','Y','Y','Fields can hold various types of vegetables and produce.','351457222','-1066604778','3221',NULL,'2022-05-02 09:06:58','IMG_5138','480','640',NULL,'1'),
 ('9789','289',NULL,'IMG_5146','Y','Y','This area has been set aside for people wishing to maintain a small garden','351498083','-1066569667','3222',NULL,'2022-05-02 09:14:04','IMG_5146','480','640',NULL,'4'),
-('9796','290',NULL,'IMG_5154','Y','N','You may encounter the occupants of the area on County Road 12','345129556','-1070704639','3223',NULL,'2022-05-04 09:39:12','IMG_5154','480','640',NULL,'0');
-INSERT INTO TSV VALUES
+('9796','290',NULL,'IMG_5154','Y','N','You may encounter the occupants of the area on County Road 12','345129556','-1070704639','3223',NULL,'2022-05-04 09:39:12','IMG_5154','480','640',NULL,'0'),
 ('9797','290',NULL,'IMG_5158','Y','Y','Mesas to the west','344930806','-1071298917','3224',NULL,'2022-05-04 10:02:18','IMG_5158','480','640',NULL,'2'),
 ('9798','290',NULL,'IMG_5155','Y','N','The long arm of the north ridge','345022500','-1071208500','3225',NULL,'2022-05-04 09:46:28','IMG_5155','480','640',NULL,'1'),
 ('9799','290',NULL,'IMG_5168','Y','Y','Looking back (north) along the ridge','344799306','-1071243056','3226',NULL,'2022-05-04 10:38:54','IMG_5168','480','640',NULL,'7'),
@@ -4985,7 +4995,8 @@ INSERT INTO TSV VALUES
 ('9805','290',NULL,'IMG_5173','Y','Y','Ahead - an apparent cleft with daunting slopes','344727528','-1071225278','3232',NULL,'2022-05-04 10:55:24','IMG_5173','480','640',NULL,'9'),
 ('9806','290',NULL,'IMG_5184','Y','Y','Homing in on the return','344943278','-1071304028','3233',NULL,'2022-05-04 12:06:40','IMG_5184','480','640',NULL,'13'),
 ('9807','290',NULL,'IMG_5185','Y','Y','Looking south near the trail\'s start','344949444','-1071309750','3234',NULL,'2022-05-04 12:08:32','IMG_5185','480','640',NULL,'14'),
-('9808','290',NULL,'IMG_5171','Y','Y','A third fence and a view of Ladron Peak','344771528','-1071233444','3235',NULL,'2022-05-04 10:46:35','IMG_5171','480','640',NULL,'8'),
+('9808','290',NULL,'IMG_5171','Y','Y','A third fence and a view of Ladron Peak','344771528','-1071233444','3235',NULL,'2022-05-04 10:46:35','IMG_5171','480','640',NULL,'8');
+INSERT INTO TSV VALUES
 ('9809','290',NULL,'IMG_5178','Y','Y','A view of the steep valley','344686056','-1071212472','3236',NULL,'2022-05-04 11:03:33','IMG_5178','480','640',NULL,'12'),
 ('9810','290',NULL,'IMG_5175','Y','Y','The fourth and final fence approaching the cleft','344701917','-1071217639','3237',NULL,'2022-05-04 10:59:57','IMG_5175','480','640',NULL,'10'),
 ('9811','291',NULL,'IMG_5284','Y','Y','The trail begins at the Cliff Dwellings Trailhead Museum','332297972','-1082653722','3238',NULL,'2022-05-14 09:48:44','IMG_5284','480','640',NULL,'0'),
@@ -5073,8 +5084,7 @@ INSERT INTO TSV VALUES
 ('9935','293',NULL,'IMG_5528','Y','Y','Mile marker 2 in a burned area','359937361','-1065002139','3296',NULL,'2022-07-07 10:45:17','IMG_5528','640','480',NULL,'4'),
 ('9936','293',NULL,'IMG_5540','Y','N','The Caldera boundary fence line','358105139','-1065648639','3297',NULL,'2022-07-07 11:25:47','IMG_5540','480','640',NULL,'11'),
 ('9937','293',NULL,'IMG_5541','Y','Y','Turn right at fence and keep going up!','358432778','-1065223528','3298',NULL,'2022-07-07 11:26:10','IMG_5541','640','480',NULL,'12'),
-('9938','293',NULL,'IMG_5548','Y','N','Redondo from the summit','360016639','-1065027083','3299',NULL,'2022-07-07 11:46:09','IMG_5548','480','640',NULL,'17');
-INSERT INTO TSV VALUES
+('9938','293',NULL,'IMG_5548','Y','N','Redondo from the summit','360016639','-1065027083','3299',NULL,'2022-07-07 11:46:09','IMG_5548','480','640',NULL,'17'),
 ('9939','293',NULL,'IMG_5547','Y','N','Pajarito, Cerro Grande, Abrigo and the Sandia in the distance','360016667','-1065027083','3300',NULL,'2022-07-07 11:46:04','IMG_5547','480','640',NULL,'18'),
 ('9940','293',NULL,'IMG_5553','Y','N','Looking east across the meadow','360017000','-1065026778','3301',NULL,'2022-07-07 12:00:21','IMG_5553','480','640',NULL,'19'),
 ('9941','293',NULL,'IMG_5560','Y','Y','Last view of summit from the trail','359988639','-1065055611','3302',NULL,'2022-07-07 12:32:21','IMG_5560','480','640',NULL,'7'),
@@ -5086,7 +5096,8 @@ INSERT INTO TSV VALUES
 ('9947','293',NULL,'IMG_5562','Y','Y','An open meadow on the way','359896139','-1065067444','3308',NULL,'2022-07-07 13:02:51','IMG_5562','480','640',NULL,'3'),
 ('9948','263',NULL,'IMG_4066','Y','Y','Wildflowers proliferate due to recent monsoon','351662222','-1063788139','2829',NULL,'2021-07-30 09:34:37','IMG_4066','640','480',NULL,'10'),
 ('9949','263',NULL,'IMG_4047','Y','Y','A ledge bordering the Bill Spring Trail','351810611','-1063842389','2830',NULL,'2021-07-30 07:59:52','IMG_4047','480','640',NULL,'1'),
-('9950','263',NULL,'IMG_4058','Y','Y','A lovely view along the Bypass','351721333','-1063817361','2832',NULL,'2021-07-30 09:03:25','IMG_4058','480','640',NULL,'7'),
+('9950','263',NULL,'IMG_4058','Y','Y','A lovely view along the Bypass','351721333','-1063817361','2832',NULL,'2021-07-30 09:03:25','IMG_4058','480','640',NULL,'7');
+INSERT INTO TSV VALUES
 ('9951','263',NULL,'IMG_4052','Y','Y','Gorgeous Red Penstemmon decorate the trail','351794556','-1063840556','2833',NULL,'2021-07-30 08:25:18','IMG_4052','640','480',NULL,'4'),
 ('9952','263',NULL,'IMG_4064','Y','Y','Walking in the Ponderosa pines','351673556','-1063753972','2834',NULL,'2021-07-30 09:26:57','IMG_4064','640','480',NULL,'9'),
 ('9953','263',NULL,'IMG_4080','Y','Y','Interestingly colored Fleabane centers','351723667','-1063864139','2836',NULL,'2021-07-30 10:19:35','IMG_4080','480','640',NULL,'5'),
@@ -5174,8 +5185,7 @@ INSERT INTO TSV VALUES
 ('10136','298',NULL,'IMG_6117','Y','N','A downhill look at the trail','366053639','-1054359278','3410',NULL,'2022-09-01 11:30:40','IMG_6117','480','640',NULL,'19'),
 ('10137','298',NULL,'IMG_6113','Y','Y','Surrounding mountains tower above the valleys','366011583','-1054279556','3411',NULL,'2022-09-01 10:44:38','IMG_6113','480','640',NULL,'18'),
 ('10138','298',NULL,'IMG_6101','Y','Y','Looking back to the Ski Valley','366035806','-1054290167','3412',NULL,'2022-09-01 10:20:23','IMG_6101','480','640',NULL,'14'),
-('10139','298',NULL,'IMG_6100','Y','Y','Gold Hill appears in the distance','366072583','-1054258889','3413',NULL,'2022-09-01 10:10:20','IMG_6100','480','640',NULL,'13');
-INSERT INTO TSV VALUES
+('10139','298',NULL,'IMG_6100','Y','Y','Gold Hill appears in the distance','366072583','-1054258889','3413',NULL,'2022-09-01 10:10:20','IMG_6100','480','640',NULL,'13'),
 ('10140','298',NULL,'IMG_6098','Y','Y','A stop to take in the view of the Red River Valley','366087417','-1054247806','3414',NULL,'2022-09-01 09:55:25','IMG_6098','480','640',NULL,'12'),
 ('10141','298',NULL,'IMG_6092','Y','Y','The trail continues steeply uphill','366097861','-1054293611','3415',NULL,'2022-09-01 09:30:01','IMG_6092','640','480',NULL,'10'),
 ('10142','298',NULL,'IMG_6103','Y','N','Another Ski Valley view','366012472','-1054281472','3416',NULL,'2022-09-01 10:26:53','IMG_6103','480','640',NULL,'15'),
@@ -5187,7 +5197,8 @@ INSERT INTO TSV VALUES
 ('10159','299',NULL,'IMG_6034','Y','Y','A similar view looking northwest','363860056','-1055468528','3385',NULL,'2022-08-31 09:19:52','IMG_6034','480','640',NULL,'3'),
 ('10160','299',NULL,'IMG_6046','Y','N','Coming down the loop','363898611','-1055344917','3386',NULL,'2022-08-31 10:40:55','IMG_6046','640','480',NULL,'8'),
 ('10161','299',NULL,'IMG_6030','Y','Y','An early view of the valley looking west','363795306','-1055494083','3387',NULL,'2022-08-31 09:00:53','IMG_6030','480','640',NULL,'2'),
-('10162','299',NULL,'IMG_6039','Y','Y','A higher elevation view of the valley','363913528','-1055419389','3388',NULL,'2022-08-31 09:40:35','IMG_6039','480','640',NULL,'5'),
+('10162','299',NULL,'IMG_6039','Y','Y','A higher elevation view of the valley','363913528','-1055419389','3388',NULL,'2022-08-31 09:40:35','IMG_6039','480','640',NULL,'5');
+INSERT INTO TSV VALUES
 ('10163','299',NULL,'IMG_6052','Y','N','Closing the loop on the return','363865306','-1055398722','3389',NULL,'2022-08-31 11:01:19','IMG_6052','480','640',NULL,'10'),
 ('10164','299',NULL,'IMG_6048','Y','Y','The steeper and more direct return path','363888167','-1055366361','3390',NULL,'2022-08-31 10:50:36','IMG_6048','480','640',NULL,'9'),
 ('10165','299',NULL,'IMG_6017','Y','Y','Trail head across from the parking lot','363760417','-1055469056','3391',NULL,'2022-08-30 15:14:06','IMG_6017','480','640',NULL,'0'),
@@ -5275,8 +5286,7 @@ INSERT INTO TSV VALUES
 ('10275','301',NULL,'IMG_6416','Y','Y','More autumn gold','350939111','-1066742306','3460',NULL,'2022-10-17 09:51:17','IMG_6416','640','480',NULL,'7'),
 ('10282','302',NULL,'IMG_6441','Y','Y','An archeological marker (numbered) indicates something of interest.','357631278','-1062656694','3461',NULL,'2022-10-22 11:39:31','IMG_6441','480','640',NULL,'8'),
 ('10283','302',NULL,'IMG_6433','Y','Y','The distant St Peter\'s Dome','357728778','-1062702250','3461',NULL,'2022-10-22 11:05:10','IMG_6433','480','640',NULL,'5'),
-('10284','302',NULL,'IMG_6443','Y','Y','A  mystery structure - when, who, why?','357608139','-1062630917','3462',NULL,'2022-10-22 11:56:53','IMG_6443','480','640',NULL,'11');
-INSERT INTO TSV VALUES
+('10284','302',NULL,'IMG_6443','Y','Y','A  mystery structure - when, who, why?','357608139','-1062630917','3462',NULL,'2022-10-22 11:56:53','IMG_6443','480','640',NULL,'11'),
 ('10285','302',NULL,'IMG_6454','Y','N','Up-river view of the Rio Grande at  the endpoint','357552111','-1062607722','3463',NULL,'2022-10-22 12:32:47','IMG_6454','480','640',NULL,'14'),
 ('10286','302',NULL,'IMG_6457','Y','N','One of countless pottery shards near a marker','357627528','-1062649389','3464',NULL,'2022-10-22 13:26:20','IMG_6457','640','480',NULL,'9'),
 ('10287','302',NULL,'IMG_6439','Y','Y','The Burro Trail on the mesa top','357669889','-1062679139','3465',NULL,'2022-10-22 11:29:37','IMG_6439','480','640',NULL,'7'),
@@ -5288,7 +5298,8 @@ INSERT INTO TSV VALUES
 ('10293','302',NULL,'IMG_6447','Y','Y','Behind the uplifted ridge, the Upper Falls','357596694','-1062622833','3471',NULL,'2022-10-22 12:15:05','IMG_6447','480','640',NULL,'12'),
 ('10294','302',NULL,'IMG_6450','Y','Y','An early peak at the Rio Grande junction with the Frijoles','357583222','-1062619389','3472',NULL,'2022-10-22 12:23:08','IMG_6450','480','640',NULL,'13'),
 ('10295','302',NULL,'IMG_6429','Y','Y','Viewing Bandelier near the top of the rim','357775778','-1062733472','3473',NULL,'2022-10-22 10:32:55','IMG_6429','480','640',NULL,'2'),
-('10296','302',NULL,'IMG_6428','Y','Y','Looking back half-way up','357787139','-1062729806','3474',NULL,'2022-10-22 10:21:25','IMG_6428','480','640',NULL,'1'),
+('10296','302',NULL,'IMG_6428','Y','Y','Looking back half-way up','357787139','-1062729806','3474',NULL,'2022-10-22 10:21:25','IMG_6428','480','640',NULL,'1');
+INSERT INTO TSV VALUES
 ('10297','302',NULL,'IMG_6431','Y','Y','Beginning the Burro','357771306','-1062738944','3475',NULL,'2022-10-22 10:48:40','IMG_6431','480','640',NULL,'3'),
 ('10390','256',NULL,'IMG_3695','Y','Y','Another tree-born porcupine','351789972','-1066542056','2714',NULL,'2021-01-06 10:03:32','IMG_3695','640','480',NULL,'0'),
 ('10391','256',NULL,'IMG_3696','Y','Y','In the winter, porcupines eat the bark off of trees','351791694','-1066540611','2715',NULL,'2021-01-06 10:04:38','IMG_3696','640','480',NULL,'1'),
@@ -5376,8 +5387,7 @@ INSERT INTO TSV VALUES
 ('10494','304',NULL,'IMG_6735','Y','Y','The arroyo meets a steep drop ahead','355475222','-1086053167','3523',NULL,'2022-12-03 13:12:34','IMG_6735','480','640',NULL,'5'),
 ('10495','304',NULL,'IMG_6762','Y','N','A closer look at Church Rock','355523444','-1086039417','3524',NULL,'2022-12-03 13:45:45','IMG_6762','480','640',NULL,'10'),
 ('10496','304',NULL,'IMG_6751','Y','Y','A huge banded promontory as you approach Church Rock','355505639','-1086038750','3525',NULL,'2022-12-03 13:26:33','IMG_6751','480','640',NULL,'8'),
-('10497','304',NULL,'IMG_6771','Y','N','One of many hand-built cairns','355484111','-1086044528','3526',NULL,'2022-12-03 14:08:10','IMG_6771','640','480',NULL,'11');
-INSERT INTO TSV VALUES
+('10497','304',NULL,'IMG_6771','Y','N','One of many hand-built cairns','355484111','-1086044528','3526',NULL,'2022-12-03 14:08:10','IMG_6771','640','480',NULL,'11'),
 ('10498','304',NULL,'IMG_6756','Y','Y','More beautiful banded rock','355523389','-1086037528','3527',NULL,'2022-12-03 13:35:01','IMG_6756','480','640',NULL,'9'),
 ('10499','304',NULL,'IMG_6742','Y','Y','Other arroyos and canyons weave throughout the area','355483472','-1086044222','3528',NULL,'2022-12-03 13:17:53','IMG_6742','480','640',NULL,'7'),
 ('10500','304',NULL,'IMG_6740','Y','Y','Tormented rock adds intrigue','355481500','-1086045833','3529',NULL,'2022-12-03 13:17:10','IMG_6740','640','480',NULL,'6'),
@@ -5389,7 +5399,8 @@ INSERT INTO TSV VALUES
 ('10600','55','Folder1','End_point','Y','Y','Northern point on alternate','360003583','-1070856083','269','photostream','2016-02-11 12:09:25','24336097104_fea54dda07','240','320',NULL,'17'),
 ('10601','55','Folder1','Cliffs','Y','Y','Beautiful escarpment','359986138','-1070859666','270','photostream','2016-02-11 12:01:06','24339870543_f22ff46be9','240','320',NULL,'18'),
 ('10602','55','Folder1','Cliffbase_view','Y','Y','Interesting rocks punctuate view','359994777','-1070857611','271','photostream','2016-02-11 12:06:47','24873411251_0d8ac490fa','240','320',NULL,'19'),
-('10603','55',NULL,'IMG_6787','Y','Y','View from the parking area','359948278','-1070825361','3598',NULL,'2023-01-14 09:35:03','IMG_6787','480','640',NULL,'1'),
+('10603','55',NULL,'IMG_6787','Y','Y','View from the parking area','359948278','-1070825361','3598',NULL,'2023-01-14 09:35:03','IMG_6787','480','640',NULL,'1');
+INSERT INTO TSV VALUES
 ('10604','55',NULL,'IMG_6806','Y','Y','Another hoodoo marks the route around the mesa','359982028','-1070935361','3599',NULL,'2023-01-14 10:56:42','IMG_6806','480','640',NULL,'9'),
 ('10605','55',NULL,'IMG_6798','Y','Y','More hoodoos ahead','359971194','-1070867083','3600',NULL,'2023-01-14 10:03:10','IMG_6798','480','640',NULL,'7'),
 ('10606','55',NULL,'IMG_6793','Y','N','View to the north','359967389','-1070842750','3601',NULL,'2023-01-14 09:49:59','IMG_6793','480','640',NULL,'5'),
@@ -5477,8 +5488,7 @@ INSERT INTO TSV VALUES
 ('10764','314',NULL,'IMG_7142','Y','Y','Interesting formations begin to appear','340588917','-1067693861','3686',NULL,'2023-03-27 11:40:56','IMG_7142','480','640',NULL,'3'),
 ('10765','314',NULL,'IMG_7144','Y','Y','The arroyo gets rocky','340596111','-1067687306','3687',NULL,'2023-03-27 11:45:12','IMG_7144','480','640',NULL,'4'),
 ('10766','314',NULL,'IMG_7145','Y','Y','Now the arroyo floor is solid','340601000','-1067678667','3688',NULL,'2023-03-27 11:46:52','IMG_7145','480','640',NULL,'5'),
-('10767','314',NULL,'IMG_7150','Y','Y','Yellow-colored sandstone begins to appear','340631056','-1067624972','3689',NULL,'2023-03-27 11:59:55','IMG_7150','480','640',NULL,'7');
-INSERT INTO TSV VALUES
+('10767','314',NULL,'IMG_7150','Y','Y','Yellow-colored sandstone begins to appear','340631056','-1067624972','3689',NULL,'2023-03-27 11:59:55','IMG_7150','480','640',NULL,'7'),
 ('10768','314',NULL,'IMG_7152','Y','Y','The yellow is not a surface coloring, but solid throughout','340633500','-1067616972','3690',NULL,'2023-03-27 12:02:00','IMG_7152','480','640',NULL,'8'),
 ('10769','314',NULL,'IMG_7156','Y','Y','Further up the branch','340624861','-1067574222','3691',NULL,'2023-03-27 12:14:45','IMG_7156','480','640',NULL,'10'),
 ('10770','314',NULL,'IMG_7158','Y','Y','The slot begins to form','340630722','-1067562167','3692',NULL,'2023-03-27 12:20:32','IMG_7158','640','480',NULL,'11'),
@@ -5490,7 +5500,8 @@ INSERT INTO TSV VALUES
 ('10776','314',NULL,'IMG_7180','Y','Y','A stream waters parts of the upper canyon','340625722','-1067503583','3700',NULL,'2023-03-27 12:55:54','IMG_7180','640','480',NULL,'18'),
 ('10777','314',NULL,'IMG_7181','Y','Y','Crazy colors and patterns','340628611','-1067508472','3702',NULL,'2023-03-27 12:57:15','IMG_7181','640','480',NULL,'19'),
 ('10778','314',NULL,'IMG_7187','Y','Y','Turn right here to continue','340637778','-1067601472','3703',NULL,'2023-03-27 13:43:30','IMG_7187','480','640',NULL,'9'),
-('10779','314',NULL,'IMG_7147','Y','Y','Red sandstone cliffs','340613833','-1067655556','3704',NULL,'2023-03-27 11:52:32','IMG_7147','640','480',NULL,'6'),
+('10779','314',NULL,'IMG_7147','Y','Y','Red sandstone cliffs','340613833','-1067655556','3704',NULL,'2023-03-27 11:52:32','IMG_7147','640','480',NULL,'6');
+INSERT INTO TSV VALUES
 ('10780','314',NULL,'IMG_7162','Y','Y','The reds continue upstream','340637250','-1067541056','3705',NULL,'2023-03-27 12:27:36','IMG_7162','480','640',NULL,'14'),
 ('10792','10','Folder1','PuebloNuevo','Y','Y','Pueblo Nuevo from the Chaco Road','360680666','-1079589388','29','photostream','2016-05-21 14:45:57','27239869656_88f8b71411','240','320',NULL,NULL),
 ('10793','10','Folder1','DescentSlot','Y','Y','Narrow slot required to complete the loop!','360615972','-1079475638','30','photostream','2016-05-21 15:24:07','26667799203_ddbe87d98e','320','240',NULL,NULL),
@@ -5578,8 +5589,7 @@ INSERT INTO TSV VALUES
 ('10993','296',NULL,'IMG_5905','Y','Y','Where we parked!','362082556','-1076044778','3344',NULL,'2022-08-26 09:48:26','IMG_5905','480','640',NULL,'1'),
 ('10994','296',NULL,'IMG_5911','Y','Y','The tortured terrain','362067861','-1076069417','3345',NULL,'2022-08-26 10:05:14','IMG_5911','480','640',NULL,'6'),
 ('10995','296',NULL,'IMG_5913','Y','Y','Rockfall','362062444','-1076072472','3346',NULL,'2022-08-26 10:10:39','IMG_5913','640','480',NULL,'8'),
-('10996','296',NULL,'IMG_5912','Y','Y','No easy access','362066528','-1076071556','3347',NULL,'2022-08-26 10:06:30','IMG_5912','480','640',NULL,'7');
-INSERT INTO TSV VALUES
+('10996','296',NULL,'IMG_5912','Y','Y','No easy access','362066528','-1076071556','3347',NULL,'2022-08-26 10:06:30','IMG_5912','480','640',NULL,'7'),
 ('10997','296',NULL,'IMG_5920','Y','Y','Author at a close-by formation','362076722','-1076079250','3348',NULL,'2022-08-26 10:19:23','IMG_5920','480','640',NULL,'12'),
 ('10998','296',NULL,'IMG_5918','Y','Y','Where to bushwhack?','362075056','-1076077194','3349',NULL,'2022-08-26 10:17:50','IMG_5918','480','640',NULL,'11'),
 ('10999','296',NULL,'IMG_5921','Y','Y','Towers with fallen caps','362075417','-1076081306','3350',NULL,'2022-08-26 10:21:33','IMG_5921','480','640',NULL,'13'),
@@ -5591,7 +5601,8 @@ INSERT INTO TSV VALUES
 ('11005','296',NULL,'IMG_5922','Y','Y','Near the Barking Dog','362073278','-1076080694','3356',NULL,'2022-08-26 10:23:23','IMG_5922','480','640',NULL,'14'),
 ('11006','296',NULL,'IMG_5924','Y','Y','A nun overlooking the terrain','362070222','-1076081472','3357',NULL,'2022-08-26 10:24:44','IMG_5924','480','640',NULL,'15'),
 ('11007','296',NULL,'IMG_5939','Y','Y','Combination of erosion, fallen caps and hoodoo sentries','362066028','-1076098944','3358',NULL,'2022-08-26 10:43:42','IMG_5939','480','640',NULL,'23'),
-('11008','296',NULL,'IMG_5940','Y','Y','Hoodoo monument valley','362063611','-1076091611','3359',NULL,'2022-08-26 10:47:26','IMG_5940','480','640',NULL,'24'),
+('11008','296',NULL,'IMG_5940','Y','Y','Hoodoo monument valley','362063611','-1076091611','3359',NULL,'2022-08-26 10:47:26','IMG_5940','480','640',NULL,'24');
+INSERT INTO TSV VALUES
 ('11009','296',NULL,'IMG_5937','Y','Y','Line of hoodoos','362066417','-1076096278','3360',NULL,'2022-08-26 10:41:09','IMG_5937','640','480',NULL,'22'),
 ('11010','296',NULL,'IMG_5942','Y','Y','A return view','362071222','-1076072472','3361',NULL,'2022-08-26 11:09:00','IMG_5942','480','640',NULL,'25'),
 ('11011','296',NULL,'IMG_5936','Y','Y','Hoodoo guardians?','362066833','-1076095639','3362',NULL,'2022-08-26 10:40:12','IMG_5936','480','640',NULL,'21'),
@@ -5679,8 +5690,7 @@ INSERT INTO TSV VALUES
 ('11130','326',NULL,'IMG_8184','Y','Y','Parking area view','363339722','-1065252611','3913',NULL,'2023-10-26 12:46:38','IMG_8184','480','640',NULL,'0'),
 ('11131','326',NULL,'IMG_8202','Y','Y','Bluffs near Echo Amphiteater','363380611','-1065286861','3914',NULL,'2023-10-26 14:32:29','IMG_8202','480','640',NULL,'2'),
 ('11132','326',NULL,'IMG_8188','Y','Y','ALong the arroyo to the canyon','363415528','-1065302278','3915',NULL,'2023-10-26 13:29:57','IMG_8188','480','640',NULL,'4'),
-('11133','326',NULL,'IMG_8186','Y','Y','Colorful views abound','363351167','-1065283194','3916',NULL,'2023-10-26 13:04:21','IMG_8186','480','640',NULL,'1');
-INSERT INTO TSV VALUES
+('11133','326',NULL,'IMG_8186','Y','Y','Colorful views abound','363351167','-1065283194','3916',NULL,'2023-10-26 13:04:21','IMG_8186','480','640',NULL,'1'),
 ('11134','326',NULL,'IMG_8187','Y','Y','A typical wash up to the canyon','363402250','-1065279472','3917',NULL,'2023-10-26 13:25:15','IMG_8187','480','640',NULL,'3'),
 ('11135','326',NULL,'IMG_8190','Y','Y','The way gets more rocky','363423389','-1065318528','3918',NULL,'2023-10-26 13:33:19','IMG_8190','480','640',NULL,'7'),
 ('11136','326',NULL,'IMG_8189','Y','Y','First view of interesting geology','363424222','-1065313028','3919',NULL,'2023-10-26 13:32:10','IMG_8189','480','640',NULL,'6'),
@@ -5692,7 +5702,8 @@ INSERT INTO TSV VALUES
 ('11142','326',NULL,'IMG_8197','Y','N','End point ahead...','363429528','-1065354083','3925',NULL,'2023-10-26 13:43:18','IMG_8197','640','480',NULL,'12'),
 ('11143','326',NULL,'IMG_8198','Y','Y','A large boulder would require scrambling to proceed','363427444','-1065358278','3926',NULL,'2023-10-26 13:44:50','IMG_8198','480','640',NULL,'13'),
 ('11145','327',NULL,'IMG_8166','Y','Y','Parking off Rt 84','362315722','-1063758389','3902',NULL,'2023-10-26 11:12:16','IMG_8166','480','640',NULL,'0'),
-('11146','327',NULL,'IMG_8180','Y','Y','Looking back towards Rt 84','362359472','-1063736278','3903',NULL,'2023-10-26 11:50:58','IMG_8180','480','640',NULL,'9'),
+('11146','327',NULL,'IMG_8180','Y','Y','Looking back towards Rt 84','362359472','-1063736278','3903',NULL,'2023-10-26 11:50:58','IMG_8180','480','640',NULL,'9');
+INSERT INTO TSV VALUES
 ('11147','327',NULL,'IMG_8179','Y','Y','View of the Red Wash ','362360222','-1063735806','3904',NULL,'2023-10-26 11:50:45','IMG_8179','480','640',NULL,'8'),
 ('11148','327',NULL,'IMG_8183','Y','N','Entrance from arroyo','362352778','-1063742306','3905',NULL,'2023-10-26 12:05:19','IMG_8183','640','480',NULL,'1'),
 ('11149','327',NULL,'IMG_8167','Y','Y','Begin the surprising journey!','362351556','-1063737861','3906',NULL,'2023-10-26 11:38:56','IMG_8167','640','480',NULL,'2'),
@@ -5780,8 +5791,7 @@ INSERT INTO TSV VALUES
 ('11332','333',NULL,'IMG_8406','Y','N','Ladrone Peak to the north','342180333','-1069734278','4002',NULL,'2023-12-07 11:44:55','IMG_8406','480','640',NULL,'2'),
 ('11333','333',NULL,'IMG_8400','Y','N','From the beginning...','342244556','-1069718944','4003',NULL,'2023-12-07 11:18:53','IMG_8400','480','640',NULL,'0'),
 ('11334','333',NULL,'IMG_8404','Y','Y','The first slot and pour-over','342178111','-1069728694','4004',NULL,'2023-12-07 11:39:04','IMG_8404','640','480',NULL,'1'),
-('11335','333',NULL,'IMG_8431','Y','Y','Layers of chocolate and cream','342255611','-1069990083','4005',NULL,'2023-12-07 14:59:42','IMG_8431','480','640',NULL,'9');
-INSERT INTO TSV VALUES
+('11335','333',NULL,'IMG_8431','Y','Y','Layers of chocolate and cream','342255611','-1069990083','4005',NULL,'2023-12-07 14:59:42','IMG_8431','480','640',NULL,'9'),
 ('11336','333',NULL,'IMG_8407','Y','Y','The first pour-over from above','342176778','-1069731750','4006',NULL,'2023-12-07 11:50:16','IMG_8407','640','480',NULL,'3'),
 ('11337','333',NULL,'IMG_8418','Y','Y','Looking down - no handholds on this one','342115639','-1069810944','4007',NULL,'2023-12-07 12:33:45','IMG_8418','640','480',NULL,'7'),
 ('11338','333',NULL,'IMG_8409','Y','Y','Moss-covered rocks add a colorful change','342164722','-1069743889','4008',NULL,'2023-12-07 11:54:49','IMG_8409','480','640',NULL,'4'),
@@ -5793,7 +5803,8 @@ INSERT INTO TSV VALUES
 ('11344','333',NULL,'IMG_8434','Y','Y','Rock varies from rounded to sharp and fractured','342251944','-1069968722','4014',NULL,'2023-12-07 15:06:46','IMG_8434','480','640',NULL,'13'),
 ('11345','333',NULL,'IMG_8440','Y','Y','The sinking sun highlights colors in the nearby formations','342236667','-1069837028','4015',NULL,'2023-12-07 15:33:36','IMG_8440','480','640',NULL,'14'),
 ('11346','333',NULL,'IMG_8432','Y','N','Tilted and fractured rocks appear everywhere en route',NULL,NULL,'4016',NULL,'2023-12-07 15:04:41','IMG_8432','480','640',NULL,'10'),
-('11348','334',NULL,'IMG_8454','Y','Y','Here a western view presents itself','340970722','-1068128889','4017',NULL,'2023-12-12 11:47:52','IMG_8454','480','640',NULL,'2'),
+('11348','334',NULL,'IMG_8454','Y','Y','Here a western view presents itself','340970722','-1068128889','4017',NULL,'2023-12-12 11:47:52','IMG_8454','480','640',NULL,'2');
+INSERT INTO TSV VALUES
 ('11349','334',NULL,'IMG_8448','Y','Y','The beginning of the hike','341010222','-1068237389','4018',NULL,'2023-12-12 11:15:34','IMG_8448','480','640',NULL,'0'),
 ('11350','334',NULL,'IMG_8449','Y','Y','Soon a gorgeous, colored and slanted bedrock formation leads up an arroyo','341002389','-1068226694','4019',NULL,'2023-12-12 11:21:05','IMG_8449','480','640',NULL,'1'),
 ('11351','334',NULL,'IMG_8470','Y','Y','An almost vertical slab of granite backed with sandstones','340824861','-1068060611','4020',NULL,'2023-12-12 12:59:27','IMG_8470','640','480',NULL,'8'),
@@ -5881,8 +5892,7 @@ INSERT INTO TSV VALUES
 ('11484','305',NULL,'IMG_6693','Y','N','Brilliant colors and shapes','352021722','-1070972583','3549',NULL,'2022-12-17 14:07:48','IMG_6693','480','640',NULL,'23'),
 ('11485','305',NULL,'IMG_6696','Y','N','A window looking south','352020139','-1070971528','3550',NULL,'2022-12-17 14:09:05','IMG_6696','640','480',NULL,'27'),
 ('11486','305',NULL,'IMG_6695','Y','Y','Striking contrasts of gold and red','352020556','-1070972139','3551',NULL,'2022-12-17 14:08:29','IMG_6695','480','640',NULL,'26'),
-('11487','305',NULL,'IMG_6698','Y','Y','Leaning towers against the dark blue sky','352018944','-1070972222','3552',NULL,'2022-12-17 14:12:00','IMG_6698','480','640',NULL,'28');
-INSERT INTO TSV VALUES
+('11487','305',NULL,'IMG_6698','Y','Y','Leaning towers against the dark blue sky','352018944','-1070972222','3552',NULL,'2022-12-17 14:12:00','IMG_6698','480','640',NULL,'28'),
 ('11488','305',NULL,'IMG_6687','Y','Y','Can they can any brighter?','352026806','-1070966639','3553',NULL,'2022-12-17 14:00:39','IMG_6687','640','480',NULL,'22'),
 ('11489','305',NULL,'IMG_6690','Y','Y','Entering a thicket of red stone','352023778','-1070970472','3554',NULL,'2022-12-17 14:05:35','IMG_6690','480','640',NULL,'25'),
 ('11490','305',NULL,'IMG_8635','Y','N','A red canyon descent','352027028','-1070966556','4080',NULL,'2024-02-06 13:09:15','IMG_8635','480','640',NULL,'5'),
@@ -5894,7 +5904,8 @@ INSERT INTO TSV VALUES
 ('11499','338',NULL,'IMG_8674','Y','Y','\"Spanish Lace\" - patterns in the rock','340084444','-1067583389','4087',NULL,'2024-02-13 12:42:59','IMG_8674','480','640',NULL,'3'),
 ('11500','338',NULL,'IMG_8673','Y','Y','Red rock strata and blue sky','340081722','-1067592611','4086',NULL,'2024-02-13 12:40:58','IMG_8673','480','640',NULL,'2'),
 ('11501','338',NULL,'IMG_8675','Y','N','Interesting step-ups along the way','340087694','-1067581639','4088',NULL,'2024-02-13 12:44:17','IMG_8675','480','640',NULL,'4'),
-('11502','338',NULL,'IMG_8682','Y','Y','Banded hills surround the arroyo','340124194','-1067596194','4089',NULL,'2024-02-13 13:34:16','IMG_8682','480','640',NULL,'6'),
+('11502','338',NULL,'IMG_8682','Y','Y','Banded hills surround the arroyo','340124194','-1067596194','4089',NULL,'2024-02-13 13:34:16','IMG_8682','480','640',NULL,'6');
+INSERT INTO TSV VALUES
 ('11503','338',NULL,'IMG_8679','Y','Y','Scrambles up the arroyo','340107472','-1067565694','4090',NULL,'2024-02-13 12:50:02','IMG_8679','480','640',NULL,'5'),
 ('11504','338',NULL,'IMG_8683','Y','Y','White gypsum ledge','340124083','-1067600944','4091',NULL,'2024-02-13 13:35:43','IMG_8683','480','640',NULL,'7'),
 ('11505','338',NULL,'IMG_8684','Y','Y','Gazing down an arroyo','340130694','-1067603444','4092',NULL,'2024-02-13 13:38:49','IMG_8684','480','640',NULL,'8'),
@@ -5982,8 +5993,7 @@ INSERT INTO TSV VALUES
 ('11671','145','Folder1','Trailhead','Y','Y','Distinctive marker for the trailhead','353860777','-1063023305','865','72157661679047818','2017-10-17 09:58:21','37783256282_233a15e387','2448','3264','pink','1'),
 ('11672','145','Folder1','ArroyoTrail','Y','Y','The canyon walls keep changing en route','353821638','-1063059694','870','72157661679047818','2017-10-17 10:11:06','37815167131_8776e1e8c2','2448','3264','pink','2'),
 ('11673','145','Folder1','FallAtBall','Y','N','A touch of fall color in the canyon','353822444','-1063067638','871','72157661679047818','2017-10-17 10:14:21','23962224878_26d825ffb7','2448','3264','pink','3'),
-('11674','145','Folder1','VolcanicAsh','Y','N','A variety of compositions with massive boulders imbedded','353818555','-1063077000','873','72157661679047818','2017-10-17 10:19:42','37815157971_b2c82414ed','2448','3264','pink','4');
-INSERT INTO TSV VALUES
+('11674','145','Folder1','VolcanicAsh','Y','N','A variety of compositions with massive boulders imbedded','353818555','-1063077000','873','72157661679047818','2017-10-17 10:19:42','37815157971_b2c82414ed','2448','3264','pink','4'),
 ('11675','145','Folder1','CanyonWalls','Y','Y','The arroyo leads down the canyon','353814972','-1063091444','874','72157661679047818','2017-10-17 10:25:22','23962216078_ed241c367c','2448','3264','pink','5'),
 ('11676','145','Folder1','ColorfulClay','Y','Y','From lime to gold to red, color is everywhere in the landscape','353844555','-1063156138','876','72157661679047818','2017-10-17 10:45:35','37783300312_3bbc28b2d8','2448','3264','pink','8'),
 ('11677','145','Folder2','IMG_20171017_110153','Y','Y','Huge logs of petrified wood','353812527','-1063160333','880','72157661591623668','2017-10-17 11:01:55','37729882822_017a3846c8','1512','2688','pink','26'),
@@ -5995,7 +6005,8 @@ INSERT INTO TSV VALUES
 ('11683','145','Folder2','IMG_20171017_113308','Y','Y','Ken on red hills','353793750','-1063197000','889','72157661591623668','2017-10-17 11:33:10','37052968874_29a92dc5f0','1512','2688','pink','32'),
 ('11684','145','Folder1','WhatRoad?','Y','Y','The roads are two-track, rutted and stony paths','353925805','-1063236083','892','72157661679047818','2017-10-17 12:09:41','37815189921_6679ce4531','2448','3264','pink','33'),
 ('11685','145','Folder1','SandiaView','Y','Y','A glimpse of the Sandia from the valley','353901472','-1063124388','894','72157661679047818','2017-10-17 12:30:32','37556865780_ebb5a2b2c1','2448','3264','pink','35'),
-('11686','145','Folder2','IMG_20171017_130045','Y','Y','Waypoint - the drop gate','353896700','-1063019300','895','72157661591623668','2017-10-17 13:00:48','37729974942_533ec0cf8f','1512','2688','pink','0'),
+('11686','145','Folder2','IMG_20171017_130045','Y','Y','Waypoint - the drop gate','353896700','-1063019300','895','72157661591623668','2017-10-17 13:00:48','37729974942_533ec0cf8f','1512','2688','pink','0');
+INSERT INTO TSV VALUES
 ('11687','145',NULL,'IMG_0011','Y','Y','Large hoodoos make appearances','353821056','-1063121250','4193',NULL,'2024-04-10 11:22:15','IMG_0011','640','480',NULL,'6'),
 ('11688','145',NULL,'IMG_0018','Y','Y','Pronounced color in the surrounds','353846194','-1063161917','4194',NULL,'2024-04-10 11:33:08','IMG_0018','480','640',NULL,'9'),
 ('11689','145',NULL,'IMG_0023','Y','Y','Colorful banding and blends ahead','353862917','-1063170917','4195',NULL,'2024-04-10 11:40:08','IMG_0023','480','640',NULL,'10'),
@@ -6083,8 +6094,7 @@ INSERT INTO TSV VALUES
 ('11810','346',NULL,'IMG_0321','Y','Y','Looking out as you first descend','361607250','-1064326111','4255',NULL,'2024-05-25 11:19:09','IMG_0321','480','640',NULL,'1'),
 ('11811','346',NULL,'IMG_0351','Y','N','Representative pottery shards','361682667','-1064390556','4256',NULL,'2024-05-25 12:32:16','IMG_0351','640','480',NULL,'11'),
 ('11812','346',NULL,'IMG_0325','Y','Y','An early view of the Pedernal','361617306','-1064330833','4257',NULL,'2024-05-25 11:30:19','IMG_0325','480','640',NULL,'3'),
-('11813','346',NULL,'IMG_0375','Y','Y','The ubiquitous Pedernal','361698917','-1064375389','4258',NULL,'2024-05-25 13:09:40','IMG_0375','480','640',NULL,'16');
-INSERT INTO TSV VALUES
+('11813','346',NULL,'IMG_0375','Y','Y','The ubiquitous Pedernal','361698917','-1064375389','4258',NULL,'2024-05-25 13:09:40','IMG_0375','480','640',NULL,'16'),
 ('11814','346',NULL,'IMG_0341','Y','Y','Some of the natural stone features','361664306','-1064399028','4259',NULL,'2024-05-25 12:17:02','IMG_0341','480','640',NULL,'8'),
 ('11815','346',NULL,'IMG_0371','Y','Y','Steps (left) proceeding down to the midden area','361698333','-1064373472','4260',NULL,'2024-05-25 13:06:49','IMG_0371','480','640',NULL,'18'),
 ('11816','346',NULL,'IMG_0331','Y','N','The valley below','361625833','-1064364694','4261',NULL,'2024-05-25 11:53:37','IMG_0331','640','480',NULL,'4'),
@@ -6096,7 +6106,8 @@ INSERT INTO TSV VALUES
 ('11822','346',NULL,'IMG_0353','Y','Y','A beautiful view of the valley from the site','361684222','-1064388583','4267',NULL,'2024-05-25 12:34:17','IMG_0353','480','640',NULL,'14'),
 ('11823','346',NULL,'IMG_0352','Y','N','Vast amounts of rectangular stone ruins','361682722','-1064390333','4268',NULL,'2024-05-25 12:33:15','IMG_0352','480','640',NULL,'12'),
 ('11824','346',NULL,'IMG_0339','Y','Y','The winding path in','361659667','-1064399861','4269',NULL,'2024-05-25 12:13:56','IMG_0339','480','640',NULL,'7'),
-('11825','346',NULL,'IMG_0345','Y','Y','Footpath worn into the stone','361673361','-1064395889','4270',NULL,'2024-05-25 12:23:20','IMG_0345','640','480',NULL,'9'),
+('11825','346',NULL,'IMG_0345','Y','Y','Footpath worn into the stone','361673361','-1064395889','4270',NULL,'2024-05-25 12:23:20','IMG_0345','640','480',NULL,'9');
+INSERT INTO TSV VALUES
 ('11826','346',NULL,'IMG_0384','Y','Y','The connecting saddle','361625278','-1064365472','4271',NULL,'2024-05-25 14:48:30','IMG_0384','640','480',NULL,'5'),
 ('11827','346',NULL,'IMG_0343','Y','Y','Yet another expansive view','361669111','-1064399111','4272',NULL,'2024-05-25 12:19:22','IMG_0343','480','640',NULL,'19'),
 ('11839','347',NULL,'IMG_0281','Y','Y','A noisy cascade shows its beauty','358193278','-1068288944','4273',NULL,'2024-05-07 16:13:02','IMG_0281','480','640',NULL,'17'),
@@ -6184,8 +6195,7 @@ INSERT INTO TSV VALUES
 ('11973','294',NULL,'IMG_2312','Y','N','Where the 10K trail meets the North Crest','352377361','-1064496917','3321',NULL,'2019-09-22 11:43:22','IMG_2312','480','640',NULL,'3'),
 ('11974','294',NULL,'IMG_1656','Y','Y','One of a few sunny spots on the Survey','352142861','-1064472111','3322',NULL,'2019-06-23 11:28:36','IMG_1656','640','480',NULL,'1'),
 ('11975','294',NULL,'IMG_5600','Y','Y','Indian Paintbrush are highlighted by the sun','352226333','-1064464556','3323',NULL,'2022-07-17 11:47:31','IMG_5600','480','640',NULL,'12'),
-('11976','294',NULL,'IMG_5595','Y','Y','Pausing for the shade on Ellis','352281417','-1064472111','3324',NULL,'2022-07-17 11:29:50','IMG_5595','640','480',NULL,'11');
-INSERT INTO TSV VALUES
+('11976','294',NULL,'IMG_5595','Y','Y','Pausing for the shade on Ellis','352281417','-1064472111','3324',NULL,'2022-07-17 11:29:50','IMG_5595','640','480',NULL,'11'),
 ('11977','294',NULL,'IMG_5594','Y','N','Ellis is mostly open with beautiful meadows','352339222','-1064479750','3325',NULL,'2022-07-17 11:14:31','IMG_5594','480','640',NULL,'7'),
 ('11978','294',NULL,'IMG_0683','Y','Y','The Western Wallflower','352327472','-1064477861','4352',NULL,'2024-06-16 10:48:18','IMG_0683','640','480',NULL,'9'),
 ('11979','294',NULL,'IMG_0674','Y','Y','False Lupin dot the trail','352411778','-1064490722','4353',NULL,'2024-06-16 10:26:02','IMG_0674','640','480',NULL,'6'),
@@ -6197,7 +6207,8 @@ INSERT INTO TSV VALUES
 ('12000','355',NULL,'IMG_0809','Y','N','First appearance of Rito de las Vacas','360550083','-1068209611','4374',NULL,'2024-07-02 13:01:37','IMG_0809','480','640',NULL,'4'),
 ('12001','355',NULL,'IMG_0827','Y','N','Las Vacas residents','360644528','-1068456500','4375',NULL,'2024-07-02 14:50:14','IMG_0827','480','640',NULL,'11'),
 ('12002','355',NULL,'IMG_0804','Y','Y','Trekking the Damian Trail','360544806','-1068175972','4376',NULL,'2024-07-02 12:52:15','IMG_0804','480','640',NULL,'3'),
-('12003','355',NULL,'IMG_0819','Y','Y','One of many beautiful meadows en route','360605472','-1068256306','4377',NULL,'2024-07-02 13:33:44','IMG_0819','480','640',NULL,'8'),
+('12003','355',NULL,'IMG_0819','Y','Y','One of many beautiful meadows en route','360605472','-1068256306','4377',NULL,'2024-07-02 13:33:44','IMG_0819','480','640',NULL,'8');
+INSERT INTO TSV VALUES
 ('12004','355',NULL,'IMG_0824','Y','Y','Nearing the hike\'s highest elevation','360637778','-1068395611','4378',NULL,'2024-07-02 14:10:31','IMG_0824','480','640',NULL,'10'),
 ('12005','355',NULL,'IMG_0815','Y','Y','A campsite in the wilderness','360555611','-1068212667','4379',NULL,'2024-07-02 13:05:16','IMG_0815','480','640',NULL,'7'),
 ('12006','355',NULL,'IMG_0828','Y','Y','A view of the East tributary of Clear Creek','360610306','-1068478028','4380',NULL,'2024-07-02 14:58:09','IMG_0828','640','480',NULL,'12'),
@@ -6285,8 +6296,7 @@ INSERT INTO TSV VALUES
 ('12108','358',NULL,'IMG_0929','Y','Y','Mountain Cotton Grass appears at the meadow\'s end','365935389','-1063406444','4437',NULL,'2024-07-19 11:49:05','IMG_0929','640','480',NULL,'11'),
 ('12109','358',NULL,'IMG_0947','Y','Y','Elevation drops returning to the trailhead','365721111','-1063343889','4438',NULL,'2024-07-19 13:52:07','IMG_0947','640','480',NULL,'20'),
 ('12110','358',NULL,'IMG_0932','Y','Y','A view from a higher elevation spans the countryside','365937000','-1063450611','4439',NULL,'2024-07-19 11:59:15','IMG_0932','480','640',NULL,'13'),
-('12111','350',NULL,'IMG_0537','Y','Y','Engelmann Spruce \'red buds\'','357859278','-1065413139','4315',NULL,'2024-06-05 13:09:17','IMG_0537','640','480',NULL,'20');
-INSERT INTO TSV VALUES
+('12111','350',NULL,'IMG_0537','Y','Y','Engelmann Spruce \'red buds\'','357859278','-1065413139','4315',NULL,'2024-06-05 13:09:17','IMG_0537','640','480',NULL,'20'),
 ('12112','350',NULL,'IMG_0559','Y','Y','The cow-occupied Paliza Pond','357852556','-1065364972','4316',NULL,'2024-06-05 13:43:21','IMG_0559','480','640',NULL,'17'),
 ('12113','350',NULL,'IMG_0529','Y','Y','Shooting star beauties','357876722','-1065560694','4317',NULL,'2024-06-05 12:09:57','IMG_0529','640','480',NULL,'4'),
 ('12114','350',NULL,'IMG_0526','Y','Y','The path upward is lined with tall spruce and fir','357890444','-1065597778','4318',NULL,'2024-06-05 11:54:15','IMG_0526','640','480',NULL,'2'),
@@ -6298,7 +6308,8 @@ INSERT INTO TSV VALUES
 ('12120','350',NULL,'IMG_1020','Y','Y','A view of Valle Grande','357965361','-1065461639','4440',NULL,'2024-07-26 13:14:37','IMG_1020','480','640',NULL,'9'),
 ('12121','350',NULL,'IMG_1021','Y','N','Rabbit Mountain from the old road-bed','357965361','-1065461722','4441',NULL,'2024-07-26 13:14:59','IMG_1021','480','640',NULL,'10'),
 ('12122','350',NULL,'IMG_1019','Y','N','The Peralta Ridge','357963778','-1065468611','4442',NULL,'2024-07-26 13:11:59','IMG_1019','480','640',NULL,'8'),
-('12123','350',NULL,'IMG_1036','Y','Y','Aspen grove at the point of departure','357889139','-1065483472','4443',NULL,'2024-07-26 15:17:51','IMG_1036','480','640',NULL,'5'),
+('12123','350',NULL,'IMG_1036','Y','Y','Aspen grove at the point of departure','357889139','-1065483472','4443',NULL,'2024-07-26 15:17:51','IMG_1036','480','640',NULL,'5');
+INSERT INTO TSV VALUES
 ('12124','350',NULL,'IMG_1018','Y','Y','Redondo from the trail','357964444','-1065469444','4444',NULL,'2024-07-26 13:10:13','IMG_1018','480','640',NULL,'7'),
 ('12125','350',NULL,'IMG_1033','Y','Y','Approaching Paliza Pond from the old Forest Road','357864139','-1065360639','4445',NULL,'2024-07-26 14:31:26','IMG_1033','480','640',NULL,'16'),
 ('12126','350',NULL,'IMG_1026','Y','Y','Descending into the forest and meadows','357925944','-1065422278','4446',NULL,'2024-07-26 13:42:36','IMG_1026','640','480',NULL,'11'),
@@ -6386,8 +6397,7 @@ INSERT INTO TSV VALUES
 ('12280','306',NULL,'IMG_6716','Y','Y','Distant beauty as the terrain flattens','341066583','-1068087694','3560',NULL,'2022-12-27 12:13:27','IMG_6716','480','640',NULL,'11'),
 ('12281','306',NULL,'IMG_6713','Y','Y','A dead-end canyon requires circumnavigation','341045028','-1068179694','3561',NULL,'2022-12-27 11:48:09','IMG_6713','480','640',NULL,'10'),
 ('12282','306',NULL,'IMG_6717','Y','Y','The old barite mine','341071139','-1068080361','3562',NULL,'2022-12-27 12:15:22','IMG_6717','480','640',NULL,'12'),
-('12283','306',NULL,'IMG_6718','Y','Y','A rock-sorting bin?','341067167','-1068073111','3563',NULL,'2022-12-27 12:18:27','IMG_6718','480','640',NULL,'13');
-INSERT INTO TSV VALUES
+('12283','306',NULL,'IMG_6718','Y','Y','A rock-sorting bin?','341067167','-1068073111','3563',NULL,'2022-12-27 12:18:27','IMG_6718','480','640',NULL,'13'),
 ('12284','306',NULL,'IMG_6708','Y','Y','A geological surprise','341028944','-1068204806','3564',NULL,'2022-12-27 11:35:18','IMG_6708','640','480',NULL,'6'),
 ('12285','306',NULL,'IMG_6709','Y','Y','More color and banding ','341027611','-1068202750','3565',NULL,'2022-12-27 11:36:39','IMG_6709','640','480',NULL,'7'),
 ('12286','306',NULL,'IMG_6707','Y','Y','The canyon becomes more well-defined and accessible','341033694','-1068206778','3566',NULL,'2022-12-27 11:33:34','IMG_6707','480','640',NULL,'5'),
@@ -6399,7 +6409,8 @@ INSERT INTO TSV VALUES
 ('12292','306',NULL,'IMG_6725','Y','Y','Later, more white rock defines the route','341099278','-1068173528','3572',NULL,'2022-12-27 12:56:02','IMG_6725','640','480',NULL,'17'),
 ('12293','306',NULL,'IMG_6724','Y','Y','The white rock constantly changes shape','341103583','-1068161694','3573',NULL,'2022-12-27 12:53:49','IMG_6724','480','640',NULL,'16'),
 ('12294','306',NULL,'IMG_6726','Y','Y','The canyon deepens','341096722','-1068180306','3574',NULL,'2022-12-27 12:58:24','IMG_6726','640','480',NULL,'18'),
-('12295','306',NULL,'IMG_7022','Y','N','Azurite and Malachite','352521750','-1066137306','3682',NULL,'2023-03-06 11:33:17','IMG_7022','640','480',NULL,'14'),
+('12295','306',NULL,'IMG_7022','Y','N','Azurite and Malachite','352521750','-1066137306','3682',NULL,'2023-03-06 11:33:17','IMG_7022','640','480',NULL,'14');
+INSERT INTO TSV VALUES
 ('12296','306',NULL,'IMG_1319','Y','Y','On a wetter year...','341094028','-1068183056','4530',NULL,'2024-09-21 11:29:18','IMG_1319','640','480',NULL,'20'),
 ('12297','306',NULL,'IMG_1321','Y','Y','Looking down on Bursum Springs','341079778','-1068209694','4531',NULL,'2024-09-21 11:37:20','IMG_1321','640','480',NULL,'21'),
 ('12298','306',NULL,'IMG_1311','Y','Y','The canyon continues','341027250','-1068199472','4532',NULL,'2024-09-21 10:08:33','IMG_1311','640','480',NULL,'8'),
@@ -6487,8 +6498,7 @@ INSERT INTO TSV VALUES
 ('12389','364',NULL,'blind-canyon-Oct-13-2024-20241013_145158','Y','Y','An early fall view of greenery','359357123','-1066313102','4572',NULL,'2024-10-13 15:12:08','blind-canyon-Oct-13-2024-20241013_145158','480','640',NULL,'7'),
 ('12394','88',NULL,'MonzanoSpring','Y','N','Spring is coming to the Monzanos',NULL,NULL,'439','72157670328044815','2010-05-13 14:33:50','27871752331_4614b874cf','320','213',NULL,'14'),
 ('12395','88',NULL,'AlligatorJuniper','Y','N','Interesting landmark Juniper',NULL,NULL,'440','72157670328044815','2010-05-13 14:52:45','27871763261_36e4266217','320','213',NULL,'15'),
-('12396','88',NULL,'IMG_4480','Y','N','A view of Mosca Peak on Road A013 ','347901028','-1063633417','2966',NULL,'2021-10-20 09:46:47','IMG_4480','480','640',NULL,'0');
-INSERT INTO TSV VALUES
+('12396','88',NULL,'IMG_4480','Y','N','A view of Mosca Peak on Road A013 ','347901028','-1063633417','2966',NULL,'2021-10-20 09:46:47','IMG_4480','480','640',NULL,'0'),
 ('12397','88',NULL,'IMG_0968','Y','Y','The author stops to take in the maples','347932667','-1063833167','2967',NULL,'2021-10-20 10:10:06','IMG_0968','640','480',NULL,'1'),
 ('12398','88',NULL,'IMG_4488','Y','Y','Walking into the autumn beauty','347943750','-1063861083','2968',NULL,'2021-10-20 10:19:16','IMG_4488','640','480',NULL,'2'),
 ('12399','88',NULL,'IMG_4485','Y','N','Red maple leaves - a rarity in New Mexico','347935417','-1063837139','2969',NULL,'2021-10-20 10:12:08','IMG_4485','480','640',NULL,'6'),
@@ -6500,7 +6510,8 @@ INSERT INTO TSV VALUES
 ('12405','88',NULL,'IMG_4507','Y','Y','Some steep sections challenge the hiker','347812806','-1063938972','2975',NULL,'2021-10-20 11:36:45','IMG_4507','640','480',NULL,'11'),
 ('12406','88',NULL,'IMG_4509','Y','Y','At the road, the junction with Cerro Blanco Trail','347779528','-1063912194','2976',NULL,'2021-10-20 11:42:54','IMG_4509','480','640',NULL,'12'),
 ('12407','88',NULL,'IMG_4511','Y','Y','The road offers its own beauty','347804944','-1063887778','2977',NULL,'2021-10-20 11:48:21','IMG_4511','480','640',NULL,'13'),
-('12408','88',NULL,'IMG_0977','Y','Y','Colorful leaves catch the eye','347947194','-1063882917','2978',NULL,'2021-10-20 10:24:38','IMG_0977','640','480',NULL,'3'),
+('12408','88',NULL,'IMG_0977','Y','Y','Colorful leaves catch the eye','347947194','-1063882917','2978',NULL,'2021-10-20 10:24:38','IMG_0977','640','480',NULL,'3');
+INSERT INTO TSV VALUES
 ('12409','88',NULL,'IMG_0994','Y','Y','More glimpses of the gorgeous trail','347971417','-1063933500','2979',NULL,'2021-10-20 11:02:22','IMG_0994','640','480',NULL,'8'),
 ('12410','88',NULL,'DSC_0079','Y','N','A view of the peak from the Crest Trail',NULL,NULL,'2980',NULL,'2010-05-13 15:58:47','DSC_0079','428','640',NULL,'17'),
 ('12411','88',NULL,'DSC_0078','Y','N','Monzano Crest Trail',NULL,NULL,'2982',NULL,'2010-05-13 15:56:27','DSC_0078','640','428',NULL,'16'),
@@ -6510,28 +6521,6 @@ INSERT INTO TSV VALUES
 ('12428','87',NULL,'BehindMonzanos','Y','N','A lovely east-side view of the Monzanos',NULL,NULL,'436','72157670395400435','2014-09-19 18:49:05','27367947513_be3985228e','214','320',NULL,NULL),
 ('12429','87',NULL,'AlligatorJuniper','Y','N','The distincitve alligator juniper bark',NULL,NULL,'437','72157670395400435','2014-10-30 15:00:36','27367937663_9f41fe762d','320','214',NULL,NULL),
 ('12430','87',NULL,'DSC_0511','Y','N','A short sampler of Maple',NULL,NULL,'2768',NULL,'2014-10-30 15:08:34','DSC_0511','430','640',NULL,NULL),
-('12431','342',NULL,'IMG_8869','Y','Y','The path presents multiple features - sometimes flat and rocky','355461917','-1068371583','4146',NULL,'2024-03-19 10:45:28','IMG_8869','480','640',NULL,'1'),
-('12432','342',NULL,'IMG_8865','Y','Y','The journey up the arroyo begins','355436056','-1068382500','4147',NULL,'2024-03-19 10:33:40','IMG_8865','480','640',NULL,'0'),
-('12433','342',NULL,'IMG_8876','Y','N','From this point, a nice view of Cabezon Peak','355563306','-1068364806','4148',NULL,'2024-03-19 11:28:02','IMG_8876','480','640',NULL,'6'),
-('12434','342',NULL,'IMG_8883','Y','Y','Near the top of the mesa, a view of the Dragon\'s Back at White Mesa Bike Trails','355638611','-1068395694','4149',NULL,'2024-03-19 12:00:34','IMG_8883','480','640',NULL,'8'),
-('12435','342',NULL,'IMG_8874','Y','Y','The top of the arroyo leads into a barren stretch to the next uphill','355563389','-1068364111','4150',NULL,'2024-03-19 11:26:58','IMG_8874','480','640',NULL,'5'),
-('12436','342',NULL,'IMG_8871','Y','Y','Ever upwards, an easy flat and wide path encourages us forward','355481306','-1068370583','4151',NULL,'2024-03-19 10:53:03','IMG_8871','480','640',NULL,'3'),
-('12437','342',NULL,'IMG_8879','Y','Y','Yellows, oranges, and golds appear while ascending the hill','355611444','-1068386917','4152',NULL,'2024-03-19 11:44:33','IMG_8879','480','640',NULL,'7'),
-('12438','342',NULL,'IMG_8870','Y','Y','Sometimes rugged with pockets of water','355474028','-1068369889','4153',NULL,'2024-03-19 10:49:41','IMG_8870','480','640',NULL,'2'),
-('12439','342',NULL,'IMG_8884','Y','Y','Unexpectedly, a trail appears from the San Ysidro Trials area','355652778','-1068401333','4154',NULL,'2024-03-19 12:06:02','IMG_8884','480','640',NULL,'9'),
-('12440','342',NULL,'IMG_8895','Y','Y','In the canyon, some lovely stretches of captured water color the landscape','355687833','-1068425222','4155',NULL,'2024-03-19 12:45:19','IMG_8895','480','640',NULL,'18'),
-('12441','342',NULL,'IMG_8902','Y','Y','Ahead, more lovely orange formations','355705639','-1068467778','4156',NULL,'2024-03-19 13:12:59','IMG_8902','480','640',NULL,'15'),
-('12442','342',NULL,'IMG_8896','Y','Y','The water leads to a \'micro-slot\'','355695083','-1068425306','4157',NULL,'2024-03-19 12:50:40','IMG_8896','640','480',NULL,'17'),
-('12443','342',NULL,'IMG_8905','Y','Y','Along the top, pockets meander through the mesa','355696222','-1068458472','4158',NULL,'2024-03-19 13:25:35','IMG_8905','640','480',NULL,'14'),
-('12444','342',NULL,'IMG_8907','Y','N','Near a very steep drop-off, the last of the water pockets','355691806','-1068458639','4159',NULL,'2024-03-19 13:31:20','IMG_8907','480','640',NULL,'13'),
-('12445','342',NULL,'IMG_8908','Y','Y','The canyon descends 1500 ft.','355689194','-1068458194','4160',NULL,'2024-03-19 13:34:26','IMG_8908','640','480',NULL,'12'),
-('12446','342',NULL,'IMG_8886','Y','Y','The trail winds along the edge of a somewhat deep canyon','355662139','-1068455444','4161',NULL,'2024-03-19 12:19:52','IMG_8886','480','640',NULL,'10'),
-('12447','342',NULL,'IMG_8897','Y','N','The slot canyons weaves upward','355696472','-1068424972','4162',NULL,'2024-03-19 12:52:00','IMG_8897','640','480',NULL,'16'),
-('12448','342',NULL,'IMG_1930','Y','Y','Cabezon in sight on self-dubbed \"Inspiration Point\"','355662611','-1068453750','4573',NULL,'2024-11-05 13:18:56','IMG_1930','480','640',NULL,'11'),
-('12449','342',NULL,'IMG_1920','Y','Y','Beautiful snow-covered Jemez & Rockies','355739222','-1068425611','4575',NULL,'2024-11-05 12:39:27','IMG_1920','480','640',NULL,'19'),
-('12450','342',NULL,'IMG_1919','Y','Y','White Mesa and the Sandia','355709444','-1068407889','4576',NULL,'2024-11-05 12:22:07','IMG_1919','480','640',NULL,'21'),
-('12451','342',NULL,'IMG_1918','Y','Y','Looking back on the way up','355650389','-1068375389','4577',NULL,'2024-11-05 11:53:09','IMG_1918','480','640',NULL,'20'),
-('12452','342',NULL,'IMG_1917','Y','Y','The rocky arroyo ascent','355487278','-1068367694','4578',NULL,'2024-11-05 10:58:27','IMG_1917','480','640',NULL,'4'),
 ('12462','365',NULL,'IMG_1947','Y','Y','Friends and neighbors see us off at the point of departure','355350722','-1069689333','4579',NULL,'2024-11-12 11:30:31','IMG_1947','480','640',NULL,'0'),
 ('12463','365',NULL,'IMG_1997','Y','Y','A framed view of Redondo','355272889','-1069399194','4580',NULL,'2024-11-12 14:00:14','IMG_1997','480','640',NULL,'12'),
 ('12464','365',NULL,'IMG_2016','Y','Y','Looking back at the return route along the canyon','355251639','-1069596472','4581',NULL,'2024-11-12 15:22:42','IMG_2016','480','640',NULL,'15'),
@@ -6588,8 +6577,7 @@ INSERT INTO TSV VALUES
 ('12530','317',NULL,'IMG_7450','Y','Y','This canyon is much more hikeable','351925500','-1070426778','3773',NULL,'2023-04-09 10:59:36','IMG_7450','480','640',NULL,'15'),
 ('12531','317',NULL,'IMG_7466','Y','Y','The tilted rock constitutes the return path','351929306','-1070483778','3774',NULL,'2023-04-09 11:35:50','IMG_7466','480','640',NULL,'20'),
 ('12532','317',NULL,'IMG_7451','Y','Y','At points the trail narrows','351927750','-1070431667','3775',NULL,'2023-04-09 11:01:39','IMG_7451','640','480',NULL,'16'),
-('12533','317',NULL,'IMG_7459','Y','Y','Looking over the area from the top','351938750','-1070473111','3776',NULL,'2023-04-09 11:26:29','IMG_7459','480','640',NULL,'18');
-INSERT INTO TSV VALUES
+('12533','317',NULL,'IMG_7459','Y','Y','Looking over the area from the top','351938750','-1070473111','3776',NULL,'2023-04-09 11:26:29','IMG_7459','480','640',NULL,'18'),
 ('12534','317',NULL,'IMG_7440','Y','Y','The slot doorway','351915389','-1070435944','3777',NULL,'2023-04-09 10:49:54','IMG_7440','640','480',NULL,'10'),
 ('12535','317',NULL,'IMG_2044','Y','Y','From the canyon floor','351990778','-1070429750','4595',NULL,'2024-11-23 14:03:56','IMG_2044','480','640',NULL,'25'),
 ('12536','317',NULL,'IMG_2046','Y','Y','The low hills on the road back','351996194','-1070509944','4596',NULL,'2024-11-23 14:29:48','IMG_2046','480','640',NULL,'28'),
@@ -6611,7 +6599,98 @@ INSERT INTO TSV VALUES
 ('12554','340',NULL,'IMG_8775','Y','Y','Some pieces appear animal like - a lizard?','352150000','-1070701139','4125',NULL,'2024-03-06 15:08:09','IMG_8775','480','640',NULL,'15'),
 ('12555','340',NULL,'1920-herrara-20240306_144916','Y','Y','A solo pair of red hoodoos further along','352173126','-1070668065','4126',NULL,'2024-03-06 14:49:16','1920-herrara-20240306_144916','480','640',NULL,'13'),
 ('12556','340',NULL,'IMG_8772','Y','Y','Magical stepped layers of gray limestone','352145944','-1070688389','4127',NULL,'2024-03-06 15:01:13','IMG_8772','480','640',NULL,'14'),
-('12557','340',NULL,'IMG_8776','Y','Y','The edge of the mesa','352140056','-1070732417','4128',NULL,'2024-03-06 15:26:13','IMG_8776','480','640',NULL,'16');
+('12557','340',NULL,'IMG_8776','Y','Y','The edge of the mesa','352140056','-1070732417','4128',NULL,'2024-03-06 15:26:13','IMG_8776','480','640',NULL,'16'),
+('12572','366',NULL,'highres_524966908','Y','N','Going up!',NULL,NULL,'4599',NULL,NULL,'highres_524966908','480','640',NULL,'0'),
+('12573','366',NULL,'highres_524966913','Y','N','Layers and layers',NULL,NULL,'4600',NULL,NULL,'highres_524966913','480','640',NULL,'5'),
+('12574','366',NULL,'highres_524966909','Y','N','An upward scramble',NULL,NULL,'4601',NULL,NULL,'highres_524966909','640','480',NULL,'6'),
+('12575','366',NULL,'highres_524908811','Y','Y','Canyon Arroyo','355630145','-1068350476','4602',NULL,'2021-03-09 16:37:17','highres_524908811','480','640',NULL,'7'),
+('12576','366',NULL,'highres_524908809','Y','Y','Mesa geology','355659999','-1068464968','4604',NULL,'2021-03-09 15:25:08','highres_524908809','480','640',NULL,'8'),
+('12577','366',NULL,'highres_524967356','Y','N','A view towards the Dragon\'s Back',NULL,NULL,'4605',NULL,NULL,'highres_524967356','640','480',NULL,'9'),
+('12578','366',NULL,'highres_524908810','N','Y','Striated slopes','355667028','-1068455383','4606',NULL,'2021-03-09 15:32:20','highres_524908810','480','640',NULL,'10'),
+('12579','366',NULL,'highres_524966971','Y','N','Fascinating scenery',NULL,NULL,'4607',NULL,NULL,'highres_524966971','640','480',NULL,'11'),
+('12580','366',NULL,'highres_524965152','Y','N','Nearing the top',NULL,NULL,'4608',NULL,NULL,'highres_524965152','480','640',NULL,'12'),
+('12581','366',NULL,'highres_524965155','Y','N','Trekking the canyon',NULL,NULL,'4609',NULL,NULL,'highres_524965155','640','480',NULL,'13'),
+('12582','366',NULL,'highres_524967357','Y','N','A hike leader photo op',NULL,NULL,'4610',NULL,NULL,'highres_524967357','640','480',NULL,'14'),
+('12583','366',NULL,'20241130_123548','Y','Y','Interesting passageway','355635464','-1068450874','4612',NULL,'2024-11-30 12:35:49','20241130_123548','640','480',NULL,'2');
+INSERT INTO TSV VALUES
+('12584','366',NULL,'20241129_153708','Y','N','Typical scrambling terrain','355636088','-1068453261','4613',NULL,'2024-11-29 15:37:08','20241129_153708','480','640',NULL,'3'),
+('12585','366',NULL,'20241129_153717','Y','Y','Canyon clutter','355636119','-1068453328','4614',NULL,'2024-11-29 15:37:17','20241129_153717','640','480',NULL,'4'),
+('12586','366',NULL,'20241129_153712','Y','Y','The wending canyon floor','355636136','-1068453316','4615',NULL,'2024-11-29 15:37:13','20241129_153712','480','640',NULL,'1'),
+('12587','342',NULL,'IMG_8869','Y','Y','The path presents multiple features - sometimes flat and rocky','355461917','-1068371583','4146',NULL,'2024-03-19 10:45:28','IMG_8869','480','640',NULL,'1'),
+('12588','342',NULL,'IMG_8865','Y','Y','The journey up the arroyo begins','355436056','-1068382500','4147',NULL,'2024-03-19 10:33:40','IMG_8865','480','640',NULL,'0'),
+('12589','342',NULL,'IMG_8876','Y','N','From this point, a nice view of Cabezon Peak','355563306','-1068364806','4148',NULL,'2024-03-19 11:28:02','IMG_8876','480','640',NULL,'6'),
+('12590','342',NULL,'IMG_8883','Y','Y','Near the top of the mesa, a view of the Dragon\'s Back at White Mesa Bike Trails','355638611','-1068395694','4149',NULL,'2024-03-19 12:00:34','IMG_8883','480','640',NULL,'8'),
+('12591','342',NULL,'IMG_8874','Y','Y','The top of the arroyo leads into a barren stretch to the next uphill','355563389','-1068364111','4150',NULL,'2024-03-19 11:26:58','IMG_8874','480','640',NULL,'5'),
+('12592','342',NULL,'IMG_8871','Y','Y','Ever upwards, an easy flat and wide path encourages us forward','355481306','-1068370583','4151',NULL,'2024-03-19 10:53:03','IMG_8871','480','640',NULL,'3'),
+('12593','342',NULL,'IMG_8879','Y','Y','Yellows, oranges, and golds appear while ascending the hill','355611444','-1068386917','4152',NULL,'2024-03-19 11:44:33','IMG_8879','480','640',NULL,'7'),
+('12594','342',NULL,'IMG_8870','Y','Y','Sometimes rugged with pockets of water','355474028','-1068369889','4153',NULL,'2024-03-19 10:49:41','IMG_8870','480','640',NULL,'2'),
+('12595','342',NULL,'IMG_8884','Y','Y','Unexpectedly, a trail appears from the San Ysidro Trials area','355652778','-1068401333','4154',NULL,'2024-03-19 12:06:02','IMG_8884','480','640',NULL,'9'),
+('12596','342',NULL,'IMG_8895','Y','Y','In the canyon, some lovely stretches of captured water color the landscape','355687833','-1068425222','4155',NULL,'2024-03-19 12:45:19','IMG_8895','480','640',NULL,'18'),
+('12597','342',NULL,'IMG_8902','Y','Y','Ahead, more lovely orange formations','355705639','-1068467778','4156',NULL,'2024-03-19 13:12:59','IMG_8902','480','640',NULL,'15'),
+('12598','342',NULL,'IMG_8896','Y','Y','The water leads to a \'micro-slot\'','355695083','-1068425306','4157',NULL,'2024-03-19 12:50:40','IMG_8896','640','480',NULL,'17'),
+('12599','342',NULL,'IMG_8905','Y','Y','Along the top, pockets meander through the mesa','355696222','-1068458472','4158',NULL,'2024-03-19 13:25:35','IMG_8905','640','480',NULL,'14'),
+('12600','342',NULL,'IMG_8907','Y','N','Near a very steep drop-off, the last of the water pockets','355691806','-1068458639','4159',NULL,'2024-03-19 13:31:20','IMG_8907','480','640',NULL,'13'),
+('12601','342',NULL,'IMG_8908','Y','Y','The canyon descends 1500 ft.','355689194','-1068458194','4160',NULL,'2024-03-19 13:34:26','IMG_8908','640','480',NULL,'12'),
+('12602','342',NULL,'IMG_8886','Y','Y','The trail winds along the edge of a somewhat deep canyon','355662139','-1068455444','4161',NULL,'2024-03-19 12:19:52','IMG_8886','480','640',NULL,'10'),
+('12603','342',NULL,'IMG_8897','Y','N','The slot canyons weaves upward','355696472','-1068424972','4162',NULL,'2024-03-19 12:52:00','IMG_8897','640','480',NULL,'16'),
+('12604','342',NULL,'IMG_1930','Y','Y','Cabezon in sight on self-dubbed \"Inspiration Point\"','355662611','-1068453750','4573',NULL,'2024-11-05 13:18:56','IMG_1930','480','640',NULL,'11'),
+('12605','342',NULL,'IMG_1920','Y','Y','Beautiful snow-covered Jemez & Rockies','355739222','-1068425611','4575',NULL,'2024-11-05 12:39:27','IMG_1920','480','640',NULL,'19'),
+('12606','342',NULL,'IMG_1919','Y','Y','White Mesa and the Sandia','355709444','-1068407889','4576',NULL,'2024-11-05 12:22:07','IMG_1919','480','640',NULL,'21'),
+('12607','342',NULL,'IMG_1918','Y','Y','Looking back on the way up','355650389','-1068375389','4577',NULL,'2024-11-05 11:53:09','IMG_1918','480','640',NULL,'20'),
+('12608','342',NULL,'IMG_1917','Y','Y','The rocky arroyo ascent','355487278','-1068367694','4578',NULL,'2024-11-05 10:58:27','IMG_1917','480','640',NULL,'4'),
+('12609','367',NULL,'IMG_2071','Y','Y','More eastern slope views','350695917','-1063228444','4616',NULL,'2024-12-03 11:45:43','IMG_2071','480','640',NULL,'7'),
+('12610','367',NULL,'IMG_2074','Y','Y','Returning to the Lower Pine from Pinyon','350779417','-1063168333','4617',NULL,'2024-12-03 13:18:09','IMG_2074','480','640',NULL,'8'),
+('12611','367',NULL,'IMG_2076','Y','Y','Ascending to a higher view','350930972','-1063275833','4619',NULL,'2024-12-03 14:16:57','IMG_2076','480','640',NULL,'2'),
+('12612','367',NULL,'IMG_2077','Y','Y','A short rocky uphill to begin','350965306','-1063311083','4620',NULL,'2024-12-03 14:29:18','IMG_2077','640','480',NULL,'1'),
+('12613','367',NULL,'IMG_2060','Y','Y','A view of Sandia\'s eastern slope','350784806','-1063195806','4621',NULL,'2024-12-03 10:45:33','IMG_2060','480','640',NULL,'3'),
+('12614','367',NULL,'IMG_2066','Y','Y','The trail skirts a pour-over','350713694','-1063204889','4622',NULL,'2024-12-03 11:34:33','IMG_2066','480','640',NULL,'5'),
+('12615','367',NULL,'IMG_2068','Y','N','Looking towards Sandia\'s crest','350710972','-1063206111','4623',NULL,'2024-12-03 11:36:11','IMG_2068','480','640',NULL,'6'),
+('12616','367',NULL,'IMG_2054','Y','Y','The trailhead','350972056','-1063308944','4624',NULL,'2024-12-03 09:58:16','IMG_2054','480','640',NULL,'0'),
+('12617','367',NULL,'IMG_2063','Y','Y','A bit rockier on the Clear Grinder','350747000','-1063217556','4625',NULL,'2024-12-03 11:22:42','IMG_2063','640','480',NULL,'4'),
+('12618','368',NULL,'IMG_2106','Y','Y','Entering the slot','355273139','-1068268722','4626',NULL,'2024-12-23 12:26:01','IMG_2106','640','480',NULL,'13'),
+('12619','368',NULL,'IMG_2113','Y','Y','An interesting butte','355250028','-1068316028','4627',NULL,'2024-12-23 13:24:46','IMG_2113','480','640',NULL,'20'),
+('12620','368',NULL,'IMG_2101','Y','Y','A view towards the slot canyon from the two-track','355251444','-1068341972','4628',NULL,'2024-12-23 11:40:22','IMG_2101','480','640',NULL,'12'),
+('12621','368',NULL,'IMG_2119','Y','N','Looking back the route up','355282778','-1068457278','4629',NULL,'2024-12-23 14:12:13','IMG_2119','480','640',NULL,'5'),
+('12622','368',NULL,'IMG_2108','Y','Y','The slot winds and narrows','355277722','-1068262778','4630',NULL,'2024-12-23 12:29:54','IMG_2108','640','480',NULL,'14'),
+('12623','368',NULL,'IMG_2089','Y','Y','Ascending the canyon','355299000','-1068449333','4631',NULL,'2024-12-23 10:45:56','IMG_2089','480','640',NULL,'4'),
+('12624','368',NULL,'IMG_2097','Y','Y','Gypsum mining efforts','355239028','-1068401639','4632',NULL,'2024-12-23 11:17:52','IMG_2097','480','640',NULL,'11'),
+('12625','368',NULL,'IMG_2102','Y','Y','Beautiful and colorful views in the valley','355252222','-1068290722','4633',NULL,'2024-12-23 12:15:58','IMG_2102','480','640',NULL,'19'),
+('12626','368',NULL,'IMG_2085','Y','Y','From US550, cross the Rio Salado','355409444','-1068396833','4634',NULL,'2024-12-23 10:17:45','IMG_2085','480','640',NULL,'0'),
+('12627','368',NULL,'IMG_2092','Y','Y','Sky through one of the windows','355278722','-1068455056','4635',NULL,'2024-12-23 10:57:29','IMG_2092','480','640',NULL,'8'),
+('12628','368',NULL,'IMG_2094','Y','Y','Looking back towards the cars by Red Mesa','355255861','-1068441083','4636',NULL,'2024-12-23 11:08:33','IMG_2094','480','640',NULL,'9'),
+('12629','368',NULL,'IMG_2086','Y','Y','Proceed to the canyon opening','355320056','-1068451472','4637',NULL,'2024-12-23 10:39:15','IMG_2086','480','640',NULL,'1'),
+('12630','368',NULL,'IMG_2118','Y','Y','Two arch/windows mark the way up','355279278','-1068456500','4638',NULL,'2024-12-23 14:09:36','IMG_2118','480','640',NULL,'7'),
+('12631','368',NULL,'IMG_2096','Y','Y','Towards Redondo and the tip of White Mesa','355252083','-1068436722','4639',NULL,'2024-12-23 11:10:40','IMG_2096','480','640',NULL,'10'),
+('12632','368',NULL,'IMG_2116','Y','Y','View from the highpoint','355257806','-1068331306','4640',NULL,'2024-12-23 13:31:24','IMG_2116','480','640',NULL,'22'),
+('12633','368',NULL,'IMG_2115','Y','Y','A seriously steep up and out','355255667','-1068327389','4641',NULL,'2024-12-23 13:29:27','IMG_2115','640','480',NULL,'21'),
+('12634','368',NULL,'IMG_2111','Y','Y','Colorful rock signals the end','355276111','-1068258139','4642',NULL,'2024-12-23 12:41:24','IMG_2111','640','480',NULL,'18'),
+('12635','368',NULL,'IMG_2088','Y','Y','Some water, some ice, occasionally some level ground','355305444','-1068453056','4643',NULL,'2024-12-23 10:44:04','IMG_2088','480','640',NULL,'3'),
+('12636','368',NULL,'slot2','Y','N','The beautiful interior',NULL,NULL,'4644',NULL,NULL,'slot2','640','480',NULL,'15'),
+('12637','368',NULL,'stoppingPlace','Y','N','Along the way, tilted beauty',NULL,NULL,'4645',NULL,NULL,'stoppingPlace','480','640',NULL,'6'),
+('12638','368',NULL,'canyonView','Y','N','The beauty of the canyon ahead',NULL,NULL,'4646',NULL,NULL,'canyonView','640','480',NULL,'2'),
+('12639','368',NULL,'dbl','Y','N','At one point an \'almost-ceiling\'',NULL,NULL,'4647',NULL,NULL,'dbl','640','480',NULL,'17'),
+('12640','368',NULL,'cleanSlot','Y','N','Narrow openings with tricky footing',NULL,NULL,'4648',NULL,NULL,'cleanSlot','640','480',NULL,'16'),
+('12641','154','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','355031055','-1068400944','1076','72157690464992781','2018-01-02 10:52:54','39592999432_8478fee0ab','2448','3264','red','0'),
+('12642','154','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','355071222','-1068391416','1077','72157690464992781','2018-01-02 11:26:46','24754386487_4d74dbbca8','2448','3264','red','1'),
+('12643','154','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','355070138','-1068374722','1078','72157690464992781','2018-01-02 11:33:43','39592996762_e71141b058','2448','3264','red','2'),
+('12644','154','Folder1','Towards550','Y','Y','A long look ahead to the east','355071749','-1068373944','1079','72157690464992781','2018-01-02 11:36:26','38726200645_54208983ce','2448','3264','red','3'),
+('12645','154','Folder1','ConvolutedValley','Y','Y','Shallow canyons present bumpy terrain','355062972','-1068348916','1080','72157690464992781','2018-01-02 11:54:42','39593008342_b297fb3135','2448','3264','red','4'),
+('12646','154','Folder1','CrustyWalls','Y','Y','Angled rock protects the hillside','355073500','-1068345111','1081','72157690464992781','2018-01-02 11:59:48','24754398997_eb7ca4d4e2','2448','3264','red','5'),
+('12647','154','Folder1','RedValley','Y','Y','A hidden canyon comes into view','355077638','-1068346333','1082','72157690464992781','2018-01-02 12:01:21','24754377177_72ca9e84d5','2448','3264','red','6'),
+('12648','154','Folder1','AlongTheTrail','Y','Y','Each trail segment seems to have another spectacle to behold.','355084194','-1068344944','1083','72157690464992781','2018-01-02 12:03:35','27845265979_d4703d249b','2448','3264','red','8'),
+('12649','154','Folder1','WindbreakerWall','Y','Y','This natural wall stands out as an unusual trail feature','355093111','-1068346555','1084','72157690464992781','2018-01-02 12:06:48','39593004692_e065af935d','2448','3264','red','10'),
+('12650','154','Folder2','IMG_20180102_122410','Y','Y','Colors and texture add to the scenery','355129444','-1068380194','1085','72157691097601614','2018-01-02 12:24:12','25589956788_84d598a729','1512','2688','red','12'),
+('12651','154','Folder1','ValleyOverview','Y','Y','Looking down at a former hike\'s dead end','355122916','-1068377222','1086','72157690464992781','2018-01-02 12:28:31','24754395327_1453066494','2448','3264','red','13'),
+('12652','154','Folder1','Hoodoos','Y','Y','Every angle has it own feature','355098500','-1068346472','1087','72157690464992781','2018-01-02 12:52:08','38726197775_4f87007444','2448','3264','red','14'),
+('12653','154',NULL,'IMG_2146','Y','Y','The final approach to the top','355095250','-1068411111','4649',NULL,'2024-12-31 12:38:28','IMG_2146','480','640',NULL,'20'),
+('12654','154',NULL,'IMG_2143','Y','Y','The valley holds many gorgeous vistas','355125639','-1068423083','4650',NULL,'2024-12-31 12:15:53','IMG_2143','480','640',NULL,'16'),
+('12655','154',NULL,'IMG_2144','Y','Y','Looking back over most of the climb','355104139','-1068415694','4651',NULL,'2024-12-31 12:25:19','IMG_2144','480','640',NULL,'19'),
+('12656','154',NULL,'ojitoB','Y','N','It never stops!',NULL,NULL,'4652',NULL,'2024-12-31 12:19:08','ojitoB','640','360',NULL,'18'),
+('12657','154',NULL,'ojitoA','Y','N','So many views east!',NULL,NULL,'4653',NULL,NULL,'ojitoA','640','480',NULL,'11'),
+('12658','154',NULL,'ojitoC','Y','N','Super-steep uphill start',NULL,NULL,'4654',NULL,'2024-12-31 12:18:55','ojitoC','640','360',NULL,'17'),
+('12659','154',NULL,'IMG_2137','Y','Y','White Mesa in the distance','355064611','-1068373028','4656',NULL,'2024-12-31 10:21:59','IMG_2137','480','640',NULL,'7'),
+('12660','154',NULL,'IMG_2140','Y','Y','A dinosaur bone cross-section','355103611','-1068347472','4657',NULL,'2024-12-31 10:40:27','IMG_2140','640','480',NULL,'15'),
+('12661','154',NULL,'IMG_2139','Y','N','Looking east, the landscape is varied and colorful','355087306','-1068345861','4658',NULL,'2024-12-31 10:32:57','IMG_2139','480','640',NULL,'9');
 
 
 
@@ -6657,7 +6736,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5567 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6191 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO VISITORS VALUES
@@ -11240,7 +11319,637 @@ INSERT INTO VISITORS VALUES
 ('5563','209.215.92.58','0','Apple Safari','mac','2024-11-27 11:13:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
 ('5564','209.215.92.58','0','Apple Safari','mac','2024-11-27 11:13:28','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=147&tbl=%3C?$tbl;?%3E'),
 ('5565','66.249.66.38','0','Google Chrome','linux','2024-11-27 12:55:47','https://nmhikes.com:443/pages/home.php'),
-('5566','40.77.167.15','0','Google Chrome','Unknown','2024-11-27 03:37:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=209');
+('5566','40.77.167.15','0','Google Chrome','Unknown','2024-11-27 03:37:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=209'),
+('5567','69.171.251.16','0','Unknown','Unknown','2024-11-27 06:11:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5568','52.225.75.223','0','Unknown','Unknown','2024-11-27 06:28:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5569','40.77.167.47','0','Google Chrome','Unknown','2024-11-27 09:05:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('5570','40.77.167.19','0','Google Chrome','Unknown','2024-11-27 09:10:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5571','40.77.167.241','0','Google Chrome','Unknown','2024-11-28 12:30:05','https://nmhikes.com:443/pages/tableOnly.php'),
+('5572','40.77.167.51','0','Google Chrome','Unknown','2024-11-28 03:27:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5573','52.167.144.217','0','Google Chrome','Unknown','2024-11-28 03:48:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5574','40.77.167.136','0','Google Chrome','Unknown','2024-11-28 05:28:33','https://nmhikes.com:443/pages/tableOnly.php'),
+('5575','52.167.144.220','0','Google Chrome','Unknown','2024-11-28 05:37:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5576','40.77.167.159','0','Google Chrome','Unknown','2024-11-28 06:17:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=364'),
+('5577','52.156.77.156','0','Unknown','Unknown','2024-11-28 10:36:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5578','66.220.149.53','0','Unknown','Unknown','2024-11-28 11:10:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5579','73.26.80.84','0','Google Chrome','windows','2024-11-28 12:28:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('5580','104.28.48.213','0','Apple Safari','mac','2024-11-28 04:37:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5581','104.28.48.213','0','Apple Safari','mac','2024-11-28 04:37:38','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=342&tbl=%3C?$tbl;?%3E'),
+('5582','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:41:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5583','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:41:25','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=342&tbl=%3C?$tbl;?%3E'),
+('5584','104.28.48.217','0','Apple Safari','mac','2024-11-28 04:43:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5585','104.28.48.217','0','Apple Safari','mac','2024-11-28 04:43:46','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=342&tbl=%3C?$tbl;?%3E'),
+('5586','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:49:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5587','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:49:10','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=342&tbl=%3C?$tbl;?%3E'),
+('5588','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:58:01','https://nmhikes.com:443/pages/landing.php'),
+('5589','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:58:05','https://nmhikes.com:443/pages/responsiveTable.php'),
+('5590','172.59.0.116','0','Apple Safari','mac','2024-11-28 04:59:11','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307'),
+('5591','40.77.167.78','0','Google Chrome','Unknown','2024-11-28 05:15:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=114'),
+('5592','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:19:33','https://nmhikes.com:443/pages/landing.php'),
+('5593','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:19:44','https://nmhikes.com:443/pages/mapOnly.php'),
+('5594','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:19:48','https://nmhikes.com:443/pages/landing.php'),
+('5595','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:19:49','https://nmhikes.com:443/pages/responsiveTable.php'),
+('5596','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:20:23','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=341'),
+('5597','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:24:01','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305'),
+('5598','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:32:42','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305'),
+('5599','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:32:42','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305'),
+('5600','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:38:52','https://nmhikes.com:443/pages/landing.php'),
+('5601','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:38:56','https://nmhikes.com:443/pages/responsiveTable.php'),
+('5602','172.59.1.113','0','Apple Safari','mac','2024-11-28 05:39:13','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307'),
+('5603','40.84.221.211','0','Unknown','Unknown','2024-11-28 06:41:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('5604','66.249.79.8','0','Google Chrome','linux','2024-11-28 07:28:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5605','172.59.0.116','0','Apple Safari','mac','2024-11-28 08:19:02','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307'),
+('5606','172.59.0.116','0','Apple Safari','mac','2024-11-28 08:25:53','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307'),
+('5607','52.167.144.145','0','Google Chrome','Unknown','2024-11-28 08:51:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5608','52.167.144.223','0','Google Chrome','Unknown','2024-11-28 10:22:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('5609','40.77.167.38','0','Google Chrome','Unknown','2024-11-29 12:37:40','https://nmhikes.com:443/pages/tableOnly.php'),
+('5610','66.249.79.8','0','Google Chrome','linux','2024-11-29 01:53:44','https://nmhikes.com:443/pages/home.php'),
+('5611','52.167.144.207','0','Google Chrome','Unknown','2024-11-29 02:18:56','https://nmhikes.com:443/pages/home.php'),
+('5612','52.167.144.237','0','Google Chrome','Unknown','2024-11-29 02:35:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=199'),
+('5613','52.167.144.18','0','Google Chrome','Unknown','2024-11-29 05:36:12','https://nmhikes.com:443/pages/tableOnly.php'),
+('5614','173.252.79.116','0','Unknown','Unknown','2024-11-29 06:20:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5615','66.249.66.37','0','Google Chrome','linux','2024-11-29 09:44:13','https://nmhikes.com:443/pages/landing.php'),
+('5616','66.249.66.39','0','Google Chrome','linux','2024-11-29 01:17:57','https://nmhikes.com:443/pages/home.php'),
+('5617','52.167.144.189','0','Google Chrome','Unknown','2024-11-29 02:26:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=363'),
+('5618','40.77.167.79','0','Google Chrome','Unknown','2024-11-29 03:43:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=54'),
+('5619','97.123.71.106','0','Apple Safari','mac','2024-11-29 03:54:24','https://nmhikes.com:443/pages/landing.php'),
+('5620','66.249.66.38','0','Google Chrome','linux','2024-11-29 03:57:25','https://nmhikes.com:443/pages/home.php'),
+('5621','40.77.167.159','0','Google Chrome','Unknown','2024-11-29 08:40:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5622','52.167.144.194','0','Google Chrome','Unknown','2024-11-29 11:56:00','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=184'),
+('5623','40.77.167.241','0','Google Chrome','Unknown','2024-11-30 12:39:35','https://nmhikes.com:443/pages/tableOnly.php'),
+('5624','40.77.167.14','0','Google Chrome','Unknown','2024-11-30 12:40:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('5625','52.167.144.141','0','Google Chrome','Unknown','2024-11-30 05:38:14','https://nmhikes.com:443/pages/tableOnly.php'),
+('5626','52.167.144.161','0','Google Chrome','Unknown','2024-11-30 06:49:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=138'),
+('5627','72.24.28.124','0','Google Chrome','windows','2024-11-30 07:32:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5628','69.24.97.37','0','Google Chrome','windows','2024-11-30 01:02:52','https://nmhikes.com:443/pages/home.php'),
+('5629','40.77.167.20','0','Google Chrome','Unknown','2024-11-30 02:20:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=263'),
+('5630','98.60.154.73','0','Apple Safari','mac','2024-11-30 02:28:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('5631','172.59.1.252','0','Google Chrome','linux','2024-11-30 02:57:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147');
+INSERT INTO VISITORS VALUES
+('5632','172.59.1.252','0','Google Chrome','linux','2024-11-30 02:57:20','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=147&tbl=%3C?$tbl;?%3E'),
+('5633','69.24.97.37','0','Google Chrome','windows','2024-11-30 04:56:00','https://nmhikes.com:443/pages/home.php'),
+('5634','71.228.96.172','0','Apple Safari','mac','2024-11-30 07:25:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=327'),
+('5635','71.228.96.172','0','Apple Safari','mac','2024-11-30 07:25:33','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=327&tbl=%3C?$tbl;?%3E'),
+('5636','71.228.96.172','0','Apple Safari','mac','2024-11-30 07:26:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=307'),
+('5637','71.228.96.172','0','Apple Safari','mac','2024-11-30 07:26:03','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307&tbl=%3C?$tbl;?%3E'),
+('5638','40.77.167.52','0','Google Chrome','Unknown','2024-11-30 08:02:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5639','52.167.144.205','0','Google Chrome','Unknown','2024-11-30 10:51:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=320'),
+('5640','52.167.144.136','0','Google Chrome','Unknown','2024-12-01 12:31:40','https://nmhikes.com:443/pages/tableOnly.php'),
+('5641','40.77.167.136','0','Google Chrome','Unknown','2024-12-01 01:11:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5642','52.167.144.189','0','Google Chrome','Unknown','2024-12-01 05:43:18','https://nmhikes.com:443/pages/tableOnly.php'),
+('5643','66.96.214.58','0','Unknown','Unknown','2024-12-01 08:32:53','https://nmhikes.com:443/pages/home.php'),
+('5644','66.249.66.37','0','Google Chrome','linux','2024-12-01 10:32:21','https://nmhikes.com:443/pages/home.php'),
+('5645','73.26.111.27','0','Apple Safari','mac','2024-12-01 12:35:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5646','73.26.111.27','0','Apple Safari','mac','2024-12-01 12:35:45','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=342&tbl=%3C?$tbl;?%3E'),
+('5647','104.28.124.134','0','Apple Safari','mac','2024-12-01 01:43:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
+('5648','98.60.21.42','0','Google Chrome','windows','2024-12-01 04:12:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('5649','66.249.66.37','0','Google Chrome','linux','2024-12-01 05:52:31','https://nmhikes.com:443/pages/home.php'),
+('5650','97.123.71.106','0','Apple Safari','mac','2024-12-01 06:08:55','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=15'),
+('5651','40.77.167.33','0','Google Chrome','Unknown','2024-12-01 08:57:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5652','52.167.144.18','0','Google Chrome','Unknown','2024-12-01 11:15:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
+('5653','66.249.66.39','0','Google Chrome','linux','2024-12-01 11:51:08','https://nmhikes.com:443/pages/home.php'),
+('5654','40.77.167.116','0','Google Chrome','Unknown','2024-12-02 12:27:37','https://nmhikes.com:443/pages/tableOnly.php'),
+('5655','40.77.167.38','0','Google Chrome','Unknown','2024-12-02 02:08:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('5656','52.167.144.234','0','Google Chrome','Unknown','2024-12-02 05:09:44','https://nmhikes.com:443/pages/tableOnly.php'),
+('5657','52.167.144.168','0','Google Chrome','Unknown','2024-12-02 06:48:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5658','69.171.249.114','0','Unknown','Unknown','2024-12-02 07:17:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5659','52.167.144.226','0','Google Chrome','Unknown','2024-12-02 07:55:34','https://nmhikes.com:443/pages/about.php'),
+('5660','73.127.160.152','0','Mozilla Firefox','linux','2024-12-02 10:00:13','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=15'),
+('5661','69.171.249.113','0','Unknown','Unknown','2024-12-02 12:34:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5662','98.249.94.226','0','Google Chrome','windows','2024-12-02 02:50:41','https://nmhikes.com:443/pages/home.php'),
+('5663','98.249.94.226','0','Google Chrome','windows','2024-12-02 03:01:36','https://nmhikes.com:443/pages/home.php'),
+('5664','172.59.0.116','0','Apple Safari','mac','2024-12-02 06:17:34','https://nmhikes.com:443/pages/responsiveTable.php'),
+('5665','40.84.221.209','0','Unknown','Unknown','2024-12-02 06:32:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('5666','40.77.167.46','0','Google Chrome','Unknown','2024-12-02 08:54:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5667','52.167.144.145','0','Google Chrome','Unknown','2024-12-02 09:04:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5668','52.156.77.149','0','Unknown','Unknown','2024-12-02 11:02:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5669','40.77.167.70','0','Google Chrome','Unknown','2024-12-02 11:39:06','https://nmhikes.com:443/pages/tableOnly.php'),
+('5670','52.167.144.214','0','Google Chrome','Unknown','2024-12-03 12:33:16','https://nmhikes.com:443/pages/tableOnly.php'),
+('5671','40.77.167.76','0','Google Chrome','Unknown','2024-12-03 02:14:44','https://nmhikes.com:443/pages/home.php'),
+('5672','104.197.69.115','0','Google Chrome','linux','2024-12-03 02:39:58','https://nmhikes.com:443/pages/home.php'),
+('5673','205.169.39.18','0','Google Chrome','windows','2024-12-03 02:39:59','https://nmhikes.com:443/pages/home.php'),
+('5674','205.169.39.4','0','Google Chrome','windows','2024-12-03 02:40:00','https://nmhikes.com:443/pages/home.php'),
+('5675','205.169.39.99','0','Google Chrome','windows','2024-12-03 02:40:57','https://nmhikes.com:443/pages/home.php'),
+('5676','52.167.144.207','0','Google Chrome','Unknown','2024-12-03 03:53:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5677','40.77.167.36','0','Google Chrome','Unknown','2024-12-03 05:07:24','https://nmhikes.com:443/pages/tableOnly.php'),
+('5678','52.167.144.169','0','Google Chrome','Unknown','2024-12-03 06:01:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5679','104.28.85.155','0','Apple Safari','mac','2024-12-03 06:51:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
+('5680','20.15.133.175','0','Google Chrome','Unknown','2024-12-03 08:25:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=106'),
+('5681','184.52.120.132','0','Apple Safari','mac','2024-12-03 01:59:10','https://nmhikes.com:443/pages/tableOnly.php'),
+('5682','184.52.120.132','0','Apple Safari','mac','2024-12-03 02:01:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=337'),
+('5683','184.52.120.132','0','Apple Safari','mac','2024-12-03 02:46:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=338'),
+('5684','184.52.120.132','0','Apple Safari','mac','2024-12-03 02:48:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('5685','184.52.120.132','0','Apple Safari','mac','2024-12-03 02:49:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('5686','66.249.66.37','0','Google Chrome','linux','2024-12-03 06:26:18','https://nmhikes.com:443/pages/landing.php'),
+('5687','52.167.144.203','0','Google Chrome','Unknown','2024-12-03 07:35:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5688','66.249.66.38','0','Google Chrome','linux','2024-12-03 07:36:09','https://nmhikes.com:443/pages/landing.php'),
+('5689','66.249.66.39','0','Google Chrome','Unknown','2024-12-03 07:37:37','https://nmhikes.com:443/pages/home.php'),
+('5690','52.167.144.20','0','Google Chrome','Unknown','2024-12-03 07:51:48','https://nmhikes.com:443/pages/tableOnly.php'),
+('5691','40.77.167.21','0','Google Chrome','Unknown','2024-12-03 08:20:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=361'),
+('5692','173.252.107.10','0','Unknown','Unknown','2024-12-03 08:29:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5693','66.249.66.37','0','Google Chrome','linux','2024-12-03 08:32:09','https://nmhikes.com:443/pages/landing.php'),
+('5694','40.77.167.150','0','Google Chrome','Unknown','2024-12-03 09:01:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5695','66.249.66.37','0','Google Chrome','Unknown','2024-12-03 09:43:27','https://nmhikes.com:443/pages/home.php'),
+('5696','66.249.66.38','0','Google Chrome','linux','2024-12-03 09:43:29','https://nmhikes.com:443/pages/landing.php'),
+('5697','40.77.167.157','0','Google Chrome','Unknown','2024-12-03 10:52:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=55'),
+('5698','66.249.66.37','0','Google Chrome','linux','2024-12-03 11:49:40','https://nmhikes.com:443/pages/home.php'),
+('5699','40.77.167.76','0','Google Chrome','Unknown','2024-12-04 12:58:56','https://nmhikes.com:443/pages/tableOnly.php'),
+('5700','104.43.224.95','0','Google Chrome','mac','2024-12-04 01:01:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5701','51.8.102.58','0','Unknown','Unknown','2024-12-04 01:08:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5702','20.15.133.191','0','Google Chrome','Unknown','2024-12-04 02:14:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=55'),
+('5703','52.167.144.197','0','Google Chrome','Unknown','2024-12-04 04:22:14','https://nmhikes.com:443/pages/tableOnly.php'),
+('5704','40.77.167.150','0','Google Chrome','Unknown','2024-12-04 04:23:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5705','40.77.167.54','0','Google Chrome','Unknown','2024-12-04 05:41:24','https://nmhikes.com:443/pages/home.php'),
+('5706','98.249.94.226','0','Google Chrome','windows','2024-12-04 06:28:06','https://nmhikes.com:443/pages/home.php'),
+('5707','98.249.94.226','0','Google Chrome','windows','2024-12-04 07:03:28','https://nmhikes.com:443/pages/home.php'),
+('5708','98.249.94.226','0','Google Chrome','windows','2024-12-04 07:11:43','https://nmhikes.com:443/pages/home.php'),
+('5709','75.161.154.55','0','Google Chrome','windows','2024-12-04 10:27:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5710','75.161.154.55','0','Google Chrome','windows','2024-12-04 10:31:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5711','52.167.144.203','0','Google Chrome','Unknown','2024-12-04 10:40:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5712','40.77.167.38','0','Google Chrome','Unknown','2024-12-04 10:45:59','https://nmhikes.com:443/pages/tableOnly.php'),
+('5713','40.77.167.79','0','Google Chrome','Unknown','2024-12-04 01:00:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5714','52.167.144.140','0','Google Chrome','Unknown','2024-12-04 02:03:01','https://nmhikes.com:443/pages/home.php'),
+('5715','40.77.167.48','0','Google Chrome','Unknown','2024-12-04 05:03:50','https://nmhikes.com:443/pages/tableOnly.php'),
+('5716','52.167.144.205','0','Google Chrome','Unknown','2024-12-04 06:18:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5717','173.252.107.17','0','Unknown','Unknown','2024-12-04 09:56:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5718','157.55.39.202','0','Google Chrome','Unknown','2024-12-05 03:56:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5719','52.167.144.150','0','Google Chrome','Unknown','2024-12-05 04:11:18','https://nmhikes.com:443/pages/tableOnly.php'),
+('5720','52.167.144.162','0','Google Chrome','Unknown','2024-12-05 04:38:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5721','52.167.144.206','0','Google Chrome','Unknown','2024-12-05 07:46:59','https://nmhikes.com:443/pages/tableOnly.php'),
+('5722','52.167.144.140','0','Google Chrome','Unknown','2024-12-05 09:50:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=99&clus=y'),
+('5723','207.46.13.92','0','Google Chrome','Unknown','2024-12-05 10:13:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5724','52.167.144.145','0','Google Chrome','Unknown','2024-12-05 10:27:39','https://nmhikes.com:443/pages/tableOnly.php'),
+('5725','149.56.150.148','0','Unknown','Unknown','2024-12-05 10:53:12','https://nmhikes.com:443/pages/home.php'),
+('5726','73.127.160.152','0','Mozilla Firefox','linux','2024-12-05 10:58:07','https://nmhikes.com:443/pages/home.php'),
+('5727','73.127.160.152','0','Mozilla Firefox','linux','2024-12-05 10:58:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=92'),
+('5728','185.191.171.2','0','Unknown','Unknown','2024-12-05 03:49:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5729','73.26.111.27','0','Google Chrome','windows','2024-12-05 04:12:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5730','70.29.24.124','0','Apple Safari','mac','2024-12-05 04:49:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('5731','70.29.24.124','0','Apple Safari','mac','2024-12-05 04:51:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32');
+INSERT INTO VISITORS VALUES
+('5732','98.32.17.30','0','Google Chrome','Unknown','2024-12-05 05:01:23','https://nmhikes.com:443/pages/home.php'),
+('5733','73.26.111.27','0','Google Chrome','windows','2024-12-05 05:10:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5734','57.141.7.1','0','Unknown','Unknown','2024-12-05 06:09:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('5735','40.77.167.65','0','Google Chrome','Unknown','2024-12-05 06:35:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5736','52.156.77.154','0','Unknown','Unknown','2024-12-05 08:37:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('5737','51.8.102.47','0','Unknown','Unknown','2024-12-05 08:44:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('5738','54.198.55.229','0','Unknown','Unknown','2024-12-05 09:09:28','https://nmhikes.com:443/pages/about.php'),
+('5739','54.198.55.229','0','Unknown','Unknown','2024-12-05 09:09:28','https://nmhikes.com:443/pages/ownership.php'),
+('5740','54.198.55.229','0','Unknown','Unknown','2024-12-05 09:09:28','https://nmhikes.com:443/pages/home.php'),
+('5741','54.198.55.229','0','Unknown','Unknown','2024-12-05 09:09:28','https://nmhikes.com:443/pages/tableOnly.php'),
+('5742','54.156.251.192','0','Unknown','Unknown','2024-12-05 09:34:45','https://nmhikes.com:443/pages/about.php'),
+('5743','54.156.251.192','0','Unknown','Unknown','2024-12-05 09:34:45','https://nmhikes.com:443/pages/ownership.php'),
+('5744','54.156.251.192','0','Unknown','Unknown','2024-12-05 09:34:45','https://nmhikes.com:443/pages/home.php'),
+('5745','66.249.66.37','0','Google Chrome','linux','2024-12-05 11:44:02','https://nmhikes.com:443/pages/home.php'),
+('5746','52.167.144.205','0','Google Chrome','Unknown','2024-12-06 03:25:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5747','52.167.144.230','0','Google Chrome','Unknown','2024-12-06 04:32:24','https://nmhikes.com:443/pages/tableOnly.php'),
+('5748','207.46.13.83','0','Google Chrome','Unknown','2024-12-06 04:34:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5749','52.167.144.187','0','Google Chrome','Unknown','2024-12-06 05:39:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5750','40.77.167.4','0','Google Chrome','Unknown','2024-12-06 06:05:09','https://nmhikes.com:443/pages/home.php'),
+('5751','207.46.13.64','0','Google Chrome','Unknown','2024-12-06 11:02:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5752','52.167.144.162','0','Google Chrome','Unknown','2024-12-06 11:02:40','https://nmhikes.com:443/pages/tableOnly.php'),
+('5753','76.113.78.224','0','Apple Safari','mac','2024-12-06 11:39:21','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=147&tbl=%3C?$tbl;?%3E'),
+('5754','20.161.75.221','0','Unknown','Unknown','2024-12-06 01:25:00','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5755','104.28.50.162','0','Apple Safari','mac','2024-12-06 01:32:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('5756','40.77.167.62','0','Google Chrome','Unknown','2024-12-06 06:03:49','https://nmhikes.com:443/pages/tableOnly.php'),
+('5757','52.167.144.161','0','Google Chrome','Unknown','2024-12-06 06:47:52','https://nmhikes.com:443/pages/home.php'),
+('5758','208.85.32.183','0','Mozilla Firefox','Unknown','2024-12-06 06:47:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=346'),
+('5759','208.85.32.183','0','Mozilla Firefox','Unknown','2024-12-06 06:47:58','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=346&tbl=%3C?$tbl;?%3E'),
+('5760','52.167.144.209','0','Google Chrome','Unknown','2024-12-06 06:50:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5761','76.18.69.208','0','Apple Safari','mac','2024-12-06 08:04:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=241'),
+('5762','66.249.66.39','0','Google Chrome','linux','2024-12-06 09:05:18','https://nmhikes.com:443/pages/home.php'),
+('5763','172.178.140.146','0','Unknown','Unknown','2024-12-06 09:51:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5764','40.77.167.150','0','Google Chrome','Unknown','2024-12-07 12:38:28','https://nmhikes.com:443/pages/booklist.php'),
+('5765','51.8.155.52','0','Unknown','Unknown','2024-12-07 12:44:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5766','52.167.144.184','0','Google Chrome','Unknown','2024-12-07 03:49:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5767','52.167.144.18','0','Google Chrome','Unknown','2024-12-07 03:59:46','https://nmhikes.com:443/pages/tableOnly.php'),
+('5768','184.52.120.132','0','Unknown','mac','2024-12-07 08:06:53','https://nmhikes.com:443/pages/home.php'),
+('5769','52.167.144.141','0','Google Chrome','Unknown','2024-12-07 08:53:53','https://nmhikes.com:443/pages/tableOnly.php'),
+('5770','69.160.160.56','0','Google Chrome','linux','2024-12-07 08:58:30','https://nmhikes.com:443/pages/home.php'),
+('5771','184.52.120.132','0','Unknown','mac','2024-12-07 08:58:41','https://nmhikes.com:443/pages/home.php'),
+('5772','52.167.144.187','0','Google Chrome','Unknown','2024-12-07 10:54:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5773','75.204.4.133','0','Apple Safari','mac','2024-12-07 11:50:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5774','75.204.4.133','0','Apple Safari','mac','2024-12-07 11:50:22','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5775','75.204.4.133','0','Apple Safari','mac','2024-12-07 11:53:41','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5776','174.238.227.210','0','Apple Safari','mac','2024-12-07 12:43:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5777','174.238.227.210','0','Apple Safari','mac','2024-12-07 12:43:50','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5778','184.52.120.132','0','Apple Safari','mac','2024-12-07 02:18:18','https://nmhikes.com:443/pages/tableOnly.php'),
+('5779','184.52.120.132','0','Apple Safari','mac','2024-12-07 02:21:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('5780','184.52.120.132','0','Apple Safari','mac','2024-12-07 04:18:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('5781','184.52.120.132','0','Apple Safari','mac','2024-12-07 04:18:07','https://nmhikes.com:443/pages/tableOnly.php'),
+('5782','174.201.254.51','0','Apple Safari','mac','2024-12-07 04:32:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5783','172.59.0.247','0','Apple Safari','mac','2024-12-07 06:20:49','https://nmhikes.com:443/pages/home.php'),
+('5784','65.19.21.56','0','Apple Safari','mac','2024-12-07 07:00:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=327'),
+('5785','65.19.21.56','0','Apple Safari','mac','2024-12-07 07:00:24','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=327&tbl=%3C?$tbl;?%3E'),
+('5786','65.19.21.56','0','Apple Safari','mac','2024-12-07 07:05:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=307'),
+('5787','65.19.21.56','0','Apple Safari','mac','2024-12-07 07:05:05','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=307&tbl=%3C?$tbl;?%3E'),
+('5788','104.255.19.15','0','Apple Safari','mac','2024-12-07 07:05:39','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5789','52.167.144.18','0','Google Chrome','Unknown','2024-12-07 10:17:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5790','66.249.66.39','0','Google Chrome','linux','2024-12-08 01:15:41','https://nmhikes.com:443/pages/home.php'),
+('5791','66.249.66.39','0','Google Chrome','linux','2024-12-08 01:27:02','https://nmhikes.com:443/pages/home.php'),
+('5792','104.28.50.164','0','Apple Safari','mac','2024-12-08 02:35:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('5793','52.167.144.136','0','Google Chrome','Unknown','2024-12-08 04:06:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5794','40.77.167.20','0','Google Chrome','Unknown','2024-12-08 04:11:12','https://nmhikes.com:443/pages/tableOnly.php'),
+('5795','40.77.167.143','0','Google Chrome','Unknown','2024-12-08 04:34:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5796','52.167.144.197','0','Google Chrome','Unknown','2024-12-08 07:34:32','https://nmhikes.com:443/pages/tableOnly.php'),
+('5797','104.255.19.15','0','Apple Safari','mac','2024-12-08 07:36:10','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5798','73.127.160.152','0','Mozilla Firefox','linux','2024-12-08 10:03:46','https://nmhikes.com:443/pages/home.php'),
+('5799','73.127.160.152','0','Mozilla Firefox','linux','2024-12-08 10:04:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=100'),
+('5800','67.0.87.184','0','Unknown','mac','2024-12-08 02:08:16','https://nmhikes.com:443/pages/home.php'),
+('5801','73.127.160.152','0','Mozilla Firefox','linux','2024-12-08 03:47:39','https://nmhikes.com:443/pages/home.php'),
+('5802','40.77.167.159','0','Google Chrome','Unknown','2024-12-08 09:19:31','https://nmhikes.com:443/pages/home.php'),
+('5803','66.249.66.38','0','Google Chrome','linux','2024-12-09 01:09:09','https://nmhikes.com:443/pages/home.php'),
+('5804','40.77.167.9','0','Google Chrome','Unknown','2024-12-09 01:42:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5805','40.77.167.48','0','Google Chrome','Unknown','2024-12-09 03:50:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5806','52.167.144.219','0','Google Chrome','Unknown','2024-12-09 03:54:37','https://nmhikes.com:443/pages/tableOnly.php'),
+('5807','104.28.48.89','0','Apple Safari','mac','2024-12-09 11:40:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=36'),
+('5808','104.28.48.89','0','Apple Safari','mac','2024-12-09 11:40:51','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=36&tbl=%3C?$tbl;?%3E'),
+('5809','104.28.48.89','0','Apple Safari','mac','2024-12-09 11:41:49','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=36&tbl=%3C?$tbl;?%3E'),
+('5810','104.28.48.89','0','Apple Safari','mac','2024-12-09 11:41:55','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=36&tbl=%3C?$tbl;?%3E'),
+('5811','66.220.149.9','0','Unknown','Unknown','2024-12-09 12:33:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5812','104.28.151.161','0','Apple Safari','mac','2024-12-09 02:51:42','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=36&tbl=%3C?$tbl;?%3E'),
+('5813','184.52.120.132','0','Apple Safari','mac','2024-12-09 05:07:43','https://nmhikes.com:443/pages/tableOnly.php'),
+('5814','184.52.120.132','0','Apple Safari','mac','2024-12-09 05:07:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=312'),
+('5815','184.52.120.132','0','Apple Safari','mac','2024-12-09 05:09:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=334'),
+('5816','184.52.120.132','0','Apple Safari','mac','2024-12-09 06:26:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=334'),
+('5817','184.52.120.132','0','Apple Safari','mac','2024-12-09 06:26:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=312'),
+('5818','184.52.120.132','0','Apple Safari','mac','2024-12-09 06:26:46','https://nmhikes.com:443/pages/tableOnly.php'),
+('5819','52.167.144.187','0','Google Chrome','Unknown','2024-12-09 06:29:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5820','52.167.144.197','0','Google Chrome','Unknown','2024-12-09 06:43:19','https://nmhikes.com:443/pages/tableOnly.php'),
+('5821','66.249.70.173','0','Google Chrome','linux','2024-12-10 01:10:01','https://nmhikes.com:443/pages/home.php'),
+('5822','66.249.70.171','0','Google Chrome','linux','2024-12-10 01:12:25','https://nmhikes.com:443/pages/home.php'),
+('5823','66.249.70.172','0','Google Chrome','linux','2024-12-10 02:05:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5824','52.167.144.22','0','Google Chrome','Unknown','2024-12-10 03:49:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5825','40.77.167.22','0','Google Chrome','Unknown','2024-12-10 03:59:22','https://nmhikes.com:443/pages/tableOnly.php'),
+('5826','40.77.167.58','0','Google Chrome','Unknown','2024-12-10 09:03:41','https://nmhikes.com:443/pages/tableOnly.php'),
+('5827','52.167.144.191','0','Google Chrome','Unknown','2024-12-10 09:57:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5828','178.156.154.201','0','Google Chrome','windows','2024-12-10 10:49:20','https://nmhikes.com:443/pages/home.php'),
+('5829','40.77.167.55','0','Google Chrome','Unknown','2024-12-10 11:46:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5830','98.32.17.30','0','Google Chrome','Unknown','2024-12-10 01:23:58','https://nmhikes.com:443/pages/home.php'),
+('5831','66.220.149.1','0','Unknown','Unknown','2024-12-10 03:41:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145');
+INSERT INTO VISITORS VALUES
+('5832','52.167.144.229','0','Google Chrome','Unknown','2024-12-10 06:43:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=72'),
+('5833','98.249.94.226','0','Google Chrome','windows','2024-12-10 07:47:08','https://nmhikes.com:443/pages/home.php'),
+('5834','98.249.94.226','0','Google Chrome','windows','2024-12-10 07:47:11','https://nmhikes.com:443/pages/home.php'),
+('5835','207.46.13.54','0','Google Chrome','Unknown','2024-12-10 09:56:17','https://nmhikes.com:443/pages/home.php'),
+('5836','40.77.202.17','0','Google Chrome','Unknown','2024-12-11 02:44:01','https://nmhikes.com:443/pages/home.php'),
+('5837','52.167.144.228','0','Google Chrome','Unknown','2024-12-11 02:49:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5838','66.249.72.141','0','Google Chrome','linux','2024-12-11 04:56:24','https://nmhikes.com:443/pages/home.php'),
+('5839','52.167.144.202','0','Google Chrome','Unknown','2024-12-11 04:57:45','https://nmhikes.com:443/pages/tableOnly.php'),
+('5840','40.77.167.154','0','Google Chrome','Unknown','2024-12-11 05:46:10','https://nmhikes.com:443/pages/tableOnly.php'),
+('5841','157.55.39.12','0','Google Chrome','Unknown','2024-12-11 06:08:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5842','98.249.94.226','0','Google Chrome','windows','2024-12-11 01:30:46','https://nmhikes.com:443/pages/home.php'),
+('5843','40.77.167.42','0','Google Chrome','Unknown','2024-12-11 09:16:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=148'),
+('5844','40.77.167.121','0','Google Chrome','Unknown','2024-12-11 10:11:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5845','51.8.102.127','0','Unknown','Unknown','2024-12-12 02:03:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=138'),
+('5846','52.167.144.222','0','Google Chrome','Unknown','2024-12-12 02:48:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5847','40.77.167.60','0','Google Chrome','Unknown','2024-12-12 04:56:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('5848','52.167.144.184','0','Google Chrome','Unknown','2024-12-12 05:53:40','https://nmhikes.com:443/pages/tableOnly.php'),
+('5849','40.77.167.72','0','Google Chrome','Unknown','2024-12-12 01:52:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('5850','40.77.167.22','0','Google Chrome','Unknown','2024-12-12 03:22:34','https://nmhikes.com:443/pages/tableOnly.php'),
+('5851','52.167.144.219','0','Google Chrome','Unknown','2024-12-12 06:41:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5852','52.167.144.184','0','Google Chrome','Unknown','2024-12-12 07:04:42','https://nmhikes.com:443/pages/home.php'),
+('5853','40.77.167.16','0','Google Chrome','Unknown','2024-12-12 11:35:27','https://nmhikes.com:443/pages/home.php'),
+('5854','63.156.160.242','0','Google Chrome','windows','2024-12-13 12:49:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('5855','40.77.167.7','0','Google Chrome','Unknown','2024-12-13 03:16:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5856','52.167.144.230','0','Google Chrome','Unknown','2024-12-13 06:06:36','https://nmhikes.com:443/pages/tableOnly.php'),
+('5857','40.77.167.116','0','Google Chrome','Unknown','2024-12-13 07:58:17','https://nmhikes.com:443/pages/tableOnly.php'),
+('5858','52.167.144.172','0','Google Chrome','Unknown','2024-12-13 09:26:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5859','73.127.160.152','0','Mozilla Firefox','linux','2024-12-13 09:51:29','https://nmhikes.com:443/pages/home.php'),
+('5860','73.127.160.152','0','Mozilla Firefox','linux','2024-12-13 09:59:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=287'),
+('5861','97.123.81.12','0','Apple Safari','mac','2024-12-13 10:39:41','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=287'),
+('5862','52.167.144.173','0','Google Chrome','Unknown','2024-12-13 01:03:03','https://nmhikes.com:443/pages/home.php'),
+('5863','76.158.92.232','0','Google Chrome','mac','2024-12-13 01:44:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5864','66.249.72.140','0','Google Chrome','linux','2024-12-13 02:08:22','https://nmhikes.com:443/pages/home.php'),
+('5865','146.75.175.0','0','Apple Safari','mac','2024-12-13 02:21:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5866','146.75.175.0','0','Apple Safari','mac','2024-12-13 02:21:05','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5867','66.249.72.140','0','Google Chrome','linux','2024-12-13 02:38:28','https://nmhikes.com:443/pages/landing.php'),
+('5868','40.77.167.10','0','Google Chrome','Unknown','2024-12-13 03:14:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=34'),
+('5869','98.249.94.226','0','Google Chrome','windows','2024-12-13 05:50:52','https://nmhikes.com:443/pages/home.php'),
+('5870','40.77.167.0','0','Google Chrome','Unknown','2024-12-13 07:25:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=8'),
+('5871','146.75.175.0','0','Apple Safari','mac','2024-12-13 07:47:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5872','146.75.175.0','0','Apple Safari','mac','2024-12-13 07:47:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5873','23.98.179.27','0','Unknown','Unknown','2024-12-13 08:10:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=251'),
+('5874','23.98.179.17','0','Unknown','Unknown','2024-12-13 08:22:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=206'),
+('5875','51.8.102.127','0','Google Chrome','Unknown','2024-12-13 08:27:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=206'),
+('5876','51.8.102.92','0','Google Chrome','Unknown','2024-12-13 08:27:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=251'),
+('5877','66.249.72.139','0','Google Chrome','linux','2024-12-13 10:25:26','https://nmhikes.com:443/pages/home.php'),
+('5878','66.249.72.141','0','Google Chrome','linux','2024-12-13 10:30:57','https://nmhikes.com:443/pages/home.php'),
+('5879','40.77.167.68','0','Google Chrome','Unknown','2024-12-14 01:41:26','https://nmhikes.com:443/pages/tableOnly.php'),
+('5880','40.77.167.60','0','Google Chrome','Unknown','2024-12-14 01:56:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=367'),
+('5881','52.167.144.145','0','Google Chrome','Unknown','2024-12-14 02:50:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5882','40.77.167.65','0','Google Chrome','Unknown','2024-12-14 04:25:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5883','52.167.144.18','0','Google Chrome','Unknown','2024-12-14 05:49:18','https://nmhikes.com:443/pages/tableOnly.php'),
+('5884','40.77.167.144','0','Google Chrome','Unknown','2024-12-14 06:23:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5885','52.167.144.21','0','Google Chrome','Unknown','2024-12-14 07:15:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5886','20.161.75.217','0','Unknown','Unknown','2024-12-14 08:32:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5887','51.8.102.31','0','Google Chrome','Unknown','2024-12-14 08:39:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5888','73.127.160.152','0','Mozilla Firefox','linux','2024-12-14 09:51:04','https://nmhikes.com:443/pages/home.php'),
+('5889','38.70.224.109','0','Google Chrome','linux','2024-12-14 11:09:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5890','185.81.126.66','0','Mozilla Firefox','windows','2024-12-14 11:12:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5891','174.207.36.186','0','Google Chrome','linux','2024-12-14 03:21:39','https://nmhikes.com:443/pages/landing.php'),
+('5892','174.207.36.186','0','Google Chrome','linux','2024-12-14 03:21:44','https://nmhikes.com:443/pages/responsiveTable.php'),
+('5893','174.207.36.186','0','Google Chrome','linux','2024-12-14 03:21:45','https://nmhikes.com:443/pages/landing.php'),
+('5894','174.207.36.186','0','Google Chrome','linux','2024-12-14 03:21:46','https://nmhikes.com:443/pages/mapOnly.php'),
+('5895','174.207.36.186','0','Google Chrome','linux','2024-12-14 03:31:28','https://nmhikes.com:443/pages/landing.php'),
+('5896','40.77.167.17','0','Google Chrome','Unknown','2024-12-14 10:17:41','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5897','40.77.167.33','0','Google Chrome','Unknown','2024-12-15 12:29:33','https://nmhikes.com:443/pages/tableOnly.php'),
+('5898','52.167.144.187','0','Google Chrome','Unknown','2024-12-15 01:16:07','https://nmhikes.com:443/pages/home.php'),
+('5899','52.167.144.160','0','Google Chrome','Unknown','2024-12-15 03:20:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5900','40.77.167.156','0','Google Chrome','Unknown','2024-12-15 06:11:15','https://nmhikes.com:443/pages/tableOnly.php'),
+('5901','73.127.161.221','0','Mozilla Firefox','windows','2024-12-15 11:51:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=94'),
+('5902','40.77.167.241','0','Google Chrome','Unknown','2024-12-15 05:03:57','https://nmhikes.com:443/pages/home.php'),
+('5903','40.77.167.42','0','Google Chrome','Unknown','2024-12-15 06:50:46','https://nmhikes.com:443/pages/tableOnly.php'),
+('5904','96.19.182.16','0','Apple Safari','mac','2024-12-15 07:25:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('5905','96.19.182.16','0','Apple Safari','mac','2024-12-15 07:25:18','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=340&tbl=%3C?$tbl;?%3E'),
+('5906','40.77.167.61','0','Google Chrome','Unknown','2024-12-15 10:29:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5907','66.249.72.140','0','Google Chrome','linux','2024-12-15 10:43:06','https://nmhikes.com:443/pages/landing.php'),
+('5908','66.249.72.140','0','Google Chrome','linux','2024-12-16 12:24:29','https://nmhikes.com:443/pages/home.php'),
+('5909','66.249.72.140','0','Google Chrome','linux','2024-12-16 12:27:26','https://nmhikes.com:443/pages/home.php'),
+('5910','52.167.144.161','0','Google Chrome','Unknown','2024-12-16 02:40:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5911','40.77.167.68','0','Google Chrome','Unknown','2024-12-16 03:18:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5912','40.77.167.6','0','Google Chrome','Unknown','2024-12-16 06:17:40','https://nmhikes.com:443/pages/tableOnly.php'),
+('5913','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:31:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('5914','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:31:35','https://nmhikes.com:443/pages/booklist.php'),
+('5915','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:31:37','https://nmhikes.com:443/pages/tableOnly.php'),
+('5916','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:31:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('5917','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:31:55','https://nmhikes.com:443/pages/ownership.php'),
+('5918','23.82.28.164','0','Mozilla Firefox','linux','2024-12-16 07:32:06','https://nmhikes.com:443/pages/about.php'),
+('5919','206.192.168.18','0','Apple Safari','mac','2024-12-16 08:33:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5920','206.192.168.18','0','Apple Safari','mac','2024-12-16 08:33:41','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5921','206.192.168.18','0','Apple Safari','mac','2024-12-16 08:33:49','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5922','75.233.167.208','0','Apple Safari','mac','2024-12-16 08:34:24','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5923','66.249.72.140','0','Google Chrome','linux','2024-12-16 09:12:53','https://nmhikes.com:443/pages/landing.php'),
+('5924','66.249.72.139','0','Google Chrome','Unknown','2024-12-16 09:13:24','https://nmhikes.com:443/pages/home.php'),
+('5925','40.77.167.33','0','Google Chrome','Unknown','2024-12-16 02:10:54','https://nmhikes.com:443/pages/tableOnly.php'),
+('5926','40.77.167.34','0','Google Chrome','Unknown','2024-12-16 03:13:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=295'),
+('5927','66.249.72.141','0','Google Chrome','linux','2024-12-16 04:34:05','https://nmhikes.com:443/pages/landing.php'),
+('5928','40.77.167.55','0','Google Chrome','Unknown','2024-12-16 06:30:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5929','52.167.144.24','0','Google Chrome','Unknown','2024-12-16 07:22:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=367'),
+('5930','135.237.131.219','0','Unknown','Unknown','2024-12-16 08:35:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('5931','52.167.144.225','0','Google Chrome','Unknown','2024-12-16 09:33:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145');
+INSERT INTO VISITORS VALUES
+('5932','52.167.144.158','0','Google Chrome','Unknown','2024-12-17 12:26:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=367'),
+('5933','52.167.144.138','0','Google Chrome','Unknown','2024-12-17 03:25:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5934','91.242.162.5','0','Unknown','Unknown','2024-12-17 04:09:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5935','52.167.144.214','0','Google Chrome','Unknown','2024-12-17 06:12:48','https://nmhikes.com:443/pages/tableOnly.php'),
+('5936','40.77.167.65','0','Google Chrome','Unknown','2024-12-17 07:50:37','https://nmhikes.com:443/pages/tableOnly.php'),
+('5937','40.77.167.42','0','Google Chrome','Unknown','2024-12-17 08:34:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5938','40.77.167.68','0','Google Chrome','Unknown','2024-12-17 09:22:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5939','52.167.144.220','0','Google Chrome','Unknown','2024-12-17 09:45:47','https://nmhikes.com:443/pages/tableOnly.php'),
+('5940','40.77.167.230','0','Google Chrome','Unknown','2024-12-17 12:47:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5941','128.177.104.230','0','Apple Safari','mac','2024-12-17 03:37:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=336'),
+('5942','128.177.104.230','0','Apple Safari','mac','2024-12-17 03:51:41','https://nmhikes.com:443/pages/home.php'),
+('5943','70.171.48.172','0','Apple Safari','mac','2024-12-17 04:28:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('5944','70.171.48.172','0','Apple Safari','mac','2024-12-17 04:28:38','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=27&tbl=%3C?$tbl;?%3E'),
+('5945','66.249.72.140','0','Google Chrome','linux','2024-12-17 05:17:11','https://nmhikes.com:443/pages/landing.php'),
+('5946','66.249.72.139','0','Google Chrome','Unknown','2024-12-17 05:17:11','https://nmhikes.com:443/pages/home.php'),
+('5947','75.233.167.208','0','Apple Safari','mac','2024-12-17 08:00:49','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5948','157.55.39.14','0','Google Chrome','Unknown','2024-12-18 02:51:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5949','157.55.39.201','0','Google Chrome','Unknown','2024-12-18 03:44:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=226'),
+('5950','52.167.144.162','0','Google Chrome','Unknown','2024-12-18 04:35:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5951','40.77.167.17','0','Google Chrome','Unknown','2024-12-18 05:46:49','https://nmhikes.com:443/pages/tableOnly.php'),
+('5952','52.167.144.137','0','Google Chrome','Unknown','2024-12-18 06:43:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=367'),
+('5953','157.55.39.61','0','Google Chrome','Unknown','2024-12-18 08:53:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5954','40.77.167.79','0','Google Chrome','Unknown','2024-12-18 10:35:05','https://nmhikes.com:443/pages/tableOnly.php'),
+('5955','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:16:55','https://nmhikes.com:443/pages/home.php'),
+('5956','35.225.82.182','0','Google Chrome','windows','2024-12-18 01:16:55','https://nmhikes.com:443/pages/home.php'),
+('5957','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:17:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=290'),
+('5958','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:17:45','https://nmhikes.com:443/pages/home.php'),
+('5959','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:17:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=175'),
+('5960','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:18:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116'),
+('5961','74.51.214.162','0','Google Chrome','windows','2024-12-18 01:18:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('5962','75.233.167.208','0','Apple Safari','mac','2024-12-18 01:21:30','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5963','20.161.75.216','0','Unknown','Unknown','2024-12-18 06:08:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5964','85.208.96.193','0','Unknown','Unknown','2024-12-18 06:29:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=345'),
+('5965','52.167.144.225','0','Google Chrome','Unknown','2024-12-18 10:07:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('5966','66.249.72.140','0','Google Chrome','linux','2024-12-18 11:30:03','https://nmhikes.com:443/pages/home.php'),
+('5967','40.77.167.151','0','Google Chrome','Unknown','2024-12-19 12:07:21','https://nmhikes.com:443/pages/tableOnly.php'),
+('5968','157.55.39.55','0','Google Chrome','Unknown','2024-12-19 03:21:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5969','40.77.167.71','0','Google Chrome','Unknown','2024-12-19 03:53:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('5970','69.63.189.15','0','Unknown','Unknown','2024-12-19 06:01:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('5971','40.77.167.65','0','Google Chrome','Unknown','2024-12-19 06:12:54','https://nmhikes.com:443/pages/tableOnly.php'),
+('5972','52.167.144.221','0','Google Chrome','Unknown','2024-12-19 09:24:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5973','73.127.160.152','0','Google Chrome','linux','2024-12-19 10:22:29','https://nmhikes.com:443/pages/home.php'),
+('5974','73.127.160.152','0','Google Chrome','linux','2024-12-19 10:22:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=55'),
+('5975','73.127.160.152','0','Google Chrome','linux','2024-12-19 10:27:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=228'),
+('5976','73.127.160.152','0','Google Chrome','linux','2024-12-19 10:27:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=168'),
+('5977','40.77.167.55','0','Google Chrome','Unknown','2024-12-19 02:07:55','https://nmhikes.com:443/pages/home.php'),
+('5978','66.220.149.23','0','Unknown','Unknown','2024-12-19 05:30:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('5979','73.127.160.152','0','Google Chrome','linux','2024-12-19 05:45:11','https://nmhikes.com:443/pages/home.php'),
+('5980','207.46.13.154','0','Google Chrome','Unknown','2024-12-20 02:53:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5981','173.252.87.2','0','Unknown','Unknown','2024-12-20 03:08:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('5982','52.167.144.210','0','Google Chrome','Unknown','2024-12-20 05:45:50','https://nmhikes.com:443/pages/tableOnly.php'),
+('5983','52.167.144.160','0','Google Chrome','Unknown','2024-12-20 06:04:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('5984','73.127.160.152','0','Google Chrome','linux','2024-12-20 06:30:08','https://nmhikes.com:443/pages/home.php'),
+('5985','157.55.39.55','0','Google Chrome','Unknown','2024-12-20 06:35:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=128'),
+('5986','73.127.142.148','0','Apple Safari','mac','2024-12-20 08:04:41','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5987','73.127.142.148','0','Apple Safari','mac','2024-12-20 08:04:42','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('5988','98.48.37.152','0','Mozilla Firefox','mac','2024-12-20 02:46:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('5989','157.55.39.196','0','Google Chrome','Unknown','2024-12-20 03:15:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5990','58.29.34.209','0','Google Chrome','windows','2024-12-20 06:38:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('5991','40.77.167.151','0','Google Chrome','Unknown','2024-12-20 08:44:10','https://nmhikes.com:443/pages/home.php'),
+('5992','66.249.72.141','0','Google Chrome','linux','2024-12-20 11:05:33','https://nmhikes.com:443/pages/home.php'),
+('5993','52.167.144.181','0','Google Chrome','Unknown','2024-12-21 12:51:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('5994','40.77.167.25','0','Google Chrome','Unknown','2024-12-21 01:43:22','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('5995','52.167.144.138','0','Google Chrome','Unknown','2024-12-21 03:54:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=325'),
+('5996','40.77.167.71','0','Google Chrome','Unknown','2024-12-21 04:13:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('5997','73.127.160.152','0','Google Chrome','linux','2024-12-21 09:25:14','https://nmhikes.com:443/pages/home.php'),
+('5998','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:02:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('5999','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:02:58','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=182&tbl=%3C?$tbl;?%3E'),
+('6000','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:03:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=241'),
+('6001','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:03:35','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=241&tbl=%3C?$tbl;?%3E'),
+('6002','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:04:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=241'),
+('6003','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:04:23','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=241&tbl=%3C?$tbl;?%3E'),
+('6004','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:04:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('6005','166.199.97.106','0','Mozilla Firefox','Unknown','2024-12-21 12:04:34','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35&tbl=%3C?$tbl;?%3E'),
+('6006','40.77.167.65','0','Google Chrome','Unknown','2024-12-21 01:31:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6007','157.55.39.195','0','Google Chrome','Unknown','2024-12-21 03:14:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6008','40.84.221.218','0','Unknown','Unknown','2024-12-21 09:04:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=128'),
+('6009','51.8.102.157','0','Google Chrome','mac','2024-12-21 09:17:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=128'),
+('6010','40.77.167.65','0','Google Chrome','Unknown','2024-12-22 12:30:01','https://nmhikes.com:443/pages/home.php'),
+('6011','52.167.144.18','0','Google Chrome','Unknown','2024-12-22 02:47:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
+('6012','40.77.167.77','0','Google Chrome','Unknown','2024-12-22 03:00:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=330'),
+('6013','52.167.144.157','0','Google Chrome','Unknown','2024-12-22 04:27:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6014','52.167.144.22','0','Google Chrome','Unknown','2024-12-22 06:18:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('6015','51.8.102.129','0','Google Chrome','mac','2024-12-22 10:11:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=191'),
+('6016','73.141.11.37','0','Apple Safari','mac','2024-12-22 11:35:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6017','73.141.11.37','0','Apple Safari','mac','2024-12-22 11:35:52','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=187&tbl=%3C?$tbl;?%3E'),
+('6018','207.46.13.168','0','Google Chrome','Unknown','2024-12-22 01:11:26','https://nmhikes.com:443/pages/tableOnly.php'),
+('6019','157.55.39.196','0','Google Chrome','Unknown','2024-12-22 03:27:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6020','73.98.101.185','0','Google Chrome','linux','2024-12-22 05:53:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('6021','73.98.101.185','0','Google Chrome','linux','2024-12-22 05:53:40','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35&tbl=%3C?$tbl;?%3E'),
+('6022','73.98.101.185','0','Google Chrome','linux','2024-12-22 05:55:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('6023','73.98.101.185','0','Google Chrome','linux','2024-12-22 05:55:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35&tbl=%3C?$tbl;?%3E'),
+('6024','40.77.167.32','0','Google Chrome','Unknown','2024-12-22 09:33:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6025','66.249.72.140','0','Google Chrome','linux','2024-12-22 11:08:31','https://nmhikes.com:443/pages/home.php'),
+('6026','72.24.28.124','0','Google Chrome','windows','2024-12-23 08:07:36','https://nmhikes.com:443/pages/home.php'),
+('6027','72.24.28.124','0','Google Chrome','windows','2024-12-23 08:08:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=287'),
+('6028','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:16:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6029','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:27:05','https://nmhikes.com:443/pages/booklist.php'),
+('6030','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:27:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('6031','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:29:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=317');
+INSERT INTO VISITORS VALUES
+('6032','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:31:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6033','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:32:05','https://nmhikes.com:443/pages/about.php'),
+('6034','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:32:39','https://nmhikes.com:443/pages/home.php'),
+('6035','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:33:06','https://nmhikes.com:443/pages/about.php'),
+('6036','98.60.154.73','0','Apple Safari','mac','2024-12-23 08:33:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6037','98.60.154.73','0','Apple Safari','mac','2024-12-23 09:31:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6038','52.167.144.173','0','Google Chrome','Unknown','2024-12-23 02:58:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6039','20.97.189.98','0','Unknown','Unknown','2024-12-23 05:54:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6040','52.167.144.159','0','Google Chrome','Unknown','2024-12-23 11:23:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=210'),
+('6041','52.167.144.23','0','Google Chrome','Unknown','2024-12-24 03:15:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6042','52.167.144.219','0','Google Chrome','Unknown','2024-12-24 08:23:40','https://nmhikes.com:443/pages/home.php'),
+('6043','209.184.110.49','0','Apple Safari','mac','2024-12-24 10:10:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('6044','209.184.110.49','0','Apple Safari','mac','2024-12-24 10:10:50','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=32&tbl=%3C?$tbl;?%3E'),
+('6045','72.24.28.124','0','Google Chrome','windows','2024-12-24 12:35:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=287'),
+('6046','72.24.28.124','0','Google Chrome','windows','2024-12-24 12:35:38','https://nmhikes.com:443/pages/home.php'),
+('6047','40.77.167.55','0','Google Chrome','Unknown','2024-12-24 03:30:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6048','75.161.78.92','0','Apple Safari','mac','2024-12-24 05:19:10','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=18'),
+('6049','174.28.15.156','0','Apple Safari','mac','2024-12-24 07:28:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6050','174.28.15.156','0','Apple Safari','mac','2024-12-24 07:28:09','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('6051','40.77.167.55','0','Google Chrome','Unknown','2024-12-25 12:17:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6052','40.77.167.25','0','Google Chrome','Unknown','2024-12-25 05:27:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6053','66.249.70.172','0','Google Chrome','linux','2024-12-25 12:14:57','https://nmhikes.com:443/pages/landing.php'),
+('6054','66.249.70.171','0','Google Chrome','Unknown','2024-12-25 12:14:57','https://nmhikes.com:443/pages/home.php'),
+('6055','51.8.155.53','0','Unknown','Unknown','2024-12-25 12:27:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6056','52.167.144.173','0','Google Chrome','Unknown','2024-12-25 01:25:27','https://nmhikes.com:443/pages/home.php'),
+('6057','98.60.154.73','0','Google Chrome','mac','2024-12-25 01:58:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6058','98.60.154.73','0','Google Chrome','mac','2024-12-25 02:02:00','https://nmhikes.com:443/pages/booklist.php'),
+('6059','52.167.144.181','0','Google Chrome','Unknown','2024-12-25 02:39:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6060','73.127.129.252','0','Apple Safari','mac','2024-12-25 04:18:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6061','52.156.77.146','0','Unknown','Unknown','2024-12-25 04:23:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6062','51.8.155.76','0','Unknown','Unknown','2024-12-25 04:39:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=336'),
+('6063','51.8.102.197','0','Google Chrome','mac','2024-12-25 04:51:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=336'),
+('6064','71.211.16.194','0','Google Chrome','windows','2024-12-25 07:19:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6065','71.211.16.194','0','Google Chrome','windows','2024-12-25 07:19:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6066','71.211.16.194','0','Google Chrome','windows','2024-12-25 07:22:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6067','71.211.16.194','0','Google Chrome','windows','2024-12-25 07:23:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6068','98.60.154.73','0','Apple Safari','mac','2024-12-25 08:29:54','https://nmhikes.com:443/pages/home.php'),
+('6069','98.60.154.73','0','Apple Safari','mac','2024-12-25 08:30:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6070','185.191.171.16','0','Unknown','Unknown','2024-12-25 09:18:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6071','98.60.154.73','0','Apple Safari','mac','2024-12-25 10:19:06','https://nmhikes.com:443/pages/home.php'),
+('6072','40.77.167.7','0','Google Chrome','Unknown','2024-12-25 11:55:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6073','205.169.39.178','0','Google Chrome','windows','2024-12-26 01:31:43','http://mail.nmhikes.com/pages/home.php'),
+('6074','205.169.39.3','0','Google Chrome','windows','2024-12-26 03:07:49','http://mail.nmhikes.com/pages/home.php'),
+('6075','5.196.255.160','0','Google Chrome','linux','2024-12-26 04:57:06','https://nmhikes.com:443/pages/home.php'),
+('6076','52.167.144.207','0','Google Chrome','Unknown','2024-12-26 05:39:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6077','66.249.65.225','0','Google Chrome','linux','2024-12-26 06:38:41','https://nmhikes.com:443/pages/home.php'),
+('6078','174.234.193.142','0','Google Chrome','linux','2024-12-26 12:28:08','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=18'),
+('6079','52.225.75.219','0','Unknown','Unknown','2024-12-26 03:30:22','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=135'),
+('6080','52.225.75.216','0','Unknown','Unknown','2024-12-26 03:49:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=135'),
+('6081','51.8.102.197','0','Google Chrome','mac','2024-12-26 03:55:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=135'),
+('6082','69.171.249.114','0','Unknown','Unknown','2024-12-26 08:40:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6083','69.63.189.113','0','Unknown','Unknown','2024-12-26 08:45:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6084','51.8.102.135','0','Google Chrome','mac','2024-12-26 11:00:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=352'),
+('6085','51.8.102.34','0','Google Chrome','mac','2024-12-26 11:00:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=360'),
+('6086','40.77.167.30','0','Google Chrome','Unknown','2024-12-26 11:58:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6087','40.77.202.19','0','Google Chrome','Unknown','2024-12-27 02:57:42','https://nmhikes.com:443/pages/home.php'),
+('6088','52.167.144.194','0','Google Chrome','Unknown','2024-12-27 03:01:24','https://nmhikes.com:443/pages/home.php'),
+('6089','40.77.167.72','0','Google Chrome','Unknown','2024-12-27 05:51:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6090','73.127.160.152','0','Google Chrome','linux','2024-12-27 07:01:36','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=18'),
+('6091','5.161.47.240','0','Google Chrome','windows','2024-12-27 04:41:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=226'),
+('6092','98.60.154.73','0','Apple Safari','mac','2024-12-27 05:10:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6093','98.60.154.73','0','Apple Safari','mac','2024-12-27 05:11:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('6094','73.26.50.150','0','Apple Safari','mac','2024-12-27 05:29:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=118'),
+('6095','73.26.50.150','0','Apple Safari','mac','2024-12-27 05:29:58','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=118&tbl=%3C?$tbl;?%3E'),
+('6096','172.203.190.133','0','Google Chrome','mac','2024-12-27 05:40:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=226'),
+('6097','40.77.167.151','0','Google Chrome','Unknown','2024-12-27 08:18:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('6098','184.52.120.132','0','Apple Safari','mac','2024-12-27 09:32:51','https://nmhikes.com:443/pages/tableOnly.php'),
+('6099','184.52.120.132','0','Apple Safari','mac','2024-12-27 09:33:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('6100','184.52.120.132','0','Apple Safari','mac','2024-12-27 09:38:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=312'),
+('6101','184.52.120.132','0','Apple Safari','mac','2024-12-27 09:40:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=229'),
+('6102','69.63.189.3','0','Unknown','Unknown','2024-12-27 10:04:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6103','52.167.144.158','0','Google Chrome','Unknown','2024-12-27 11:59:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6104','40.77.167.0','0','Google Chrome','Unknown','2024-12-28 06:08:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6105','184.52.120.132','0','Apple Safari','mac','2024-12-28 08:24:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=229'),
+('6106','184.52.120.132','0','Apple Safari','mac','2024-12-28 08:24:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=312'),
+('6107','184.52.120.132','0','Apple Safari','mac','2024-12-28 08:24:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=303'),
+('6108','184.52.120.132','0','Apple Safari','mac','2024-12-28 08:24:38','https://nmhikes.com:443/pages/tableOnly.php'),
+('6109','73.98.108.167','0','Apple Safari','mac','2024-12-28 10:40:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6110','73.98.108.167','0','Apple Safari','mac','2024-12-28 10:40:25','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('6111','174.234.195.104','0','Apple Safari','mac','2024-12-28 11:12:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6112','174.234.195.104','0','Apple Safari','mac','2024-12-28 11:12:12','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('6113','174.234.195.104','0','Apple Safari','mac','2024-12-28 11:13:18','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('6114','174.234.195.104','0','Apple Safari','mac','2024-12-28 11:15:24','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl=%3C?$tbl;?%3E'),
+('6115','104.28.85.160','0','Apple Safari','mac','2024-12-28 11:45:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6116','104.28.85.160','0','Apple Safari','mac','2024-12-28 11:45:23','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=27&tbl=%3C?$tbl;?%3E'),
+('6117','104.28.85.161','0','Apple Safari','mac','2024-12-28 11:46:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6118','104.28.85.161','0','Apple Safari','mac','2024-12-28 11:46:50','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=27&tbl=%3C?$tbl;?%3E'),
+('6119','20.161.75.209','0','Unknown','Unknown','2024-12-28 11:58:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=41'),
+('6120','40.77.167.70','0','Google Chrome','Unknown','2024-12-28 11:59:46','https://nmhikes.com:443/pages/home.php'),
+('6121','51.8.102.92','0','Google Chrome','mac','2024-12-28 12:06:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=41'),
+('6122','172.56.88.140','0','Apple Safari','mac','2024-12-28 01:12:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('6123','172.56.88.140','0','Apple Safari','mac','2024-12-28 01:12:09','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=13&tbl=%3C?$tbl;?%3E'),
+('6124','172.56.93.106','0','Apple Safari','mac','2024-12-28 01:48:30','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=13&tbl=%3C?$tbl;?%3E'),
+('6125','69.171.230.115','0','Unknown','Unknown','2024-12-28 03:00:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6126','174.205.225.181','0','Apple Safari','mac','2024-12-28 03:02:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('6127','174.205.225.181','0','Apple Safari','mac','2024-12-28 03:02:50','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=69&tbl=%3C?$tbl;?%3E'),
+('6128','52.167.144.24','0','Google Chrome','Unknown','2024-12-28 05:01:22','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('6129','66.249.72.139','0','Google Chrome','linux','2024-12-28 05:08:32','https://nmhikes.com:443/pages/landing.php'),
+('6130','66.249.72.139','0','Google Chrome','Unknown','2024-12-28 05:08:32','https://nmhikes.com:443/pages/home.php'),
+('6131','174.244.25.100','0','Apple Safari','mac','2024-12-28 08:48:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187');
+INSERT INTO VISITORS VALUES
+('6132','174.244.25.100','0','Apple Safari','mac','2024-12-28 08:48:13','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=187&tbl=%3C?$tbl;?%3E'),
+('6133','66.249.72.141','0','Google Chrome','linux','2024-12-28 08:57:29','https://nmhikes.com:443/pages/landing.php'),
+('6134','52.167.144.187','0','Google Chrome','Unknown','2024-12-29 01:41:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('6135','66.249.72.140','0','Google Chrome','linux','2024-12-29 07:17:20','https://nmhikes.com:443/pages/home.php'),
+('6136','184.52.89.169','0','Apple Safari','mac','2024-12-29 12:50:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6137','184.52.89.169','0','Apple Safari','mac','2024-12-29 12:50:31','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=182&tbl=%3C?$tbl;?%3E'),
+('6138','184.52.89.169','0','Apple Safari','mac','2024-12-29 12:54:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('6139','184.52.89.169','0','Apple Safari','mac','2024-12-29 12:54:55','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=182&tbl=%3C?$tbl;?%3E'),
+('6140','40.77.167.60','0','Google Chrome','Unknown','2024-12-29 01:31:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6141','173.252.107.116','0','Unknown','Unknown','2024-12-29 05:32:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6142','40.77.167.77','0','Google Chrome','Unknown','2024-12-29 07:46:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=251'),
+('6143','172.178.140.152','0','Unknown','Unknown','2024-12-30 02:39:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6144','51.8.102.53','0','Google Chrome','mac','2024-12-30 02:56:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6145','52.167.144.194','0','Google Chrome','Unknown','2024-12-30 05:04:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('6146','57.141.7.24','0','Unknown','Unknown','2024-12-30 10:08:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6147','69.171.230.4','0','Unknown','Unknown','2024-12-30 02:10:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6148','173.252.79.116','0','Unknown','Unknown','2024-12-30 02:18:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6149','173.252.79.1','0','Unknown','Unknown','2024-12-30 02:18:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6150','73.242.183.55','0','Apple Safari','mac','2024-12-30 02:35:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=256'),
+('6151','73.242.183.55','0','Apple Safari','mac','2024-12-30 02:35:05','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6152','73.242.183.55','0','Apple Safari','mac','2024-12-30 02:44:06','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6153','40.77.167.16','0','Google Chrome','Unknown','2024-12-30 04:29:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6154','73.242.200.237','0','Apple Safari','mac','2024-12-30 06:13:53','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6155','73.242.200.237','0','Apple Safari','mac','2024-12-30 06:14:53','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6156','40.77.167.68','0','Google Chrome','Unknown','2024-12-30 06:51:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
+('6157','66.249.72.139','0','Google Chrome','linux','2024-12-30 10:48:08','https://nmhikes.com:443/pages/landing.php'),
+('6158','73.242.183.55','0','Apple Safari','mac','2024-12-31 08:05:05','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6159','40.77.167.7','0','Google Chrome','Unknown','2024-12-31 08:08:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6160','69.63.184.114','0','Unknown','Unknown','2024-12-31 08:18:44','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6161','66.249.72.139','0','Google Chrome','linux','2024-12-31 10:55:15','https://nmhikes.com:443/pages/home.php'),
+('6162','76.113.23.186','0','Apple Safari','mac','2024-12-31 11:37:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6163','76.113.23.186','0','Apple Safari','mac','2024-12-31 11:37:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305&tbl=%3C?$tbl;?%3E'),
+('6164','73.26.231.122','0','Apple Safari','mac','2024-12-31 04:20:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6165','73.26.231.122','0','Apple Safari','mac','2024-12-31 04:20:29','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305&tbl=%3C?$tbl;?%3E'),
+('6166','5.161.245.179','0','Google Chrome','windows','2024-12-31 07:58:21','https://nmhikes.com:443/pages/home.php'),
+('6167','135.237.131.215','0','Unknown','Unknown','2024-12-31 09:25:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('6168','52.167.144.22','0','Google Chrome','Unknown','2025-01-01 08:23:13','https://nmhikes.com:443/pages/home.php'),
+('6169','172.59.0.225','0','Apple Safari','mac','2025-01-01 11:04:38','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=256&tbl=%3C?$tbl;?%3E'),
+('6170','174.201.14.139','0','Apple Safari','mac','2025-01-01 11:09:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('6171','174.201.14.139','0','Apple Safari','mac','2025-01-01 11:09:09','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35&tbl=%3C?$tbl;?%3E'),
+('6172','69.171.231.116','0','Unknown','Unknown','2025-01-01 01:45:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6173','75.161.78.92','0','Apple Safari','mac','2025-01-01 02:15:18','https://nmhikes.com:443/pages/landing.php'),
+('6174','23.98.179.23','0','Unknown','Unknown','2025-01-01 05:31:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6175','40.122.201.44','0','Google Chrome','mac','2025-01-01 05:33:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('6176','73.26.231.122','0','Apple Safari','mac','2025-01-01 05:41:38','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305&tbl=%3C?$tbl;?%3E'),
+('6177','152.37.220.128','0','Mozilla Firefox','windows','2025-01-01 06:27:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305&utm_source=pocket_saves'),
+('6178','69.171.231.6','0','Unknown','Unknown','2025-01-01 07:56:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6179','69.171.231.116','0','Unknown','Unknown','2025-01-01 07:57:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6180','98.60.61.57','0','Mozilla Firefox','mac','2025-01-01 09:59:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('6181','98.60.61.57','0','Mozilla Firefox','mac','2025-01-01 10:02:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('6182','40.77.167.7','0','Google Chrome','Unknown','2025-01-02 12:58:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=214'),
+('6183','69.171.251.114','0','Unknown','Unknown','2025-01-02 01:52:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('6184','76.113.22.120','0','Google Chrome','windows','2025-01-02 07:48:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('6185','76.113.22.120','0','Google Chrome','windows','2025-01-02 07:51:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('6186','52.167.144.167','0','Google Chrome','Unknown','2025-01-02 10:04:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=275'),
+('6187','73.26.231.122','0','Apple Safari','mac','2025-01-02 11:22:56','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=305&tbl=%3C?$tbl;?%3E'),
+('6188','52.167.144.173','0','Google Chrome','Unknown','2025-01-02 12:36:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=94'),
+('6189','66.249.72.139','0','Google Chrome','linux','2025-01-02 12:44:46','https://nmhikes.com:443/pages/home.php'),
+('6190','40.84.221.228','0','Unknown','Unknown','2025-01-02 06:21:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=65');
 
 
 
@@ -11254,7 +11963,7 @@ CREATE TABLE `WAYPTS` (
   `lng` int(10) DEFAULT NULL,
   `sym` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`wptId`)
-) ENGINE=InnoDB AUTO_INCREMENT=453 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=457 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO WAYPTS VALUES
@@ -11584,7 +12293,11 @@ INSERT INTO WAYPTS VALUES
 ('449','306','gpx','Sharp Turn','341024799','-1068227949','Flag, Blue'),
 ('450','363','db','Off road parking area','347801087','-1063869412','Parking Area'),
 ('451','317','db','Hike Begins Here','351935600','-1070571600','Trail Head'),
-('452','340','db','Start Here','352121194','-1070718917','Trail Head');
+('452','340','db','Start Here','352121194','-1070718917','Trail Head'),
+('453','367','gpx','Clear Grinder Jct','350793180','-1063172010','Flag, Blue'),
+('454','367','gpx','Pinyon Jct','350615949','-1063278880','Flag, Blue'),
+('455','367','gpx','Tablazon Canyon Jct','350837980','-1063236639','Flag, Blue'),
+('456','368','db','Best Route (Southern)','355247600','-1068319200','Triangle, Yellow');
 
 
 
