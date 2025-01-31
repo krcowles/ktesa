@@ -74,6 +74,7 @@ if ($ehike === false) {
 }
 $clusPgField = $ehike['pgTitle']; // used if publishing a new cluster page
 $cname = $ehike['cname'];
+$proposed = strpos($ehike['pgTitle'], '[Proposed]') === false ? false : true;
 
 // update actions.txt
 $txt = "EHIKE no {$hikeNo}; Page ";
@@ -118,14 +119,16 @@ if ($clusterPage) {
     if (empty($ehike['lat']) || empty($ehike['lng'])) {
         $msgout .= '<p class="brown">Missing lat or lng data</p>';
     }
-    if (empty($ehike['last_hiked'])) {
-        $msgout .= '<p class="brown">Missing last_hiked data</p>';
-    }
-    if (empty($ehike['preview'])) {
-        $msgout .= '<p class="brown">Missing preview/thumb data</p>';
-    }
-    if (empty($ehike['bounds'])) {
-        $msgout .= '<p class="brown">Missing hike bounds box</p>';
+    if (!$proposed) {
+        if (empty($ehike['last_hiked'])) {
+            $msgout .= '<p class="brown">Missing last_hiked data</p>';
+        }
+        if (empty($ehike['preview'])) {
+            $msgout .= '<p class="brown">Missing preview/thumb data</p>';
+        }
+        if (empty($ehike['bounds'])) {
+            $msgout .= '<p class="brown">Missing hike bounds box</p>';
+        }
     }
 }
 if (empty($ehike['dirs'])) {
