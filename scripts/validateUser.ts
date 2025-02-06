@@ -2,6 +2,7 @@ interface LockResults {
     status: string;
     minutes: number;
 }
+declare var mobile: boolean;
 /**
  * @fileoverview This function invokes an ajax call to the
  * authenticate.php script in an effort to validate membership.
@@ -48,7 +49,11 @@ $('#send').on('click', function(ev) {
                 $.get({
                     url: '../accounts/logout.php',
                     success: function() {
-                        window.open('../pages/landing.php', '_self');
+                        if (mobile) {
+                            window.open('../pages/landing.php', '_self');
+                        } else {
+                            window.open('../pages/home.php', '_self');
+                        }
                     }
                 });
                 resetPassModal.hide();
@@ -242,6 +247,16 @@ function validateUser(user: string, password: string) {
                         $('#the_answer').trigger('focus');
                     }
                 }, 'json');
+            } else if (json.status === "Blank field") {
+                let ans = confirm("Your registration is not complete: Re-register?\n" 
+                    + "[Your currrent username and password will be deleted]");
+                if (ans) {
+                    $.get("../accounts/logout.php", {redo: 'Y', user: user},
+                        function() {
+                            window.open("../accounts/unifiedLogin.php?form=reg", "_self");
+                        }
+                    );
+                }
             } else if (json.status === "RENEW") {
                 renewPassword();
             } else if (json.status === "EXPIRED") {

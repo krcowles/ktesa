@@ -65,30 +65,34 @@ foreach ($user_dat as $user) {
         $nomatch = false;
         $uid = $user['userid'];
         reduceLocks(count($entries), $ip, $pdo);
-        $expiration = $user['passwd_expire']; 
-        $american = str_replace("-", "/", $expiration);
-        $expdate = strtotime($american);
-        if ($expdate <= time()) {
-            // remove user from Users table
-            $expiredUser = "DELETE FROM `USERS` WHERE `userid`=?;";
-            $removeUser = $pdo->prepare($expiredUser);
-            $removeUser->execute([$uid]);
-            $return_data['status'] = 'EXPIRED';
-            echo json_encode($return_data);
-            exit;
-        } else {
-            $days = floor(($expdate - time())/UX_DAY);
-            if ($days <= 5) {
-                $return_data['status'] = "RENEW";
+        $expiration = $user['passwd_expire'];
+        if ($expiration) {  // i.e. not null, undefined, or ''
+            $american = str_replace("-", "/", $expiration);
+            $expdate = strtotime($american);
+            if ($expdate <= time()) {
+                // remove user from Users table
+                $expiredUser = "DELETE FROM `USERS` WHERE `userid`=?;";
+                $removeUser = $pdo->prepare($expiredUser);
+                $removeUser->execute([$uid]);
+                $return_data['status'] = 'EXPIRED';
                 echo json_encode($return_data);
                 exit;
             } else {
-                $return_data = array(
-                    'status' => 'LOCATED',
-                    'ix' => $uid
-                ); 
-                break;
+                $days = floor(($expdate - time())/UX_DAY);
+                if ($days <= 5) {
+                    $return_data['status'] = "RENEW";
+                    echo json_encode($return_data);
+                    exit;
+                } else {
+                    $return_data = [
+                        'status' => 'LOCATED',
+                        'ix' => $uid
+                    ]; 
+                    break;
+                }
             }
+        } else {
+            $return_data['status'] = "Blank field";
         }
     }
 }

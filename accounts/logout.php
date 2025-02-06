@@ -18,6 +18,12 @@ if (isset($_GET['expire']) && $_GET['expire'] === 'Y') {
     $remove = $pdo->prepare($removeReq);
     $remove->execute([$_SESSION['userid']]);
 }
+if (isset($_GET['redo']) && $_GET['redo'] === 'Y' ) { // no $_SESSION['userid'] yet
+    $username = filter_input(INPUT_GET, 'user');
+    $removeReq = "DELETE FROM `USERS` WHERE `username`=?;";
+    $remove = $pdo->prepare($removeReq);
+    $remove->execute([$username]);
+}
 $admin = false;
 if (isset($_SESSION['userid'])) {  // since session may have expired
     if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2') {

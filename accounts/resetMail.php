@@ -19,7 +19,7 @@ if ($email === false) {
     exit;
 }
 $type = filter_input(INPUT_POST, 'form');
-if ($type === 'own') {
+if ($type === 'own') { // someone is requesting ownership :-)
     $from = $email;
     $from_note = "";
     $to = ADMIN;
