@@ -13,7 +13,7 @@
  * Portrait views will vary slightly in text and object placement
  * compared to landscape views. The js will adjust views accordingly.
  * Portrait content is designed to fit in the 320/480px state; 
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -39,7 +39,8 @@ require_once "../accounts/getLogin.php";
 <body>
 
 <div id="logo">
-    <div id="pattern"></div>
+    <div id="pattern">
+    </div>
     <div id="pgheader">
         <div id="leftside">
             <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
@@ -48,7 +49,7 @@ require_once "../accounts/getLogin.php";
         
         <!-- minimal functionality "navbar" -->
         <div id="center">
-        <select id="membership">
+            <select id="membership">
                 <option id="sao"    value="sao">Member Options:</option>
                 <option id="login"  value="login">Login          </option>
                 <option id="logout" value="logout">Logout        </option>
@@ -63,13 +64,12 @@ require_once "../accounts/getLogin.php";
     </div>   
 </div>
 
-<img id="bg" src="../images/landing_bg.png" />
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
 <?php if (isset($_SESSION['cookies'])) : ?>
 <p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
 <?php endif;?>
     
-<h2 id="welcome"><strong>The New Mexico Hiking Site</strong></h2>
+<h2 id="welcome">The New Mexico Hiking Site</h2>
 <div class="landing_content">
     <h4 id="detail">(A free site)</h4> 
     <p id="opts">Choose from the following
@@ -77,29 +77,17 @@ require_once "../accounts/getLogin.php";
 
     <div class="usr_choices">
         <div class="flexitem">
-            <div class="pair" id="choice1">
-                <p>Hike Table</p>
-                <img id="table" class="icons" src="../images/tbl.jpg" 
-                    alt="image of table of hikes" />
-            </div>
-            <div class="pair" id="choice2">
-                <p id="home">Map &amp; markers</p>
-                <img id="map" class="icons" src="../images/newMap.jpg"
-                    alt="map with markers" />
-            </div>
+                <div class="pair" id="choice1">
+                    <p id="tbldesc">Hike Table</p>
+                    <img id="table" class="icons" src="../images/tbl.jpg" 
+                        alt="image of table of hikes" />
+                </div>
+                <div class="pair" id="choice2">
+                    <p id="home">Map &amp; markers</p>
+                    <img id="map" class="icons" src="../images/mapmrkrs.jpg"
+                        alt="map with markers" />
+                </div>
         </div>
-<!-- When offline maps are ready...
-        <div class="flexitem">
-            <div class="pair" id="choice3">
-                <p>Save Offline</p>
-                <img id="create" class="icons" src="../images/save_off.png" />
-            </div>
-            <div class="pair" id="choice4">
-                <p>Use Offline</p>
-                <img id="utilize" class="icons" src="../images/use_map.png" />
-            </div>
-        </div>
--->
     </div>
     <div id="bennies">
         Membership is free!<br />Benefits include :
