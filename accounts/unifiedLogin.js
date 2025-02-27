@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @fileoverview Adjust page according to form type
  *
@@ -40,7 +39,7 @@ $(function () {
      * The code executed depends on which formtype is in play
      */
     switch (formtype) {
-        case 'reg':
+        case 'join':
             // clear inputs on page load/reload 
             $('#fname').val("");
             $('#lname').val("");
@@ -215,7 +214,7 @@ $(function () {
                         }
                         else {
                             var email = $('#email').val();
-                            var mail_data = { form: 'reg', reg: 'y', email: email };
+                            var mail_data = { form: 'join', join: 'y', email: email };
                             // admin action to cleanup database if errors here
                             $.ajax({
                                 url: 'resetMail.php',

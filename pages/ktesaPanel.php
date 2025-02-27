@@ -239,7 +239,7 @@ if (isset($_SESSION['userid'])) {
                             href="#">Change Password</a>
                         </li>
                         <li><a id="bam" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=reg"
+                            href="../accounts/unifiedLogin.php?form=join"
                             target="_self">Become a Member</a>
                         </li>
                         <li><a id="updte_sec" class="dropdown-item" href="#">

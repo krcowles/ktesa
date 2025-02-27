@@ -29,10 +29,10 @@ if ($type === 'own') { // someone is requesting ownership :-)
     $subject = 'Site Ownership';
     $message = filter_input(INPUT_POST, 'message');
 } else {
-    $usertype = isset($_POST['reg']) ? "&reg=y&code=" : "&code=";
+    $usertype = isset($_POST['join']) ? "&join=y&code=" : "&code=";
 
     $usermsg = "<h2>Do not reply to this message</h2>";
-    if ($type === 'reg') {
+    if ($type === 'join') {
         $usermsg .= "<h3>Your registration request has been received.<br />" .
             "To complete your registration and sign in, your " .
             "one-time code is ";

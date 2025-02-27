@@ -1,9 +1,22 @@
 <?php
 /**
- * This page allows the user to login to the site as a member, whether a new member
- * registration, a change password request, 'Forgot password' request, expired or
- * renewable membership, or rejected cookies. In each case the user is sent a
- * one-time secure code as a password, and must select a new password to continue. 
+ * This page is a multi-purpose form, used for
+ *    1. Nmhikes membership registration:
+ *       a. When a user clicks on the 'Become a member' menu item, the user is
+ *          directed to this page, where $form="join";
+ *       b. After completing and submitting the request form, an ajax request will
+ *          create a new user in the database `USERS` table with the submitted data
+ *          (name, username, and email), followed by another ajax request which
+ *          creates an email containing a link with a one-time password code.
+ *       c. When the user clicks on the email link, this page is again displayed with
+ *          $form="renew", whereupon he can complete the desired registration with a
+ *          new password of his choosing. In addition the user must make a choice
+ *          about cookies and set up security questions. When the form is now
+ *          submitted, he will be logged in and fully registered.
+ *    2. Change, renew, or 'Forgot password' requests invoke this page with
+ *       $form="renew"; In each case an email is generated with a one-time secure
+ *       code as a password, and th user must select a new password to continue. 
+ *    3. Logging in: this page is displayed with "$form=log"
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -16,15 +29,16 @@ require "../php/global_boot.php";
 $form   = filter_input(INPUT_GET, 'form');
 $code   = isset($_GET['code']) ? filter_input(INPUT_GET, 'code') : '';
 $ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
-$newusr = isset($_GET['reg']) ? true : false;
-$title   = "Query string missing!"; // otherwise error fct called
-if ($form === 'reg') {
-    $title = "Complete Registration";
+$newusr = isset($_GET['join']) ? true : false;
+$title  = "Query string missing!"; // otherwise error fct called
+if ($form === 'join') {
+    $title = "New User Registration";
 } elseif ($form === 'renew') {
     $title = "Set Password";
 } elseif ($form === 'log') {
     $title = "Log in";
 }
+ // $btn_note only used after new member email is sent and link is clicked
 if ($newusr) {
     $btn_note = 'Complete Your Security Questions';
 } else {
@@ -85,7 +99,7 @@ if ($newusr) {
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
 <p id="formtype" style="display:none;"><?=$form;?></p>
 <div id="container">  <!-- only one of the three sections will appear on page -->
-<?php if ($form === 'reg') : ?>
+<?php if ($form === 'join') : ?>
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
         <p>Sign up for free access to nmhikes.com!</p>

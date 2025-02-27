@@ -52,7 +52,7 @@ $(reject_btn).on('click', function() {
  * The code executed depends on which formtype is in play
  */
 switch (formtype) {
-    case 'reg':
+    case 'join':
         // clear inputs on page load/reload 
         $('#fname').val("");
         $('#lname').val("");
@@ -221,7 +221,7 @@ switch (formtype) {
                         $.post('../php/ajaxError.php', ajaxerr);
                     } else {
                         let email = $('#email').val();
-                        let mail_data = {form: 'reg', reg: 'y', email: email};
+                        let mail_data = {form: 'join', join: 'y', email: email};
                         // admin action to cleanup database if errors here
                         $.ajax({
                             url: 'resetMail.php',
