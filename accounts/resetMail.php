@@ -31,14 +31,14 @@ if ($type === 'own') { // someone is requesting ownership :-)
 } else {
     $usertype = isset($_POST['join']) ? "&join=y&code=" : "&code=";
 
-    $usermsg = "<h2>Do not reply to this message</h2>";
+    $usermsg = "<h3>Do not hit 'Reply' to this message</h3>";
     if ($type === 'join') {
-        $usermsg .= "<h3>Your registration request has been received.<br />" .
+        $usermsg .= "<h4>Your registration request has been received.<br />" .
             "To complete your registration and sign in, your " .
             "one-time code is ";
         $subj = "Registration for NM Hikes";
     } elseif ($type === 'chg') {
-        $usermsg .= "<h3>Your request to change/reset your nmhikes.com password " .
+        $usermsg .= "<h4>Your request to change/reset your nmhikes.com password " .
             "was received.<br />" . "To reset your password, your one-time code is ";
         $subj = "Password Reset for NM Hikes";
     } else {
@@ -57,8 +57,8 @@ if ($type === 'own') { // someone is requesting ownership :-)
         echo "Your email '{$email}' was not located in our database";
         exit;
     }
-    $from = "admin@nmhikes.com";
-    $from_note = "Do not reply";
+    $from = "Do not hit reply";
+    $from_note = "Do hit not reply";
     $to = $email;
     $name = $status['username'];
     $replyTo = $from;
@@ -72,8 +72,8 @@ if ($type === 'own') { // someone is requesting ownership :-)
     $savecode->execute([$hash, $name]);
     $subject = $subj;
     $message = $usermsg . $tmp_pass . "<br />Your username is " 
-        . $name . "</p></h3>" . $href . $tmp_pass . "&ix=" . $id .
-        '">Click here to complete</a>';
+        . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
+        '">Click here</a> to complete your registration</h4>';
 }
 $mail->setFrom($from, $from_note);
 $mail->addAddress($to, $name);
