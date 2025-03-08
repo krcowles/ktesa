@@ -622,7 +622,7 @@ function getGpxArray($pdo, $hikeno, $state)
     $gpxField = $pdo->query($getGpxFieldReq)->fetch(PDO::FETCH_ASSOC);
     if (!empty($gpxField['gpx'])) {
         $stdClassGpx = json_decode($gpxField['gpx'], true);
-        // Convert stdClass to array: 
+        // Convert stdClass array to php array: 
         $gpx_array = [];
         foreach ($stdClassGpx as $item => $value) {
             $gpx_array[$item] = $value;

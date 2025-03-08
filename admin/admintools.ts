@@ -662,6 +662,11 @@ $('#pub').on('click', function() {
 $('#postpub').on('click', function() {
     window.open("postPublish.php");
 });
+$('#delgit').on('click', function() {
+    $.get("deletePostPublish.php", function() {
+        alert("Files removed");
+    });
+});
 // Delete a hike
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");

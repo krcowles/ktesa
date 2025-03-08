@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @fileoverview This script executes all buttons on the admintools.php page
  *
@@ -644,6 +643,11 @@ $(function () {
     });
     $('#postpub').on('click', function () {
         window.open("postPublish.php");
+    });
+    $('#delgit').on('click', function () {
+        $.get("deletePostPublish.php", function () {
+            alert("Files removed");
+        });
     });
     // Delete a hike
     $('#ehdel').on('click', function () {

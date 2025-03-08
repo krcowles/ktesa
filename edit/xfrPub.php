@@ -8,13 +8,12 @@
  * hike page editor or to the cluster page editor accordingly. When edits
  * are complete the admin can then publish the EHIKE which updates the
  * HIKES and associated tables with the newly edited data. Note that for
- * (non-cluster) pages, there may be fewer JSON files published than were
- * originally posted: new JSON files may be added. For this reason,
- * this script will track the original production json files in the file
- * 'pub_xfrs.txt' for comparison during publication so that the admin can
- * be advised of the necessary actions to take on git when it is updated
- * on localhost.
- * PHP Version 7.4
+ * (non-cluster) pages, all json data will be eliminated first then
+ * replaced with the edit json data. For this reason, this script will
+ * track the newly created edit json files in the file 'pub_xfrs.txt' for
+ * comparison during publication so that the admin can be advised of the
+ * necessary actions to take on git when it is updated on localhost.
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -64,9 +63,10 @@ $query->execute([$userid, $getHike, $cname, $getHike]);
 
 // Fetch the new hike no in EHIKES:
 $indxReq = "SELECT `indxNo` FROM `EHIKES` ORDER BY `indxNo` DESC LIMIT 1;";
-$indxq = $pdo->query($indxReq);
+$indxq  = $pdo->query($indxReq);
 $indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0]; // EHIKES indxNo
+$prefix = "P:" . $getHike . ";E:" . $hikeNo . ":";
 
 if (!$cluspg) {
     if (file_exists($xfrs)) {
@@ -75,71 +75,72 @@ if (!$cluspg) {
     } else {
         $json_xfrs = [];
     }
-    /*
-     * PLace TSV data into ETSV
-     */
-    $xfrTsvReq = "INSERT INTO `ETSV` (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
-        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
-        "`TSV` WHERE `indxNo` = ?;";
-    $tsvq = $pdo->prepare($xfrTsvReq);
-    $tsvq->execute([$hikeNo, $getHike]);
-
-    /*
-     * Place GPSDATA into EGPSDATA
-     * NOTE: gpx/json for urls fixed later...
-     */
-    $gpsDatReq = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`,`clickText`) " .
-        "SELECT ?,`label`,`url`,`clickText` FROM `GPSDAT` WHERE " .
-        "`indxNo` = ?;";
-    $gpsq = $pdo->prepare($gpsDatReq);
-    $gpsq->execute([$hikeNo, $getHike]);
-    // track published json files in case of changes
-    $pubGPSDAT_Req
-        = "SELECT `url` FROM `GPSDAT` WHERE `indxNo`=? AND `label` LIKE 'GPX%';";
-    $pubGPSDAT = $pdo->prepare($pubGPSDAT_Req);
-    $pubGPSDAT->execute([$getHike]);
-    $xfrGPS = $pubGPSDAT->fetchAll(PDO::FETCH_COLUMN); // extract the json element...
-    $gps_xfrs = [];
-    foreach ($xfrGPS as $gjson) {
-        $gpx_json = getGPSurlData($gjson)[1]; // returns array
-        $gps_xfrs = array_merge($gps_xfrs, $gpx_json);
-    }
     /**
-     * Transfer published 'gpx' json files and reset gpx field in EHIKES;
+     * Copy published HIKES `gpx` json files [currently referenced in EHIKES
+     * `gpx` field] and convert them to equivalent EHIKES json files. Then
+     * update the `gpx` field currently in EHIKES, as it still contains the
+     * published HIKES `gpx` field data.
+     * Function Notes: 
+     * 1. getGpxArray() returns the `gpx` field entry as an associative php
+     *    array of elements containing track data: 'main', 'add1', 'add2', 'add3',
+     *    each track is associated with its corresponding data: gpx filename [key]
+     *    and array of json filenames [value].
+     * 2. getTrackFileNames() returns: an array of json file names [0],
+     *    comma-separated string of file names [1], and the main gpx file name [2].
      */
-    $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0]; // returns array
+    // establish arrays for EHIKES `gpx` array-of-json-filenames
     $main_val = [];
     $add1_val = [];
     $add2_val = [];
     $add3_val = [];
-    foreach ($previousJson as $json) {
-        $ftype     = substr($json, 1, 2);  // 'mn', 'a1', 'a2', or 'a3'
-        $dash_loc  = strpos($json, "_");
-        $extension = substr($json, $dash_loc);
-        $new_name  = "e" . $ftype . $hikeNo . $extension;
-        $to_loc   = "../json/" . $new_name;
-        $from_loc = "../json/" . $json;
-
-        // Published hike still requires its files, so copy, not move!
-        if (!copy($from_loc, $to_loc)) {
-            throw new Exception("Could not relocate {$json}");
+    $new_json_names = [];
+    $old_gpx_array = getGpxArray($pdo, $hikeNo, 'edit');
+    foreach ($old_gpx_array as $type => $value) {
+        switch ($type) {
+        case "main" :
+            $ftype = 'mn';
+            break;
+        case "add1" :
+            $ftype = 'a1';
+            break;
+        case "add2" :
+            $ftype = 'a2';
+            break;
+        case "add3" :
+            $ftype = 'a3';
         }
-        switch ($ftype) {
-        case "mn":
-            array_push($main_val, $new_name);
-            break;
-        case "a1":
-            array_push($add1_val, $new_name);
-            break;
-        case "a2":
-            array_push($add2_val, $new_name);
-            break;
-        default:
-            array_push($add3_val, $new_name);
+        if (!empty($value)) {
+            $gpx_filename = array_keys($value)[0];
+            $json_array = array_values($value)[0];
+            foreach ($json_array as $json_file) {
+                // $value is an array with gpx => array of json filenames
+                $dash_loc  = strpos($json_file, "_");
+                $extension = substr($json_file, $dash_loc);
+                $new_name  = "e" . $ftype . $hikeNo . $extension;
+                array_push($new_json_names, $prefix . $new_name);
+                $to_loc   = "../json/" . $new_name;
+                $from_loc = "../json/" . $json_file;
+                // Published hike still requires its files, so copy, not move!
+                if (!copy($from_loc, $to_loc)) {
+                    throw new Exception("Could not relocate {$json}");
+                }
+                switch ($ftype) {
+                case "mn":
+                    array_push($main_val, $new_name);
+                    break;
+                case "a1":
+                    array_push($add1_val, $new_name);
+                    break;
+                case "a2":
+                    array_push($add2_val, $new_name);
+                    break;
+                case "a3":
+                    array_push($add3_val, $new_name);
+                }
+            }
         }
     }
-    $old_gpx_array = getGpxArray($pdo, $hikeNo, 'edit'); // same as 'pub' right now
+    // EHIKES `gpx` field entry:
     $main_gpx = array_keys($old_gpx_array['main'])[0];
     $add1_gpx = empty($old_gpx_array['add1']) ? 
         '' : array_keys($old_gpx_array['add1'])[0];
@@ -156,27 +157,34 @@ if (!$cluspg) {
     $updateGpxReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo`=?;";
     $updateGpx = $pdo->prepare($updateGpxReq);
     $updateGpx->execute([$new_gpx_array, $hikeNo]);
-    /**
-     * UPDATE EWAYPTS
+    /*
+     * Place GPSDATA into EGPSDATA
+     * All GPX entries are json objects consisting of a single file name as 'key',
+     * and an array of json file names as 'value'.
+     * NOTE: gpx/json for urls fixed later...
      */
-    $ewptsReq = "INSERT INTO `EWAYPTS` (`indxNo`,`type`,`name`,`lat`," .
-        "`lng`,`sym`) SELECT ?,`type`,`name`,`lat`,`lng`,`sym` " .
-        "FROM `WAYPTS` WHERE `indxNo`=?;";
-    $ewpts = $pdo->prepare($ewptsReq);
-    $ewpts->execute([$hikeNo, $getHike]);
+    $gpsDatReq = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`,`clickText`) " .
+        "SELECT ?,`label`,`url`,`clickText` FROM `GPSDAT` WHERE " .
+        "`indxNo` = ?;";
+    $gpsq = $pdo->prepare($gpsDatReq);
+    $gpsq->execute([$hikeNo, $getHike]);
+
     /**
      * EGPSDATA needs to update the gpx file pointer & json file[s];
      * Each 'url' contains json encoded data for 1 gpx file
      * w/corresponding json file[s]
+     * Note": getGPSurlData() returns: the original gpx file name [0]; 
+     * its array of json filenames [1]
      */
     $egpsDataReq = "SELECT * FROM `EGPSDAT` WHERE `label` LIKE 'GPX%' AND " .
         "`indxNo`=?;";
     $egpsData = $pdo->prepare($egpsDataReq);
     $egpsData->execute([$hikeNo]);
     $allGps = $egpsData->fetchAll(PDO::FETCH_ASSOC);
+    $new_json = [];
     foreach ($allGps as $gps) {
+        $new_gpsdat = [];
         $egpsUrlField = getGPSurlData($gps['url']);
-        $new_json = [];
         foreach ($egpsUrlField[1] as $pjson) {
             $dash_loc  = strpos($pjson, "_");
             $extension = substr($pjson, $dash_loc);
@@ -186,14 +194,34 @@ if (!$cluspg) {
             if (!copy($from_loc, $to_loc)) {
                 throw new Exception("Could not relocate {$pjson}");
             }
-            array_push($new_json, $new_name);
+            array_push($new_gpsdat, $new_name);
+            array_push($new_json, $prefix . $new_name);
         }
-        $newEntry = [$egpsUrlField[0] => $new_json];
+        $newEntry = [$egpsUrlField[0] => $new_gpsdat];
         $new_gps_array = json_encode($newEntry);
         $updateGpsReq = "UPDATE `EGPSDAT` SET `url`=? WHERE `datId`=?;";
         $updateGps = $pdo->prepare($updateGpsReq);
         $updateGps->execute([$new_gps_array, $gps['datId']]);
     }
+    /**
+     * UPDATE EWAYPTS
+     */
+    $ewptsReq = "INSERT INTO `EWAYPTS` (`indxNo`,`type`,`name`,`lat`," .
+        "`lng`,`sym`) SELECT ?,`type`,`name`,`lat`,`lng`,`sym` " .
+        "FROM `WAYPTS` WHERE `indxNo`=?;";
+    $ewpts = $pdo->prepare($ewptsReq);
+    $ewpts->execute([$hikeNo, $getHike]);
+        
+    /*
+     * PLace TSV data into ETSV
+     */
+    $xfrTsvReq = "INSERT INTO `ETSV` (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
+        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
+        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
+        "`TSV` WHERE `indxNo` = ?;";
+    $tsvq = $pdo->prepare($xfrTsvReq);
+    $tsvq->execute([$hikeNo, $getHike]);
+
 }
 /*
  * Place REFS data into EREFS
@@ -202,8 +230,10 @@ $refDatReq = "INSERT INTO `EREFS` (indxNo,rtype,rit1,rit2) SELECT " .
     "?,rtype,rit1,rit2 FROM `REFS` WHERE `indxNo` = ?;";
 $refq = $pdo->prepare($refDatReq);
 $refq->execute([$hikeNo, $getHike]);
-// Save info regarding transferred json files
-$json_xfrs = array_merge($json_xfrs, $gps_xfrs, $previousJson);
+/**
+ * Save info regarding transferred json files that are now ejson files:
+ */
+$json_xfrs = array_merge($json_xfrs, $new_json_names, $new_json);
 $json_xfred = implode(",", $json_xfrs);
 file_put_contents($xfrs, $json_xfred);
 

@@ -3,7 +3,7 @@
  * This script allows an admin to remove a hike from the EHIKES table,
  * including it's associated entries in the EGPSDAT, EREFS and ETSV tables.
  * It does not delete any associated e-json files.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -30,6 +30,21 @@ foreach ($tracks as $json) {
         throw new Exception("Could not delete {$json}");
     }
 }
+// Delete ETSV photos:
+$getEtsv = $pdo->query("SELECT `mid`,`thumb` FROM `ETSV` WHERE `indxNo`={$hikeNo};");
+$picdat = $getEtsv->fetchAll(PDO::FETCH_ASSOC);
+$getPreview = $pdo->query("SELECT `preview` FROM `EHIKES` WHERE `indxNo`={$hikeNo}");
+$preview = $getPreview->fetch(PDO::FETCH_ASSOC);
+$picloc   = getPicturesDirectory();
+$thumbloc = str_replace('zsize', 'thumbs', $picloc);
+$prevloc  = str_replace('zsize', 'previews', $picloc);
+foreach ($picdat as $pic) {
+    $photo = $picloc . $pic['mid'] . "_" . $pic['thumb'] . "_z.jpg";
+    unlink($photo);
+}
+unlink($thumbloc . $preview['preview']);
+unlink($prevloc . $preview['preview']);
+// Now delete EHIKES data with dependencies...
 $deleteHikeReq = "DELETE FROM `EHIKES` WHERE `indxNo`=?;";
 $deleteHike = $pdo->prepare($deleteHikeReq);
 $deleteHike->execute([$hikeNo]);
@@ -57,8 +72,9 @@ $deleteHike->execute([$hikeNo]);
 
 <div style="margin-left:16px;font-size:20px;">
 <?php
-    echo '<p style="font-size:24px;color:brown;">Hike-in-Edit ' . 
-        $hikeNo . ' was removed along with any corresponding json files</p>';
+    echo '<p style="font-size:24px;color:brown;">Hike-in-Edit ' . $hikeNo .
+        ' was removed along with any corresponding json files, photos, previews ' .
+        'and thumbs</p>';
 ?>
 </div>
 

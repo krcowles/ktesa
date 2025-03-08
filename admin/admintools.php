@@ -3,7 +3,7 @@
  * Administration tools for the site masters are included here. These
  * comprise buttons to carry out certain admin tasks, and are grouped
  * and ordered based on current usage.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -215,8 +215,11 @@ $whichSite = $testSite ? 'test site' : 'main site';
             btn-danger">Publish Page</button>&nbsp;
             (Move from EHIKES to HIKES)<br/>
         <button id="postpub" type="button" class="btn
-            btn-danger">Git Actions</button>&nbsp;
-            (JSON File status post publish)<br />
+            btn-secondary">Git Actions</button>&nbsp;
+            (JSON File status, post publish)<br />
+        <button id="delgit" type="button" class="btn 
+            btn-secondary">Delete Actions</button>&nbsp;
+            (Clear all files relating git actions)<br />
         <button id="ehdel" type="button" class="btn 
             btn-danger">Remove Hike-in-Edit</button><br />
     </fieldset><br />

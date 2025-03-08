@@ -1,6 +1,6 @@
 <?php
 /**
- * This script will  'publish' an in-edit hike or cluster page by transferring
+ * This script will 'publish' an in-edit hike or cluster page by transferring
  * the data from EHIKES and E-Tables to the HIKES and Hike Tables. The hike will
  * no longer appear in the 'in-edit' list. If the EHIKE has a cluster assignment
  * in 'cname', then update CLUSHIKES. For new Cluster pages, update the CLUSTERS
@@ -10,7 +10,7 @@
  * file status in an unknown state and making it difficult to complete the transfers.
  * For this reason, a script "actions.txt" tracks progress, files deleted, etc so
  * that the admin can more effectively troubleshoot and complete the publish.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -18,30 +18,30 @@
  */
 session_start();
 require "../php/global_boot.php";
-$actions_in_progress = '';
+$actions_in_progress = ''; // start clean for each publish (admin use only)
 
-$hikeNo      = filter_input(INPUT_GET, 'hno');
+$hikeNo      = filter_input(INPUT_GET, 'hno'); // EHIKE indxNo
 $clusterPage = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
 $msgout      = '';
-$type        = 'Edited Page';
+$type        = 'Edited Page'; // default; may change to 'New Hike'
 
 // Additional files to assist admin when downloaded the published page:
 // If file records already exist, prepare to add to them when published
 if (file_exists("deleted.txt")) { // won't exist for cluster pages
-    $pubDeletes  = file_get_contents("deleted.txt");
-    $prevDeletes = explode(",", $pubDeletes);
+    $prev_deletes  = file_get_contents("deleted.txt");
+    $deletes = explode(",", $prev_deletes);
 } else {
-    $prevDeletes = [];
+    $deletes = [];
 }
 if (file_exists("changed.txt")) {
-    $pubChanges = file_get_contents("changed.txt");
-    $prevChgs   = explode(",", $pubChanges);
+    $prev_changes = file_get_contents("changed.txt");
+    $changes   = explode(",", $prev_changes);
 } else {
-    $prevChgs = [];
+    $changes = [];
 }
 
 
-// next hike no if published as brand new hike
+// next hike no IF published as brand new hike
 $last = "SELECT `indxNo` FROM `HIKES` ORDER BY 1 DESC LIMIT 1;";
 $lasthike = $pdo->query($last);
 $item = $lasthike->fetch(PDO::FETCH_ASSOC);
@@ -57,11 +57,11 @@ WHERE table_name = 'HIKES'
 AND table_schema = DATABASE( );
 AI;
 $state = $pdo->query($ai_state)->fetch(PDO::FETCH_NUM);
-$testNo = $lastHikeNo + 1;
-if (intval($state[0]) !== $testNo) {
+$newHikeNo = $lastHikeNo + 1;
+if (intval($state[0]) !== $newHikeNo) {
     throw new Exception(
         "AUTO_INCREMENT value {$state[0]} does not agree with" .
-        " next hike no {$testNo}"
+        " next hike no {$newHikeNo}"
     );
 }
 
@@ -72,6 +72,7 @@ $ehike = $ehk->fetch(PDO::FETCH_ASSOC);
 if ($ehike === false) {
     throw new Exception("EHIKE data not found for indxNo {$hikeNo}");
 }
+$stat_field = intval($ehike['stat']);
 $clusPgField = $ehike['pgTitle']; // used if publishing a new cluster page
 $cname = $ehike['cname'];
 $proposed = strpos($ehike['pgTitle'], '[Proposed]') === false ? false : true;
@@ -80,8 +81,10 @@ $proposed = strpos($ehike['pgTitle'], '[Proposed]') === false ? false : true;
 $txt = "EHIKE no {$hikeNo}; Page ";
 $cp = $clusterPage ? "is " : "is not ";
 $txt .= $cp . "a cluster page;\n";
+$txt .= $stat_field > 0 ? "Updating old hike {$stat_field}\n" :
+    "Creating New hike {$newHikeNo}\n";
 $actions_in_progress = $txt;
-file_put_contents("actions.txt", $actions_in_progress);
+file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
 
 /**
  * Validate key data: some data must not be 'empty' in order to prevent
@@ -154,8 +157,6 @@ if ($msgout == '') {
      * exx.json file may already exist on localhost owing to a long time residency
      * of a hike-in-edit. 
      */ 
-    $deleted_json = [];
-    $added_or_chgd_json = [];
     // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
@@ -196,15 +197,14 @@ if ($msgout == '') {
     if ($status === 0) { // this will be the newly added hikeno.
         $indxNo = $lastHikeNo + 1;
         $type   = 'New Hike';
-        $actions_in_progress .= "This is new hike no. {$indxNo};\n";
     } else { // this will be the already published hikeno
         $indxNo = $status;
-        $actions_in_progress .= "This is an update to hike no {$indxNo};\n";
     }
+
     $actions_in_progress
-        .= "HIKES table has changed (but not gpx field) by transferring " .
-        "data from EHIKES -> EHIKES data not removed;\n";
-    file_put_contents("actions.txt", $actions_in_progress);
+        = "HIKES table has changed (but not gpx field) by transferring " .
+          "data from EHIKES to HIKES; EHIKES data not removed yet;\n";
+    file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
 
     $newPage = "../pages/hikePageTemplate.php?hikeIndx=" . $indxNo;
 
@@ -216,18 +216,22 @@ if ($msgout == '') {
          */
         if ($status > 0) {
             $pub_main_files = getTrackFileNames($pdo, $indxNo, 'pub')[0];
+            $actions_in_progress = '';
             foreach ($pub_main_files as $old) {
                 $jfile = '../json/' . $old;
                 if (file_exists($jfile)) {
                     unlink($jfile);
                     $actions_in_progress .= "{$old} [pre-existing] deleted;\n";
-                    array_push($deleted_json, $old);
+                    $mval = "P:{$old}";
+                    if (!in_array($mval, $deletes)) {
+                        array_push($deletes, $mval);
+                    }
                 } else {
                     $actions_in_progress .= "{$old} [pre-existing] was not found;\n";
                 }
 
             }
-            file_put_contents("actions.txt", $actions_in_progress);
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         }
         /**
          * Retrieve the EHIKE gpx data and convert it to HIKE gpx data
@@ -236,7 +240,6 @@ if ($msgout == '') {
         $add1_val = [];
         $add2_val = [];
         $add3_val = [];
-        // $hikeNo is guaranteed = EHIKES hike no
         $egpx_array = getGpxArray($pdo, $hikeNo, 'edit');
         $emain = $egpx_array['main'];
         if (empty($emain)) {
@@ -252,6 +255,7 @@ if ($msgout == '') {
         $eadd2_gpx = empty($eadd2) ? '' : array_keys($eadd2)[0];
         $eadd3_gpx = empty($eadd3) ? '' : array_keys($eadd3)[0];
         $ehike_main_files = getTrackFileNames($pdo, $hikeNo, 'edit')[0];
+        $actions_in_progress = '';
         foreach ($ehike_main_files as $fname) {
             $ftype        = substr($fname, 1, 2);  // 'mn', 'a1', 'a2', or 'a3'
             $extensionloc = strpos($fname, "_");
@@ -275,8 +279,14 @@ if ($msgout == '') {
             if (file_exists($old_loc)) {
                 rename($old_loc, $new_loc);
                 $actions_in_progress .= "Moved {$fname} to {$new_fname}\n";
-                array_push($deleted_json, $fname);
-                array_push($added_or_chgd_json, $new_fname);
+                $dval = "E:{$fname}";
+                $pval = "P:{$new_fname}";
+                if (!in_array($dval, $deletes)) {
+                    array_push($deletes, $dval);
+                }
+                if (!in_array($pval, $changes)) {
+                    array_push($changes, $pval);
+                }
             } else {
                 $actions_in_progress
                     .= "{$fname} not present so {$new_fname} not created;\n";
@@ -284,7 +294,7 @@ if ($msgout == '') {
         }
         $actions_in_progress .= "Json files (if present) moved but gpx field " .
             "not written;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         
         $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
         $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
@@ -300,8 +310,8 @@ if ($msgout == '') {
         $updateGpxReq = "UPDATE `HIKES` SET `gpx`=? WHERE `indxNo`=?;";
         $updateGpx = $pdo->prepare($updateGpxReq);
         $updateGpx->execute([$new_gpx, $indxNo]);
-        $actions_in_progress .= "HIKES gpx field updated;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "HIKES gpx field updated;\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         /**
          * In the cases of EGPSDAT, EREFS, ETSV, and EWAYPTS elements may have been
          * deleted during edit, therefore, remove ALL the old data if the
@@ -314,36 +324,43 @@ if ($msgout == '') {
             $pubData = $pdo->prepare($pubDataReq);
             $pubData->execute([$indxNo]);
             $pub_urls = $pubData->fetchAll(PDO::FETCH_ASSOC);
+            $actions_in_progress = '';
             foreach ($pub_urls as $pub) {
                 $gpsUrlData = getGPSurlData($pub['url']);
                 foreach ($gpsUrlData[1] as $json) {
                     $jfile = '../json/' . $json;
                     if (file_exists($jfile)) {
-                        unlink('../json/' . $json);
-                        array_push($deleted_json, $json);
-                        $actions_in_progress .= "Old GPSDAT json file {$json} " .
-                            "deleted for updated hike;\n";
+                        unlink($jfile);
+                        $gval = "{P:{$json}";
+                        if (!in_array($gval, $deletes)) {
+                            array_push($deletes, $gval);
+                        }
+                        $actions_in_progress .= "GPSDAT json file {$json} " .
+                            "deleted in prep for updated hike;\n";
                     } else {
                         $actions_in_progress .= "{$json} of GPSDAT not found\n";
                     } 
                 }
             }
-            $actions_in_progress .= "Old GPSDAT json files processed, but GPSDAT " .
-                "no yet deleted;\n";
-            file_put_contents("actions.txt", $actions_in_progress); 
+            $actions_in_progress .= "All GPSDAT json files deleted, but GPSDAT " .
+                "not yet deleted;\n";
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
+            // Delete all previous GPSDAT for this indxNo  
             $query = "DELETE FROM `GPSDAT` WHERE `indxNo` = :pubNo;";
             $pubdat = $pdo->prepare($query);
             $pubdat->bindValue(":pubNo", $indxNo);
             $pubdat->execute();
-            $actions_in_progress .= "Old GPSDAT data deleted for existing hike;\n";
-            file_put_contents("actions.txt", $actions_in_progress);
+            $actions_in_progress = "GPSDAT data deleted in preparation " .
+                "for existing hike;\n";
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         }
-        // Find current EGPSDAT entries, if any, and decode
+        // Find current EGPSDAT entries, if any, and decode (gpx and others)
         $getEGPSDAT_Req = "SELECT * FROM `EGPSDAT` WHERE `indxNo`=?;";
         $egpsdat = $pdo->prepare($getEGPSDAT_Req);
         $egpsdat->execute([$hikeNo]);
         $egps = $egpsdat->fetchAll(PDO::FETCH_ASSOC);
         if (count($egps) > 0) {
+            $actions_in_progress = '';
             foreach ($egps as $old) {
                 if (strpos($old['label'], 'GPX') !== false) {
                     $egpsData = getGPSurlData($old['url']);
@@ -358,9 +375,15 @@ if ($msgout == '') {
                         $old_loc = '../json/' . $json;
                         $new_loc = '../json/' . $new_name;
                         if (file_exists($old_loc)) {
-                            rename($old_loc, $new_loc); 
-                            array_push($deleted_json, $json);
-                            array_push($added_or_chgd_json, $new_name);
+                            rename($old_loc, $new_loc);
+                            $dgpval = "E:{$json}";
+                            $pgpval = "P:{$new_name}"; 
+                            if (!in_array($dgpval, $deletes)) {
+                                array_push($deletes, $dgpval);
+                            }
+                            if (!in_array($pgpval, $changes)) {
+                                array_push($changes, $pgpval);
+                            }
                             $actions_in_progress .= "EGPSDAT {$json} moved to " .
                                 "{$new_name};\n";
                         } else {
@@ -368,7 +391,9 @@ if ($msgout == '') {
                                 "hence not moved to {$new_name}\n";
                         }
                     }
-                    file_put_contents("actions.txt", $actions_in_progress);
+                    file_put_contents(
+                        "actions.txt", $actions_in_progress, FILE_APPEND
+                    );
 
                     $new_url = [$url_gpx => $new_arr];
                     $db_entry = [
@@ -386,8 +411,8 @@ if ($msgout == '') {
                     [$db_entry[0], $db_entry[1], $db_entry[2], $db_entry[3]]
                 );
             }
-            $actions_in_progress .= "EGPSDAT processed but not removed;\n";
-            file_put_contents("actions.txt", $actions_in_progress);
+            $actions_in_progress = "EGPSDAT processed but not removed;\n";
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         }
         // ---------------------  TSV -------------------
         if ($status > 0) { // eliminate any existing data
@@ -395,8 +420,8 @@ if ($msgout == '') {
             $deltsv = $pdo->prepare($query);
             $deltsv->bindValue(":indxNo", $indxNo);
             $deltsv->execute();
-            $actions_in_progress .= "Old TSV data eliminated;\n";
-            file_put_contents("actions.txt", $actions_in_progress);
+            $actions_in_progress = "Old TSV data eliminated;\n";
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         }
         // insert new data whether old or new hike
         $query
@@ -411,23 +436,23 @@ if ($msgout == '') {
         $instsv->bindValue(":indxNo", $indxNo); // the indxNo of the new/updated hike
         $instsv->bindValue(":ehikeNo", $hikeNo); // the EHIKES indxNo
         $instsv->execute();
-        $actions_in_progress .= "New TSV data entered; ETSV data not yet removed;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "New TSV data entered; ETSV data not yet removed;\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         // insert new data for WAYPTS
         if ($status > 0) {
             $query = "DELETE FROM `WAYPTS` WHERE `indxNo` = :indxNo;";
             $delwpt = $pdo->prepare($query);
             $delwpt->execute([$indxNo]);
-            $actions_in_progress .= "Old Waypt data removed; not yet updated;\n";
-            file_put_contents("actions.txt", $actions_in_progress);
+            $actions_in_progress = "Old Waypt data removed; not yet updated;\n";
+            file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
         }
         $query = "INSERT INTO `WAYPTS` (`indxNo`,`type`,`name`,`lat`,`lng`,`sym`) " .
             "SELECT ?,`type`,`name`,`lat`,`lng`,`sym` FROM `EWAYPTS` WHERE " .
             "`indxNo`=?;";
         $inswpt = $pdo->prepare($query);
         $inswpt->execute([$indxNo, $hikeNo]);
-        $actions_in_progress .= "WAYPTS table updated for page;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "WAYPTS table updated for page;\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
     }
     // Cluster pages also receive REFS updates
     // ---------------------  REFS -------------------
@@ -436,8 +461,8 @@ if ($msgout == '') {
         $delref = $pdo->prepare($dquery);
         $delref->bindValue(":indxNo", $indxNo);
         $delref->execute();
-        $actions_in_progress .= "Old REFS removed but not yet updated;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "Old REFS removed but not yet updated;\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
     }
     // insert new data whether old or new hike
     $query
@@ -448,8 +473,8 @@ if ($msgout == '') {
     $insref->bindValue(":indxNo", $indxNo); // the indxNo of the new/updated hike
     $insref->bindValue(":ehikeNo", $hikeNo); // the EHIKES indxNo
     $insref->execute();
-    $actions_in_progress .= "REFS table updated\n";
-    file_put_contents("actions.txt", $actions_in_progress);
+    $actions_in_progress = "REFS table updated\n";
+    file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
 
     /**
      * If a 'cname' field was populated in EHIKES, then one or more CLUSHIKE
@@ -470,8 +495,8 @@ if ($msgout == '') {
             $updateClus = $pdo->prepare($updateClusReq);
             $updateClus->execute([$clusdat['clusid']]);
         } 
-        $actions_in_progress .= "CLUSHIKES and CLUSTERS updated for {$cname};\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "CLUSHIKES and CLUSTERS updated for {$cname};\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
     }
 
     /**
@@ -482,8 +507,8 @@ if ($msgout == '') {
         $newPgReq = "UPDATE `CLUSTERS` SET `page`=?,`pub`='Y' WHERE `group`=?;";
         $newPg = $pdo->prepare($newPgReq);
         $newPg->execute([$indxNo, $clusPgField]);
-        $actions_in_progress .= "New cluster page CLUSTERS entered;\n";
-        file_put_contents("actions.txt", $actions_in_progress);
+        $actions_in_progress = "New cluster page CLUSTERS entered;\n";
+        file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
     }
 
     /**
@@ -494,11 +519,15 @@ if ($msgout == '') {
     $dele = $pdo->prepare($query);
     $dele->bindValue(":ehikeNo", $hikeNo);
     $dele->execute();
-    file_put_contents("deleted.txt", implode(",", $deleted_json));
-    file_put_contents("changed.txt", implode(",", $added_or_chgd_json));
+    file_put_contents(
+        "deleted.txt", implode(",", $deletes)
+    );
+    file_put_contents(
+        "changed.txt", implode(",", $changes)
+    );
     $actions_in_progress
-        .= "Hike deleted from EHIKES and FOREIGN KEY tables updated;\n";
-    file_put_contents("actions.txt", $actions_in_progress);
+        = "Hike deleted from EHIKES and FOREIGN KEY tables updated;\n";
+    file_put_contents("actions.txt", $actions_in_progress, FILE_APPEND);
 }
 ?>
 <!DOCTYPE html>

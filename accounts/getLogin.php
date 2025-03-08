@@ -94,7 +94,9 @@ if (!isset($_SESSION['username'])) { // No login yet...
     $_SESSION['cookie_state'] = $cookie_state;
 } else {
     // LOGGED IN: (User data is in $_SESSION vars);
-    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14') {
+    if ($_SESSION['userid'] == '1' 
+        || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14'
+    ) {
         $admin = true;
         $cookie_state = "OK";
     } 
