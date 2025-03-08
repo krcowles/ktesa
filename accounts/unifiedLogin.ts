@@ -19,6 +19,30 @@ interface Lockouts {
  */
 
 $(function() {
+/**
+ * Check for user activity: all user pages (except for login/registration) use this
+ * panelMenu.js script, hence it was deemed appropriate for inclusion here instead of
+ * adding it as a separate module
+ */
+const activity_timeout = 25 * 60 * 1000; // 25 minutes of inactivity
+var activity = setTimeout(function() {
+    $.get('../accounts/logout.php');
+    window.open('../accounts/session_expired.php', '_self');
+}, activity_timeout);
+$('body').on('mousemove', function()  {
+    clearTimeout(activity);
+    activity = setTimeout(function() {
+        $.get('../accounts/logout.php');
+        window.open('../accounts/session_expired.php', '_self');
+    }, activity_timeout);
+});
+$('body').on('keydown', function() {
+    clearTimeout(activity);
+    activity = setTimeout(function() {
+        $.get('../accounts/logout.php');
+        window.open('../accounts/session_expired.php', '_self');
+    }, activity_timeout);
+});
 
 var reg = mobile ? {top: 20, height: 510} : {top: 48, height: 540};
 var log = mobile ? {top: 48, height: 340} : {top: 80, height: 380};

@@ -11,6 +11,7 @@
  * @version 7.2 Added 'Latest Additions' to navbar
  * @version 7.3 Updated ajax error handling
  * @version 8.0 Revised login to pre-scan for lockout condition
+ * @version 8.1 Improve recognition of timed out activity
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -32,6 +33,30 @@ $(function () {
         "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
         "color:darkslategray;'>Free Membership<br />Click for Benefits</div>");
     var lockout = new bootstrap.Modal(document.getElementById('lockout'));
+    /**
+     * Check for user activity: all user pages (except for login/registration) use this
+     * panelMenu.js script, hence it was deemed appropriate for inclusion here instead of
+     * adding it as a separate module
+     */
+    var activity_timeout = 25 * 60 * 1000; // 20 minutes of inactivity
+    var activity = setTimeout(function () {
+        $.get('../accounts/logout.php');
+        window.open('../accounts/session_expired.php', '_self');
+    }, activity_timeout);
+    $('body').on('mousemove', function () {
+        clearTimeout(activity);
+        activity = setTimeout(function () {
+            $.get('../accounts/logout.php');
+            window.open('../accounts/session_expired.php', '_self');
+        }, activity_timeout);
+    });
+    $('body').on('keydown', function () {
+        clearTimeout(activity);
+        activity = setTimeout(function () {
+            $.get('../accounts/logout.php');
+            window.open('../accounts/session_expired.php', '_self');
+        }, activity_timeout);
+    });
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not

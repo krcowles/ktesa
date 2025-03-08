@@ -9,6 +9,24 @@
  */
 
 /**
+ * This is a copy of getIpAddress() in editFunctions.php: since the source
+ * of the error is unknown, editFunctions.php may not be resident when the
+ * error occurred; e.g. the access may not have been from the within the site.
+ * 
+ * @return string $ip user's machine IP address
+ */
+function retrieveIpAddress()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
+/**
  * Exception traces seem to get truncated, which isn't helpful! This
  * function expands the information so that it is not truncated...
  * https://stackoverflow.com/questions/1949345/how-can-i-get-the-full-string-of-php-s-gettraceasstring
@@ -78,6 +96,7 @@ function getExceptionTraceAsString($exception)
  */
 function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
+    $ip = retrieveIpAddress();
     $lastTrace = getExceptionTraceAsString(new Exception);
     $loc = strpos($lastTrace, "Undefined index: userid");
     if ($loc > 0) { // For an expired session:
@@ -86,7 +105,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
         exit;
     } else {
         error_log($lastTrace);
-        errorEmail($lastTrace);
+        errorEmail($lastTrace, $ip);
         errorPage();
     }
 }
@@ -101,6 +120,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
  */
 function ktesaExceptions($exception)
 {
+    $ip = retrieveIpAddress();
     $lastTrace = getExceptionTraceAsString(new Exception);
     $message = "An uncaught exception occurred:\n" .
         "Code: " . $exception->getCode() . 
@@ -109,7 +129,7 @@ function ktesaExceptions($exception)
         $exception->getMessage() . "\n" .
         "TRACE: " . $lastTrace;
     error_log($message);
-    errorEmail($message);
+    errorEmail($message, $ip);
     errorPage();
 } 
 /**
@@ -151,9 +171,10 @@ function shutdownHandler() //will be called when php script ends.
  */
 function shutdownError($errmsg, $errlvl) 
 {
+    $ip = retrieveIpAddress();
     $message = $errmsg;
     error_log($message);
-    errorEmail($message);
+    errorEmail($message, $ip);
     errorPage();
 }
 /**
@@ -175,17 +196,18 @@ function errorPage()
  * This function generates an email to the current admin to report the error
  * encountered by a user.
  * 
- * @param string $msg The error message and trace
+ * @param string $msg    The error message and trace
+ * @param string $ipaddr The visitor's ip address
  * 
  * @return null;
  */
-function errorEmail($msg)
+function errorEmail($msg, $ipaddr)
 {
     include "../accounts/gmail.php";
     date_default_timezone_set('America/Denver');
-    $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'no_user';
+    $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'No_User';
     $subject = "Production error encountered";
-    $message = "User " . $user . " encountered the following error on " .
+    $message = "User {$user} w/IP {$ipaddr} encountered the following error on " .
         date("Y-m-d G:i:s") . PHP_EOL . $msg;
     // Mail it
     $mail->isHTML(true);

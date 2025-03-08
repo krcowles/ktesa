@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @fileoverview This function invokes an ajax call to the
  * authenticate.php script in an effort to validate membership.
