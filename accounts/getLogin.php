@@ -94,9 +94,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
     $_SESSION['cookie_state'] = $cookie_state;
 } else {
     // LOGGED IN: (User data is in $_SESSION vars);
-    if ($_SESSION['userid'] == '1' 
-        || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14'
-    ) {
+    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14') {
         $admin = true;
         $cookie_state = "OK";
     } 
@@ -132,7 +130,13 @@ if (!$admin) {
                 }
             }
         }
-        if ($country === 'RU' || $country === 'CN') {
+        if ($country !== 'US') {
+            die("Access not permitted");
+        }
+        // Bad robot...
+        if (strpos($user_ip, '52.167.144') !== false
+        || strpos($user_ip, '40.77.167') !== false
+        || strpos($user_ip, '20.26.44') !== false) {
             die("Access not permitted");
         }
     }

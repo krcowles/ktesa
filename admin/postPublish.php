@@ -4,7 +4,8 @@
  * be downloaded and/or eliminated from the (new) local download branch after one
  * or more hikes have been published. It uses the files created by the publish.php
  * script (deleted.txt and changed.txt) and xfrPub.php (pub_xfrs.txt) to create a
- * list to be applied to the download branch.
+ * list to be applied to the download branch. It also looks at the EHIKES table
+ * and identifies any existing EHIKES json files and previews to be downloaded.
  * NOTE: The $changes array may hold a list of files that were actually restored
  * after having been initially deleted in order to properly update the database.
  * The restored files may have the same name as the deleted ones, but may have
@@ -15,11 +16,32 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
+
+/**
+ * If there are EHIKES, additional action must be taken
+ */
+$ehikeJson = [];
+$ehPreview = [];
+$ehikes = $pdo->query("SELECT `indxNo`,`preview` FROM `EHIKES`")
+    ->fetchAll(PDO::FETCH_ASSOC);
+$ehikes_entries = count($ehikes);
+foreach ($ehikes as $hike) {
+    $ehtracks = getTrackFileNames($pdo, $hike['indxNo'], 'edit');
+    $elist = explode(",", $ehtracks[1]);
+    foreach ($elist as $ejson) {
+        array_push($ehikeJson, $ejson);
+    }
+    array_push($ehPreview, $hike['preview']);
+}
+/**
+ * Post publishing activity:
+ */
+$releaseed = true;
 $actions   = file_exists("actions.txt") ?
     file("actions.txt", FILE_IGNORE_NEW_LINES) : [];
 if (empty($actions)) {
-    echo "No publishing actions found";
-    exit;
+    $released = false;
 } else {
     $hikeNos = [];
     foreach ($actions as $line) { // May be more than 1 hike published since last git
@@ -39,9 +61,9 @@ $changes   = empty($changed) ? [] : explode(",", $changed);
 $deletions = empty($deleted) ? [] : explode(",", $deleted);
 $xfrs      = empty($xfrdJson) ? [] :explode(",", $xfrdJson);
 
+$followup = true;
 if (count($changes) === 0 && count($deletions) === 0) {
-    echo '<h4 style="margin-left:3rem;">There are no changes to process</h4>';
-    exit;
+    $followup = false;
 }
 $downloads = [];
 foreach ($changes as $download) {
@@ -103,55 +125,82 @@ foreach ($current_json as $json) {
 </head>
 <body>
     <div id="contents">
-        <?php if (!empty($new_deletes)) : ?>
-        <h4>
-            The following files should no longer appear in the json directory:
-        </h4>
-        <ul id="removals">
-            <?php foreach ($new_deletes as $djson) : ?>
-                <?=$djson;?>
+        <?php if ($ehikes_entries > 0) : ?>
+        <h4>The EHIKES Table Has Unpublished Entries:</h4>
+        <h5>The following ejson files are associated with EHIKES:</h5>
+        <ul id="edat">
+            <?php foreach ($ehikeJson as $efile) : ?>
+                <?=$efile;?>
+            <?php endforeach; ?>
+        </ul>
+        <h5>The following preview/thumbs unpublished photos reside in pictures</h5>
+        <ul id="prev">
+            <?php foreach ($ehPreview as $prev) : ?>
+                <?=$prev;?>
             <?php endforeach; ?>
         </ul>
         <?php else : ?>
-        <h4>There are no JSON files to remove</h4>
-        <?php endif; ?> 
-        <br />
+        <h4>There are no entries in the EHIKES Table</h4>
+        <?php endif; ?>
+        <hr />
 
-        <?php if (!empty($old_deletes)) : ?>
-        <h4>
-            The following production json files were removed, and some or all
-            may have been reloaded:
-        </h4>
-        <ul id="eliminations">
-            <?php foreach ($old_deletes as $pjson) : ?>
-                <?=$pjson;?>
-            <?php endforeach; ?>
-        </ul>
+        <?php if (!$released) : ?>
+            <h4 >Nothing has been published</h4>
         <?php else : ?>
-        <h4>No production json files were deleted</h4><br />
-        <?php endif; ?>
-        <?php if (!empty($downloads)) : ?>
-        <h4>
-            The following files changed and should be downloaded to localhost
-        </h4>
-        <ul id="downloads">
-            <?php foreach ($downloads as $newj) : ?>
-                <?=$newj;?>
-            <?php endforeach; ?>
-        </ul>
-        <?php else : ?>
-        <h4>No production json files were transferred</h4>
-        <?php endif; ?>
-        <?php if (!empty($ejson)) : ?>
-        <h4>The following in-edit json files should reside in the json directory:
-        </h4>
-        <ul id="remaining">
-            <?php foreach ($ejson as $left) : ?>
-                <?=$left;?>
-            <?php endforeach; ?>
-        </ul>
-        <?php else : ?>
-        <h4>There should be no in-edit json files in the json directory</h5>
+            <?php if (!$followup) : ?>
+                <h4>There are no changes to process</h4>
+            <?php else : ?>
+                <?php if (!empty($new_deletes)) : ?>
+                <h4>
+                    The following files should no longer appear in the json directory:
+                </h4>
+                <ul id="removals">
+                    <?php foreach ($new_deletes as $djson) : ?>
+                        <?=$djson;?>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else : ?>
+                <h4>There are no JSON files to remove</h4>
+                <?php endif; ?> 
+                <br />
+
+                <?php if (!empty($old_deletes)) : ?>
+                <h4>
+                    The following production json files were removed, and some or all
+                    may have been reloaded:
+                </h4>
+                <ul id="eliminations">
+                    <?php foreach ($old_deletes as $pjson) : ?>
+                        <?=$pjson;?>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else : ?>
+                <h4>No production json files were deleted</h4><br />
+                <?php endif; ?>
+                <?php if (!empty($downloads)) : ?>
+                <h4>
+                    The following files changed and should be downloaded to localhost
+                </h4>
+                <ul id="downloads">
+                    <?php foreach ($downloads as $newj) : ?>
+                        <?=$newj;?>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else : ?>
+                <h4>No production json files were transferred</h4>
+                <?php endif; ?>
+                <?php if (!empty($ejson)) : ?>
+                <h4>The following in-edit json files should reside in the json directory:
+                </h4>
+                <ul id="remaining">
+                    <?php foreach ($ejson as $left) : ?>
+                        <?=$left;?>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else : ?>
+                <h4>There should be no in-edit json files in the json directory</h5>
+                <?php endif; ?>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </body>
