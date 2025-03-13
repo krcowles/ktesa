@@ -137,6 +137,9 @@ if (empty($row['gpx'])) {
     $jsonfiles = getTrackFileNames($pdo, $hikeIndexNo, $state);
     $gpxfile = $jsonfiles[2];
     $hike_tracks = $jsonfiles[0];
+    if (empty($hike_tracks)) {
+        $hike_tracks = ['filler.json'];
+    }
 }
 $noOfTrks = count($hike_tracks);
 // for hikePageTemplate.php js:
