@@ -37,7 +37,7 @@ foreach ($ehikes as $hike) {
 /**
  * Post publishing activity:
  */
-$releaseed = true;
+$released = true;
 $actions   = file_exists("actions.txt") ?
     file("actions.txt", FILE_IGNORE_NEW_LINES) : [];
 if (empty($actions)) {
