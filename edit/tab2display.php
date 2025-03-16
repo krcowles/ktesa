@@ -152,7 +152,47 @@
 </div> <!-- end of tab2 waypoints div -->
 
 </form>
-
+<!-- Add Photo Location modal -->
+<div id="photoloc" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Photo Location</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="ap" class="modal-body">
+                <p id="tsvid" style="display:none;"></p>
+                You can add location data to this photo. Please enter
+                decimal degrees for the desired photo location (e.g. 35.4913334).
+                <br />
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>Latitude:</td>
+                        <td><textarea id="piclat" style=
+                            "height:26px;width:120px;padding-bottom:3px;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Longitude:</td>
+                        <td><textarea id="piclng" style=
+                            "height:26px;width:120px;padding-bottom:3px;"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br />
+                <button id="setloc" type="button" class="btn-sm btn-success">
+                    Add Data</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     var edit_mode = true;
     // formatted lat/lngs

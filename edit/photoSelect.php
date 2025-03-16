@@ -100,10 +100,8 @@ if ($picq->rowCount() === 0) {
                 $mpbox .= '" />&nbsp;Map<br />' . PHP_EOL;
             }
         } else {
-            $mpbox = '<input class="mpguse nomap" type="checkbox" ' .
-                'name="mapit[]" value="' . $tsvId[$i] . '" ' .
-                'onclick="return false;" disabled="disabled" />' .
-                '<span style="color:gray">Map</span><br />';
+            $mpbox = '<input class="mpguse nomap" type="checkbox" name="mapit[]" value="' .
+                $tsvId[$i] . '" /><span style="color:brown;"> LOC</span><br />';
         }
         // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .

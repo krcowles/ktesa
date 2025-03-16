@@ -98,7 +98,7 @@ for ($j=1; $j<4; $j++) {
     if (!empty($additional_files[$j])) {
         $adders .= '<li id="adder' . $j . '"><em>' .
             $additional_files[$j] . '</em>&nbsp;&nbsp;<span ' .
-            'class="brown"> Do not include this file:&nbsp;&nbsp;' .
+            'class="brown"> Delete this file:&nbsp;&nbsp;' .
             '<input type="checkbox" name="deladd[]" value="' .
             $additional_files[$j] .
             '" />' . '</span></li>' . PHP_EOL;
