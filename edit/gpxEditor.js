@@ -182,7 +182,7 @@ function initMap() {
         },
         streetViewControl: false,
         rotateControl: false,
-        mapTypeId: google.maps.MapTypeId.TERRAIN
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
     });
     var trackBounds = new google.maps.LatLngBounds(trk_sw, trk_ne);
     map.fitBounds(trackBounds);

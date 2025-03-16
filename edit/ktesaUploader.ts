@@ -53,6 +53,8 @@ var droppedFiles: boolean | FileList = false;
 var validated: File[] = [];
 var FR_Images: ImageObject[] = []; // FileReader objects
 var imgNo = 0;      // unique id for each validated image
+var org_height: any = {};
+var org_width: any  = {};
 window.loaded_imgs = 0;
 window.exifdat = {ehike: '0', fname: '', lat: '', lng: '', date: ''};
 
@@ -253,11 +255,19 @@ const ldImgs = (imgs: File[]) => {
         promises.push(deferred);
         (function(d, ifile) {
             reader.onload = function (evt: ProgressEvent<FileReader> ) {
-                let event = <FileReader>evt.target;
-                var result = event.result;
                 /**
                  * There's no way to predict the order the files will be loaded
                  */
+                let event = <FileReader>evt.target;
+                var result = event.result as string;
+                // Some imgs have no usable image height/width EXIF tags, so:
+                const newImg = document.createElement("img");
+                newImg.src = result;
+                var picNo = imgNo;
+                newImg.onload = function() {
+                    org_height[picNo] = newImg.height;
+                    org_width[picNo]  = newImg.width;
+                }
                 var imgObj = <ImageObject>{indx: imgNo++, fname: ifile.name,
                     size: ifile.size, data: result};
                 FR_Images.push(imgObj);  // used for loading DOM, then rese
@@ -323,11 +333,13 @@ const ldNodes = (fr_objs: ImageObject[]) => {
         // create image node:
         imgs[j] = document.createElement('img');
         var picname = fr_objs[j]['fname'];
+        var pic_indx = fr_objs[j]['indx'];
         var def = $.Deferred();
         promises.push(def);
 
-        (function(def, imgname, data){
+        (function(def, imgname, imgindx, data){
             imgs[j].onload = function() {
+                var item_indx =imgindx;
                 var item = this;
                 window.loaded_imgs++;
                 var usable = true;
@@ -344,11 +356,13 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                      */
                     let exifht = typeof EXIF.getTag(item, 'PixelYDimension');
                     if (exifht === 'undefined') {
-                        usable = false;
+                        exifht = org_height[item_indx];
+                        //usable = false;
                     }
                     let exifwd = typeof EXIF.getTag(item, 'PixelXDimension');
                     if (exifwd === 'undefined') {
-                        usable = false;
+                        exifwd = org_width[item_indx];
+                        //usable = false;
                     }
                     var plat: string;
                     var plng: string;
@@ -399,7 +413,7 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                     var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
                     // the resized image:
-                    var dataurl = canvas.toDataURL('image/jpeg', 0.6);
+                    var dataurl = canvas.toDataURL('image/jpeg', 0.7);
                     var blob = canvasDataURItoBlob(dataurl); // local function
                     // prepare ajax data
                     var ajxwd = width.toString();
@@ -422,9 +436,10 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                         contentType: false,
                         success: function(mapping) {
                             if (mapping === 'NO') {
-                                alert( imgname + " has no location data - " +
-                                    "it was uploaded,\nbut cannot be attached " +
-                                    "to the hike map");
+                                alert(imgname + " has no location data: " +
+                                    "it was uploaded, but cannot be attached " +
+                                    "to the hike map; You can add location later " +
+                                    "by clicking on the LOC checkbox");
                             }
                             def.resolve();
                         },
@@ -454,7 +469,7 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                     def.resolve();
                 }
             }
-        }(def, picname, fr_objs[j]['data']));
+        }(def, picname, pic_indx, fr_objs[j]['data']));
         imgs[j].src = fr_objs[j]['data'];
     }
     return $.when.apply($, promises);            

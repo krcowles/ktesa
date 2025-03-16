@@ -146,8 +146,8 @@ function picPop(tsvId, caption) {
     });
     var htmlDesc = '<p class="capLine">' + caption;
     if (nomapper) {
-        htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
-            'Photo Cannot Be Mapped</span></p>';
+        htmlDesc += '<br /><span style="color:brown">Check LOC box to ' +
+            'add mapping data</span></p>';
     }
     else {
         htmlDesc += '</p>';
