@@ -32,15 +32,18 @@ function getIpAddress()
 /**
  * Check to see if a visitor is logged in & session has not expired
  * 
+ * @param string $page_loc From which editor page the error occurred
+ * 
  * @return string User's logged in userid
  */
-function validSession()
+function validSession($page_loc)
 {
     if (!isset($_SESSION['userid'])) {
         echo "Your session has expired, or you are not a registered user...";
         $ip = getIpAddress();
         throw new Exception(
-            "No userid id - session expired or illegal access: " . $ip
+            "Page {$page_loc}: No userid id - session expired" .
+                " or illegal access: {$ip}"
         );
     }
     return $_SESSION['userid'];
@@ -145,6 +148,9 @@ function uploadFile($upload, $elev=false, $syms=false)
     // Only 'allowed' file extensions from here on...
     if ($upload['ext'] === 'gpx') {
         $file_type = 'gpx';
+        // eliminate any 'photo' waypoints added by apps....
+        $tmp_file = $upload['ifn'] . '.gpx';
+        checkForPhotoWpts($tmp_file);
     } else {
         $file_type = validateType($upload['type']); // html, kml, or unknown
     }
@@ -199,6 +205,54 @@ function uploadFile($upload, $elev=false, $syms=false)
         $_SESSION['gpsmsg'] .= "Your file [{$upload['ufn']}] was saved; ";
     }
     return $saveloc;
+}
+/**
+ * Some apps place waypoints where the user took a photo, as photos are not
+ * permitted in gpx files - these are not useful for creating a track on a hike
+ * page, as it overloads the track with waypoint markers. Two apps to date have
+ * been identified, and they do it differently: One use the <name> tag of the 
+ * waypoint with the word 'Photo' appearing in it (e.g. <name>My Photo...</name>);
+ * Another places the word 'camera' in the waypoint <sym> tag instead 
+ * (e.g. <sym>camera-24</sym>). There may be others discovered as more users
+ * create or modify hike pages. It will be necessary to add checks in this function
+ * for newly discovered issues.
+ * 
+ * @param string $gpxfile Gpx filename
+ * 
+ * @return null;
+ */
+function checkForPhotoWpts($gpxfile)
+{
+    $upld_gpx = simplexml_load_file($gpxfile);
+    if ($upld_gpx->rte->count() > 0) {
+        $upld_gpx = convertRtePts($upld_gpx);
+    }
+    $photo_wpts = [];
+    $wcnt = $upld_gpx->wpt->count();
+    if ($wcnt > 0) {
+        for ($i=0; $i<$wcnt; $i++) {
+            $fwpt = $upld_gpx->wpt[$i];
+            if (empty($fwpt->name)) {
+                $name = "No description";
+            } else {
+                $name = $fwpt->name->__toString();
+            }
+            $test_name = strtolower($name);
+            $symbol = $fwpt->sym->__toSTring();
+            // ignore photo waypoints in apps
+            if (strpos($test_name, "photo") !== false
+                || strpos($symbol, "camera") !== false
+            ) {
+                array_push($photo_wpts, $fwpt);
+            }
+        }
+    }
+    foreach ($photo_wpts as $item) {
+        $dom = dom_import_simplexml($item);
+        $dom->parentNode->removeChild($dom);
+    }
+    $upld_gpx->asXml($gpxfile);
+    return;
 }
 /**
  * Any completed gpx file upload will require 'processing', which means that

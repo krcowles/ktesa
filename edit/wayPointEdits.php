@@ -11,6 +11,9 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+if (session_id() == '') {
+    session_start();
+}
 require "wptHtmlDefs.php";
 
 /**

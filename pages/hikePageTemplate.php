@@ -81,9 +81,10 @@ if ($mobileTesting) {
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
-
 <p id="trail"><?= $hikeTitle;?></p>
-<p id="active" style="display:none">Page</p>
+
+<p id="index" style="display:none;"><?=$hikeIndexNo;?></p>
+<p id="active" style="display:none;">Page</p>
 <p id="gpx" style="display:none;"><?=$gpxfile;?></p>
 <p id="cpg" style="display:none;"><?=$cluspg;?></p>
 <p id="age" style="display:none;"><?=$state;?></p>

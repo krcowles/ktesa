@@ -10,7 +10,7 @@
  */
 session_start();
 require "../php/global_boot.php";
-$userid = validSession();
+$userid = validSession('start');
 
 $pgerror = isset($_SESSION['pgtitle']) ? $_SESSION['pgtitle'] : 'clear';
 unset($_SESSION['pgtitle']);

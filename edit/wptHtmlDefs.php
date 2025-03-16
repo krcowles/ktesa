@@ -21,8 +21,8 @@ NEWPTS;
 $gpxWpts = <<<GPXPTS
 <!-- GPX File Waypoints -->
 <p style="color:brown;"><em>The following waypoints were identified in
-the gpx file. Any edits made will be saved to the file and not to the
-database.</em></p>
+the gpx file. If downloading this file from the pubished page, these waypoints
+will be included in the file.</em></p>
 GPXPTS;
 
 // Header when waypoints exist in the database

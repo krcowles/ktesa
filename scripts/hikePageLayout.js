@@ -28,6 +28,7 @@ else {
     itemcnt = 0;
 }
 // globals
+var hikeNo = $('#index').text();
 var multiDwnld = new bootstrap.Modal(document.getElementById('multigpx'));
 var appMode = $('#appMode').text();
 var hikegpx = $('#gpx').text();
@@ -254,7 +255,7 @@ $('#dwn').on('click', function (ev) {
                 ajax_files += ',' + file;
             }
         });
-        $.post("makeGpx.php", { name: gpx_filename, json_files: ajax_files }, function () {
+        $.post("makeGpx.php", { id: hikeNo, name: gpx_filename, json_files: ajax_files }, function () {
             downloadURI(gpx_filename);
         });
     }
@@ -263,7 +264,7 @@ $('body').on('click', '.dwnldgpx', function (ev) {
     ev.preventDefault();
     var gpx = $(this).text();
     var file_list = $(this).next().text();
-    $.post("makeGpx.php", { name: gpx, json_files: file_list }, function () {
+    $.post("makeGpx.php", { id: hikeNo, name: gpx, json_files: file_list }, function () {
         downloadURI(gpx);
     });
     return;
@@ -275,7 +276,7 @@ if ($('.gpsdwnld').length) {
             ev.preventDefault();
             var fname = $(this).next().text();
             var files = $(this).next().next().text();
-            $.post("makeGpx.php", { name: fname, json_files: files }, function () {
+            $.post("makeGpx.php", { id: hikeNo, name: fname, json_files: files }, function () {
                 downloadURI(fname);
             });
         });
