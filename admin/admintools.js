@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @fileoverview This script executes all buttons on the admintools.php page
  *

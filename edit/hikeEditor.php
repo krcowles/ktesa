@@ -13,29 +13,26 @@ session_start();
 require "../php/global_boot.php";
 $userid = validSession('editor');
 
-$age = filter_input(INPUT_GET, 'age');
-$show = filter_input(INPUT_GET, 'show');
-$pubreq = isset($_GET['pub']) ? filter_input(INPUT_GET, 'pub') : false;
-$msg= '';
 $include_previews = 'false';
-
-$navbar = $pubreq ? 'Publish' : 'Edit';
-if ($age === 'old') {
-    $pageType = 'EditPub';
-    $show = 'all';
-    $msg = 'an editable version of the hike';
-} else {
-    // age is 'new'
-    if ($pubreq) {
-        $pageType = 'PubReq';
-        $show = 'usr';
-        // Note: admin won't need to use this option
-    } else {
+$age = filter_input(INPUT_GET, 'age');
+$pubreq = isset($_GET['pub']) ? filter_input(INPUT_GET, 'pub') : false;
+if ($pubreq) {
+    $show = 'usr';
+    $pageType = 'PubReq';
+} else { // either a continue edit or edit publish...
+    if ($age == 'new') {
+        $show = isAdmin() ? 'all' : 'usr';
         $pageType = 'Edit';
         $msg = 'the current state of your in-edit hike page';
         $include_previews = 'true';
-    }
+    } else {
+        $show = 'all';
+        $pageType = 'EditPub';
+        $msg = 'an editable version of the hike';
+    }  
 }
+$navbar = $pubreq ? 'Publish' : 'Edit';
+
 // get a complete list of hikes for use in the autocomplete widget
 if ($pageType === 'EditPub') {
     include "../pages/autoComplHikes.php";
@@ -104,11 +101,12 @@ $jsInEdit = json_encode($nowInEdit);
         <?php endif; ?>
     <?php endif; ?>
 </div>
+
 <div>
-
-<div id="prev_btns" style="position:absolute"></div>
-
 <?php require "../php/makeTables.php"; ?>
+</div>
+
+<div id="user_btns">
 </div>
 <div id="ineditModal">
     This hike is already in edit

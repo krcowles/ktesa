@@ -5,8 +5,9 @@
  * See ktesaNavbar.php for mobile implementation. All bootstrap submenu
  * operation derived from: https://bootstrap-menu.com/detail-multilevel.html
  * NOTE: Recent addition of 'Own This Site!' animation compliments of
- * https://alvarotrigo.com/blog/css-text-animations/ (with mods)
- * PHP Version 7.4
+ * https://alvarotrigo.com/blog/css-text-animations/ (with mods);
+ * Every call for the panel is preceded by session_start and global_boot.php
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -17,11 +18,11 @@ $policy = urlencode("PrivacyPolicy.pdf");
 
 // imbedded MySQL 'COUNT' function crashing on server, but not on localhost...so:
 if (isset($_SESSION['userid'])) {
-    $euser = $_SESSION['userid'];
-    if ($euser === '1' || $euser === '2') {
+    if (isAdmin()) {
         $edits = "SELECT `indxNo` FROM `EHIKES`;";
     } else {
-        $edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
+        $edits
+            = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$_SESSION['userid']};";
     }
     $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
     $user_ehikes = count($ecount); // no. of hikes currently in edit by user
@@ -162,7 +163,7 @@ if (isset($_SESSION['userid'])) {
                             href="../edit/startNewPg.php">Create New Page</a>
                         </li>
                         <li><a id="conteditpg" class="dropdown-item"
-                            href="../edit/hikeEditor.php?age=new&show=all">
+                            href="../edit/hikeEditor.php?age=new">
                             Continue Editing Your Page</a>
                         </li>
                         <li><a id="editpubpg" class="dropdown-item"

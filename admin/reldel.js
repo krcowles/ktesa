@@ -17,7 +17,7 @@ $(function () {
         linkbase = 'publish.php?hno=';
     }
     else if (exe === 'del') {
-        linkbase = 'delete.php?hno=';
+        linkbase = '../php/delete.php?hno=';
     }
     var $tbl = $('#pubTbl tbody tr');
     var hikeCol;

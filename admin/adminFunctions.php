@@ -48,6 +48,25 @@ function verifyAccess($method)
     }
 }
 /**
+ * As number of admins change, or id's change over time, it is useful to
+ * know, on any given page, whether or not there are admin priveleges.
+ * 
+ * @return boolean $admin
+ */
+function isAdmin()
+{
+    $admin = false;
+    if (isset($_SESSION['userid'])) {
+        if ($_SESSION['userid'] == '1'
+            || $_SESSION['userid'] == '2'
+            || $_SESSION['userid'] == '14'
+        ) {
+            $admin =  true;
+        }
+    }
+    return $admin;
+}
+/**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
  * reversed. When there are multiple segments within the subject track, 

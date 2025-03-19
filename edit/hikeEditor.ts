@@ -1,3 +1,4 @@
+// items held on hikeEditor.php page
 declare var age: string;
 declare var inEdits: string[];
 declare var appMode: string;
@@ -16,8 +17,30 @@ declare function tableSort(tableid: string): void;
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  * @version 3.0 Added searchbar to scroll to a hike in 'Edit Published'
+ * @version 4.0 Added deleted button for user to delete own hikes
  */
 var appMode = $('#appMode').text() as string;
+/**
+ * First, reduce space consumed by the table: alter column widths and eliminate 
+ * 'Exposure' and Driving Directions columns.
+ */
+var columns = document.getElementsByTagName('col');
+var headers = document.getElementsByTagName('th');
+var $rows    = $('table.sortable tbody').find('tr');
+if (columns.length !== 8) {
+	alert("Unexpected table in editor!")
+}
+columns[7].parentNode?.removeChild(columns[7]);
+columns[6].parentNode?.removeChild(columns[6]);
+headers[7].parentNode?.removeChild(headers[7]);
+headers[6].parentNode?.removeChild(headers[6]);
+$rows.each(function() {
+	let colspec = columns[0] as HTMLTableColElement;
+	colspec.style.width = '160px';
+	this.removeChild(this.children[7]);
+	this.removeChild(this.children[6]);
+	$(this).children().css('padding-bottom', '6px');
+});
 if (include_search === 'EditPub') {
 	$('#search').autocomplete({
 		source: hikeSources,
@@ -60,8 +83,9 @@ var preview   = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
 var btnId     = '<a id="prev';
 var btnHtml   = 'class="btn btn-outline-primary btn-sm styled" role="button"' +
 	'href="' + preview;
-// hike table rows:
-var $rows = $('table.sortable tbody').find('tr');
+var delId      = '<a id="hike_'
+var delHtml    =  'class="udels btn btn-outline-danger btn-sm styled" role="button"' +
+	' href="#">Delete</a>';
 /**
  * On load and after every column sort, provide corresponding preview buttons
  */
@@ -70,26 +94,45 @@ function assignPreviews(): void {
 	 * After sorting or resizing, prepend preview buttons
 	 */
 	var row1_loc= <JQuery.Coordinates>$rows.eq(0).offset();
-	$('#prev_btns').offset({ top: row1_loc.top, left: row1_loc.left - 72 });
+	$('#user_btns').offset({ top: row1_loc.top, left: row1_loc.left - 136 });
 	var $sorted_rows: JQuery<HTMLTableRowElement> | null;
 	$sorted_rows = null; // erase previous history
-	$('#prev_btns').empty();
+	$('#user_btns').empty();
 	$sorted_rows = $('table.sortable tbody').find('tr');
 	$sorted_rows.each(function(indx) {
 		let trow_ht = <number>$(this).height();
 		let trow_pos = <JQuery.Coordinates>$(this).offset();
-		let link_pos = { top: trow_pos.top, left: trow_pos.left -72 };
-		// get link
+		let prev_pos = { top: trow_pos.top, left: trow_pos.left -72 };
+		let del_pos  = { top: trow_pos.top };
+		// get link from 1st cell => editor with tab1 and hikeIndx
 		let $alink = $(this).find('td').eq(0).children().eq(0);
 		let href = <string>$alink.attr('href');
 		let hike_no_pos = href.indexOf('hikeNo') + 7
 		let hike_no = href.substring(hike_no_pos);
-		let btn_link = '<div>' + btnId + indx + '" style="height:' + trow_ht + '" ' +
-			btnHtml + hike_no + '">Preview</a></div>';
-		$('#prev_btns').append(btn_link);
-		$('#prev'+indx).offset(link_pos);
+		let btn_link = btnId + indx + '" style="height:' + trow_ht + '" ' +
+			btnHtml + hike_no + '">Preview</a>';
+		let del_link = delId + hike_no + '" ' + delHtml;
+		$('#user_btns').append(del_link);
+		$('#user_btns').append(btn_link);
+		$('#prev'+indx).offset(prev_pos);
+		$('#hike_'+hike_no).offset(del_pos);
+	});
+	// set up click events for delete buttons
+	$('.udels').each(function() { // delete EHIKE function
+		let hindx = $(this).attr('id') as string;
+		// get hike no from string; "hike_" = 5 chars
+		let hike = hindx.substring(5);
+		let delscript = '../php/delete.php?hno=' + hike;
+		$(this).on('click', function() {
+			let ans = confirm("All hike data will be lost:\nDo you really " +
+				"want to delete this hike?");
+			if (ans) {
+				window.open(delscript, "_blank");
+			}
+		});
 	});
 }
+
 $(window).on('resize', function() {
 	assignPreviews();
 });

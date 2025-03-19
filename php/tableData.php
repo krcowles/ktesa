@@ -13,16 +13,16 @@
  *        a. Editing of newly created hikes or already in-edit hikes;
  *           [...Continue Editing Your Pages]
  *           $pageType = 'Edit'
- *           [age=new, show=usr];
+ *           [$age=new, $show=usr];
  *           NOTE: The admin can see all hikes in edit (modified to show=all)
  *        b. Editing of a published hike (not currently in edit mode)
  *           [...Edit Your Published Hike]
  *           $pageType = 'EditPub'
- *           [age=old, show=all]
+ *           [$age=old, $show=all]
  *        c. Submitting a hike-in-edit for publication
  *           [...Submit for publication]
  *           $pageType = 'PubReq'
- *           [age=new, pub=usr] 
+ *           [$age=new, $pub=usr] 
  *  3.  By 'admin/reldel.php': via Admintools.php
  *      Here it is used to list ALL EHIKES (for admin) to release or delete:
  *      $pageType = 'Publish'
@@ -30,7 +30,7 @@
  * Each 'calling' script must set the $age, $show (except for publsh request),
  * and $pageType parameters; In all cases, the .js will direct the web page link
  * to the proper location.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>

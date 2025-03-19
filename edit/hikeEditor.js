@@ -1,4 +1,5 @@
 "use strict";
+var _a, _b, _c, _d;
 /**
  * @fileoverview For each link in the table of hikes, parse for the href
  * attribute, then replace with an attribute which points to the correct
@@ -10,8 +11,30 @@
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  * @version 3.0 Added searchbar to scroll to a hike in 'Edit Published'
+ * @version 4.0 Added deleted button for user to delete own hikes
  */
 var appMode = $('#appMode').text();
+/**
+ * First, reduce space consumed by the table: alter column widths and eliminate
+ * 'Exposure' and Driving Directions columns.
+ */
+var columns = document.getElementsByTagName('col');
+var headers = document.getElementsByTagName('th');
+var $rows = $('table.sortable tbody').find('tr');
+if (columns.length !== 8) {
+    alert("Unexpected table in editor!");
+}
+(_a = columns[7].parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(columns[7]);
+(_b = columns[6].parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(columns[6]);
+(_c = headers[7].parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(headers[7]);
+(_d = headers[6].parentNode) === null || _d === void 0 ? void 0 : _d.removeChild(headers[6]);
+$rows.each(function () {
+    var colspec = columns[0];
+    colspec.style.width = '160px';
+    this.removeChild(this.children[7]);
+    this.removeChild(this.children[6]);
+    $(this).children().css('padding-bottom', '6px');
+});
 if (include_search === 'EditPub') {
     $('#search').autocomplete({
         source: hikeSources,
@@ -55,8 +78,9 @@ var preview = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
 var btnId = '<a id="prev';
 var btnHtml = 'class="btn btn-outline-primary btn-sm styled" role="button"' +
     'href="' + preview;
-// hike table rows:
-var $rows = $('table.sortable tbody').find('tr');
+var delId = '<a id="hike_';
+var delHtml = 'class="udels btn btn-outline-danger btn-sm styled" role="button"' +
+    ' href="#">Delete</a>';
 /**
  * On load and after every column sort, provide corresponding preview buttons
  */
@@ -65,24 +89,42 @@ function assignPreviews() {
      * After sorting or resizing, prepend preview buttons
      */
     var row1_loc = $rows.eq(0).offset();
-    $('#prev_btns').offset({ top: row1_loc.top, left: row1_loc.left - 72 });
+    $('#user_btns').offset({ top: row1_loc.top, left: row1_loc.left - 136 });
     var $sorted_rows;
     $sorted_rows = null; // erase previous history
-    $('#prev_btns').empty();
+    $('#user_btns').empty();
     $sorted_rows = $('table.sortable tbody').find('tr');
     $sorted_rows.each(function (indx) {
         var trow_ht = $(this).height();
         var trow_pos = $(this).offset();
-        var link_pos = { top: trow_pos.top, left: trow_pos.left - 72 };
-        // get link
+        var prev_pos = { top: trow_pos.top, left: trow_pos.left - 72 };
+        var del_pos = { top: trow_pos.top };
+        // get link from 1st cell => editor with tab1 and hikeIndx
         var $alink = $(this).find('td').eq(0).children().eq(0);
         var href = $alink.attr('href');
         var hike_no_pos = href.indexOf('hikeNo') + 7;
         var hike_no = href.substring(hike_no_pos);
-        var btn_link = '<div>' + btnId + indx + '" style="height:' + trow_ht + '" ' +
-            btnHtml + hike_no + '">Preview</a></div>';
-        $('#prev_btns').append(btn_link);
-        $('#prev' + indx).offset(link_pos);
+        var btn_link = btnId + indx + '" style="height:' + trow_ht + '" ' +
+            btnHtml + hike_no + '">Preview</a>';
+        var del_link = delId + hike_no + '" ' + delHtml;
+        $('#user_btns').append(del_link);
+        $('#user_btns').append(btn_link);
+        $('#prev' + indx).offset(prev_pos);
+        $('#hike_' + hike_no).offset(del_pos);
+    });
+    // set up click events for delete buttons
+    $('.udels').each(function () {
+        var hindx = $(this).attr('id');
+        // get hike no from string; "hike_" = 5 chars
+        var hike = hindx.substring(5);
+        var delscript = '../php/delete.php?hno=' + hike;
+        $(this).on('click', function () {
+            var ans = confirm("All hike data will be lost:\nDo you really " +
+                "want to delete this hike?");
+            if (ans) {
+                window.open(delscript, "_blank");
+            }
+        });
     });
 }
 $(window).on('resize', function () {
