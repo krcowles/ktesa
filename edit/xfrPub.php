@@ -26,6 +26,7 @@ $getHike = filter_input(INPUT_GET, 'hikeNo'); // PUBLISHED indxNo
 $cluspg  = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
 $userid  = $_SESSION['userid'];
 $xfrs    = "../admin/pub_xfrs.txt";
+$json_xfrs = [];
 
 /**
  * Since `EHIKES` depends on `cname` to identify association w/new or
@@ -233,9 +234,11 @@ $refq->execute([$hikeNo, $getHike]);
 /**
  * Save info regarding transferred json files that are now ejson files:
  */
-$json_xfrs = array_merge($json_xfrs, $new_json_names, $new_json);
-$json_xfred = implode(",", $json_xfrs);
-file_put_contents($xfrs, $json_xfred);
+if (!empty($json_xfrs)) {
+    $json_xfrs = array_merge($json_xfrs, $new_json_names, $new_json);
+    $json_xfred = implode(",", $json_xfrs);
+    file_put_contents($xfrs, $json_xfred);
+}
 
 // Redirect to appropriate editor
 $redirect = $cluspg ?

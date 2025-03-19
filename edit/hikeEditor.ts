@@ -107,6 +107,11 @@ function assignPreviews(): void {
 		// get link from 1st cell => editor with tab1 and hikeIndx
 		let $alink = $(this).find('td').eq(0).children().eq(0);
 		let href = <string>$alink.attr('href');
+		// strip off queries relating to clusters...
+		let ampersand = href.indexOf("&clus");
+		if (ampersand !== -1) {
+			href = href.substring(0, ampersand);
+		}
 		let hike_no_pos = href.indexOf('hikeNo') + 7
 		let hike_no = href.substring(hike_no_pos);
 		let btn_link = btnId + indx + '" style="height:' + trow_ht + '" ' +
