@@ -6,27 +6,29 @@
  * into the database. NOTE: Due to the rendering process of waypoints in 
  * GPSV maps, a description text cannot contain a single quote (') which
  * is not escaped.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-session_start();
 
 // Retrieve waypoint format:
 $wpt_format = filter_input(INPUT_POST, 'wpt_format');
-$user = $_SESSION['userid'];
-$entryExists = $pdo->query("SELECT `userid` FROM `MEMBER_PREFS`;")
-    ->fetchAll(PDO::FETCH_COLUMN);
-if (in_array($user, $entryExists)) {
-    $prefDB = "UPDATE `MEMBER_PREFS` SET `wpt_format`=:wpt WHERE `userid`=:uid;";
-} else {
-    $prefDB = "INSERT INTO `MEMBER_PREFS` (`userid`,`wpt_format`) VALUES " .
-        "(:uid,:wpt);";
+if (!empty($wpt_format)) {
+    // Note: for now, it may update the value already there...
+    $user = $_SESSION['userid'];
+    $entryExists = $pdo->query("SELECT `userid` FROM `MEMBER_PREFS`;")
+        ->fetchAll(PDO::FETCH_COLUMN);
+    if (in_array($user, $entryExists)) {
+        $prefDB = "UPDATE `MEMBER_PREFS` SET `wpt_format`=:wpt WHERE `userid`=:uid;";
+    } else {
+        $prefDB = "INSERT INTO `MEMBER_PREFS` (`userid`,`wpt_format`) VALUES " .
+            "(:uid,:wpt);";
+    }
+    $fixFormat = $pdo->prepare($prefDB);
+    $fixFormat->execute(["uid"=>$user, "wpt"=>$wpt_format]);
 }
-$fixFormat = $pdo->prepare($prefDB);
-$fixFormat->execute(["uid"=>$user, "wpt"=>$wpt_format]);
 
 /**
  * Case 1. The following code stores NEW database waypoint entries.

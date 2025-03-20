@@ -11,21 +11,19 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-if (session_id() == '') {
-    session_start();
-}
-require "wptHtmlDefs.php";
 
 /**
  * If the member has specified a waypoint format preference, pass that
  * to tab2display.php
  */
-$wptPrefReq = "SELECT `wpt_format` FROM `MEMBER_PREFS` WHERE `userid`=?;";
-$wptPref = $pdo->prepare($wptPrefReq);
-$wptPref->execute([$_SESSION['userid']]);
-$memberWptPref = $wptPref->fetch(PDO::FETCH_ASSOC);
-$wpt_pref = $memberWptPref === false ? '' : $memberWptPref['wpt_format'];
-
+$wpt_pref = '';
+$wptPrefs = $pdo->query("SELECT * FROM `MEMBER_PREFS`;")->fetchAll(PDO::FETCH_ASSOC);
+foreach ($wptPrefs as $pref) {
+    if ($pref['userid'] == $_SESSION['userid']) {
+        $wpt_pref = $pref['wpt_format'];
+        break;
+    }
+}
 /**
  * Retrieve any waypoints loaded into the EWAYPTS table: 'gpx' => came from
  * a gpx file [held separate so that a similar gpx file can be downloaded]; 

@@ -2,10 +2,10 @@
 /**
  * This file saves data present on tab4 (Related Hike Info), including
  * uploads of gps file data (gpx or html maps).
- * PHP Version 7.1
+ * PHP Version 8.3.9
  * 
  * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -138,6 +138,7 @@ if ($addcnt > 0) {
  *
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
+session_start();
 $alert_set = false;
 unset($_SESSION['uplmsg']);
 $_SESSION['gpsmsg'] = '';

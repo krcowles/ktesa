@@ -126,6 +126,7 @@ if (isset($_SESSION['alerts']) && !empty(checkForEmptyArray($_SESSION['alerts'])
  * Tab2: [photo displays (already uploaded) and any waypoints]
  */
 require "photoSelect.php"; // prior to wayPointEdits.php to define $wlat/$wlng
+require "wptHtmlDefs.php";
 require "wayPointEdits.php";
 $picdir  = getPicturesDirectory();
 $prevdir = str_replace('zsize', 'previews', $picdir);
