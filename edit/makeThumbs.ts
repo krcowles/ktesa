@@ -280,15 +280,22 @@ if ($('#redo_thumb').length) {
  */
 $('#redo_thumb').on('click', function(ev) {
     ev.preventDefault();
+    let original   = $('#orgthumb').text() as string;
     let img_src    = $('#current_preview').attr('src') as string;
     let img2delete = img_src.split('/').pop();
-    let post_data  = {indxNo: indxNo, img: img2delete};
+    // don't delete the pubished thumb if present... (fonly => field only)
+    let post_data;
+    if (original == '' || (original !== '' && original !== img2delete)) {
+        post_data  = {fonly: 'n', indxNo: indxNo, img: img2delete};
+    } else {
+        post_data  = {fonly: 'y', indxNo: indxNo, img: img2delete};
+    }
     $.post('deletePreview.php', post_data, function(result) {
         if (result === 'OK') {
             // note: using reload() can return the user to tab1
             window.open('editDB.php?tab=2&hikeNo=' + indxNo, '_self');
         }
-     });
+    });
 });
 /**
  * Save the cropped image just prior to submitting form

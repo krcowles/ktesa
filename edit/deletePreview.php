@@ -10,17 +10,21 @@
  */
 require "../php/global_boot.php";
 
+$field_only = filter_input(INPUT_POST, 'fonly');
 $indxNo  = filter_input(INPUT_POST, 'indxNo');
 $image   = filter_input(INPUT_POST, 'img');
-$picdir  = getPicturesDirectory();
-$prevloc = str_replace("zsize", "previews", $picdir) . $image;
-$thmbloc = str_replace("zsize", "thumbs", $picdir) . $image;
-if (!unlink($prevloc)) {
-    throw New Exception("Could not delete preview image");
+if ($field_only == 'n') {  // delete images in pictures directory
+    $picdir  = getPicturesDirectory();
+    $prevloc = str_replace("zsize", "previews", $picdir) . $image;
+    $thmbloc = str_replace("zsize", "thumbs", $picdir) . $image;
+    if (!unlink($prevloc)) {
+        throw New Exception("Could not delete preview image");
+    }
+    if (!unlink($thmbloc)) {
+        throw New Exception("Could not delete thumb image");
+    }
 }
-if (!unlink($thmbloc)) {
-    throw New Exception("Could not delete thumb image");
-}
+// clear the preview field in the EHIKE table
 $clearPreviewReq = "UPDATE `EHIKES` SET `preview` = null WHERE `indxNo` = ?;";
 $clearPreview = $pdo->prepare($clearPreviewReq);
 $clearPreview->execute([$indxNo]);

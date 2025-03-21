@@ -99,6 +99,7 @@
 <hr />
 <!-- add or display thumb/preview image -->
 <div id="thumbpic">
+    <p id="orgthumb" style="display:none;"><?=$org_prev;?></p>
     <input id="uccrop" type="hidden" name="uccrop" value="0" />
     <input id="ucprev" type="hidden" name="ucprev" value="0" />
     <h4 id="ifnothmb">Use this space to upload a representative photo for use
@@ -108,8 +109,8 @@
             <p style="color:brown;font-size:18px;">You have already saved the
                 following preview for this hike.<br /><br />
                 You may <button id="redo_thumb" type="button" 
-                    class="btn btn-danger">Delete
-                Preview</button> and start over if you wish.
+                    class="btn btn-danger">Replace Preview</button>
+                    and start over if you wish.
             </p>
             <img id="current_preview" src="<?=$prevImg;?>" width="300"
                 height="225" alt="preview image" />

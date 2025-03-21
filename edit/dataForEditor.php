@@ -32,6 +32,7 @@ if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
     throw new Exception("Hike {$hikeNo} Not Found in EHIKES");
 }
 $hike = $hikeq->fetch(PDO::FETCH_ASSOC);
+$status = $hike['stat'] == '0' ? 'new' : 'old';
 
 $pgTitle   = $hike['pgTitle'];
 $locale    = $hike['locale'];
@@ -133,6 +134,13 @@ $prevdir = str_replace('zsize', 'previews', $picdir);
 $prevImg = $prevdir . $preview_name;
 $tstat = empty($preview_name) ? "Has Not" : "Has";
 $btncolor = empty($preview_name) ? "btn-warning" : "btn-success";
+$org_prev = '';
+if ($status == 'old') {
+    $orgpic
+        = $pdo->query("SELECT `preview` FROM `HIKES` WHERE `indxNo`={$hike['stat']};")
+        ->fetch(PDO::FETCH_ASSOC);
+    $org_prev = $orgpic['preview'];
+}
 
 /**
  * Tab 3: [hike tips and hike descripton]

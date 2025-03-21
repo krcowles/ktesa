@@ -79,11 +79,11 @@ if ($estat > 0) { // If a transferred hike, check photos against published
 }
 if ($delete_preview) {
     $thumbpic = $thumbloc . $ePreview;
-    $prevpic  = $prevLoc . $ePreview;
-    if (file_exists($thumbpic)) {
+    $prevpic  = $prevloc . $ePreview;
+    if (file_exists($thumbpic) && !empty($ePreview)) {
         unlink($thumbpic);
     }
-    if (file_exists($prevpic)) {
+    if (file_exists($prevpic) && !empty($ePreview)) {
         unlink($prevpic);
     }
 }

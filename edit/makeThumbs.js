@@ -269,9 +269,17 @@ if ($('#redo_thumb').length) {
  */
 $('#redo_thumb').on('click', function (ev) {
     ev.preventDefault();
+    var original = $('#orgthumb').text();
     var img_src = $('#current_preview').attr('src');
     var img2delete = img_src.split('/').pop();
-    var post_data = { indxNo: indxNo, img: img2delete };
+    // don't delete the pubished thumb if present... (fonly => field only)
+    var post_data;
+    if (original == '' || (original !== '' && original !== img2delete)) {
+        post_data = { fonly: 'n', indxNo: indxNo, img: img2delete };
+    }
+    else {
+        post_data = { fonly: 'y', indxNo: indxNo, img: img2delete };
+    }
     $.post('deletePreview.php', post_data, function (result) {
         if (result === 'OK') {
             // note: using reload() can return the user to tab1
