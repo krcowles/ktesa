@@ -164,21 +164,22 @@
             </div>
             <div id="ap" class="modal-body">
                 <p id="tsvid" style="display:none;"></p>
-                You can add location data to this photo. Please enter
-                decimal degrees for the desired photo location (e.g. 35.4913334).
+                You can <span id="modtype">add</span> location data to this photo.
+                Please enter decimal degrees for the desired photo location
+                (e.g. 35.4913334).
                 <br />
                 <table>
                     <tbody>
                     <tr>
                         <td>Latitude:</td>
                         <td><textarea id="piclat" style=
-                            "height:26px;width:120px;padding-bottom:3px;"></textarea>
+                            "height:28px;width:120px;line-height:14px;"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td>Longitude:</td>
                         <td><textarea id="piclng" style=
-                            "height:26px;width:120px;padding-bottom:3px;"></textarea>
+                            "height:28px;width:120px;line-height:14px;"></textarea>
                         </td>
                     </tr>
                     </tbody>

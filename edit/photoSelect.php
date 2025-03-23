@@ -52,6 +52,8 @@ if ($picq->rowCount() === 0) {
     $phDescs = []; // caption
     $hpg = [];
     $mpg = [];
+    $phlat = [];
+    $phlng = [];
     $phPics = []; // capture the link for the mid-size version of the photo
     $phWds = []; // width
     $pMap = [];  // status of 'Map It' checkbox
@@ -61,6 +63,8 @@ if ($picq->rowCount() === 0) {
         $phDescs[$picno] = $pics['desc'];
         $hpg[$picno] = $pics['hpg'];
         $mpg[$picno] = $pics['mpg'];
+        $phlat[$picno] = $pics['lat']/LOC_SCALE;
+        $phlng[$picno] = $pics['lng']/LOC_SCALE;
         $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
         $pHeight = $pics['imgHt'];
         $aspect = $rowHt/$pHeight;
@@ -82,6 +86,11 @@ if ($picq->rowCount() === 0) {
         // the div is the container for the gallery of re-orderable elements
         $wrapper .= '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;' .
             'box-sizing:content-box;">';
+        // GPS coords
+        $gpslat = '<p id="gpslat' . $tsvId[$i] . '" style="display:none;">' . 
+            $phlat[$i] . '</p>';
+        $gpslng = '<p id="gpslng' . $tsvId[$i] . '" style="display:none;">' .
+            $phlng[$i] . '</p>';       
         // 'add to page' checkbox
         $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="' .
             $tsvId[$i];
@@ -91,6 +100,7 @@ if ($picq->rowCount() === 0) {
             $pgbox .= '" />&nbsp;Page&nbsp;&nbsp;';
         }
         // 'add to map' checkbox - don't allow mapping for pix w/no lat/lng:
+        $gpsbox = '';
         if ($pMap[$i]) {
             $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" ' .
                 'value="' . $tsvId[$i];
@@ -99,6 +109,8 @@ if ($picq->rowCount() === 0) {
             } else {
                 $mpbox .= '" />&nbsp;Map<br />' . PHP_EOL;
             }
+            $gpsbox = '<input class="picgps" type="checkbox" name="gpsval[]" value="'
+                . $tsvId[$i] . '" style="margin-left: 4px;" />&nbsp;GPS<br />';
         } else {
             $mpbox = '<input class="mpguse nomap" type="checkbox" name="mapit[]" ' .
             'value="' . $tsvId[$i] . '" /><span style="color:brown;"> LOC</span>' .
@@ -106,7 +118,7 @@ if ($picq->rowCount() === 0) {
         }
         // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .
-            $tsvId[$i] . '" />&nbsp;Delete<br />';
+            $tsvId[$i] . '" />&nbsp;Dele. ';
         // photo
         $photo = '<img id="' . $tsvId[$i] . '" class="allPhotos" height="200px" ' .
             'width="' . $phWds[$i] . 'px" src="' . $picpath . $phPics[$i] .
@@ -120,8 +132,8 @@ if ($picq->rowCount() === 0) {
          * Add all items to $wrapper: a self-contained <li> element which can be
          * reordered (via jquery ui 'sortable' widget)
          */
-        $wrapper .= $pgbox . $mpbox . $delbox . $photo . "</div>" .
-            $caption . "</li>";
+        $wrapper .= $gpslat . $gpslng . $pgbox . $mpbox . $delbox . $gpsbox .
+            $photo . "</div>" . $caption . "</li>";
         $html .= $wrapper;
     }
 }
