@@ -31,6 +31,8 @@ $(function () {
     $('#line').width(linewidth);
     // globals
     var tabstr;
+    var tips_db_size = 4096;
+    var info_db_size = 65536;
     // the subs array holds the 'Apply' buttons for each tab, placed by positionApply()
     var subs = [];
     for (var j = 1; j <= 4; j++) {
@@ -38,6 +40,49 @@ $(function () {
         var jqbtn = $(btn);
         subs[j] = jqbtn;
     }
+    /**
+     * Tab3 ('Descriptive Text') needs to be checked to ensure that the amount of
+     * text is not too large for the database. The database field for 'info' has
+     * been changed to 'TEXT' which allows 65536 bytes - this should be more than
+     * enough, but it is checked regardless to ensure that no 'save' errors occur.
+     * Remember that these fields use 'wysiwyg' and includes hidden html styling
+     * elements which consume some space.
+     */
+    var byteSize = function (txt) {
+        var bsize = new Blob([txt]).size;
+        return bsize;
+    };
+    var checkTextAreaSizes = function () {
+        var return_val = { tips: 0, info: 0 };
+        var tips_text = $('#ttxt').val();
+        var tips_size = byteSize(tips_text);
+        var info_text = $('#info').val();
+        var info_size = byteSize(info_text);
+        return_val.tips = tips_size;
+        return_val.info = info_size;
+        return return_val;
+    };
+    $('form').on('submit', function (ev) {
+        if (tabstr == '3') {
+            var fix = false;
+            var sizeResult = checkTextAreaSizes();
+            if (sizeResult.tips > tips_db_size) {
+                var overage = sizeResult.tips - tips_db_size;
+                fix = true;
+                alert("The text in the 'Tips' box is too large for the database by " +
+                    "approx. " + overage + " characters: Data not saved.");
+            }
+            if (sizeResult.info > info_db_size) {
+                var overage = sizeResult.info - info_db_size;
+                fix = true;
+                alert("The text in the 'Info' box is too large for the database by " +
+                    "approx. " + overage + " characters: Data not saved.");
+            }
+            if (fix) {
+                ev.preventDefault();
+            }
+        }
+    });
     // initial button placed in order to establish global width
     $('#f1').prepend(subs[1]);
     var apwd = subs[1].width();

@@ -33,6 +33,10 @@ interface InputFile extends HTMLElement {
 interface Issue {
     [key: string]: string;
 }
+interface Tab3Data {
+    tips: number;
+    info: number;
+}
 /**
  * @fileoverview This script handles all four tabs - presentation and data
  * validation, also initialization of settings for <select> boxes, etc.
@@ -65,6 +69,8 @@ var linewidth = <number>$('#main').width() - listwidth;
 $('#line').width(linewidth);
 // globals
 var tabstr: string;
+const tips_db_size = 4096;
+const info_db_size = 65536;
 // the subs array holds the 'Apply' buttons for each tab, placed by positionApply()
 var subs: JQuery<HTMLElement>[] = [];
 for (let j=1; j<=4; j++) {
@@ -72,6 +78,51 @@ for (let j=1; j<=4; j++) {
     let jqbtn = $(btn);
     subs[j] =jqbtn;
 }
+/**
+ * Tab3 ('Descriptive Text') needs to be checked to ensure that the amount of
+ * text is not too large for the database. The database field for 'info' has
+ * been changed to 'TEXT' which allows 65536 bytes - this should be more than 
+ * enough, but it is checked regardless to ensure that no 'save' errors occur.
+ * Remember that these fields use 'wysiwyg' and includes hidden html styling
+ * elements which consume some space.
+ */
+const byteSize = (txt: string): number => {
+    const bsize = new Blob([txt]).size as number;
+    return bsize;
+}
+const checkTextAreaSizes = (): Tab3Data => {
+    var return_val = {tips: 0, info: 0} as Tab3Data;
+    const tips_text = $('#ttxt').val() as string;
+    const tips_size = byteSize(tips_text);
+    const info_text = $('#info').val() as string;
+    const info_size = byteSize(info_text);
+    return_val.tips = tips_size;
+    return_val.info = info_size;
+    return return_val;
+}
+$('form').on('submit', function(ev) {
+    if (tabstr == '3') {
+        var fix = false;
+        const sizeResult = checkTextAreaSizes();
+        if (sizeResult.tips > tips_db_size) {
+            var overage = sizeResult.tips - tips_db_size;
+            fix = true;
+            alert("The text in the 'Tips' box is too large for the database by " +
+                "approx. " + overage + " characters: Data not saved."
+            );
+        }
+        if (sizeResult.info > info_db_size) {
+            var overage = sizeResult.info - info_db_size;
+            fix = true;
+            alert("The text in the 'Info' box is too large for the database by " +
+                "approx. " + overage + " characters: Data not saved."
+            );
+        }
+        if (fix) {
+            ev.preventDefault();
+        }
+    }
+});
 // initial button placed in order to establish global width
 $('#f1').prepend(subs[1]);
 const apwd = <number>subs[1].width();
