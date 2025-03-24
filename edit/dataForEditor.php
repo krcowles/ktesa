@@ -18,7 +18,7 @@
 // query string data:
 $hikeNo = filter_input(INPUT_GET, 'hikeNo');
 $tab    = filter_input(INPUT_GET, 'tab');
-
+$user   = $_SESSION['userid'];
 /**
  * There are currently four tabs requiring data: each tab's needs are 
  * highlighted with comment blocks.

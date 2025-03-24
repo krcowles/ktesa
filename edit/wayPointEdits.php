@@ -19,7 +19,7 @@
 $wpt_pref = '';
 $wptPrefs = $pdo->query("SELECT * FROM `MEMBER_PREFS`;")->fetchAll(PDO::FETCH_ASSOC);
 foreach ($wptPrefs as $pref) {
-    if ($pref['userid'] == $_SESSION['userid']) {
+    if ($pref['userid'] == (int) $user) {
         $wpt_pref = $pref['wpt_format'];
         break;
     }
