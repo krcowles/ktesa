@@ -2,7 +2,7 @@
 declare var age: string;
 declare var inEdits: string[];
 declare var appMode: string;
-declare var include_search: string;
+declare var include_search: string;  // which type of page is displayed
 declare function toggleScrollSelect(state: boolean): void;
 declare function setNodDatAlerts(): void;
 declare function tableSort(tableid: string): void;
@@ -18,11 +18,12 @@ declare function tableSort(tableid: string): void;
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  * @version 3.0 Added searchbar to scroll to a hike in 'Edit Published'
  * @version 4.0 Added deleted button for user to delete own hikes
+ * @version 5.0 Modified publication request: pre-screen hike
  */
 var appMode = $('#appMode').text() as string;
 /**
  * First, reduce space consumed by the table: alter column widths and eliminate 
- * 'Exposure' and Driving Directions columns.
+ * 'Exposure' and Driving Directions columns; makes room for buttons
  */
 var columns = document.getElementsByTagName('col');
 var headers = document.getElementsByTagName('th');
@@ -30,6 +31,7 @@ var $rows    = $('table.sortable tbody').find('tr');
 if (columns.length !== 8) {
 	alert("Unexpected table in editor!")
 }
+// reduce table width to allow for buttons
 columns[7].parentNode?.removeChild(columns[7]);
 columns[6].parentNode?.removeChild(columns[6]);
 headers[7].parentNode?.removeChild(headers[7]);
@@ -41,6 +43,12 @@ $rows.each(function() {
 	this.removeChild(this.children[6]);
 	$(this).children().css('padding-bottom', '6px');
 });
+
+var page_type = $('#active').text();
+var display_preview = page_type === 'Edit' && include_search !== 'EditPub'
+	? true : false;
+
+// Remaining actions depend on page type: include_search var
 if (include_search === 'EditPub') {
 	$('#search').autocomplete({
 		source: hikeSources,
@@ -132,14 +140,16 @@ function assignPreviews(): void {
 			let ans = confirm("All hike data will be lost:\nDo you really " +
 				"want to delete this hike?");
 			if (ans) {
-				window.open(delscript, "_blank");
+				window.open(delscript, "_self");
 			}
 		});
 	});
 }
 
 $(window).on('resize', function() {
-	assignPreviews();
+	if (display_preview) {
+		assignPreviews();
+	}
 });
 $( function () { // DOM loaded
 /**
@@ -164,9 +174,6 @@ $( function () { // DOM loaded
  * 	   generate an email to the admin for processing the request to publish the
  *     selected hike page.
  */
-var page_type = $('#active').text();
-var display_preview = page_type === 'Edit' && include_search !== 'EditPub'
-	? true : false;
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';
@@ -174,65 +181,98 @@ var shipit    = '../edit/notifyAdmin.php?hikeNo=';
 $('table.sortable').attr('id', 'editTbl');
 var hikeno: string;
 var lnk: string;
+function setupClickBehavior(a: JQuery<HTMLElement>, name: string, 
+	hno: string, clus: string, mail: string)
+{
+	a.on('click', function(ev) {
+		ev.preventDefault();
+		var ajaxdata = {hikeNo: hno, cluster: clus};
+		var $a = $(this);
+		$.ajax({
+			url: "validatePubRequest.php",
+			method: 'get',
+			data: ajaxdata,
+			dataType: 'text',
+			success: function(result) {
+				if (result === 'OK') {
+					var disabled = '<span style="color:gray;">' + name + '</span>';
+					$a.replaceWith(disabled);
+					$.ajax({
+						url: mail,
+						method: 'get',
+						dataType: 'text',
+						success: function(results) {
+							if (results === "OK") {
+								alert("An email has been sent to the admin");
+								window.location.replace(window.location.href);
+							} // no other results available in script
+						},
+						error: function (_jqXHR, _textStatus, _errorThrown) {
+							if (appMode === 'development') {
+								var newDoc = document.open();
+								newDoc.write(_jqXHR.responseText);
+								newDoc.close();
+							}
+							else { // production
+								var msg = "An error has occurred: " +
+									"We apologize for any inconvenience\n" +
+									"The webmaster has been notified; please try again later";
+								alert(msg);
+								var ajaxerr = "Trying to access notifyAdmin.php;\nError text: " +
+									_textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+									_jqXHR.responseText;
+								var errobj = { err: ajaxerr };
+								$.post('../php/ajaxError.php', errobj);
+							}
+						}
+					});
+				} else {
+					alert(result);
+				}
+			},
+			error: function() {
+				alert("Server failure: notify admin");
+			}
+		});
+	});
+}
 $rows.each(function() {
-	let $tdlink = $(this).children().eq(0);
-	let $anchor = $tdlink.children().eq(0);
-	let ptr = $anchor.prop('href');
-	let pubpg = $anchor.text();
-	let clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
-	if (ptr.indexOf('hikeIndx') !== -1) {
-		// find the hike no:
-		let hikeloc = ptr.indexOf('hikeIndx=') + 9;
-		hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
-	} else {
-		hikeno = '0';
+	var $tdlink = $(this).children().eq(0);
+	var $anchor = $tdlink.children().eq(0);
+	var chosenHike = $anchor.text() as string;
+	var ptr = $anchor.prop('href');
+	var pubpg = $anchor.text();
+	var clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
+	// find the hike no:
+	var hikeloc = ptr.indexOf('hikeIndx=') + 9;
+	hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
+	if (ptr.indexOf('hikeIndx') == -1) {
 		alert("Could not locate hike");
+		return false;
 	}
 	if (page_type === 'PubReq') {
-		let loc = shipit + hikeno;
+		var hindx: string;
+		var clus_parm = hikeno.indexOf('&');
+		if (clus_parm === -1) {
+			hindx = hikeno;
+		} else {
+			hindx = hikeno.substring(0, clus_parm);
+		}
+		var clus = clushike ? 'Y' : 'N';
+		var loc = shipit + hindx + "&name=" + chosenHike;
 		// This is a request to publish a hike
-		$anchor.on('click', function(ev) {
-			ev.preventDefault();
-			$.ajax({
-				url: loc,
-				method: 'get',
-				dataType: 'text',
-				success: function(results) {
-					if (results === "OK") {
-						alert("An email has been sent to the admin");
-					} // no other results available in script
-				},
-				error: function (_jqXHR, _textStatus, _errorThrown) {
-					if (appMode === 'development') {
-						var newDoc = document.open();
-						newDoc.write(_jqXHR.responseText);
-						newDoc.close();
-					}
-					else { // production
-						var msg = "An error has occurred: " +
-							"We apologize for any inconvenience\n" +
-							"The webmaster has been notified; please try again later";
-						alert(msg);
-						var ajaxerr = "Trying to access notifyAdmin.php;\nError text: " +
-							_textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-							_jqXHR.responseText;
-						var errobj = { err: ajaxerr };
-						$.post('../php/ajaxError.php', errobj);
-					}
-				}
-			});
-		});
+		setupClickBehavior($anchor, chosenHike, hindx, clus, loc);
 	} else {
 		// *** THESE HIKES ARE NEW (EHIKES) ***
 		if (age === 'new') { // age is established in hikeEditor.php
 			if (clushike) {
-				lnk = useClusEd + hikeno;
+				lnk = useClusEd + hikeno; // includes &clus=
 			} else {
 				lnk = useHikeEd + hikeno;
 			}
 		// *** THESE HIKES ARE PUBLSIHED ***
 		} else {
-			lnk = xfrPage + hikeno;	
+			lnk = xfrPage + hikeno;	// includes &clus=  if present
 		}
 		// gray out hikes already in-edit
 		if (age === 'old' && inEdits.indexOf(pubpg) !== -1) {
@@ -263,6 +303,7 @@ $rows.each(function() {
 			$anchor.attr('target', '_self');
 		}
 	}
+	return;
 });
 tableSort('#editTbl');
 if (display_preview) {

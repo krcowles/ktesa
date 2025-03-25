@@ -71,9 +71,10 @@ $table = $age === 'new' ? 'EHIKES' : 'HIKES';
 $state = $age === 'new' ? 'edit' : 'pub';
 $query = "SELECT * FROM {$table}";
 $user_qualifier = $show === 'usr' ? " WHERE `usrid`={$userid}" : '';
-// NOTE: publish list must not be sorted in order to synch w/hike nos
+$pending_pub = $pageType === 'PubReq' ? " AND `pubreq` IS NULL " : '';
+// NOTE: already published list must not be sorted in order to synch w/hike nos
 $sort_qualifier = $sort ? " ORDER BY `pgTitle`;" : ";";
-$query .= $user_qualifier . $sort_qualifier;
+$query .= $user_qualifier . $pending_pub . $sort_qualifier;
 $tblquery = $pdo->query($query);
 $entries = $tblquery->rowCount();
 // adjust link based on caller location
