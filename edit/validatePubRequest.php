@@ -40,7 +40,7 @@ if ($clusterPage) {
     $cdat = $clusterData->fetch(PDO::FETCH_ASSOC);
     if (is_null($cdat['lat']) || is_null($cdat['lng'])) {
         $msgout 
-            .= "<p class='brown'>Missing lat or lng for Cluster {$clusPgField}</p>";
+            .= "Missing lat or lng for Cluster {$clusPgField}\n";
     }
 } else {
     // Data omission here will cause issues in mapJsData.php on home page,
@@ -55,29 +55,29 @@ if ($clusterPage) {
             throw new Exception("Could not find {$cname} in CLUSTERS");
         }
         if (empty($clusdat['lat']) || empty($clusdat['lng'])) {
-            $msgout .= '<p class="brown">Missing lat or lng data in CLUSTERS</p>';
+            $msgout .= "Missing lat or lng data in CLUSTERS\n";
         }
     }
     if (empty($ehike['miles']) || empty($ehike['feet'])|| empty($ehike['diff'])) {
-        $msgout .= '<p class="brown">Missing miles, feet, or difficulty data</p>';
+        $msgout .= "Missing miles, feet, or difficulty data\n";
     }
     if (empty($ehike['lat']) || empty($ehike['lng'])) {
-        $msgout .= '<p class="brown">Missing lat or lng data</p>';
+        $msgout .= "Missing lat or lng data\n";
     }
     if (!$proposed) {
         if (empty($ehike['last_hiked'])) {
-            $msgout .= '<p class="brown">Missing last_hiked data (from photos)</p>';
+            $msgout .= "Missing last_hiked data (from photos)\n";
         }
         if (empty($ehike['preview'])) {
-            $msgout .= '<p class="brown">Missing preview/thumb data</p>';
+            $msgout .= "Missing preview/thumb data\n";
         }
         if (empty($ehike['bounds'])) {
-            $msgout .= '<p class="brown">Missing hike bounds box</p>';
+            $msgout .= "Missing hike bounds box: may require reloading gpx file\n";
         }
     }
 }
 if (empty($ehike['dirs'])) {
-    $msgout .= '<p class="brown">Missing directions link</p>';
+    $msgout .= "Missing directions link";
 }
 if ($msgout == '') {
     echo "OK";
