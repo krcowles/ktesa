@@ -78,7 +78,7 @@ if ($request === 'files') {
     $newerThan = $dtFile || $dtTime ? true : false;
     if ($newerThan) {
         // Get date from either photo specified ($dtFile) or calendar data ($dtTime)
-        if (isset($dtFile) && $dtFile !== '') {
+        if ($dtFile && $dtFile !== '') {
             $uploadDate = filemtime("./{$dtFile}");
         } else {
             $uploadDate = strtotime($dtTime);
@@ -138,6 +138,9 @@ if ($request === 'pictures') {
      */
     $iter = 0;  // need to know if there are no pix
     foreach ($qualified as $newpic) {
+        $pos = strrpos($newpic, "/") + 1;
+        $copyloc = './newpix/' . substr($newpic, $pos);
+        copy($newpic, $copyloc);
         $zip->addFile($newpic);
         $iter++;
     }
@@ -148,13 +151,7 @@ if ($request === 'pictures') {
     } else {
         if (filesize($tmpPix) > 19500000) {
             $toobig = true;
-        } else {
-            header('Content-Type: application/octet-stream');
-            header("Content-Transfer-Encoding: Binary");
-            header("Content-disposition: attachment; filename=newPix.zip");
-            readfile($tmpPix);
-            exit();
-        }
+        } 
     }
 }
 ?>

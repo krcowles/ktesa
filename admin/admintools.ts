@@ -245,14 +245,16 @@ $('#rel2pic').on('click', function() {
          * If photo is specified, picloc will hold directory location, dateSelected is empty
          * If date is selected, picloc is empty and dateSelected is specified
          */
+        var picscript = "list_new_files.php?request=pictures";
         if (picfile !== '') {
             var picloc = "pictures/zsize/" + picfile;
             $('#cmppic').val('');
-            picfile = '';
+            picscript += "&dtFile=" + picloc;
+        } else {
+            picscript += "&dtTime=" + dateSelected;
         }
-        $('#datepicker').val('');
-        window.open("list_new_files.php?request=pictures&dtFile=" + picloc +
-            "&dtTime=" + dateSelected, "_self");
+        var getpix = encodeURI(picscript);
+        window.open(getpix, "_self");
     }
 });
 
