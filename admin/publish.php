@@ -165,7 +165,8 @@ if ($msgout == '') {
         $query = "UPDATE HIKES, EHIKES SET ";
         foreach ($columns as $column) {
             if (($column[0] !== "indxNo") && ($column[0] !== "stat")
-                && $column[0] !== "cname" && ($column[0] !== "gpx")
+                && ($column[0] !== "cname") && ($column[0] !== "gpx")
+                && ($column[0] !== "pubreq")
             ) {
                 $query .= "HIKES.{$column[0]} = EHIKES.{$column[0]}, ";
             }
@@ -181,6 +182,7 @@ if ($msgout == '') {
         foreach ($columns as $column) {
             if (($column[0] !== "indxNo") && ($column[0] !== "stat")
                 && ($column[0] !== "cname") && ($column[0] !== "gpx")
+                && ($column[0] !== "pubreq")
             ) {
                 $fields .= "{$column[0]}, ";
             }
