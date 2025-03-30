@@ -135,8 +135,7 @@ input:not(#ckbox) {
 
 /* Unable to set autofill-color for Firefox, using standard yellow */
 input:-webkit-autofill,
-input:-webkit-autofill:focus {
-  /* Chrome, Safari */
+input:-webkit-autofill:focus { /* Chrome, Safari */
   -webkit-text-fill-color: black;
   -webkit-box-shadow: 0 0 0 1000px ghostwhite inset;
   box-shadow: 0 0 0 1000px ghostwhite inset;
@@ -151,20 +150,16 @@ input:focus {
   transition: border-color 1s;
 }
 
-::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: gray;
-  opacity: 1;
-  /* Firefox */
+  opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: gray;
 }
 
-::-ms-input-placeholder {
-  /* Microsoft Edge */
+::-ms-input-placeholder { /* Microsoft Edge */
   color: gray;
 }
 
@@ -195,11 +190,12 @@ input:focus {
 #cookie_banner {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: 12px;
   width: 100%;
   text-align: center;
   padding-left: 16px;
   padding-right: 16px;
+  padding-top: 8px;
   z-index: 9999;
   background-color: floralwhite;
   border-top-style: solid;
@@ -207,22 +203,9 @@ input:focus {
   border-top-color: gray;
 }
 
-#cookie_banner h3, #cookie_banner p {
+#cookie_banner h4 {
   margin-top: 8px;
   margin-bottom: 8px;
-}
-
-#cbuttons {
-  margin-bottom: 12px;
-}
-
-#accept {
-  position: relative;
-  left: -16px;
-}
-
-#reject {
-  margin-left: 40px;
 }
 
 /* LOGIN CSS */
@@ -247,9 +230,7 @@ button {
 
 /* REGISTRATION CSS */
 #policylnk {
-  font-size: 14px;
-  position: relative;
-  top: 8px;
+  font-size: 16px;
 }
 
 .pseudo-legend {
@@ -290,20 +271,20 @@ button {
 
 #ckbox {
   /* Double-sized Checkboxes */
-  -ms-transform: scale(1.5);
-  /* IE */
-  -moz-transform: scale(1.5);
-  /* FF */
-  -webkit-transform: scale(1.5);
-  /* Safari and Chrome */
-  -o-transform: scale(1.5);
-  /* Opera */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
   transform: scale(1.5);
   padding: 5px;
 }
 
 #st {
   display: none;
+}
+
+#pexpl {
+  padding: 6px;
 }
 
 #confirm {

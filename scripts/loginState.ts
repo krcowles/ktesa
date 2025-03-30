@@ -11,12 +11,12 @@
  * @version 2.0 Rescripted owing to changed bootstrap support for menus
  */
 var page_type = location.href;
-var cookies = navigator.cookieEnabled ? true : false;
+var cookies_allowed = navigator.cookieEnabled ? true : false;
 var html_cookie = document.getElementById('cookie_state');
 var user_cookie_state = html_cookie === null ? false : <string>html_cookie.innerText;
 
 // check to see if cookies are enabled for the browser
-if(cookies) {
+if(cookies_allowed) {
     /**
      * Note that for the unifiedLogin page, this code will not be executed
      */
@@ -33,8 +33,7 @@ if(cookies) {
         $.get('../accounts/logout.php?expire=Y');
         notLoggedInItems();
     } else if (user_cookie_state === 'RENEW') {
-        alert("Your password will expire soon; Use 'Log in' to renew:\n" +
-            "You are not currently logged in");
+        alert("Your password will expire soon; You must reregister");
         // destroy user cookie to prevent repeat messaging for other pages
         $.get('../accounts/logout.php');
         notLoggedInItems();

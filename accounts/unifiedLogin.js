@@ -6,6 +6,7 @@
  *
  * @version 2.0 Redesigned for responsiveness
  * @version 5.0 Upgraded security with encryption and 2FA
+ * @version 6.0 Eliminating user choice of cookies: all members allow
  */
 $(function () {
     /**
@@ -32,45 +33,44 @@ $(function () {
             window.open('../accounts/session_expired.php', '_self');
         }, activity_timeout);
     });
-    var reg = mobile ? { top: 20, height: 510 } : { top: 48, height: 540 };
-    var log = mobile ? { top: 48, height: 340 } : { top: 80, height: 380 };
+    var reg = mobile ? { top: 12, height: 510 } : { top: 48, height: 540 };
+    var log = mobile ? { top: 32, height: 380 } : { top: 80, height: 380 };
     var ren = mobile ? { top: 20, height: 480 } : { top: 80, height: 480 };
-    var accept_btn = mobile ? '#maccept' : '#accept';
-    var reject_btn = mobile ? '#mreject' : '#reject';
     if (mobile) {
+        $('#cookie_banner').hide();
         $('.mobinp').css({
             position: 'relative',
-            top: '-16px'
+            top: '-24px'
         });
         $('.mobtxt').css({
             position: 'relative',
             top: '-12px'
         });
-        $('#cookie_banner').hide();
+        $('#logger').css('height', '60px');
         $('.form-check-label').css('padding-left', '1em');
     }
     var formtype = $('#formtype').text();
     var $container = $('#container');
-    // declared cookie choice:
-    $(accept_btn).on('click', function () {
-        $('#cookie_banner').hide();
-        $('#usrchoice').val("accept");
+    // Cookie banner actions:
+    $('#policy').on('click', function () {
+        var plnk = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
+        window.open(plnk, '_blank');
     });
-    $(reject_btn).on('click', function () {
+    $('#close_banner').on('click', function (ev) {
+        ev.preventDefault();
         $('#cookie_banner').hide();
-        $('#usrchoice').val("reject");
     });
     /**
      * The code executed depends on which formtype is in play
      */
     switch (formtype) {
         case 'join':
+            $('#cookie_banner').hide();
             // clear inputs on page load/reload 
             $('#fname').val("");
             $('#lname').val("");
             $('#uname').val("");
             $('#email').val("");
-            $('#cookie_banner').hide();
             $container.css({
                 top: reg.top,
                 height: reg.height
@@ -312,6 +312,7 @@ $(function () {
             });
             break;
         case 'renew':
+            // cookie banner shows here (in particular for new registrants)
             // clear inputs on page load/reload
             $('#password').val("");
             $('#confirm').val("");
@@ -319,13 +320,6 @@ $(function () {
             var ix = $('#ix').text();
             tbl_indx = ix; // required in validateUser's #closesec function
             var pdet = new bootstrap.Modal(document.getElementById('show_pword_details'));
-            var cban = new bootstrap.Modal(document.getElementById('cooky'));
-            if (mobile) {
-                cban.show();
-            }
-            else {
-                $('#cookie_banner').show();
-            }
             var login_renew = $('#one-time').val();
             $container.css({
                 top: ren.top,

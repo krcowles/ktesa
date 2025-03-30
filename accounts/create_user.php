@@ -14,7 +14,6 @@ require "../php/global_boot.php";
 verifyAccess('ajax');
 
 $submitter = filter_input(INPUT_POST, 'submitter');
-$cookies   = filter_input(INPUT_POST, 'cookies');
 
 $today = getdate();
 $year = $today['year'] + 1;
@@ -51,7 +50,6 @@ if ($submitter == 'create') {
     $code      = filter_input(INPUT_POST, 'code');
     $user_pass = filter_input(INPUT_POST, 'password');
     $password  = password_hash($user_pass, PASSWORD_DEFAULT);
-    $cookies   = filter_input(INPUT_POST, 'cookies');
 
     $getUserReq = "SELECT * FROM `USERS`;";
     $users = $pdo->query($getUserReq)->fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +58,6 @@ if ($submitter == 'create') {
         if (password_verify($code, $user['passwd'])) { 
             $_SESSION['username'] = $user['username'];
             $_SESSION['userid']   = $user['userid'];
-            $_SESSION['cookies']  = $cookies;
             $_SESSION['cookie_state'] = "OK";
             $match = true;
             break;
@@ -70,17 +67,15 @@ if ($submitter == 'create') {
         echo "NOCODE";
         exit;
     }
-    $updateuser = "UPDATE `USERS` SET `passwd`=?, `passwd_expire`=?, " .
-        "`cookies`=? WHERE `userid`=?;";
+    $updateuser = "UPDATE `USERS` SET `passwd`=?, `passwd_expire`=? " .
+        " WHERE `userid`=?;";
     $update = $pdo->prepare($updateuser);
     $update->execute(
-        array($password, $exp_date, $cookies, $_SESSION['userid'])
+        array($password, $exp_date, $_SESSION['userid'])
     );
 }
-// set cookie if user has accepted cookie use
-if ($_SESSION['cookies'] === 'accept') {
-    $days = 365; // Number of days before cookie expires
-    $expire = time() + 60*60*24*$days;
-    setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
-}
+$days = 365; // Number of days before cookie expires
+$expire = time() + 60*60*24*$days;
+setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
+
 echo "OK";

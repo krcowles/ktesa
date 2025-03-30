@@ -13,11 +13,11 @@
  * @license No license to date
  */
 
+$user = $_SESSION['userid'];
 // Retrieve waypoint format:
 $wpt_format = filter_input(INPUT_POST, 'wpt_format');
 if (!empty($wpt_format)) {
     // Note: for now, it may update the value already there...
-    $user = $_SESSION['userid'];
     $entryExists = $pdo->query("SELECT `userid` FROM `MEMBER_PREFS`;")
         ->fetchAll(PDO::FETCH_COLUMN);
     if (in_array($user, $entryExists)) {

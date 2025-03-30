@@ -320,31 +320,6 @@ $(function () {
             }
         });
     });
-    $('#cookies').on('click', function () {
-        var newchoice;
-        var changeto = $(this).text();
-        if (changeto == 'Accept Cookies') {
-            newchoice = 'accept';
-        }
-        else {
-            newchoice = 'reject';
-        }
-        var change = { choice: newchoice };
-        $.ajax({
-            url: '../accounts/member_cookies.php',
-            method: 'post',
-            dataType: 'text',
-            data: change,
-            success: function () {
-                window.location.reload();
-            },
-            error: function () {
-                alert("Error retrieving member cookies - admin notified");
-                var err = { err: "Mobile member_cookies.php error" };
-                $.post('../php/ajaxError.php', err);
-            }
-        });
-    });
     $('#logout').on('click', function () {
         $.ajax({
             url: '../accounts/logout.php',
@@ -376,39 +351,6 @@ $(function () {
     });
     $('#chg').on('click', function () {
         resetPassModal.show();
-        return;
-    });
-    $('#usrcookies').on('click', function () {
-        var cookie_action = $(this).text();
-        var action = cookie_action === 'Accept Cookies' ? 'accept' : 'reject';
-        var ajaxdata = { choice: action };
-        $.ajax({
-            url: '../accounts/member_cookies.php',
-            method: 'post',
-            dataType: 'text',
-            data: ajaxdata,
-            success: function () {
-                window.location.reload();
-            },
-            error: function (_jqXHR, _textStatus, _errorThrown) {
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var msg = "Cannot change cookie preference at this time:\n" +
-                        "We apologize for any inconvenience\n" +
-                        "The webmaster has been notified; please try again later";
-                    alert(msg);
-                    var ajaxerr = "Trying to access [];\nError text: " +
-                        _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
-                        _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                }
-            }
-        });
         return;
     });
     $('#updte_sec').on('click', function () {

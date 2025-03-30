@@ -7,16 +7,15 @@
  * @version 5.0 Updated security w/encryption and 2FA
  * @version 5.1 Add disable to 'Continue Edits' and 'Publish Request' as approp.
  * @version 5.2 Added 'Membership Benefits' icon to navbar
+ * @version 6.0 Remove members choice to accept/reject cookies
  */
-var cookies = navigator.cookieEnabled ? true : false;
+var cookies_allowed = navigator.cookieEnabled ? true : false;
 var cookie_info = <HTMLElement>document.getElementById('cookie_state');
 var user_cookie_state = cookie_info.innerText;
 var active_member = user_cookie_state !== "NOLOGIN" && user_cookie_state !== "NONE"
     && user_cookie_state !== "EXPIRED" && user_cookie_state !== "RENEW" 
     && user_cookie_state !== "MULTIPLE";
 if (active_member) {
-    var cookie_choice = <HTMLElement>document.getElementById('cookies_choice');
-    var user_cookie_choice = cookie_choice.innerText;
     // members will have the 'Contribute' menu items displayed
     $('#contrib').css('display', 'block');
     // hide the member benefits star
@@ -31,9 +30,6 @@ if (active_member) {
     $('#login').addClass('disabled');
     $('#bam').addClass('disabled');
     $('#updte_sec').removeClass('disabled');
-    // display appropriate change-cookie text
-    var display_choice = user_cookie_choice === 'accept' ? 'Reject Cookies' : 'Accept Cookies';
-    $('#usrcookies').text(display_choice);
     // Look to see if user has any active edit pages
     var uhikes = parseInt($('#uhikes').text());
     if (uhikes === 0) {
@@ -43,7 +39,7 @@ if (active_member) {
         $('#conteditpg').removeClass('disabled');
         $('#pubreqpg').removeClass('disabled');
     }
-} else {
+} else { // NOT MEMBER
     // disable appropriate 'Members' items
     $('#logout').addClass('disabled');
     $('#chg').addClass('disabled');
@@ -54,7 +50,7 @@ if (active_member) {
 }
 
 // check to see if cookies are enabled for the browser
-if(cookies) { // exception messages only: auto login may still occur
+if(cookies_allowed) { // exception messages only: auto login may still occur
     if (user_cookie_state === 'NONE' || user_cookie_state === 'MULTIPLE') {
         let msg = "User registration not located\nRe-register using 'Members->" +
             "Become a member";
@@ -70,9 +66,9 @@ if(cookies) { // exception messages only: auto login may still occur
     }
 }
 else { // cookies disabled
-    let msg = "Cookies are disabled on this browser:\n" +
-        "You will not be able to register or login\n" +
-        "until cookies are enabled";
+    let msg = "Cookies are disabled on this browser:" +
+        "You will not be able to register, login, or edit" +
+        " pages as a member until cookies are enabled";
     alert(msg);
 }
 

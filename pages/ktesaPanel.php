@@ -2,7 +2,7 @@
 /**
  * This script presents the html that comprises the top-of-the-page
  * menu-driven navigation bar and ktesa logo for every viewable page.
- * See ktesaNavbar.php for mobile implementation. All bootstrap submenu
+ * See mobileNavbar.php for mobile implementation. All bootstrap submenu
  * operation derived from: https://bootstrap-menu.com/detail-multilevel.html
  * NOTE: Recent addition of 'Own This Site!' animation compliments of
  * https://alvarotrigo.com/blog/css-text-animations/ (with mods);
@@ -245,6 +245,9 @@ if (isset($_SESSION['userid'])) {
                         </li>
                         <li><a id="updte_sec" class="dropdown-item" href="#">
                             Security Questions</a></li>
+                        <li id="hiking_club"><a class="dropdown-item"
+                            href="../pages/clubAssets.php">Club Assets</a>
+                        </li>
                     </ul>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -262,10 +265,6 @@ if (isset($_SESSION['userid'])) {
                         <li><a class="dropdown-item" 
                             href="../php/postPDF.php?doc=<?=$policy;?>">
                             Privacy Policy</a>
-                        </li>
-                        <li id="change_cookies"><a id="usrcookies"
-                            class="dropdown-item" href="#">Accept Cookies</a>
-                        </li>
                     </ul>
                 </li>
                 <li id="owner" class="nav-item">
@@ -293,9 +292,6 @@ if (isset($_SESSION['userid'])) {
 </div>
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
-<?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
-<?php endif; ?>
 <?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>

@@ -17,13 +17,12 @@ define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
 $userid = filter_input(INPUT_POST, 'ix');
 
-$userReq = "SELECT `username`,`cookies` FROM `USERS` WHERE `userid`=?;";
+$userReq = "SELECT `username` FROM `USERS` WHERE `userid`=?;";
 $user_data = $pdo->prepare($userReq);
 $user_data->execute([$userid]);
 $vars = $user_data->fetch(PDO::FETCH_ASSOC);
 $_SESSION['username']     = $vars['username'];
 $_SESSION['userid']       = $userid;
-$_SESSION['cookies']      = $vars['cookies'];
 $_SESSION['cookie_state'] = "OK";
 $cookie_expire = time() + 10 * UX_DAY * 365;
 $cookie_name   = 'nmh_mstr';
@@ -38,9 +37,8 @@ if ($userid == '1') {
     $browser_cookie = $vars['username'];
     $cookie_expire  =  time() + UX_DAY * 365;
 }
-if ($vars['cookies'] === 'accept') {
-    setcookie(
-        $cookie_name, $browser_cookie, $cookie_expire, "/", "", true, true
-    );
-}
+setcookie(
+    $cookie_name, $browser_cookie, $cookie_expire, "/", "", true, true
+);
+
 echo "OK";

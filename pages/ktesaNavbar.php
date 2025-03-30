@@ -86,8 +86,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
                             href="../php/postPDF.php?doc=<?=$policy;?>"
                             target="_blank">Privacy Policy</a>
                         </li>
-                        <li><a id="cookies" class="dropdown-item"
-                            href="#">Accept Cookies</a></li>
                     </ul>
                 </li>
             </ul>
@@ -110,9 +108,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
 
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
-<?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
-<?php endif; ?>
 <?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>

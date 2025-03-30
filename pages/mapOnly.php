@@ -35,7 +35,7 @@ require "autoComplHikes.php";
 
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "ktesaNavbar.php"; ?>
+<?php require "mobileNavbar.php"; ?>
 <div id="trail">Welcome!</div>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
 

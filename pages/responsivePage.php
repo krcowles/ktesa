@@ -66,7 +66,7 @@ function off() {
 
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "ktesaNavbar.php";?>
+<?php require "mobileNavbar.php";?>
 
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="gpx" style="display:none">$gpxfile;?></p>

@@ -34,7 +34,7 @@ require "respTableData.php";
 
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "ktesaNavbar.php";?>
+<?php require "mobileNavbar.php";?>
 <div id="trail">Table of Hikes</div>
 <br />
 

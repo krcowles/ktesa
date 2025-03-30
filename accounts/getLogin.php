@@ -5,14 +5,13 @@
  * are set up for this member. If the user is already logged in,
  * or a session is still in effect, essentially nothing else occurs.
  * session_start() must reside on the page from which this routine is
- * being initiated. The ktesaPanel/Navbar calls getLogin.php.
+ * being invoked. The ktesaPanel/Navbar calls getLogin.php.
  * Note: having a separate admin ('master') cookie allows admins
  * to have both an admin account and a user account to verify user
  * functionality.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -26,19 +25,18 @@ $memid = '0';
 
 // Some use cases have 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
-    || !isset($_SESSION['cookies']) || !isset($_SESSION['cookie_state'])
+    || !isset($_SESSION['cookie_state'])
 ) {
      unset($_SESSION['username']);
      unset($_SESSION['userid']);
-     unset($_SESSION['cookies']);
      unset($_SESSION['cookie_state']);
 }
 
 if (!isset($_SESSION['username'])) { // No login yet...
     if ($regusr) { // is there a site cookie present?
         $username = $_COOKIE['nmh_id'];
-        // check cookie choice and password expiration
-        $userDataReq = "SELECT `userid`,`passwd_expire`,`cookies` FROM " .
+        // check password expiration
+        $userDataReq = "SELECT `userid`,`passwd_expire` FROM " .
             "`USERS` WHERE username = ?;";
         $userData = $pdo->prepare($userDataReq);
         $userData->execute([$username]);
@@ -50,12 +48,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
             $user_info = $userData->fetch(PDO::FETCH_ASSOC);
             $userid  = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
-            $cookies = $user_info['cookies'];
             $memid   = $user_info['userid'];
-            $choice  = 'reject';  // default if no user selection recorded
-            if (!empty($cookies)) {
-                $choice = $cookies;
-            }
             $american = str_replace("-", "/", $expDate);
             $orgDate = strtotime($american);
             if ($orgDate <= time()) {
@@ -71,7 +64,6 @@ if (!isset($_SESSION['username'])) { // No login yet...
                 // protected login credentials:
                 $_SESSION['username']     = $username;
                 $_SESSION['userid']       = $userid;
-                $_SESSION['cookies']      = $choice;
             }
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible
@@ -88,13 +80,14 @@ if (!isset($_SESSION['username'])) { // No login yet...
             $_SESSION['userid'] = '2';
             $_SESSION['username'] = 'kc';
         }
-        $_SESSION['cookies'] = "accept";
         $admin = true;
     }
     $_SESSION['cookie_state'] = $cookie_state;
 } else {
     // LOGGED IN: (User data is in $_SESSION vars);
-    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14') {
+    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2'
+        || $_SESSION['userid'] == '14'
+    ) {
         $admin = true;
         $cookie_state = "OK";
     } 
@@ -135,8 +128,9 @@ if (!$admin) {
         }
         // Bad robot...
         if (strpos($user_ip, '52.167.144') !== false
-        || strpos($user_ip, '40.77.167') !== false
-        || strpos($user_ip, '20.26.44') !== false) {
+            || strpos($user_ip, '40.77.167') !== false
+            || strpos($user_ip, '20.26.44') !== false
+        ) {
             die("Access not permitted");
         }
     }

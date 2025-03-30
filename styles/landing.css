@@ -70,7 +70,7 @@ body {
   z-index: 5;
 }
 
-#cookie_state, #cookies_choice {
+#cookie_state {
   display: none;
 }
 

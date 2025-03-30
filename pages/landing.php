@@ -65,9 +65,6 @@ require_once "../accounts/getLogin.php";
 </div>
 
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
-<?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
-<?php endif;?>
     
 <h2 id="welcome">The New Mexico Hiking Site</h2>
 <div class="landing_content">

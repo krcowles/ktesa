@@ -4,7 +4,7 @@
  * the user's cookies and the session variables associated with login.
  * Note: when an expired user (cookie or login) has been detected,
  * the user is removed from the USERS table.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -36,5 +36,4 @@ if (!$admin) {
 }
 unset($_SESSION['username']);
 unset($_SESSION['userid']);
-unset($_SESSION['cookies']);
 unset($_SESSION['cookie_state']);

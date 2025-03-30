@@ -35,10 +35,9 @@ require "../php/global_boot.php";
 
 <div id="msg">
     <h2>Your login session has expired</h2>
-    <h3>If you have accepted cookies, you may automatically re-login:
+    <h3>As a member, you may automatically re-login:
         <a href="../pages/home.php" target="_self">Click here</a></h3>
-    <h3>[Mobile or other:] If you have rejected cookies (or don't
-        remember), use this link to log in:
+    <h3>[Mobile or other:] Otherwise use this link to log in:
         <a href="unifiedLogin.php?form=log" target="_self">Login Page</a></h3>
 </div>
 

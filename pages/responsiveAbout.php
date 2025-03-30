@@ -27,7 +27,7 @@ require "../php/global_boot.php";
     
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "ktesaNavbar.php"; ?>
+<?php require "mobileNavbar.php"; ?>
 
 <div>
     <p id="banner">Authors on Deception Pk</p>

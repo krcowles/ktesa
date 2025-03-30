@@ -203,7 +203,7 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-#cookie_state, #cookies_choice, #admin, #contrib, #admintools {
+#cookie_state, #admin, #contrib, #admintools {
     display: none;
 }
 

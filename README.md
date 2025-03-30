@@ -1,7 +1,7 @@
 This code creates the "New Mexico Hikes" website, and includes the .sql file of the current data base. Some settings (e.g. Database credentials, Google API_Key, RSA keys) exist outside the project and are not held in git.
 - A home page includes a New Mexico (Google) Map with markerclusterers showing the total number of hikes in an area. Also a sortable/filterable side panel lists all hikes in the current viewing area. Each hike lists stats, has a 'Zoom to' icon and a 'Favorites' icon [only available to members];
 - A user may become a (free) member, enabling the ability to add new hike pages or edit existing ones;
-- A Bootstrap navigation bar allows users to visit other pages and/or login/logout, become a member, change password or security questions, edit a GPX file, download the Privacy Policy, accept/reject cookies, or show the 10 most recent hikes added; Main pages:
+- A Bootstrap navigation bar allows users to visit other pages and/or login/logout, become a member, change password or security questions, edit a GPX file, download the Privacy Policy, or show the 10 most recent hikes added; Main pages:
     - About the site;
     - Table of hikes with sorting/filtering, english/metric conversion, and the ability to show user-selected hikes on a separate page;
     - [Members Only] A separate map page showing only 'Favorites'

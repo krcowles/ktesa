@@ -11,7 +11,7 @@
  *       c. When the user clicks on the email link, this page is again displayed with
  *          $form="renew", whereupon he can complete the desired registration with a
  *          new password of his choosing. In addition the user must make a choice
- *          about cookies and set up security questions. When the form is now
+ *          about security questions. When the form is now
  *          submitted, he will be logged in and fully registered.
  *    2. Change, renew, or 'Forgot password' requests invoke this page with
  *       $form="renew"; In each case an email is generated with a one-time secure
@@ -32,7 +32,7 @@ $ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
 $newusr = isset($_GET['join']) ? true : false;
 $title  = "Query string missing!"; // otherwise error fct called
 if ($form === 'join') {
-    $title = "New User Registration";
+    $title = $mobileTesting ? "Registration" : "New User Registration";
 } elseif ($form === 'renew') {
     $title = "Set Password";
 } elseif ($form === 'log') {
@@ -60,6 +60,9 @@ if ($newusr) {
     <script src="../scripts/jquery.js"></script>
     <script type="text/javascript">
         var page = 'unified';
+        <?php if ($mobileTesting) : ?>
+        var mobile = true;
+        <?php else : ?>
         var mobile, isMobile, isTablet, isAndroid, isiPhone, isiPad;
         window.addEventListener("load", () => { // useragent yields TRUE OR NULL!
             isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
@@ -74,6 +77,7 @@ if ($newusr) {
                 true : false;
             mobile = isMobile && !isTablet && !isiPad ? true : false;
         });
+        <?php endif; ?>
     </script>
 </head>
 
@@ -102,10 +106,12 @@ if ($newusr) {
 <?php if ($form === 'join') : ?>
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
+        <?php if (!$mobileTesting) : ?>
         <p>Sign up for free access to nmhikes.com!</p>
-        <p id="sub">Create and edit your own hikes<br />
+        <?php endif; ?>
+        <span id="sub">Create and edit your own hikes<br />
         <a id="policylnk" href="#">Privacy Policy</a>
-        </p>
+        </span>
         <div class="mobinp">
             <div class="pseudo-legend">First Name</div>
             <div id="line1" class="lines"></div>
@@ -199,7 +205,10 @@ if ($newusr) {
             <button id="formsubmit" type="submit" class="btn btn-secondary">
                 Submit</button><br />
             <span id="lotime">You may login in approx <span class="lomin"></span>
-                minutes</span><br /><br />
+                minutes</span><br />
+            <?php if (!$mobileTesting) : ?>
+            <br />
+            <?php endif; ?>
         </form>
         <!-- For 'Forgot password' and 'Renew password Modal -->
         <button id="logger" type="button" class="btn btn-outline-secondary"
@@ -212,18 +221,12 @@ if ($newusr) {
 <?php require "unifiedLoginModals.html"; ?>
 
 <div id="cookie_banner">
-    <h3>This site uses cookies to save member usernames</h3>
-    <p>Accepting cookies allows automatic login. If you reject cookies,
-    no cookie data will be collected, and you must login each visit.
-    Please read the Help->Policy document for more details.
-    <br />You may change your decision later via the Help menu.
-    </p>
-    <div id="cbuttons">
-        <button id="accept" type="button" class="btn btn-secondary">
-            Accept Cookies</button>
-        <button id="reject" type="button" class="btn btn-secondary">
-            Reject Cookies</button>
-    </div>
+    <h4 id="banner_text">This site uses cookies only to save member login names.
+        For other member data - stored in a secure and encoded database - please
+        review the <a id="policy" href="#">Privacy Policy</a>.
+    </h4>
+    <button id="close_banner" type="button" class="btn btn-secondary">Close</button>
+    <br /><br />
 </div>
 
 <script src="../scripts/logo.js"></script>

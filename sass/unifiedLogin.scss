@@ -6,9 +6,9 @@ $cookies: floralwhite;
 $customLine: #fcf4e8;
 $modal: #dfe9e3;
 
-@import "colors";
-@import "body";
-@import "overflow";
+@use "colors" as *;
+@use "body" as *;
+@use "overflow" as *;
 
 /* Page Top */
 #logo {
@@ -157,30 +157,21 @@ input:focus {
 #cookie_banner {
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: 12px;
     width: 100%;
     text-align: center;
     padding-left: 16px;
     padding-right: 16px;
+    padding-top: 8px;
     z-index: 9999;
     background-color: $cookies;
     border-top-style: solid;
     border-top-width: 1px;
     border-top-color: $gray;
 }
-#cookie_banner h3, #cookie_banner p {
+#cookie_banner h4 {
     margin-top: 8px;
     margin-bottom: 8px;
-}
-#cbuttons {
-    margin-bottom: 12px;
-}
-#accept {
-    position: relative;
-    left: -16px;
-}
-#reject {
-    margin-left: 40px;
 }
 
 /* LOGIN CSS */
@@ -203,9 +194,7 @@ button {
 
 /* REGISTRATION CSS */
 #policylnk {
-    font-size: 14px;
-    position: relative;
-    top: 8px;
+    font-size: 16px;
 }
 .pseudo-legend {
     position: relative;
@@ -250,6 +239,9 @@ button {
 }
 #st {
     display: none;
+}
+#pexpl {
+    padding: 6px;
 }
 #confirm {
     position: relative;

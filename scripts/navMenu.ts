@@ -19,12 +19,6 @@ $(function() { // document ready function
  * Menu setup
  */
 var appMode = $('#appMode').text() as string;  // LOCAL navbar var
-var choice = $('#cookies_choice').text();
-if (choice === 'accept') {
-    $('#cookies').text('Reject Cookies');
-} else {
-    $('#cookies').text('Accept Cookies');
-}
 var chg_modal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'), {
     keyboard: false
 });
@@ -117,31 +111,6 @@ $('#send').on('click', function(ev) {
         error: function() {
             ajaxerror.show();
             let err ={err: "Mobile - resetMail.php error"};
-            $.post('../php/ajaxError.php', err);
-        }
-    });
-});
-
-$('#cookies').on('click', function() {
-    let newchoice: string;
-    let changeto = $(this).text();
-    if (changeto == 'Accept Cookies') {
-        newchoice = 'accept';
-    } else {
-        newchoice = 'reject';
-    }
-    let change = {choice: newchoice};
-    $.ajax({
-        url: '../accounts/member_cookies.php',
-        method: 'post',
-        dataType: 'text',
-        data: change,
-        success: function() {
-            window.location.reload();
-        },
-        error: function() {
-            ajaxerror.show();
-            let err = {err: "Mobile member_cookies.php error"};
             $.post('../php/ajaxError.php', err);
         }
     });

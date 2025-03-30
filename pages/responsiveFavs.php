@@ -79,7 +79,7 @@ $jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
     
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "ktesaNavbar.php"; ?>
+<?php require "mobileNavbar.php"; ?>
 <p id="trail">Your Favorites</p>
 <p id="favmode" style="display:none;"><?=$favmode;?></p>
 
