@@ -1,4 +1,4 @@
-@import "body";
+@use "body" as *;
 $logo: #ffe866;
 
 #content {

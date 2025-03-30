@@ -1,4 +1,4 @@
-@import "../sass/ktesaNavbar";
+@use "../sass/ktesaNavbar" as *;
 
 html {
     height: 100%;

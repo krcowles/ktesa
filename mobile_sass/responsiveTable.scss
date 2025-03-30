@@ -1,5 +1,5 @@
-@import "body";
-@import "../sass/ktesaNavbar";
+@use "body" as *;
+@use "../sass/ktesaNavbar" as *;
 
 #trail {
 	display: none;

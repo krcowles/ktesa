@@ -1,5 +1,5 @@
-@import "body";
-@import "ktesaNavbar";
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 #main {
     margin-left: 24px;

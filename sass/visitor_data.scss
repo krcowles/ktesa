@@ -1,9 +1,9 @@
 $header: darkgreen;
 $rowHover: #d2d2d2;
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 table {
     margin-top: 24px;

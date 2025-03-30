@@ -8,14 +8,15 @@ $alink: #0000b3;
 $issueColor: linen;
 $issueBorder: #c9d7e8;
 
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
+
 @mixin panelNote($top) {
     text-align: center;
     margin-top: $top;
 }
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
 
 html {
     height: 100%;

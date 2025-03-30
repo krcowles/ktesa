@@ -1,4 +1,4 @@
-@import "../sass/ktesaNavbar";
+@use "../sass/ktesaNavbar" as *;
 #logo {
 	margin-bottom: 0px;
 }

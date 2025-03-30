@@ -1,6 +1,6 @@
-@import "body";
-@import "colors";
-@import "ktesaNavbar";
+@use "body" as *;
+@use "colors" as *;
+@use "ktesaNavbar" as *;
 
 #contents {
     margin: 12px 24px 12px 24px;

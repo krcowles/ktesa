@@ -1,9 +1,9 @@
 $entryInactive: lavenderblush;
 $entryFocus: papayawhip;
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 #main {
     margin-left: 16px;

@@ -3,9 +3,9 @@ $headerRow: bisque;
 $rowHover: blanchedalmond;
 $inEdit: ghostwhite;
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 img.webShift {
     padding-left: 19px;

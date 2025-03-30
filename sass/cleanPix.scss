@@ -1,8 +1,8 @@
 $picType: darkblue;
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 ul {
     list-style: none;

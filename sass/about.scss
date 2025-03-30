@@ -1,6 +1,6 @@
-@import "body";
-@import "colors";
-@import "ktesaNavbar";
+@use "body" as *;
+@use "colors" as *;
+@use "ktesaNavbar" as *;
 
 #mainabout {
     padding-left: 16px;

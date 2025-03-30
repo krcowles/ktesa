@@ -1,7 +1,7 @@
 /* Note that some of the settings are present explicitly to
    override either the bootstrap CSS or ktesaNavbar.css settings */
-@import "body";
-@import "ktesaNavbar";
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 body {
 	min-width: 280px;

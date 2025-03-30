@@ -8,14 +8,14 @@ $thumbSel: #6c757d;
 $thumbSelHover: #696969;
 $thumbDiv: blanchedalmond;
 
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
+
 @mixin TA_size($width) {
     height: 33px;
     width: $width;
 }
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
-
 #main {
     box-sizing: content-box;
 }

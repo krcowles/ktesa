@@ -1,9 +1,9 @@
 $fieldset: darkgreen;
 $darkred: brown;
 
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 /* Page contents */
 #tools {

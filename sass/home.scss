@@ -5,10 +5,10 @@ $widthBar: darkgray;
 $tableItem: floralwhite;
 $darkred: brown;
 
-@import "body";
-@import "overflow";
-@import "colors";
-@import "ktesaNavbar";
+@use "body" as *;
+@use "overflow" as *;
+@use "colors" as *;
+@use "ktesaNavbar" as *;
 
 #logo {  /* override ktesaPanel.css */
 	margin-bottom: 0;

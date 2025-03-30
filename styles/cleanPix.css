@@ -126,23 +126,19 @@ ul.dropdown-menu {
   .dropdown-menu li {
     position: relative;
   }
-
   .nav-item .submenu {
     display: none;
     position: absolute;
     left: 100%;
     top: -7px;
   }
-
   .nav-item .submenu-left {
     right: 100%;
     left: auto;
   }
-
   .dropdown-menu > li:hover {
     background-color: #f1f1f1;
   }
-
   .dropdown-menu > li:hover > .submenu {
     display: block;
   }
@@ -195,7 +191,7 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-#cookie_state, #cookies_choice, #admin, #contrib, #admintools {
+#cookie_state, #admin, #contrib, #admintools {
   display: none;
 }
 
@@ -236,14 +232,10 @@ ul {
 input[type=checkbox] {
   /* Double-sized Checkboxes  - Browser dependent code */
   transform: scale(1.5);
-  -ms-transform: scale(1.5);
-  /* IE */
-  -moz-transform: scale(1.5);
-  /* FF */
-  -webkit-transform: scale(1.5);
-  /* Safari and Chrome */
-  -o-transform: scale(1.5);
-  /* Opera */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
   padding: 10px;
 }
 

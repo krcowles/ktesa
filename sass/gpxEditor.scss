@@ -2,14 +2,15 @@ $btn-background: #e6e6e6;
 $lightest-gray: #f2f2f2;
 $strike-thru: #808080;
 $return-home: blanchedalmond;
+@use "colors" as *;
+@use "body" as *;
+
 @mixin btn-border($style, $color, $width) {
     border-style: $style;
     border-color: $color;
     border-width: $width;
     border-radius: 6px;
 }
-@import "colors";
-@import "body";
 
 html, body {
     height: 100%;

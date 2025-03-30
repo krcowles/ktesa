@@ -1,7 +1,7 @@
 $notes: darkblue;
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
 
 #main {
     box-sizing: content-box;
@@ -36,7 +36,7 @@ form {
     top: -18px;
 }
 #clusters, #cpages {
-    -webkit-appearance: menulist-button;
+    appearance: menulist-button;
     height: 28px;
     font-size: 16px;
 }

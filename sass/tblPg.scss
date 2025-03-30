@@ -8,6 +8,10 @@ $tableButton: #6D3C17;
 $buttonHover: moccasin;
 $rowHover: blanchedalmond;
 $tableBorder: gainsboro;
+@use "colors" as *;
+@use "body" as *;
+@use "ktesaNavbar" as *;
+
 @mixin optAlign {
 	vertical-align: middle;
 	box-sizing: inherit;
@@ -21,9 +25,6 @@ $tableBorder: gainsboro;
 	background-color: $buttonHover;;
 	color: $black;
 }
-@import "colors";
-@import "body";
-@import "ktesaNavbar";
 
 /* Table options header: tableOnly.php */
 #optcontainer {

@@ -127,23 +127,19 @@ ul.dropdown-menu {
   .dropdown-menu li {
     position: relative;
   }
-
   .nav-item .submenu {
     display: none;
     position: absolute;
     left: 100%;
     top: -7px;
   }
-
   .nav-item .submenu-left {
     right: 100%;
     left: auto;
   }
-
   .dropdown-menu > li:hover {
     background-color: #f1f1f1;
   }
-
   .dropdown-menu > li:hover > .submenu {
     display: block;
   }
@@ -219,8 +215,7 @@ body {
   min-width: 280px;
 }
 
-#logo {
-  /* override ktesaPanel.css */
+#logo { /* override ktesaPanel.css */
   margin-bottom: 0;
   margin-right: 0;
 }
