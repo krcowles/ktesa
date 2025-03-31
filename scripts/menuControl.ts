@@ -44,8 +44,6 @@ if (active_member) {
     $('#logout').addClass('disabled');
     $('#chg').addClass('disabled');
     $('#updte_sec').addClass('disabled');
-    $('#change_cookies').css('display', 'none');
-    // and favorites page
     $('#favpg').addClass('disabled');
 }
 

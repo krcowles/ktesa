@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @fileoverview Adjust page according to form type
  *
@@ -35,7 +34,7 @@ $(function () {
     });
     var reg = mobile ? { top: 12, height: 510 } : { top: 48, height: 540 };
     var log = mobile ? { top: 32, height: 380 } : { top: 80, height: 380 };
-    var ren = mobile ? { top: 20, height: 480 } : { top: 80, height: 480 };
+    var ren = mobile ? { top: 8, height: 480 } : { top: 80, height: 480 };
     if (mobile) {
         $('#cookie_banner').hide();
         $('.mobinp').css({
@@ -312,6 +311,19 @@ $(function () {
             });
             break;
         case 'renew':
+            if (mobile) {
+                $('#rp').css('font-size', '18px');
+                $('.mobtxt').css('font-size', '12px');
+                $('#pexpl').css('font-size', '12px');
+                $('#password').css('height', '28px');
+                $('#confirm').css('height', '28px');
+                $('#showdet').css('height', '28px');
+                $('#showdet').css('line-height', '1rem');
+                $('#showdet').css('font-size', '16px');
+                $('#rvw').css('height', '28px');
+                $('#rvw').css('font-size', '18px');
+                $('#formsubmit').css('top', '-16px');
+            }
             // cookie banner shows here (in particular for new registrants)
             // clear inputs on page load/reload
             $('#password').val("");
@@ -366,11 +378,6 @@ $(function () {
                     alert("You have not entered a passwsord");
                     return false;
                 }
-                var cookies = $('#usrchoice').val();
-                if (cookies === 'nochoice') {
-                    alert("Please accept or reject cookies");
-                    return false;
-                }
                 var confirm = $('#confirm').val();
                 if (confirm === '') {
                     alert("You must confirm your password");
@@ -394,7 +401,6 @@ $(function () {
                     submitter: 'change',
                     code: login_renew,
                     password: password,
-                    cookies: cookies
                 };
                 $.ajax({
                     url: 'create_user.php',

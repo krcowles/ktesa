@@ -216,8 +216,8 @@ var renewPassword = function () {
  * renewPassword utility. If you have a RENEW status from getLogin, you
  * are instructed to login (via Members->Login), as you are automatically
  * logged out via menuControl.ts/js. If your password has expired, you are
- * advised to re-register and your current registration and cookie (if accepted)
- * are removed from the database.
+ * advised to re-register and your current registration is removed from the
+ * database.
  */
 function validateUser(user, password) {
     var ajaxdata = { usr_name: user, usr_pass: password };

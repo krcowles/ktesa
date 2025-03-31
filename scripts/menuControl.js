@@ -47,8 +47,6 @@ else { // NOT MEMBER
     $('#logout').addClass('disabled');
     $('#chg').addClass('disabled');
     $('#updte_sec').addClass('disabled');
-    $('#change_cookies').css('display', 'none');
-    // and favorites page
     $('#favpg').addClass('disabled');
 }
 // check to see if cookies are enabled for the browser

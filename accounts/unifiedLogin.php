@@ -40,9 +40,9 @@ if ($form === 'join') {
 }
  // $btn_note only used after new member email is sent and link is clicked
 if ($newusr) {
-    $btn_note = 'Complete Your Security Questions';
+    $btn_note = 'Enter Security Questions';
 } else {
-    $btn_note = 'Review/Edit Security Questions';
+    $btn_note = 'Review Security Questions';
 }
 ?>
 <!DOCTYPE html>
@@ -106,9 +106,6 @@ if ($newusr) {
 <?php if ($form === 'join') : ?>
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
-        <?php if (!$mobileTesting) : ?>
-        <p>Sign up for free access to nmhikes.com!</p>
-        <?php endif; ?>
         <span id="sub">Create and edit your own hikes<br />
         <a id="policylnk" href="#">Privacy Policy</a>
         </span>
@@ -148,7 +145,7 @@ if ($newusr) {
         </div> 
     </form>
 <?php elseif ($form === 'renew') : ?>
-    <h3>Reset Passsword:</h3>
+    <h3 id="rp">Reset Password:</h3>
     <form id="form" action="#" method="post">
         <input type="hidden" name="code" value="<?=$code;?>" />
         <?php if ($ix !== false) : ?>
@@ -156,8 +153,6 @@ if ($newusr) {
         <?php else : ?>
             <p><strong>ERROR: missing uid</strong></p>
         <?php endif; ?>
-        <input id="usrchoice" type="hidden" name="cookies" 
-            value="nochoice" class="wide" />
         <span class="mobtxt">Your <span id="precode">Pre-populated</span>
             One-time code</span>
         <input id="one-time" type="password" name="one-time" autocomplete="off"
