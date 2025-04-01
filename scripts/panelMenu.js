@@ -12,6 +12,7 @@
  * @version 7.3 Updated ajax error handling
  * @version 8.0 Revised login to pre-scan for lockout condition
  * @version 8.1 Improve recognition of timed out activity
+ * @version 8.2 Added editmode warning to user when admin places site in 'No Edit'
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -20,6 +21,7 @@ $(function () {
         $('#ctr').append(pgtitle);
     }
     logo_title();
+    var editmode = $('#editMode').text();
     var requiredAnswers = 3; // number of security questions to be answered
     // Modal handles for panel items:
     var resetPassModal = new bootstrap.Modal(document.getElementById('cpw'));
@@ -57,6 +59,28 @@ $(function () {
             window.open('../accounts/session_expired.php', '_self');
         }, activity_timeout);
     });
+    /**
+     * When the admin has placed the site in editing mode, notify user
+     * of same when attempting to select an edit menu option
+     */
+    $('#createpg, #conteditpg, #editpubpg').on('click', function (ev) {
+        if (editmode == 'no') {
+            var msg = "The admin is updating the site and editing is not currently " +
+                "available. Please try again in about 30 minutes";
+            alert(msg);
+            ev.preventDefault();
+            return false;
+        }
+        return;
+    });
+    /*
+    $('#conteditpg').on('click', function(ev) {
+    
+    });
+    $('#editpubpg').on('click', function(ev) {
+    
+    });
+    */
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not

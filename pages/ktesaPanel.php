@@ -116,6 +116,7 @@ if (isset($_SESSION['userid'])) {
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hamburger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
+<p id="editMode" style="display:none;"><?=$editing;?></p>
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark">
     <div class="container-fluid"> 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
