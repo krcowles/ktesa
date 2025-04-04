@@ -1,0 +1,183 @@
+$divider: 320px;
+@use 'ktesaNavbar' as *;
+
+#nav, #logo {
+    box-sizing: content-box;
+}
+#sidebar {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    width: $divider;
+}
+#states {
+    position: relative;
+    left: 0.5rem;
+}
+#oos_locs {
+    padding-left: 6px;
+    padding-right: 4px;
+    height: 36px;
+}
+.vertical_rule {
+    position: absolute;
+    left: calc($divider - 10px);
+    border-left: 6px solid green;
+    height: 100%;
+}
+#contents {
+    margin: 0 auto;
+    position: absolute;
+    left: calc($divider + 20px);
+    width: 90vh;
+    height: 90vh;
+    text-align: center;
+    overflow-y: hidden;
+    /* border: 1px solid black; */
+}
+#uploads {
+    position: relative;
+    width: calc($divider - 3.5rem);
+    border: 1px solid green;
+    left: .5rem;
+    top: 3rem;
+    padding-left: 1rem;
+}
+#gpxfile {
+    margin-bottom: 1rem;
+}
+#howto {
+    font-size: 20px;
+}
+#map_box { /* map + overlay elements */
+    margin: 0 auto;
+    margin-top: 12px;
+    width: 90vh;
+    height: 80vh;
+    /* border: 1px solid red; */
+}
+#nm {
+    position: absolute;
+    left: 10%;
+    display: block;
+    width: 80%;
+}
+.overlay {
+    position: absolute;
+    width: 100%;
+    
+}
+#tray {
+    position: relative;
+    display: inline-block;
+    border: 1px solid green;
+    width: 70%;
+    height: 80vh;
+}
+#slice1 {
+    top: 0;
+    height: 20%;
+}
+#slice2 {
+    top: 20%;
+    height: 10%;
+}
+#slice3 {
+    top: 30%;
+    height: 9%;
+}
+#slice4 {
+    top: 39%;
+    height: 29%;
+}
+#slice5 { 
+    top: 68%;
+    height: 32%;
+}
+.sections {
+    position: absolute;
+    text-align: center;
+    padding-top: 3px;
+    height: 100%;
+    opacity: 45%;
+    border: 1px dimgray solid;
+    cursor: pointer;
+}
+#nw1 {
+    position: absolute;
+    height: 100%;
+    background-color: #bfd8d9; /* cadetblue base */
+    opacity: 45%;
+}
+#nw2 {
+    position: absolute;
+    height: 100%;
+    background-color: blanchedalmond;
+    opacity: 45%;
+}
+#nw3 {
+    position: absolute;
+    height: 100%;
+    background-color: lemonchiffon;
+    opacity: 45%;
+}
+#lnw1 {
+    position: absolute;
+    height: 100%;
+    background-color: #ffccd4; /* lightpink base */
+    opacity: 45%;
+}
+#lnw2 {
+    position: absolute;
+    height: 100%;
+    background-color: lemonchiffon;
+    opacity: 45%;
+}
+#lnw3 {
+    position: absolute;
+    height: 100%;
+    background-color: burlywood;
+    opacity: 45%;
+}
+#c1 {
+    position: absolute;
+    height: 100%;
+    background-color: lemonchiffon;
+    opacity: 45%;
+}
+#c2 {
+    position: absolute;
+    height: 100%;
+    background-color: #bfd8d9;
+    opacity: 45%;
+}
+#c3 {
+    position: absolute;
+    height: 100%;
+    background-color: #ffccd4;
+    opacity: 45%;
+}
+#cs1 {
+    position: absolute;
+    height: 100%;
+    background-color: #bfd9bf;
+    opacity: 45%;
+}
+#cs2 {
+    position: absolute;
+    height: 100%;
+    background-color: #c9d7e8;
+    opacity: 45%;
+}
+#s1 {
+    position: absolute;
+    height: 100%;
+    background-color: blanchedalmond;
+    opacity: 45%;
+}
+#s2 {
+    position: absolute;
+    height: 100%;
+    background-color: #ffccd4;
+    opacity: 45%;
+}
