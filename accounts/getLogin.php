@@ -25,18 +25,19 @@ $memid = '0';
 
 // Some use cases have 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
-    || !isset($_SESSION['cookie_state'])
+    || !isset($_SESSION['cookie_state']) || !isset($_SESSION['club_member'])
 ) {
      unset($_SESSION['username']);
      unset($_SESSION['userid']);
      unset($_SESSION['cookie_state']);
+     unset($_SESSION['club_member']);
 }
 
 if (!isset($_SESSION['username'])) { // No login yet...
     if ($regusr) { // is there a site cookie present?
         $username = $_COOKIE['nmh_id'];
         // check password expiration
-        $userDataReq = "SELECT `userid`,`passwd_expire` FROM " .
+        $userDataReq = "SELECT `userid`,`passwd_expire`,`club_member` FROM " .
             "`USERS` WHERE username = ?;";
         $userData = $pdo->prepare($userDataReq);
         $userData->execute([$username]);
@@ -48,6 +49,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
             $user_info = $userData->fetch(PDO::FETCH_ASSOC);
             $userid  = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
+            $club    = $user_info['club_member'];
             $memid   = $user_info['userid'];
             $american = str_replace("-", "/", $expDate);
             $orgDate = strtotime($american);
@@ -64,12 +66,14 @@ if (!isset($_SESSION['username'])) { // No login yet...
                 // protected login credentials:
                 $_SESSION['username']     = $username;
                 $_SESSION['userid']       = $userid;
+                $_SESSION['club_member']  = $club;
             }
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible
         }
     } elseif ($master) { // Currently 3 masters...
         $cookie_state = "OK";
+        $_SESSION['club_member'] = "Y";
         if ($_COOKIE['nmh_mstr'] === 'mstr') {
             $_SESSION['userid'] = '1';
             $_SESSION['username'] = 'tom';

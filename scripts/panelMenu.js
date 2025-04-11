@@ -73,14 +73,6 @@ $(function () {
         }
         return;
     });
-    /*
-    $('#conteditpg').on('click', function(ev) {
-    
-    });
-    $('#editpubpg').on('click', function(ev) {
-    
-    });
-    */
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not

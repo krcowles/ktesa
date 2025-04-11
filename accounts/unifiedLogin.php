@@ -32,7 +32,7 @@ $ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
 $newusr = isset($_GET['join']) ? true : false;
 $title  = "Query string missing!"; // otherwise error fct called
 if ($form === 'join') {
-    $title = $mobileTesting ? "Registration" : "New User Registration";
+    $title = "New User Registration";
 } elseif ($form === 'renew') {
     $title = "Set Password";
 } elseif ($form === 'log') {
@@ -107,7 +107,7 @@ if ($newusr) {
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
         <span id="sub">Create and edit your own hikes<br />
-        <a id="policylnk" href="#">Privacy Policy</a>
+        <a id="plink" href="#">Privacy Policy</a>
         </span>
         <div class="mobinp">
             <div class="pseudo-legend">First Name</div>
@@ -123,8 +123,8 @@ if ($newusr) {
                 placeholder="Last Name" name="lastname"
                 autocomplete="family-name" required />
         </div>
-        <div id="name_req" class="mobtxt"><p>Username must be at least 6
-            characters, no spaces</p>
+        <div id="name_req" class="mobtxt">Username must be at least 6
+            characters, no spaces
         </div>
         <div class="mobinp">
             <div class="pseudo-legend">Username</div>
@@ -138,8 +138,12 @@ if ($newusr) {
             <div id="line4" class="lines"></div>
             <input id="email" type="email" class="wide"
                 required placeholder="Email" name="email"
-                autocomplete="email" /><br /><br />
+                autocomplete="email" /><br />
         </div>
+        <div id="club_member">
+            <input id="in_club" class="cbox" type="checkbox" name="cmem"/>
+            I belong to an NM Hiking Group
+        </div><br />
         <div class="mobinp">
             <button id="formsubmit">Submit</button>
         </div> 
@@ -171,7 +175,7 @@ if ($newusr) {
                 <span id="st">Strong</span>&nbsp;&nbsp;
                 <button id="showdet">Show Why</button>&nbsp;&nbsp;
                 Show password&nbsp;&nbsp;&nbsp;
-                <input id="ckbox" type="checkbox" /><br /><br />
+                <input id="ckbox" class="cbox" type="checkbox" /><br /><br />
             </div>
         </div> 
         <input id="confirm" type="password" name="confirm" class="wide mobinp"

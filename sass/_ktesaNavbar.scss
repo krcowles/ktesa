@@ -7,12 +7,7 @@ $modal:  #dfe9e3;
 .navbar {
     background-color: $navbar;
 }
-/* No longer a text item
-.navbar-brand {
-    color: $brand !important;
-    font-style: italic;
-}
-*/
+
 .nav-link {
     color: $link !important;
 }
@@ -150,7 +145,7 @@ ul.dropdown-menu {
     border-top: 10px solid black;
 }
 /* login elements */
-#cookie_state, #admin, #contrib, #admintools {
+#cookie_state, #admin, #contrib, #admintools, #club_member {
     display: none;
 }
 /* modals */

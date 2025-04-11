@@ -17,6 +17,7 @@ var active_member = user_cookie_state !== "NOLOGIN" && user_cookie_state !== "NO
     && user_cookie_state !== "EXPIRED" && user_cookie_state !== "RENEW"
     && user_cookie_state !== "MULTIPLE";
 if (active_member) {
+    var club = $('#club_member').text() === 'Y' ? true : false;
     // members will have the 'Contribute' menu items displayed
     $('#contrib').css('display', 'block');
     // hide the member benefits star
@@ -31,6 +32,12 @@ if (active_member) {
     $('#login').addClass('disabled');
     $('#bam').addClass('disabled');
     $('#updte_sec').removeClass('disabled');
+    if (club) {
+        $('#hiking_club').show();
+    }
+    else {
+        $('#hiking_club').hide();
+    }
     // Look to see if user has any active edit pages
     var uhikes = parseInt($('#uhikes').text());
     if (uhikes === 0) {
@@ -48,6 +55,7 @@ else { // NOT MEMBER
     $('#chg').addClass('disabled');
     $('#updte_sec').addClass('disabled');
     $('#favpg').addClass('disabled');
+    $('#hiking_club').hide();
 }
 // check to see if cookies are enabled for the browser
 if (cookies_allowed) { // exception messages only: auto login may still occur

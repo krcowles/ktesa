@@ -53,14 +53,15 @@ if (mobile) {
     $('#cookie_banner').hide();
     $('.mobinp').css({
         position: 'relative',
-        top: '-24px'
+        top: '-24px',
+        height: '32px',
+        marginBottom: '18px'
     });
     $('.mobtxt').css({
         position: 'relative',
         top: '-12px'
     });
     $('#logger').css('height', '60px');
-    $('.form-check-label').css('padding-left', '1em');
 }
 var formtype = <string>$('#formtype').text();
 var $container = $('#container');
@@ -79,6 +80,10 @@ $('#close_banner').on('click', function(ev) {
 switch (formtype) {
     case 'join':
         $('#cookie_banner').hide();
+        $('body').on('click', '#plink', function() {
+            let plink = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
+            window.open(plink, '_blank');
+        });
         // clear inputs on page load/reload 
         $('#fname').val("");
         $('#lname').val("");
@@ -88,10 +93,17 @@ switch (formtype) {
             top: reg.top,
             height: reg.height
         });
-        $('#policylnk').on('click', function() {
-            let plnk = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
-            window.open(plnk, '_blank');
-        });
+        if (mobile) {
+            $('#center').text("Registration");
+            $('#name_req').text("Username: 6 Characters");
+            $('#name_req').css({
+                top: '-14px',
+                marginTop: '0px'
+            });
+            let link = "<a id='plink' href='#'>Privacy Policy</a><br /><br />";
+            $('#sub').replaceWith(link);
+            $('#club_member').css('top', '-10px');
+        }
         /**
          * For username problems, or duplicate email, notify user immediately
          *  NOTE: email validation is performed by HTML5, and again by server
@@ -229,6 +241,7 @@ switch (formtype) {
                 alert("Cannot proceed until all entries are corrected");
                 return false;
             }
+            //let clubber = $('#in_club').is(":checked") ? 'Y': 'N';
             let formdata = $('#form').serializeArray();
             let proposed_name = formdata[3]['value'];
             let proposed_email = formdata[4]['value'];
@@ -254,7 +267,7 @@ switch (formtype) {
                             data: mail_data,
                             success: function(result) {
                                 if (result === 'OK') {
-                                    alert("An email has been sent - it may take awhile\n" +
+                                    alert("An email has been sent: Also check Spam!\n" +
                                         "You can continue as a guest for now");
                                     window.open('../index.html', '_self');
                                 } else {

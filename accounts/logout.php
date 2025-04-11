@@ -37,3 +37,4 @@ if (!$admin) {
 unset($_SESSION['username']);
 unset($_SESSION['userid']);
 unset($_SESSION['cookie_state']);
+unset($_SESSION['club_member']);

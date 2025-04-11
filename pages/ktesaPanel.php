@@ -246,9 +246,6 @@ if (isset($_SESSION['userid'])) {
                         </li>
                         <li><a id="updte_sec" class="dropdown-item" href="#">
                             Security Questions</a></li>
-                        <li id="hiking_club"><a class="dropdown-item"
-                            href="../pages/clubAssets.php">Club Assets</a>
-                        </li>
                     </ul>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -257,15 +254,19 @@ if (isset($_SESSION['userid'])) {
                     More&hellip;
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a id="latest" class="dropdown-item"
-                            href="#">Recent Hikes</a></li>
-                        </a></li>
+                        <li><a id="latest" class="dropdown-item" href="#">
+                            Recent Hikes</a>
+                        </li>
+                        <li id="hiking_club"><a class="dropdown-item"
+                            href="../pages/clubAssets.php">Club Assets</a>
+                        </li>
                         <li><a id="aboutpg" class="dropdown-item"
                             href="../pages/about.php">About This Site</a>
                         </li>
                         <li><a class="dropdown-item" 
                             href="../php/postPDF.php?doc=<?=$policy;?>">
                             Privacy Policy</a>
+                        </li>
                     </ul>
                 </li>
                 <li id="owner" class="nav-item">
@@ -291,11 +292,16 @@ if (isset($_SESSION['userid'])) {
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
-<!-- login data -->
+<!-- login data [cookie_state is always assigned] -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
+
+<?php $enrolled = $_SESSION['club_member'] ?? "N"; ?>
+<p id="club_member" style="display:none;"><?=$enrolled;?></p>
+
 <?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>
+
 <?php require "../pages/panelModals.php"; // all modals required by ktesaPanel ?>
 
 <script src="../scripts/menuControl.js"></script>

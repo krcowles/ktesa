@@ -10,6 +10,11 @@
  */
 session_start();
 require "../php/global_boot.php";
+
+$alert = '';
+if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
+    $alert = $_SESSION['upload_msg'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -30,11 +35,14 @@ require "../php/global_boot.php";
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
 <p id="active" style="display:none">Assets</p>
+<p id="alert" style="display:none"><?=$alert;?></p>
+<p id="pointer" style="display:none;"></p>
 
+<div id="regionid"></div>
 <div id="sidebar">
     <div id="states">
         <p>Out of state assets:</p>
-        <select id="oos_locs">
+        <select id="oos_locs" name="states">
             <option value="Colorado">Colorado</option>
             <option value="Arizona">Arizona</option>
             <option value="Utah">Utah</option>
@@ -43,55 +51,59 @@ require "../php/global_boot.php";
             Retrieve assets</button>
     </div>
     <div id="uploads">
-        <form action="../php/uploadgpx.php" method="POST"
-                enctype="multipart/form-data">
-            <p>You can upload a gpx file here:</p>
-            <input id="filename" type="file"  placeholder="GPX filename" />
-            <br /><br />Region:
-            <select id="uload_loc:">
-                <option value="nw1">Northwest</option>
-                <option value="nw2">Northcentral</option>
-                <option value="more">More to come...</option>
-            </select><br /><br />
-            <button id="gpxfile" type="submit" class="btn btn-success">
-                Upload</button>
+        <form id="uploader" method="post" action="../php/assetUpload.php"
+                    enctype="multipart/form-data">
+                <p>You can upload a club file here:</p>
+                <input id="filename" type="file"  placeholder="GPX filename" 
+                    name="asset" />
+                <br /><br />
+                <textarea placeholder="File Label" rows="1" name="label"></textarea>
+                <br /><br />
+                Region:
+                <select id="uload_loc:" name="nm_location">
+                    <option value="box1" class="location">NW Deserts</option>
+                    <option value="box2" class="location">Jemez & Abiquiu</option>
+                    <option value="box3" class="location">Sangre de Cristos</option>
+                    <option value="box4" class="location">NE Plains</option>
+                    <option value="box5" class="location">Mt Taylor & Zuni</option>
+                    <option value="box6" class="location">Sandias & Monzanos</option>
+                    <option value="box7" class="location">Gila & Bootheel</option>
+                    <option value="box8" class="location">Lower Rio Grande</option>
+                    <option value="box9" class="location">Sierra Blanca Region</option>
+                    <option value="box10" class="location">SE New Mexico</option>
+                    <option value="Colorado">Colorado</option>
+                    <option value="Arizona">Arizona</option>
+                    <option value="Utah">Utah</option>
+                </select><br /><br />
+                <button id="asset_file" type="submit" class="btn btn-success">
+                    Upload</button><br />
         </form>
     </div>
 </div>
 
 <div class="vertical_rule"></div>
 
-<div id="contents">
+<div id="contents"> <!-- all within text-align: center -->
     <span id="howto">Click on a section below to view its assets</span>
     <div id="map_box">
-        <img id="nm" src="../images/nmmap.gif" />
         <div id="tray">
-            <div id="slice1" class="overlay">
-                <div id="nw1" class="sections">A</div>
-                <div id="nw2" class="sections">B</div>
-                <div id="nw3" class="sections">C</div>
-            </div>
-            <div id="slice2" class="overlay">
-                <div id="lnw1" class="sections">D</div>
-                <div id="lnw2" class="sections">E</div>
-                <div id="lnw3" class="sections">F</div>
-            </div>
-            <div id="slice3" class="overlay">
-                <div id="c1" class="sections">G</div>
-                <div id="c2" class="sections">H</div>
-                <div id="c3" class="sections">I</div>
-            </div>
-            <div id="slice4" class="overlay">
-                <div id="cs1" class="sections"></div>
-                <div id="cs2" class="sections"></div>
-            </div>
-            <div id="slice5" class="overlay">
-                <div id="s1" class="sections"></div>
-                <div id="s2" class="sections"></div>
-            </div>
+            <div id="box1" class="sizing"></div>
+            <div id="box2" class="sizing"></div>
+            <div id="box3" class="sizing"></div>
+            <div id="box4" class="sizing"></div>
+            <div id="box5" class="sizing"></div>
+            <div id="box6" class="sizing"></div>
+            <div id="box7" class="sizing"></div>
+            <div id="box8" class="sizing"></div>
+            <div id="box9" class="sizing"></div>
+            <div id="box10" class="sizing"></div>
+        </div>
+        <div id="nm">
+            <img id="nmap" src="../images/nmmap.gif" />
         </div>
     </div>
 </div>
+<br />
 
 <script src="../scripts/clubAssets.js"></script>
 </body>

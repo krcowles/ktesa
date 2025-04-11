@@ -99,10 +99,10 @@ $modal: #dfe9e3;
         width: 80%;
     }
 }
-form:not(#ckbox) {
+form:not(.cbox) {
     text-align: center;
 }
-input:not(#ckbox) {
+input:not(.cbox) {
     width: calc(100% - 40px) !important;
     padding-left: 6px;
     height: 38px;
@@ -193,7 +193,7 @@ button {
 }
 
 /* REGISTRATION CSS */
-#policylnk {
+#plink {
     font-size: 16px;
 }
 .pseudo-legend {
@@ -218,12 +218,14 @@ button {
     width: 44px;
 }
 #sub {
-    position: relative;
-    top: -18px;
-    font-size: 16px;
-    margin-bottom: 2px;
+    font-size: 18px;
 }
-
+#name_req {
+    margin-top: 12px;
+}
+#club_member {
+    position: relative;
+}
 /* Renew */
 #precode {
     text-decoration: underline;

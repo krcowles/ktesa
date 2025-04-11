@@ -27,17 +27,20 @@ if ($submitter == 'create') {
     $lastname  = filter_input(INPUT_POST, 'lastname');
     $username  = filter_input(INPUT_POST, 'username');
     $email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $clubber   = filter_input(INPUT_POST, 'cmem');
+    $club_field = $clubber == 'on' ? 'Y' : 'N';
 
     $newuser   = "INSERT INTO `USERS` (" .
-        "username,last_name,first_name,email) " .
-        "VALUES (:uname,:lastname,:firstname,:email);";
+        "username,last_name,first_name,email,club_member) " .
+        "VALUES (:uname,:lastname,:firstname,:email,:club);";
     $user = $pdo->prepare($newuser);
     $user->execute(
         array(
             ":uname"     => $username,
             ":lastname"  => $lastname,
             ":firstname" => $firstname, 
-            ":email"     => $email
+            ":email"     => $email,
+            ":club"      => $club_field
         )
     );
     if (!$user) {

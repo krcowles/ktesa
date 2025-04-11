@@ -2,12 +2,6 @@
   background-color: darkslategray;
 }
 
-/* No longer a text item
-.navbar-brand {
-    color: $brand !important;
-    font-style: italic;
-}
-*/
 .nav-link {
   color: whitesmoke !important;
 }
@@ -172,7 +166,7 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-#cookie_state, #admin, #contrib, #admintools {
+#cookie_state, #admin, #contrib, #admintools, #club_member {
   display: none;
 }
 
@@ -195,16 +189,28 @@ input[id^=q] {
   box-sizing: content-box;
 }
 
-#sidebar {
+#regionid {
   position: absolute;
+  left: 330px;
+  width: 2rem;
+  height: 300px;
+  writing-mode: vertical-rl;
+}
+
+/* Sidebar items */
+#sidebar {
+  float: left;
   top: 0;
   left: 1rem;
-  width: 320px;
+  width: calc(320px - 1rem);
+  height: 460px;
 }
 
 #states {
   position: relative;
-  left: 0.5rem;
+  left: 1.5rem;
+  top: 1rem;
+  width: calc(320px - 3.5rem);
 }
 
 #oos_locs {
@@ -213,35 +219,33 @@ input[id^=q] {
   height: 36px;
 }
 
+#uploads {
+  position: relative;
+  width: calc(320px - 2.5rem);
+  border: 1px solid green;
+  left: 1.5rem;
+  top: 2.5rem;
+  padding-left: 1rem;
+}
+
+#asset_file {
+  margin-bottom: 1rem;
+}
+
 .vertical_rule {
   position: absolute;
-  left: 310px;
+  left: 330px;
   border-left: 6px solid green;
   height: 100%;
 }
 
+/* mapping: absolute to avoid sidebar relationship */
 #contents {
-  margin: 0 auto;
-  position: absolute;
-  left: 340px;
-  width: 90vh;
-  height: 90vh;
+  position: relative;
+  left: 60px;
   text-align: center;
   overflow-y: hidden;
-  /* border: 1px solid black; */
-}
-
-#uploads {
-  position: relative;
-  width: calc(320px - 3.5rem);
-  border: 1px solid green;
-  left: 0.5rem;
-  top: 3rem;
-  padding-left: 1rem;
-}
-
-#gpxfile {
-  margin-bottom: 1rem;
+  /*border: 2px solid black;*/
 }
 
 #howto {
@@ -249,157 +253,126 @@ input[id^=q] {
 }
 
 #map_box { /* map + overlay elements */
+  position: relative;
   margin: 0 auto;
-  margin-top: 12px;
-  width: 90vh;
-  height: 80vh;
-  /* border: 1px solid red; */
+  margin-top: 8px;
+  width: 100%;
+  height: 100%;
+  /*border: 1px solid red;*/
 }
 
 #nm {
   position: absolute;
-  left: 10%;
-  display: block;
+  width: 100%;
+  /*border: 1px solid blue;*/
+}
+
+#nmap {
   width: 80%;
 }
 
-.overlay {
-  position: absolute;
-  width: 100%;
-}
-
 #tray {
-  position: relative;
-  display: inline-block;
-  border: 1px solid green;
-  width: 70%;
-  height: 80vh;
-}
-
-#slice1 {
-  top: 0;
-  height: 20%;
-}
-
-#slice2 {
-  top: 20%;
-  height: 10%;
-}
-
-#slice3 {
-  top: 30%;
-  height: 9%;
-}
-
-#slice4 {
-  top: 39%;
-  height: 29%;
-}
-
-#slice5 {
-  top: 68%;
-  height: 32%;
-}
-
-.sections {
   position: absolute;
-  text-align: center;
-  padding-top: 3px;
+  top: 1%;
+  left: 11%;
+  width: 100%;
   height: 100%;
-  opacity: 45%;
-  border: 1px dimgray solid;
+  z-index: 100;
+  /*border: 1px solid green;*/
+}
+
+.sizing {
+  position: absolute;
+  box-sizing: border-box;
+  opacity: 35%;
   cursor: pointer;
 }
 
-#nw1 {
-  position: absolute;
-  height: 100%;
-  background-color: #bfd8d9; /* cadetblue base */
-  opacity: 45%;
-}
-
-#nw2 {
-  position: absolute;
-  height: 100%;
-  background-color: blanchedalmond;
-  opacity: 45%;
-}
-
-#nw3 {
-  position: absolute;
-  height: 100%;
-  background-color: lemonchiffon;
-  opacity: 45%;
-}
-
-#lnw1 {
-  position: absolute;
-  height: 100%;
-  background-color: #ffccd4; /* lightpink base */
-  opacity: 45%;
-}
-
-#lnw2 {
-  position: absolute;
-  height: 100%;
-  background-color: lemonchiffon;
-  opacity: 45%;
-}
-
-#lnw3 {
-  position: absolute;
-  height: 100%;
-  background-color: burlywood;
-  opacity: 45%;
-}
-
-#c1 {
-  position: absolute;
-  height: 100%;
-  background-color: lemonchiffon;
-  opacity: 45%;
-}
-
-#c2 {
-  position: absolute;
-  height: 100%;
+#box1 {
+  top: 0;
+  height: 30%;
+  width: 36%;
+  border: dodgerblue solid;
   background-color: #bfd8d9;
-  opacity: 45%;
 }
 
-#c3 {
-  position: absolute;
-  height: 100%;
-  background-color: #ffccd4;
-  opacity: 45%;
+#box2 {
+  top: 0;
+  left: 36%;
+  height: 32%;
+  width: 17%;
+  border: goldenrod solid;
+  background-color: khaki;
 }
 
-#cs1 {
-  position: absolute;
-  height: 100%;
-  background-color: #bfd9bf;
-  opacity: 45%;
+#box3 {
+  top: 0;
+  left: 53%;
+  height: 32%;
+  width: 13%;
+  border: darkgreen solid;
+  background-color: lightgreen;
 }
 
-#cs2 {
-  position: absolute;
-  height: 100%;
-  background-color: #c9d7e8;
-  opacity: 45%;
+#box4 {
+  top: 0;
+  left: 66%;
+  height: 50%;
+  width: 34%;
+  border: brown solid;
+  background-color: lightpink;
 }
 
-#s1 {
-  position: absolute;
-  height: 100%;
-  background-color: blanchedalmond;
-  opacity: 45%;
+#box5 {
+  top: 30%;
+  height: 20%;
+  width: 36%;
+  border: #bb44bb solid;
+  background-color: #ebc7eb; /* plum variant */
 }
 
-#s2 {
-  position: absolute;
-  height: 100%;
-  background-color: #ffccd4;
-  opacity: 45%;
+#box6 {
+  top: 32%;
+  left: 36%;
+  height: 18%;
+  width: 30%;
+  border: steelblue solid;
+  background-color: powderblue;
+}
+
+#box7 {
+  top: 50%;
+  height: 50%;
+  width: 19%;
+  border: peru solid;
+  background-color: palegoldenrod;
+}
+
+#box8 {
+  top: 50%;
+  left: 19%;
+  height: 43%;
+  width: 27%;
+  border: darkolivegreen solid;
+  background-color: darkseagreen;
+}
+
+#box9 {
+  top: 50%;
+  left: 46%;
+  height: 39%;
+  width: 32%;
+  border: #ee7811 solid;
+  background-color: #f8c9a0; /* sandybrown base */
+}
+
+#box10 {
+  top: 50%;
+  left: 78%;
+  height: 39%;
+  width: 22%;
+  border: teal solid;
+  background-color: #adebe9; /* medium turguoise base */
 }
 
 /*# sourceMappingURL=clubAssets.css.map */
