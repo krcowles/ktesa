@@ -260,8 +260,13 @@ $(function () {
                                 data: mail_data,
                                 success: function (result) {
                                     if (result === 'OK') {
-                                        alert("An email has been sent: Also check Spam!\n" +
-                                            "You can continue as a guest for now");
+                                        var msg = 'Thank you for pre-registering. An email has been ' +
+                                            'sent to your account - please check your Spam folder. Your ' +
+                                            'registration is NOT complete until you click on the link in ' +
+                                            'the email. You will then be able to enter your password and ' +
+                                            'select security questions. You cannot pre-register again. ' +
+                                            'Thank you for joining the nmhikes community!';
+                                        alert(msg);
                                         window.open('../index.html', '_self');
                                     }
                                     else {
@@ -415,6 +420,7 @@ $(function () {
                     submitter: 'change',
                     code: login_renew,
                     password: password,
+                    user: ix
                 };
                 $.ajax({
                     url: 'create_user.php',

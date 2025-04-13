@@ -35,7 +35,7 @@ if ($type === 'own') { // someone is requesting ownership :-)
     if ($type === 'join') {
         $usermsg .= "<h4>Your registration request has been received.<br />" .
             "To complete your registration and sign in, your " .
-            "one-time code is ";
+            "one-time code (already filled in) is ";
         $subj = "Registration for NM Hikes";
     } elseif ($type === 'chg') {
         $usermsg .= "<h4>Your request to change/reset your nmhikes.com password " .
@@ -57,12 +57,12 @@ if ($type === 'own') { // someone is requesting ownership :-)
         echo "Your email '{$email}' was not located in our database";
         exit;
     }
-    $from = "Do not hit reply";
+    $from = "noreply@mail.com";
     $from_note = "Do hit not reply";
     $to = $email;
     $name = $status['username'];
     $replyTo = $from;
-    $replyName = 'Admin';
+    $replyName = 'Noreply';
     // there will be no pending session, so user id is needed
     $id = $status['userid'];
     $tmp_pass = bin2hex(random_bytes(5)); // 10 hex characters
@@ -73,7 +73,7 @@ if ($type === 'own') { // someone is requesting ownership :-)
     $subject = $subj;
     $message = $usermsg . $tmp_pass . "<br />Your username is " 
         . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
-        '">Click here</a> to complete your registration</h4>';
+        '">CLICK HERE</a> to complete your registration</h4>';
 }
 $mail->setFrom($from, $from_note);
 $mail->addAddress($to, $name);

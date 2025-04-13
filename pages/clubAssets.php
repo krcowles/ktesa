@@ -61,16 +61,26 @@ if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
                 <br /><br />
                 Region:
                 <select id="uload_loc:" name="nm_location">
-                    <option value="box1" class="location">NW Deserts</option>
-                    <option value="box2" class="location">Jemez & Abiquiu</option>
-                    <option value="box3" class="location">Sangre de Cristos</option>
-                    <option value="box4" class="location">NE Plains</option>
-                    <option value="box5" class="location">Mt Taylor & Zuni</option>
-                    <option value="box6" class="location">Sandias & Monzanos</option>
-                    <option value="box7" class="location">Gila & Bootheel</option>
-                    <option value="box8" class="location">Lower Rio Grande</option>
-                    <option value="box9" class="location">Sierra Blanca Region</option>
-                    <option value="box10" class="location">SE New Mexico</option>
+                    <option value="NW Deserts"
+                        class="location">NW Deserts</option>
+                    <option value="Jemez & Abiquiu"
+                        class="location">Jemez & Abiquiu</option>
+                    <option value="Sangre de Cristos"
+                        class="location">Sangre de Cristos</option>
+                    <option value="NE Plains"
+                        class="location">NE Plains</option>
+                    <option value="Mt Taylor & Zuni"
+                        class="location">Mt Taylor & Zuni</option>
+                    <option value="Sandias & Monzanos"
+                        class="location">Sandias & Monzanos</option>
+                    <option value="Gila & Bootheel"
+                        class="location">Gila & Bootheel</option>
+                    <option value="Lower Rio Grande"
+                        class="location">Lower Rio Grande</option>
+                    <option value="Sierra Blanca Region"
+                        class="location">Sierra Blanca Region</option>
+                    <option value="SE New Mexico"
+                        class="location">SE New Mexico</option>
                     <option value="Colorado">Colorado</option>
                     <option value="Arizona">Arizona</option>
                     <option value="Utah">Utah</option>

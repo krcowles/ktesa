@@ -67,7 +67,10 @@ $(function () {
      */
     $('#tray').on('click', function () {
         var loc = $('#pointer').text();
-        var area = "assetsPage.php?area=" + loc;
+        var reg = parseInt(loc.substring(3));
+        var region = region_names[reg - 1];
+        var new_loc = encodeURIComponent(region);
+        var area = "assetsPage.php?area=" + new_loc;
         window.open(area, '_blank');
     });
     // to access out of state assets, the select box is utilized
@@ -77,7 +80,7 @@ $(function () {
         window.open(area, '_blank');
     });
     /**
-     * Uploading assets
+     * Uploading assets: check for empty files before submitting form
      */
     $('#uploader').on('submit', function (ev) {
         var upload = document.getElementById('filename');

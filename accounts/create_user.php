@@ -16,7 +16,7 @@ verifyAccess('ajax');
 $submitter = filter_input(INPUT_POST, 'submitter');
 
 $today = getdate();
-$year = $today['year'] + 1;
+$year = $today['year'] + 2;
 $month = $today['mon'];
 $day = $today['mday'];
 $exp_date = $year . "-" . $month . "-" . $day;
@@ -53,20 +53,15 @@ if ($submitter == 'create') {
     $code      = filter_input(INPUT_POST, 'code');
     $user_pass = filter_input(INPUT_POST, 'password');
     $password  = password_hash($user_pass, PASSWORD_DEFAULT);
+    $user      = filter_input(INPUT_POST, 'user');
 
-    $getUserReq = "SELECT * FROM `USERS`;";
-    $users = $pdo->query($getUserReq)->fetchAll(PDO::FETCH_ASSOC);
-    $match = false;
-    foreach ($users as $user) {
-        if (password_verify($code, $user['passwd'])) { 
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['userid']   = $user['userid'];
-            $_SESSION['cookie_state'] = "OK";
-            $match = true;
-            break;
-        }
-    }
-    if (!$match) {
+    $getUserReq = "SELECT * FROM `USERS` WHERE `userid`='{$user}';";
+    $prereg = $pdo->query($getUserReq)->fetch(PDO::FETCH_ASSOC);
+    if (password_verify($code, $prereg['passwd'])) { 
+        $_SESSION['username'] = $prereg['username'];
+        $_SESSION['userid']   = $user;
+        $_SESSION['cookie_state'] = "OK";
+    } else {
         echo "NOCODE";
         exit;
     }
@@ -77,8 +72,8 @@ if ($submitter == 'create') {
         array($password, $exp_date, $_SESSION['userid'])
     );
 }
-$days = 365; // Number of days before cookie expires
-$expire = time() + 60*60*24*$days;
+$days = 730; // Number of days before cookie expires
+$expire = time() + 60*60*24*$days; // time is in seconds
 setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
 
 echo "OK";

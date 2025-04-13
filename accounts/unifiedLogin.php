@@ -17,7 +17,7 @@
  *       $form="renew"; In each case an email is generated with a one-time secure
  *       code as a password, and th user must select a new password to continue. 
  *    3. Logging in: this page is displayed with "$form=log"
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -32,7 +32,7 @@ $ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
 $newusr = isset($_GET['join']) ? true : false;
 $title  = "Query string missing!"; // otherwise error fct called
 if ($form === 'join') {
-    $title = "New User Registration";
+    $title = "New User Pre-Registration";
 } elseif ($form === 'renew') {
     $title = "Set Password";
 } elseif ($form === 'log') {
@@ -227,6 +227,7 @@ if ($newusr) {
     <button id="close_banner" type="button" class="btn btn-secondary">Close</button>
     <br /><br />
 </div>
+
 
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/validateUser.js"></script>

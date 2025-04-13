@@ -10,17 +10,6 @@
  */
 require "../php/global_boot.php";
 $area = filter_input(INPUT_GET, 'area');
-// intial load for testing:
-/*
-for ($j=0; $j<4; $j++) {
-    $file = $j . 'gpx';
-    $case = 'this is a test for ' . $j;
-    $prep = "INSERT INTO `CLUB_ASSETS` (`item`,`region`,`description`) " .
-        "VALUES ('{$file}','{$area}','{$case}');";
-    $pdo->query($prep);
-}
-*/
-
 $req = "SELECT `item`,`description` FROM `CLUB_ASSETS` WHERE `region`=?;";
 $prep = $pdo->prepare($req);
 $prep->execute([$area]);
