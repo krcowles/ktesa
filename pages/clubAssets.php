@@ -60,15 +60,20 @@ if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
                 <textarea placeholder="File Label" rows="1" name="label"></textarea>
                 <br /><br />
                 Region:
-                <select id="uload_loc:" name="nm_location">
+                <select id="uload_loc" name="nm_location">
+                    <option value="None">Select a Region</option>
                     <option value="NW Deserts"
                         class="location">NW Deserts</option>
-                    <option value="Jemez & Abiquiu"
-                        class="location">Jemez & Abiquiu</option>
-                    <option value="Sangre de Cristos"
-                        class="location">Sangre de Cristos</option>
-                    <option value="NE Plains"
-                        class="location">NE Plains</option>
+                    <option value="Abiquiu & Chama"
+                        class="location">Abiquiu & Chama</option>
+                    <option value="Taos"
+                        class="location">Taos</option>
+                    <option value="Raton & NE"
+                        class="location">Raton & NE</option>
+                    <option value="Jemez"
+                        class="location">Jemez</option>
+                    <option value="Pecos"
+                        class="location">Pecos</option>
                     <option value="Mt Taylor & Zuni"
                         class="location">Mt Taylor & Zuni</option>
                     <option value="Sandias & Monzanos"
@@ -79,8 +84,8 @@ if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
                         class="location">Lower Rio Grande</option>
                     <option value="Sierra Blanca Region"
                         class="location">Sierra Blanca Region</option>
-                    <option value="SE New Mexico"
-                        class="location">SE New Mexico</option>
+                    <option value="Pecos Valley & SE"
+                        class="location">Pecos Valley & SE</option>
                     <option value="Colorado">Colorado</option>
                     <option value="Arizona">Arizona</option>
                     <option value="Utah">Utah</option>
@@ -107,6 +112,8 @@ if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
             <div id="box8" class="sizing"></div>
             <div id="box9" class="sizing"></div>
             <div id="box10" class="sizing"></div>
+            <div id="box11" class="sizing"></div>
+            <div id="box12" class="sizing"></div>
         </div>
         <div id="nm">
             <img id="nmap" src="../images/nmmap.gif" />

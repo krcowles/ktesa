@@ -49,15 +49,16 @@ $( function() {
      * Show region name in regionid box when cursoring over area
      */
     const region_names = [
-        'NW Deserts', 'Jemez & Abiquiu', 'Sangre de Cristos',
-        'NE Plains', 'Mt Taylor & Zuni', 'Sandias & Manzanos', 'Gila & Bootheel',
-        'Lower Rio Grande', 'Sierra Blanca Region', 'SE New Mexico'
+        'NW Deserts', 'Abiquiu & Chama', 'Taos', 'Raton & NE', 'Jemez',
+        'Pecos', 'Mt Taylor & Zuni', 'Sandias & Manzanos',
+        'Gila & Bootheel', 'Lower Rio Grande', 'Sierra Blanca Region',
+        'Pecos Valley & SE'
     ];
     $('div[id^=box]').on('mouseenter', function() {
         let id = this.id;
         let areano = id.substring(3); 
         $('#pointer').text(id);
-        let index = parseInt(areano) - 1; // 0-based array;
+        let index = parseInt(areano) - 1; // into 0-based array;
         $('#regionid').text(region_names[index]);
     });
     $('div[id^=box]').on('mouseleave', function() {
@@ -93,6 +94,11 @@ $( function() {
         let assetfile = upload.files as FileList;
         if (assetfile.length == 0) {
             alert("There is nothing to upload");
+            return false;
+        }
+        let region = $('#uload_loc').val();
+        if (region === 'None') {
+            alert("Please select a region");
             return false;
         }
     });

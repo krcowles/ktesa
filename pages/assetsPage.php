@@ -14,6 +14,7 @@ $req = "SELECT `item`,`description` FROM `CLUB_ASSETS` WHERE `region`=?;";
 $prep = $pdo->prepare($req);
 $prep->execute([$area]);
 $items = $prep->fetchAll(PDO::FETCH_KEY_PAIR);
+$nofiles = count($items) == 0 ? true : false;
 $links = [];
 foreach ($items as $file => $desc) {
     $link = '<a href="../club_assets/' . $file . '" download>' .
@@ -42,6 +43,12 @@ foreach ($items as $file => $desc) {
 <?php require "ktesaPanel.php"; ?>
 <p id="active" style="display:none;">Assets</p>
 <p id="region" style="display:none;"><?=$area;?></p>
+<?php if ($nofiles) {
+    echo "<p style='margin-left:24px;font-size:24px;'>" .
+        "There are no files in this region</p>";
+        exit;
+    }
+?>
 <div id="contents">
     <h5>Click on an item to download it</h5>
     <?php for ($i=0; $i<count($links); $i++) : ?>
