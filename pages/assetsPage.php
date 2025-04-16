@@ -17,8 +17,12 @@ $items = $prep->fetchAll(PDO::FETCH_KEY_PAIR);
 $nofiles = count($items) == 0 ? true : false;
 $links = [];
 foreach ($items as $file => $desc) {
-    $link = '<a href="../club_assets/' . $file . '" download>' .
-        $file . ': ' . $desc . '</a><br />';
+    $link = '<a href="../club_assets/' . $file . '" download>';
+    if (empty($desc)) {
+        $link .= $file . '</a><br />';
+    } else {
+        $link .= $file . ' : ' . $desc . '</a><br />';
+    }
     array_push($links, $link);
 }
 ?>

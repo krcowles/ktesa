@@ -99,7 +99,7 @@ if (isset($_SESSION['upload_msg']) && $_SESSION['upload_msg'] !== "OK") {
 <div class="vertical_rule"></div>
 
 <div id="contents"> <!-- all within text-align: center -->
-    <span id="howto">Click on a section below to view its assets</span>
+    <span id="howto">Borders are Approximate. Click on Region for Assets</span>
     <div id="map_box">
         <div id="tray">
             <div id="box1" class="sizing"></div>
