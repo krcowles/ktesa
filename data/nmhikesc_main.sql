@@ -81,16 +81,18 @@ CREATE TABLE `CLUB_ASSETS` (
   `region` varchar(100) NOT NULL,
   `description` varchar(500) NOT NULL DEFAULT '""',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO CLUB_ASSETS VALUES
-('6','Puerto_Nambe.GPX','box3','To Skyline Trail'),
-('7','New CejaP Loop.gpx','box1','Badlands & Rim'),
-('8','Alamo Loop_Bandelier.pdf','box2','Big14.5 mile loop to Rio'),
-('9','El Cajete Meadow.pdf','box2','Relaxed Hike off SR4'),
-('10','BearMouth_ASCHG.pdf','box1','San Luis Road West'),
-('11','AlamoLoop2024.gpx','box2','Big14.5mile loop to Rio');
+('6','Puerto_Nambe.GPX','Jemez','To Skyline Trail'),
+('7','New CejaP Loop.gpx','NW Deserts','Badlands & Rim'),
+('8','Alamo Loop_Bandelier.pdf','Jemez','Big14.5 mile loop to Rio'),
+('9','El Cajete Meadow.pdf','Jemez','Relaxed Hike off SR4'),
+('10','BearMouth_ASCHG.pdf','NW Deserts','San Luis Road West'),
+('11','AlamoLoop2024.gpx','Jemez','Big14.5mile loop to Rio'),
+('12','Organ Needle Classic_ JonC.gpx','Lower Rio Grande','Clean Track Up the Scramble Path'),
+('13','BigAlamoLoop.zip','Jemez','Package of All Info');
 
 
 
@@ -451,25 +453,25 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2025-04-10 18:38:55'),
-('2','CLUB_ASSETS','795582306','2025-04-10 18:38:55'),
-('3','CLUSHIKES','698201918','2025-04-10 18:38:55'),
-('4','CLUSTERS','36438523','2025-04-10 18:38:55'),
-('5','EGPSDAT','3701749984','2025-04-10 18:38:55'),
-('6','EHIKES','3634414894','2025-04-10 18:38:55'),
-('7','EREFS','2602627156','2025-04-10 18:38:55'),
-('8','ETSV','1841422655','2025-04-10 18:38:55'),
-('9','EWAYPTS','3289726933','2025-04-10 18:38:55'),
-('10','FAVORITES','3651041965','2025-04-10 18:38:55'),
-('11','GPSDAT','3176712612','2025-04-10 18:38:55'),
-('12','HIKES','2382656662','2025-04-10 18:38:55'),
-('13','LOCKS','4212131926','2025-04-10 18:38:55'),
-('14','MEMBER_PREFS','1936901111','2025-04-10 18:38:55'),
-('15','POLYLINES','0','2025-04-10 18:38:55'),
-('16','REFS','3141239661','2025-04-10 18:38:55'),
-('17','TSV','1309506375','2025-04-10 18:38:55'),
-('18','USERS','450567995','2025-04-10 18:38:55'),
-('19','WAYPTS','4020491109','2025-04-10 18:38:55');
+('1','BOOKS','381683775','2025-04-14 12:50:23'),
+('2','CLUB_ASSETS','3699494155','2025-04-14 12:50:23'),
+('3','CLUSHIKES','698201918','2025-04-14 12:50:23'),
+('4','CLUSTERS','36438523','2025-04-14 12:50:23'),
+('5','EGPSDAT','3701749984','2025-04-14 12:50:23'),
+('6','EHIKES','3634414894','2025-04-14 12:50:23'),
+('7','EREFS','2602627156','2025-04-14 12:50:23'),
+('8','ETSV','1841422655','2025-04-14 12:50:23'),
+('9','EWAYPTS','3289726933','2025-04-14 12:50:23'),
+('10','FAVORITES','3651041965','2025-04-14 12:50:23'),
+('11','GPSDAT','3176712612','2025-04-14 12:50:23'),
+('12','HIKES','2382656662','2025-04-14 12:50:23'),
+('13','LOCKS','4212131926','2025-04-14 12:50:23'),
+('14','MEMBER_PREFS','1936901111','2025-04-14 12:50:23'),
+('15','POLYLINES','0','2025-04-14 12:50:23'),
+('16','REFS','3141239661','2025-04-14 12:50:23'),
+('17','TSV','1309506375','2025-04-14 12:50:23'),
+('18','USERS','1173986017','2025-04-14 12:50:23'),
+('19','WAYPTS','4020491109','2025-04-14 12:50:23');
 
 
 
@@ -1100,14 +1102,15 @@ CREATE TABLE `LOCKS` (
   `fails` smallint(6) DEFAULT 0,
   `lockout` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO LOCKS VALUES
 ('1','72.24.28.124','1',NULL),
 ('2','98.48.4.175','2',NULL),
 ('3','174.231.18.95','1',NULL),
-('13','172.59.0.250','1',NULL);
+('13','172.59.0.250','1',NULL),
+('72','73.242.139.221','2',NULL);
 
 
 
@@ -7055,6 +7058,8 @@ INSERT INTO TSV VALUES
 ('13172','380',NULL,'canoa-20241204_115509','Y','Y','Canoa Slot','354676438','-1072157086','4964',NULL,'2024-12-04 11:55:09','canoa-20241204_115509','480','640',NULL,'3');
 
 
+
+
 CREATE TABLE `USERS` (
   `userid` smallint(6) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
@@ -7072,8 +7077,6 @@ CREATE TABLE `USERS` (
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
-
-
 INSERT INTO USERS VALUES
 ('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','',NULL,NULL,NULL,NULL),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com','','2,5,6','5c656f82794a205f1393e428fe1a9e61e41cbd873276b7850b805b202dfd4d7d67c4b7bc8cfa7f4a98e105534182c3b3ee3f3e1203c981906f4c42bc00e74edb2cbfe27cd8207dd4c0e0213db857c34d6de11d23c36dbd786513f4e61f404ce501e5a12ea122c0a487c96cd9690d05f273361cf87061fc12aadae2d443d86ba1','1994c4b6b3ba01c703822f892b3c44925b43e29c343d7d219e1f8990344b30feb00fccfaf53a99b39b2f2d6042425e85811aa4f713669978a6085821b51b3b974a8e330181394fee8194f5a0e6ba28e51d59c3ae0098d7549d365cbc9e99577dd6efa36a60a1c5163fa3d2f97f0ed5c938e83bd9f4cae5c5b4aef7fce251c060','911b5b7e8be370726534f50682a8783daed75759578077955046893365cb7f75d543efa51b99f62eed473454e6df6ab0e7f5026ddafbfe6e7d2c81e2d2599e5a30e8b907f2aea1fe53159c2642a992318c630ccde7ce12ff75b298f678b8818bf26bac5a3f4013a61429c91b95587e6eb6b581adc5a6a77bc04307d78cba66fc'),
@@ -7084,7 +7087,7 @@ INSERT INTO USERS VALUES
 ('18','kayaker','$2y$10$7CWasBtHJjXvitVEI0Qjmu0ePuu4Dq4nkblcjIebYSDY45mu63/bC','2025-04-15','Mends','Barry','mends1@bellsouth.net','','0,2,7','a3402352b10ef652df3d82ae2c5029b7445ad36efbdba5cc52139ff036eb8f514decca41c0f497514e94ccd01c56ffecfbf6644a35c364c3ee51608656922c68616774b2b2a7e3590ff26dddb55fd4452ebff0c60c63e386ad46fa8949309e641e7082907896fadc7388c782daa79e9710680195618309de5328f30ada331114','53a4a0d27989a337c80b624e91bc4af201aa0d2f1fad6a2b288e7d0a3315d85477efab60f072bf74672a46621fe9a538e3bbdb3aec4a89c6c5dd557b11b75233f68c4519d8de84de030f25f0c5dca97abb6f4067505ff269d4426812069a76f8766cbf496824ad7b5f16b09b94922e1244f817fe5d90fd0b2b33961d2d6f43e1','20bf0574eac6894bc31e6db939d0e3d733a05ad049edf3dd67c0b3a2f303e3ceec5fe013581665b43dc1686339d3133e86228818b82e84f5868e29746351636dbe2bf9112728b078781342b86da03789ea3f9ccf395633372082decfefef8f9eb30bed4405d068e59537fc07f655a2d5d32833a1a84076d2a87e62dc6494e89c'),
 ('19','ckfkfkfkfkc','$2y$10$yHFpJRAGUf9EtWQ7/CovpuPtLOwcpOj19SPL6kxH1Wdah/sumE/yS',NULL,'Merkl','Hans','hm@hmerkl.com','',NULL,NULL,NULL,NULL),
 ('20','Estrelloso','$2y$10$EpEc8V.jhonGRN3xFeOxCuVtee3xulo.F09K7ooiDB7uXLOIRJl9i','2025-11-30','Wallentinsen','Derek ','wallythered@gmail.com','','0,1,2','5de86d0a6c21bbc957ae70eeba7c2e90f916fc0cf04000c25d8d386468ea6c9fc4b40029fd49a14d04f1785ac3e9da5462873f691b35e85bc8b14fc7a67420de28263597f9be0ae19df4365c9bdac56aa7b66f7b2c6f0febb8cfc2511520ced19ea3b878f7eee2616e71fb46f1bce52b5cd07ae0cd9c65a7b19b23a5ce4e69f0','2354f7aabbaad51b545687d25edf8efc1abbe81a41b40b11da2a15e1feeb0d8e5af9861152d77e9eec1b9da1e3551f9b3c24c404413d9a80f3606d3dc421fbb9fde685e9363016f18d7c912d1c41c830c85c1c817d1b6f930e323d3e4fc2ab5d32dc93f682cb8a89837f4dce1dd4a49f747e4a2f2cbaa70e67a7d40ba87b1254','751f30744f16debfa6d4b4d1e09be376936c2a9b5dd0d7963e82325cbe310b3de92bcec6eedddfa27d7e43594e7ee43d0944afa4cb12e311118e090fe3703e6878f5cc2bd97ef576a80c5ef3b64ef2d111d4e394934bf992d3425a16cf74f43cb98d0255e03ccd7ac45a8a9a0162ba2cde35240b99d22f1cbe7595a879b5db7e'),
-('30','MarkdSF','$2y$10$B7Cmi5iTPe034f10iCp5IelbOz8peI5WfMlVRWpE3BPF8Te01aIXi','2026-03-11','Dunham','Mark','medunham2@msn.com','','1,7,9','aba7a599f0265900beeaadddf8216d89838fbe84b964804041f2c5e54c0ddbe42d0d1504f16f5b569e409dc27a198254039325723021406aa1109bd9b880a3cccf1c7048e795547fd72238bf06cabae1fb76e2eff32ceab9098b0fb63f113b492185d2a3a8e77e278b5c5ff4f07bcf2ab20923ac0e06a7f42cbb626f33958913','2d91bfaa977a9438c1667c4435bb105faacea8b7f7b1e5c1cb128d9c6367cd094bbb55c2ce2a30702372d353b3b3cb0963aa41742835172e989f46d7ff8229b1960d1619a5c66dd141f712168cc415ae39a103bff0a38484f0a6c6d0040bd0c82eb4c67a98cefe2838f0826cc2c8891a7618a2aa404d3fd3b0a6f5a8f0b4fcd3','1316fc422676617f1d94ba12a2877f7d93a2eea217c3c1c648c8c8be5eafa1737a1b941146e094a1bbef2eecd7ee97ac59fb8ff1d1340a9a192ef167fca000dda73f69a359ce93339989f0cb5cb8265e28e26d8f038959c210eb584fcd52756858f2c6fb0bc312cef4f496691689d42aacdfa710fcf4bb732312e9bac416242a'),
+('30','MarkdSF','$2y$10$B7Cmi5iTPe034f10iCp5IelbOz8peI5WfMlVRWpE3BPF8Te01aIXi','2026-03-11','Dunham','Mark','medunham2@msn.com','Y','1,7,9','aba7a599f0265900beeaadddf8216d89838fbe84b964804041f2c5e54c0ddbe42d0d1504f16f5b569e409dc27a198254039325723021406aa1109bd9b880a3cccf1c7048e795547fd72238bf06cabae1fb76e2eff32ceab9098b0fb63f113b492185d2a3a8e77e278b5c5ff4f07bcf2ab20923ac0e06a7f42cbb626f33958913','2d91bfaa977a9438c1667c4435bb105faacea8b7f7b1e5c1cb128d9c6367cd094bbb55c2ce2a30702372d353b3b3cb0963aa41742835172e989f46d7ff8229b1960d1619a5c66dd141f712168cc415ae39a103bff0a38484f0a6c6d0040bd0c82eb4c67a98cefe2838f0826cc2c8891a7618a2aa404d3fd3b0a6f5a8f0b4fcd3','1316fc422676617f1d94ba12a2877f7d93a2eea217c3c1c648c8c8be5eafa1737a1b941146e094a1bbef2eecd7ee97ac59fb8ff1d1340a9a192ef167fca000dda73f69a359ce93339989f0cb5cb8265e28e26d8f038959c210eb584fcd52756858f2c6fb0bc312cef4f496691689d42aacdfa710fcf4bb732312e9bac416242a'),
 ('31','jochenette','$2y$10$RITcklYxtVX908yeYjnGLebBl5c5obrphEW0Hmf/SJ55wGqvYcyrO','2026-03-13','Chenette','Jon','jochenette@gmail.com','','2,5,6','8ba941cc383358ab8b533e7235e4d902144f089b68dc9630e62abaeaada732a6d610195defa0a0ef413ae46dd3df5167a25b610fc06a73d85505c9963949162be11323d759531bdf4e6b0d1d90e00cf651916d0b3048480db4dcfcd4228a241e13f588f5cfdb3cd1eccba09c8b57643e19c81206a6821593a085c48a5ab250b0','4746958fe559bf87f9649db6eab349c94e915589d4109927a5adbd71f46757abbdd8f2a130e4d0450b664ad501e716e0b935c65730eec51edf2fc2a52fd67a936127c7df0a9283f0996d2722c478b224455d9e4f0c974b2bfcb713e7c5366fa88cd93d34b1245412e09d0d49471475b64fc7baaaaa80d8c08a1ea9a16f95837c','5b53fa55ccba49321dca3f1d9b5bd54f5f6e73076f6bf3e7aad75e5c60f7381b939721c7c5c9e2e18dd9dd050c1167b56ee02e5fdd08cb52ce3ca8ce22898a1052d7c4950736c4ea6a036b59d69c6471911383fcf49962c179f1516e8c474591f5df56d4e5eba6523ee8128433c17fa9471d815767e0844c3740dd5943dece52'),
 ('32','lplesniak@gmail.com','$2y$10$Xb11TTSQ8y3FJWHoSdT3n.z9xJgA/qe97uNfeZQvIKUamO.879Ybe',NULL,'Plesniak','Leigh','lplesniak@gmail.com','',NULL,NULL,NULL,NULL),
 ('33','nm5s@yahoo.com','$2y$10$pkBhRwksI.0j504RYlY8S.2AC/XyMpHjlYzlo0i2QfzCxkiqjsLKC','2026-03-17','Shapiro','Alan','nm5s@yahoo.com','','2,4,8','90428e575aae1b7bbd47b5fe196cce4c92993c13c942b04e8fad5bfc83b348f13ebac257ff3a4d86a379dc9d71822142f209405eef39d3dd44c3e9c69768ca97e1318e09db3aa68572467aadf2e7c673a5a62be6a12411c24337a523c120de3696f0e580fc0333b18d7c9db2ab682210d787a255b4c56a07e54c37c1bf55f638','0455119929fbf871c4ddca38e207e77ba59ec7c86e0daa47654d7caced5b102666f4db35f87a053eec2ccc2abd3798e22938eeb7befa008f0f2050ae8cf73c6289f4f1f6da5c3e4cdeb863de6739a2ba81fa6f1ac3c96768ec4a3d6175ea7871aa7e4983268015d97e262671a1e47d89de6e8ca0c0fafdeff771209beefd0b5c','53dcb66a1e285f890131c0c498ce11e100992ffd379f865ec1a525ab7defaae2ee4e8a3ce28287abc8f0b18cf854ebd438c65d215be8e321529602eba38e3c3b4c8bbe6b2fe78c5e5676d248d48467d088b6c3457a2acdc8e088e99c32ab2d708c1d007657c7b05aa835babb2c1742ab4b74fd9a8d68ce6c708d7e49dae3a1f9'),
@@ -7110,7 +7113,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2372 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2439 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO VISITORS VALUES
@@ -8680,7 +8683,75 @@ INSERT INTO VISITORS VALUES
 ('2368','172.59.1.6','30','Google Chrome','windows','2025-04-13 12:19:34','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box2'),
 ('2369','172.59.1.6','0','Google Chrome','windows','2025-04-13 12:21:24','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
 ('2370','172.59.1.6','0','Google Chrome','windows','2025-04-13 12:25:14','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
-('2371','172.59.1.6','0','Google Chrome','windows','2025-04-13 12:26:26','https://nmhikes.com:443/SWEL/pages/clubAssets.php');
+('2371','172.59.1.6','0','Google Chrome','windows','2025-04-13 12:26:26','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2372','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:35:35','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box1'),
+('2373','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:35:55','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box1'),
+('2374','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:36:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2375','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:36:26','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box2'),
+('2376','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:37:06','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2377','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:37:55','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2378','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:38:12','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box2'),
+('2379','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:11','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2380','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2381','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2382','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2383','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2384','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2385','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2386','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2387','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:16','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2388','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2389','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2390','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2391','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2392','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2393','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2394','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2395','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2396','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2397','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2398','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2399','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2400','172.59.1.6','0','Google Chrome','windows','2025-04-14 12:44:17','https://nmhikes.com:443/SWEL/pages/clubAssets.php'),
+('2401','172.59.1.6','30','Google Chrome','windows','2025-04-14 12:44:21','https://nmhikes.com:443/SWEL/pages/assetsPage.php?area=box2'),
+('2402','104.47.58.254','0','unknown','unknown','2025-04-14 09:10:49','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2403','172.59.1.6','30','Google Chrome','linux','2025-04-14 09:10:50','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2404','52.247.61.136','0','Google Chrome','windows','2025-04-14 09:10:58','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2405','104.47.73.126','0','unknown','unknown','2025-04-14 09:28:18','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2406','172.59.1.6','30','Google Chrome','windows','2025-04-14 09:28:19','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2407','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:29:29','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2408','172.59.1.6','30','Google Chrome','windows','2025-04-14 09:29:50','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2409','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:30:39','https://nmhikes.com:443/SWEL2/pages/tableOnly.php'),
+('2410','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:30:53','https://nmhikes.com:443/SWEL2/pages/about.php'),
+('2411','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:31:04','https://nmhikes.com:443/SWEL2/edit/hikeEditor.php?age=new'),
+('2412','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:31:12','https://nmhikes.com:443/SWEL2/edit/editDB.php?tab=1&hikeNo=52'),
+('2413','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:32:48','https://nmhikes.com:443/SWEL2/pages/hikePageTemplate.php?age=new&hikeIndx=52'),
+('2414','104.47.74.126','0','unknown','unknown','2025-04-14 09:35:49','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2415','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:35:49','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2416','13.64.229.66','0','Google Chrome','windows','2025-04-14 09:36:01','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2417','172.59.1.6','0','Google Chrome','windows','2025-04-14 09:36:18','https://nmhikes.com:443/SWEL2/edit/hikeEditor.php?age=new&pub=usr'),
+('2418','104.47.51.126','0','unknown','unknown','2025-04-15 07:53:54','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2419','172.59.1.6','30','Google Chrome','windows','2025-04-15 07:53:54','https://nmhikes.com:443/SWEL2/pages/home.php');
+INSERT INTO VISITORS VALUES
+('2420','13.68.23.72','0','Google Chrome','windows','2025-04-15 07:54:07','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2421','104.47.59.254','0','unknown','unknown','2025-04-15 08:10:13','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2422','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:14:35','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2423','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:23:04','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2424','172.59.1.6','0','Google Chrome','windows','2025-04-15 08:23:10','https://nmhikes.com:443/SWEL2/pages/clubAssets.php'),
+('2425','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:23:14','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Abiquiu%20%26%20Chama'),
+('2426','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:23:21','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Jemez'),
+('2427','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:23:43','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Jemez'),
+('2428','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:46:30','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Pecos'),
+('2429','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:46:45','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Lower%20Rio%20Grande'),
+('2430','172.59.1.6','0','Google Chrome','windows','2025-04-15 08:49:32','https://nmhikes.com:443/SWEL2/pages/clubAssets.php'),
+('2431','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:49:36','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Lower%20Rio%20Grande'),
+('2432','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:50:11','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Jemez'),
+('2433','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:50:37','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Jemez'),
+('2434','172.59.1.6','0','Google Chrome','windows','2025-04-15 08:51:39','https://nmhikes.com:443/SWEL2/pages/clubAssets.php'),
+('2435','172.59.1.6','30','Google Chrome','windows','2025-04-15 08:51:43','https://nmhikes.com:443/SWEL2/pages/assetsPage.php?area=Jemez'),
+('2436','52.102.22.117','0','unknown','unknown','2025-04-15 10:07:24','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2437','52.168.53.211','0','Google Chrome','windows','2025-04-15 10:08:19','https://nmhikes.com:443/SWEL2/pages/home.php'),
+('2438','75.161.67.127','0','Mozilla Firefox','mac','2025-04-15 02:00:17','https://nmhikes.com:443/SWEL2/pages/home.php');
 
 
 
