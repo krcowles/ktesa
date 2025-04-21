@@ -19,17 +19,10 @@ $('form').on('submit', function(ev) {
                 alert("Email sent");
             }
         },
-        error: function(_jqXHR) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            } else {
-                var errmsg = _jqXHR.responseText;
-                var errobj = {err: errmsg};
-                $.post('../php/ajaxError.php', errobj);
-                alert("Something has gone wrong... admin notified");
-            }
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            let msg = "ownership.js: attempting to send admin mail via " +
+                "resetMail.php";
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
     });
 });

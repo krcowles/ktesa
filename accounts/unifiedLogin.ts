@@ -146,7 +146,8 @@ switch (formtype) {
                             "We apologize for any inconvenience\n" +
                             "The webmaster has been notified; please try again later";
                         alert(msg);
-                        let ajaxerr = "Trying to access dupCheck via duplicate email\n" +
+                        let ajaxerr = "unifiedLogin.js: Trying to access dupCheck.php " +
+                            "from duplicateEmail()\n" +
                             "Error text: " + _textStatus + "; Error: " +
                             _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                         let errobj = {err: ajaxerr};
@@ -210,7 +211,8 @@ switch (formtype) {
                             "We apologize for any inconvenience\n" +
                             "The webmaster has been notified; please try again later";
                         alert(msg);
-                        let ajaxerr = "Trying to get Users list from dupCheck.php (uniqueuser);\n" +
+                        let ajaxerr = "unifiedLogin.js: Trying to get Users list from " +
+                        "dupCheck.php in uniqueuser();\n" +
                             "Error text: " +_textStatus + "; Error: " + _errorThrown + 
                             ";\njqXHR: " + _jqXHR.responseText;
                         let errobj = {err: ajaxerr};
@@ -256,6 +258,7 @@ switch (formtype) {
                             "due to an error; The admin has been notified.";
                         alert(err)
                         let ajaxerr = {err: result};
+                        // there is no error callback in $.post
                         $.post('../php/ajaxError.php', ajaxerr);
                     } else {
                         let email = $('#email').val();
@@ -279,12 +282,14 @@ switch (formtype) {
                                     alert("There was a problem with the email you supplied\n" +
                                         "The admin has been notified");
                                     $('#email').css('color', 'red');
-                                    let ajaxerr = "resetMail.php 'success' w/bad 'result'\n" +
-                                        "User email not sent, but entry has " + 
-                                        "been created in USERS: " + result;
+                                    let ajaxerr = "unifiedLogin.js: attempting to access resetMail.php" +
+                                        "[successfully] " + " but with bad 'result'\n" +
+                                        "User email not sent, but entry has been created in USERS; result: " +
+                                        result;
                                     ajaxerr += "\nuser: " + proposed_name + " email: " +
                                         proposed_email;
                                     let errobj = {err: ajaxerr};
+                                    // there is no error callback in $.post
                                     $.post('../php/ajaxError.php', errobj);
                                 }
                             },
@@ -300,7 +305,7 @@ switch (formtype) {
                                         "time.\nAn email has been sent to the admin" +
                                         " to correct the situation.";
                                     alert(err);
-                                    let ajaxerr = "Server error: cleanup USERS\n" +
+                                    let ajaxerr = "unifiedLogin.js: Server error: cleanup USERS\n" +
                                         "registrant; resetMail.php access failed:\n" +
                                         "Error text: " + _textStatus + "; Error: " +
                                         _errorThrown + "\njqXHR: " + _jqXHR.responseText +
@@ -323,10 +328,12 @@ switch (formtype) {
                             "We apologize for any inconvenience\n" +
                             "The webmaster has been notified; please try again later";
                         alert(msg);
-                        var ajaxerr = "Trying to access create_user.php/registration;\n" +
+                        var ajaxerr = "unifiedLogin.js: Trying to access " +
+                            "create_user.php/registration via form submit;\n" +
                             "Error text: " + _textStatus + "; Error: " + 
                             _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                         var errobj = { err: ajaxerr };
+                        // there is no error callback in $.post
                         $.post('../php/ajaxError.php', errobj);
                     }
                 }
@@ -452,7 +459,8 @@ switch (formtype) {
                             "We apologize for any inconvenience\n" +
                             "The webmaster has been notified; please try again later";
                         alert(msg);
-                        var ajaxerr = "Attempt to renew via create_user.php/renew\n" +
+                        var ajaxerr = "unifiedLogin.js: Attempting to renew via " +
+                            "create_user.php/renew in form submit\n" +
                             _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
                             _jqXHR.responseText;
                         var errobj = { err: ajaxerr };

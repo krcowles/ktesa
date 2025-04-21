@@ -8,6 +8,7 @@ declare var display_table_items: boolean;      // favSideTable.js
 declare function positionFavToolTip(div: JQuery<HTMLElement>, like: JQuery<HTMLElement>): void;
 declare function IdTableElements(bounds: string, zooms: boolean): void;
 declare function formTbl(hikeobjs: NM[]): void;
+declare function ajaxError(mode:string, xhrObj:object, status:string, msg:string)
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
  * by the user
@@ -253,22 +254,8 @@ function drawTrack(jsonfile: string, color: string, ptr: number, def: JQuery.Def
 			def.resolve();
 		},
 		error: function(_jqXHR, _textStatus, _errorThrown) {
-			if (appMode === 'development') {
-				var newDoc = document.open();
-				newDoc.write(_jqXHR.responseText);
-				newDoc.close();
-			}
-			else { // production
-				var msg = "An error has occurred: " +
-					"We apologize for any inconvenience\n" +
-					"The webmaster has been notified; please try again later";
-				alert(msg);
-				var ajaxerr = `Trying to access json file: ${jsonfile};\n` +
-					`Error text: ${_textStatus}; Error: ${_errorThrown}\n` +
-					`jqXHR: ${_jqXHR.responseText}`;
-				var errobj = { err: ajaxerr };
-				$.post('../php/ajaxError.php', errobj);
-			}
+			let msg = "fmap.js: attempting to retrieve " + jsonfile;
+			ajaxError(appMode, _jqXHR, _textStatus, msg);
 			def.reject();
 		}
 	});

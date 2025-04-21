@@ -268,6 +268,7 @@ $('#dwn').on('click', function(ev) {
                 ajax_files += ',' + file;
             }
         });
+        // there is no error callback for $.post()
         $.post("makeGpx.php", {id:hikeNo, name: gpx_filename, json_files: ajax_files},
             function() {
                 downloadURI(gpx_filename);

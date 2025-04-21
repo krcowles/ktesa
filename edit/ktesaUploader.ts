@@ -445,23 +445,9 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                         },
                         error: function(_jqXHR, _textStatus, _errorThrown) {
                             def.reject();
-                            if (appMode === 'development') {
-                                var newDoc = document.open();
-                                newDoc.write(_jqXHR.responseText);
-                                newDoc.close();
-                            }
-                            else { // production
-                                var msg = "An error has occurred: " +
-                                    "We apologize for any inconvenience\n" +
-                                    "The webmaster has been notified; please try again later";
-                                alert(msg);
-                                var ajaxerr = "Trying to access saveImage.php;\nError text: " +
-                                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                    _jqXHR.responseText;
-                                var errobj = { err: ajaxerr };
-                                $.post('../php/ajaxError.php', errobj);
-                            }
-                            
+                            let msg = "ktesaUploader.js: attempting to save " +
+                                imgname + " via saveImage.php";
+                            ajaxError(appMode, _jqXHR, _textStatus, msg); 
                         }
                     });
                 } else {

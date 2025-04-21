@@ -29,12 +29,14 @@ $(function () {
      */
     var current_state = $('#currstate').text(); // appMode
     $('#switchstate').on('click', function () {
+        alert("This will take a second or two...");
         window.open('changeSiteMode.php?mode=' + current_state);
-        window.close(); // window must have been opened via javascript: see panelMenu.ts/js
+        window.close();
     });
     $('#swdb').on('click', function () {
+        alert("This will take a second or two...");
         window.open('switchDb.php');
-        window.close(); // window must have been opened via javascript: see panelMenu.ts/js
+        window.close();
     });
     /**
      * Upload to main site and install

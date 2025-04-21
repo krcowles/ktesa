@@ -3,10 +3,12 @@
  * This script presents the html that comprises the top-of-the-page
  * menu-driven navigation bar and ktesa logo for every viewable page.
  * See mobileNavbar.php for mobile implementation. All bootstrap submenu
- * operation derived from: https://bootstrap-menu.com/detail-multilevel.html
- * NOTE: Recent addition of 'Own This Site!' animation compliments of
+ * operation is derived from: https://bootstrap-menu.com/detail-multilevel.html
+ * NOTE: The recent addition of 'Own This Site!' animation compliments of
  * https://alvarotrigo.com/blog/css-text-animations/ (with mods);
  * Every call for the panel is preceded by session_start and global_boot.php
+ * NOTE: The javascript global 'mobile' is set here (boolean), along with
+ * the ajaxError function to facilitate ajax error handling.
  * PHP Version 8.3.9
  * 
  * @package Ktesa
@@ -32,6 +34,7 @@ if (isset($_SESSION['userid'])) {
 ?>
 
 <script type="text/javascript">
+    // establish whether or not this is a mobile device (T/F)
     <?php if ($mobileTesting) : ?>
     var mobile = true;
     <?php else : ?>
@@ -48,6 +51,23 @@ if (isset($_SESSION['userid'])) {
         true : false;
     mobile = isMobile && !isTablet;
     <?php endif; ?>
+    // establish a facilitator function for ajax error handling
+    ajaxError = (mode, xhrObj, status, attempting) => {
+        if (mode === "development") {
+            let newdoc = document.open();
+            newdoc.write(xhrObj.responseText);
+            newdoc.close();
+        } else {
+            let ajaxerr = attempting + "; Error text: " + status + 
+                    ";\njqXHR: " + xhrObj.responseText;
+            let errobj = {err: ajaxerr};
+            $.post("../php/ajaxError.php", errobj);
+            let msg = "An error has occurred: We apologize for " +
+                "any inconvenience\n" + "The webmaster has been " +
+                "notified; please try again later.";
+            alert(msg);
+        }
+    }
     // New: Panel sub-menu js 
     document.addEventListener("DOMContentLoaded", function(){
         // make it as accordion for smaller screens

@@ -97,22 +97,8 @@ $(function () {
             titleList = titles;
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            }
-            else { // production
-                var msg = "An error has occurred: " +
-                    "We apologize for any inconvenience\n" +
-                    "The webmaster has been notified; please try again later";
-                alert(msg);
-                var ajaxerr = "Trying to access getTitles.php;\nError text: " +
-                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                    _jqXHR.responseText;
-                var errobj = { err: ajaxerr };
-                $.post('../php/ajaxError.php', errobj);
-            }
+            var msg = "startNewPg.js: trying to load getTitles.php";
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
     });
     /**
@@ -129,22 +115,8 @@ $(function () {
                 def.resolve();
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var msg = "An error has occurred: " +
-                        "We apologize for any inconvenience\n" +
-                        "The webmaster has been notified; please try again later";
-                    alert(msg);
-                    var ajaxerr = "Trying to access getGroups.php;\nError text: " +
-                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                        _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                }
+                var msg = "Tring to access getGroups.php from getClusters()";
+                ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
         return;

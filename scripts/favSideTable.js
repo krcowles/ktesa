@@ -258,22 +258,9 @@ function enableFavorites(items) {
                         }
                     },
                     error: function (_jqXHR, _textStatus, _errorThrown) {
-                        if (appMode === 'development') {
-                            var newDoc = document.open();
-                            newDoc.write(_jqXHR.responseText);
-                            newDoc.close();
-                        }
-                        else { // production
-                            var msg = "A server error occurred\nYou will not be able " +
-                                "to save Favorites at this time:\nThe admin has been " +
-                                "notified";
-                            alert(msg);
-                            var ajaxerr = "Trying to access markFavorites.php: add;\nError text: " +
-                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                _jqXHR.responseText;
-                            var errobj = { err: ajaxerr };
-                            $.post('../php/ajaxError.php', errobj);
-                        }
+                        var msg = "favSideTable.js: attempting to mark user " +
+                            "favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             }
@@ -296,22 +283,9 @@ function enableFavorites(items) {
                         }
                     },
                     error: function (_jqXHR, _textStatus, _errorThrown) {
-                        if (appMode === 'development') {
-                            var newDoc = document.open();
-                            newDoc.write(_jqXHR.responseText);
-                            newDoc.close();
-                        }
-                        else { // production
-                            var msg = "A server error occurred\nYou will not be able " +
-                                "to unsave Favorites at this time:\nThe admin has been " +
-                                "notified";
-                            alert(msg);
-                            var ajaxerr = "Trying to access markFavorites.php: delete;\nError text: " +
-                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                _jqXHR.responseText;
-                            var errobj = { err: ajaxerr };
-                            $.post('../php/ajaxError.php', errobj);
-                        }
+                        var msg = "sideTracks.js: attempting to unmark " +
+                            "a user favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             }

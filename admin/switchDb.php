@@ -21,4 +21,5 @@ foreach ($values as &$line) {
     }
 }
 file_put_contents($mode_settings, $values);
+sleep(1);
 header("Location: admintools.php");

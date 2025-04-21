@@ -417,13 +417,11 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function() {
-                        let msg = "A server error occurred\nYou will not be able " +
-                        "to save Favorites at this time:\nThe admin has been " +
-                        "notified";
-                        alert(msg);
-                        let ajxerr = {err: "Mark favorites php error: save"};
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function(_jqXHR, _textStatus, _errorThrown) {
+                        let msg = "sideTables.js: attempting to mark user " +
+                            "favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
+                    
                     }
                 });
             } else { // currently a favorite
@@ -445,13 +443,10 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function() {
-                        let msg = "A server error occurred\nYou will not be able " +
-                            "to unsave Favorites at this time:\nThe admin has been " +
-                            "notified";
-                        alert(msg);
-                        let ajxerr = {err: "Mark favorites php error: unsave"};
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function(_jqXHR, _textStatus, _errorThrown) {
+                        let msg = "sideTracks.js: attempting to unmark " +
+                            "a user favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             }

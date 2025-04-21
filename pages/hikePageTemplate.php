@@ -42,18 +42,6 @@ if ($mobileTesting) {
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
     <script type="text/javascript">
-        var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
-        isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
-            true : false;
-        isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
-            true : false;
-        isAndroid = navigator.userAgent.toLowerCase().match(/android/i) ?
-            true : false;
-        isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i) ?
-            true : false;
-        isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
-            true : false;
-        mobile = isMobile && !isTablet;
         if (mobile) {
             // redirect to mobile page
             window.open(

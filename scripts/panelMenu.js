@@ -273,6 +273,7 @@ $(function () {
         return;
     });
     $('#login').on('click', function () {
+        // there is no error callback for $.get
         $.get('../accounts/lockStatus.php', function (lock_status) {
             if (lock_status.status !== "ok") {
                 $('.lomin').text(lock_status.minutes);
@@ -317,22 +318,9 @@ $(function () {
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
                 $('#email').css('color', 'red');
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var msg = "An error has occurred: " +
-                        "We apologize for any inconvenience\n" +
-                        "The webmaster has been notified; please try again later";
-                    alert(msg);
-                    var ajaxerr = "Trying to send 'Reset Password' email\n" +
-                        "Error text: " + _textStatus + "; Error: " +
-                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                }
+                var msg = "panelMenu.js: Trying to send a reset mail " +
+                    "for " + email + " via resetMail.php";
+                ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
     });
@@ -345,22 +333,8 @@ $(function () {
                 window.open('../index.html', '_self');
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var msg = alert("Failed to execute logout;\n" +
-                        "We apologize for any inconvenience\n" +
-                        "The webmaster has been notified; please try again later");
-                    alert(msg);
-                    var ajaxerr = "Trying to logout;\nError text: " +
-                        _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
-                        _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                }
+                var msg = "panelMenu.js:failure to logout (logout.php)";
+                ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
         return;
@@ -370,6 +344,7 @@ $(function () {
         return;
     });
     $('#updte_sec').on('click', function () {
+        // there is  no error callback for $.post()
         $.post('../accounts/usersQandA.php', function (data) {
             $('#uques').empty();
             $('#uques').append(data);
@@ -398,6 +373,7 @@ $(function () {
             });
             var ques = modq.join();
             var ajaxdata = { questions: ques, an1: moda[0], an2: moda[1], an3: moda[2] };
+            // no error callback for $.post()
             $.post('../accounts/updateQandA.php', ajaxdata, function (result) {
                 if (result === 'ok') {
                     alert("Updated Security Questions");
@@ -425,22 +401,9 @@ $(function () {
                 newpgs.show();
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var msg = "An error has occurred: " +
-                        "We apologize for any inconvenience\n" +
-                        "The webmaster has been notified; please try again later";
-                    alert(msg);
-                    var ajaxerr = "Trying to access Latest Hikes\nError text: " +
-                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                        _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                }
+                var msg = "panelMenu.js: attempting to access latest " +
+                    "hikes via newHikes.php";
+                ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
     });

@@ -54,7 +54,6 @@ chdir($startDir);
     <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
-
 </head>
 
 <body>

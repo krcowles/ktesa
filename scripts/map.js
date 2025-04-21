@@ -588,22 +588,9 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             deferred.resolve();
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            }
-            else { // production
-                var msg = 'Did not succeed in getting track data: ' +
-                    json_filename + "\nWe apologize for any inconvenience\n" +
-                    "The webmaster has been notified; please try again later";
-                alert(msg);
-                var ajaxerr = "Trying to access " + json_filename +
-                    ";\nError text: " + _textStatus + "; Error: " +
-                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
-                var errobj = { err: ajaxerr };
-                $.post('../php/ajaxError.php', errobj);
-            }
+            var msg = "map.js: Trying to access" + json_filename +
+                " in drawTrack()";
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
             deferred.reject();
         }
     });

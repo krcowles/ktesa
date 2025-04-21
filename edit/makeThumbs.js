@@ -280,6 +280,7 @@ $('#redo_thumb').on('click', function (ev) {
     else {
         post_data = { fonly: 'y', indxNo: indxNo, img: img2delete };
     }
+    // there is no error callback for $.post()
     $.post('deletePreview.php', post_data, function (result) {
         if (result === 'OK') {
             // note: using reload() can return the user to tab1
@@ -397,22 +398,9 @@ function saveOrder(sortdata) {
             $('#f2').trigger('submit');
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            }
-            else { // production
-                var msg = "An error has occurred: " +
-                    "We apologize for any inconvenience\n" +
-                    "The webmaster has been notified; please try again later";
-                alert(msg);
-                var ajaxerr = "Trying to access [];\nError text: " +
-                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                    _jqXHR.responseText;
-                var errobj = { err: ajaxerr };
-                $.post('../php/ajaxError.php', errobj);
-            }
+            var msg = "makeThumbs.js: attempting to save photo order " +
+                "via saveOrder.php";
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
     });
 }
@@ -442,22 +430,9 @@ function saveImages(ajaxdata) {
             }
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            }
-            else { // production
-                var msg = "An error has occurred: " +
-                    "We apologize for any inconvenience\n" +
-                    "The webmaster has been notified; please try again later";
-                alert(msg);
-                var ajaxerr = "Trying to access [];\nError text: " +
-                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                    _jqXHR.responseText;
-                var errobj = { err: ajaxerr };
-                $.post('../php/ajaxError.php', errobj);
-            }
+            var msg = "makeThumbs.js: attempting to save preview " +
+                "via savePreview.php";
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
     });
 }
