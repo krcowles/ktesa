@@ -105,10 +105,6 @@ function initMap() {
         maxWidth: 400
     });
     var markers = nm_marker_data.map(function (mrkr_data) {
-        var favpin = new google.maps.marker.PinElement({
-            glyphColor: "white",
-            scale: 0.8
-        });
         var trailhead = document.createElement("IMG");
         trailhead.src = "../images/trailhead.png";
         var position = mrkr_data.position;
@@ -238,22 +234,8 @@ function drawTrack(jsonfile, color, ptr, def) {
             def.resolve();
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            if (appMode === 'development') {
-                var newDoc = document.open();
-                newDoc.write(_jqXHR.responseText);
-                newDoc.close();
-            }
-            else { // production
-                var msg = "An error has occurred: " +
-                    "We apologize for any inconvenience\n" +
-                    "The webmaster has been notified; please try again later";
-                alert(msg);
-                var ajaxerr = "Trying to access json file: ".concat(jsonfile, ";\n") +
-                    "Error text: ".concat(_textStatus, "; Error: ").concat(_errorThrown, "\n") +
-                    "jqXHR: ".concat(_jqXHR.responseText);
-                var errobj = { err: ajaxerr };
-                $.post('../php/ajaxError.php', errobj);
-            }
+            var msg = "fmap.js: attempting to retrieve " + jsonfile;
+            ajaxError(appMode, _jqXHR, _textStatus, msg);
             def.reject();
         }
     });

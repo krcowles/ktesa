@@ -135,7 +135,8 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Trying to access dupCheck via duplicate email\n" +
+                            var ajaxerr = "unifiedLogin.js: Trying to access dupCheck.php " +
+                                "from duplicateEmail()\n" +
                                 "Error text: " + _textStatus + "; Error: " +
                                 _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                             var errobj = { err: ajaxerr };
@@ -201,7 +202,8 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Trying to get Users list from dupCheck.php (uniqueuser);\n" +
+                            var ajaxerr = "unifiedLogin.js: Trying to get Users list from " +
+                                "dupCheck.php in uniqueuser();\n" +
                                 "Error text: " + _textStatus + "; Error: " + _errorThrown +
                                 ";\njqXHR: " + _jqXHR.responseText;
                             var errobj = { err: ajaxerr };
@@ -248,6 +250,7 @@ $(function () {
                                 "due to an error; The admin has been notified.";
                             alert(err);
                             var ajaxerr = { err: result };
+                            // there is no error callback in $.post
                             $.post('../php/ajaxError.php', ajaxerr);
                         }
                         else {
@@ -273,12 +276,14 @@ $(function () {
                                         alert("There was a problem with the email you supplied\n" +
                                             "The admin has been notified");
                                         $('#email').css('color', 'red');
-                                        var ajaxerr = "resetMail.php 'success' w/bad 'result'\n" +
-                                            "User email not sent, but entry has " +
-                                            "been created in USERS: " + result;
+                                        var ajaxerr = "unifiedLogin.js: attempting to access resetMail.php" +
+                                            "[successfully] " + " but with bad 'result'\n" +
+                                            "User email not sent, but entry has been created in USERS; result: " +
+                                            result;
                                         ajaxerr += "\nuser: " + proposed_name + " email: " +
                                             proposed_email;
                                         var errobj = { err: ajaxerr };
+                                        // there is no error callback in $.post
                                         $.post('../php/ajaxError.php', errobj);
                                     }
                                 },
@@ -295,7 +300,7 @@ $(function () {
                                             "time.\nAn email has been sent to the admin" +
                                             " to correct the situation.";
                                         alert(err);
-                                        var ajaxerr = "Server error: cleanup USERS\n" +
+                                        var ajaxerr = "unifiedLogin.js: Server error: cleanup USERS\n" +
                                             "registrant; resetMail.php access failed:\n" +
                                             "Error text: " + _textStatus + "; Error: " +
                                             _errorThrown + "\njqXHR: " + _jqXHR.responseText +
@@ -318,10 +323,12 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Trying to access create_user.php/registration;\n" +
+                            var ajaxerr = "unifiedLogin.js: Trying to access " +
+                                "create_user.php/registration via form submit;\n" +
                                 "Error text: " + _textStatus + "; Error: " +
                                 _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                             var errobj = { err: ajaxerr };
+                            // there is no error callback in $.post
                             $.post('../php/ajaxError.php', errobj);
                         }
                     }
@@ -450,7 +457,8 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Attempt to renew via create_user.php/renew\n" +
+                            var ajaxerr = "unifiedLogin.js: Attempting to renew via " +
+                                "create_user.php/renew in form submit\n" +
                                 _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
                                 _jqXHR.responseText;
                             var errobj = { err: ajaxerr };

@@ -80,8 +80,10 @@ const saveGPS = (cbid: string) => {
                     alert("Something went wrong: notify admin")
                 }
             },
-            error: function() {
-                alert("Could not update location: notify admin")
+            error: function(_jqXHR, _textStatus, _errorThrown) {
+                let msg = "photoSelect.js: trying to set photo location " +
+                    "in saveGPS() [setLocations.php]";
+                ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
         return;

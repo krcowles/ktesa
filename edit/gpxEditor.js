@@ -160,6 +160,7 @@ function Previews(action) {
             var undo_dat = { seqno: seqix, starts: sid, deletes: dels };
             undos.push(undo_dat);
             var ajaxdata = { type: 'del', trk: trackno, first: sid, last: eid };
+            // no error callback for $.post()
             $.post("updateGPX.php", ajaxdata);
         }
     }
@@ -237,6 +238,7 @@ function setNewTrack() {
             'fontWeight': 'bold'
         });
         var ajaxdata = { type: 'mod', trk: trackno, pt: ev, lat: newlat, lng: newlng };
+        // no error callback for $.post()
         $.post("updateGPX.php", ajaxdata);
     });
     google.maps.event.addListener(gpxtrack.getPath(), 'insert_at', function (ev) {
@@ -255,6 +257,7 @@ function setNewTrack() {
             'fontWeight': 'bold'
         });
         var ajaxdata = { type: 'add', trk: trackno, pt: ev, lat: alat, lng: alng };
+        // no error callback for $.post()
         $.post("updateGPX.php", ajaxdata);
     });
     gpxtrack.addListener('mouseover', function (ev) {
@@ -316,6 +319,7 @@ $('#udel').on('click', function () {
     trk_json.splice.apply(trk_json, __spreadArray([insertPt, 0], restores, false));
     var serial_undos = JSON.stringify(restores);
     var ajaxdata = { type: 'undo', trk: trackno, start: insertPt, undos: serial_undos };
+    // no error callback for $.post()
     $.post("updateGPX.php", ajaxdata);
     if (undos.length === 0) {
         (_a = document.getElementById('udel')) === null || _a === void 0 ? void 0 : _a.setAttribute('disabled', 'disabled');

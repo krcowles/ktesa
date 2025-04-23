@@ -71,10 +71,11 @@ $('#send').on('click', function (ev) {
                     "We apologize for any inconvenience\n" +
                     "The webmaster has been notified; please try again later";
                 alert(msg);
-                var ajaxerr = "Trying to send 'Reset Password' email\n" +
-                    "Error text: " + _textStatus + "; Error: " +
+                var ajaxerr = "validateUser.js: Trying to send 'Reset Password' " +
+                    "email\nError text: " + _textStatus + "; Error: " +
                     _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                 var errobj = { err: ajaxerr };
+                // there is no error callback for $.post
                 $.post('../php/ajaxError.php', errobj);
             }
         }
@@ -126,6 +127,7 @@ $('#closesec').on('click', function () {
         var ques = modq.join();
         var ajaxdata = { questions: ques, an1: moda[0], an2: moda[1],
             an3: moda[2], ix: tbl_indx };
+        // there is no error callback for $.post()
         $.post('../accounts/updateQandA.php', ajaxdata, function (result) {
             if (result === 'ok') {
                 if (sec0) { // more temporary security updates...
@@ -160,12 +162,14 @@ $('#submit_answer').on('click', function () {
     var usubmitted = $('#the_answer').val();
     usubmitted = usubmitted.toLowerCase();
     var postdata = { ix: tbl_indx, rx: random };
+    // there is no error callback for $.post
     $.post('../accounts/retrieveAnswer.php', postdata, function (ans) {
         var msg = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ? "Admin logged in" :
             "You are logged in";
         if (usubmitted === ans) {
             $('#the_answer').val("");
             var ajaxdata = { ix: tbl_indx };
+            // there is no error callback for $.post
             $.post('../accounts/login.php', ajaxdata, function (status) {
                 if (status === 'OK') {
                     alert(msg);
@@ -323,10 +327,11 @@ function validateUser(user, password) {
                     "We apologize for any inconvenience\n" +
                     "The webmaster has been notified; please try again later";
                 alert(msg);
-                var ajaxerr = "Trying to access autenticate.php;\nError text: " +
-                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                    _jqXHR.responseText;
+                var ajaxerr = "validateUSer.js: Trying to access autenticate.php;" +
+                    "\nError text: " + _textStatus + "; Error: " + _errorThrown +
+                    ";\njqXHR: " + _jqXHR.responseText;
                 var errobj = { err: ajaxerr };
+                // there is no error callback for $.post
                 $.post('../php/ajaxError.php', errobj);
             }
         }

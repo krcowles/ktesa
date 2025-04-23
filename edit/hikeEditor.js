@@ -198,22 +198,9 @@ $(function () {
                                 } // no other results available in script
                             },
                             error: function (_jqXHR, _textStatus, _errorThrown) {
-                                if (appMode === 'development') {
-                                    var newDoc = document.open();
-                                    newDoc.write(_jqXHR.responseText);
-                                    newDoc.close();
-                                }
-                                else { // production
-                                    var msg = "An error has occurred: " +
-                                        "We apologize for any inconvenience\n" +
-                                        "The webmaster has been notified; please try again later";
-                                    alert(msg);
-                                    var ajaxerr = "Trying to access notifyAdmin.php;\nError text: " +
-                                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                        _jqXHR.responseText;
-                                    var errobj = { err: ajaxerr };
-                                    $.post('../php/ajaxError.php', errobj);
-                                }
+                                var msg = "hikeEditor.js: attempting to access " +
+                                    "notifyAdmin.php";
+                                ajaxError(appMode, _jqXHR, _textStatus, msg);
                             }
                         });
                     }
@@ -221,8 +208,10 @@ $(function () {
                         alert(result);
                     }
                 },
-                error: function () {
-                    alert("Server failure: notify admin");
+                error: function (_jqXHR, _textStatus, _errorThrown) {
+                    var msg = "hikeEditor.js: attempting to validate request " +
+                        "via validatePubRequest.php";
+                    ajaxError(appMode, _jqXHR, _textStatus, msg);
                 }
             });
         });

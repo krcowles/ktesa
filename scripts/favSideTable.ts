@@ -5,6 +5,7 @@ declare var map: google.maps.Map;      // fmap.js
 declare var map_bounds: google.maps.LatLngBounds; // fmap.js
 declare var colors: string[];          // fmap.js
 declare function locateGeoSym(): void; // fmap.js
+declare function ajaxError(mode: string, xhrObj: object, status: string, attempting: string): void;
 /**
  * @file This file was created as a simplification of sideTables.ts/js code,
  * which contains a significant amount of code not required by the Favorites page.
@@ -262,22 +263,9 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                         }
                     },
                     error: function(_jqXHR, _textStatus, _errorThrown) {
-                        if (appMode === 'development') {
-                            var newDoc = document.open();
-                            newDoc.write(_jqXHR.responseText);
-                            newDoc.close();
-                        }
-                        else { // production
-                            let msg = "A server error occurred\nYou will not be able " +
-                                "to save Favorites at this time:\nThe admin has been " +
-                                "notified";
-                            alert(msg);
-                            var ajaxerr = "Trying to access markFavorites.php: add;\nError text: " +
-                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                _jqXHR.responseText;
-                            var errobj = { err: ajaxerr };
-                            $.post('../php/ajaxError.php', errobj);
-                        }
+                        let msg = "favSideTable.js: attempting to mark user " +
+                            "favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             } else { // currently a favorite
@@ -298,22 +286,9 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                         }
                     },
                     error: function(_jqXHR, _textStatus, _errorThrown) {
-                        if (appMode === 'development') {
-                            var newDoc = document.open();
-                            newDoc.write(_jqXHR.responseText);
-                            newDoc.close();
-                        }
-                        else { // production
-                            let msg = "A server error occurred\nYou will not be able " +
-                                "to unsave Favorites at this time:\nThe admin has been " +
-                                "notified";
-                            alert(msg);
-                            var ajaxerr = "Trying to access markFavorites.php: delete;\nError text: " +
-                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
-                                _jqXHR.responseText;
-                            var errobj = { err: ajaxerr };
-                            $.post('../php/ajaxError.php', errobj);
-                        }
+                        let msg = "sideTracks.js: attempting to unmark " +
+                            "a user favorite (markFavorites.php)";
+                        ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             }
