@@ -41,15 +41,6 @@ if ($mobileTesting) {
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
-    <script type="text/javascript">
-        if (mobile) {
-            // redirect to mobile page
-            window.open(
-                "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>",
-                "_self"
-            ); // Safari did not got to the mobile page with target of "_blank"
-    }
-    </script>
 </head>
      
 <body>
@@ -69,6 +60,15 @@ if ($mobileTesting) {
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
+<script type="text/javascript">
+    if (mobile) {
+        // redirect to mobile page
+        window.open(
+            "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>",
+            "_self"
+        ); // Safari did not got to the mobile page with target of "_blank"
+    }
+    </script>
 <p id="trail"><?= $hikeTitle;?></p>
 
 <p id="index" style="display:none;"><?=$hikeIndexNo;?></p>
