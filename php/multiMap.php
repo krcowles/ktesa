@@ -4,7 +4,7 @@
  * more track files [hence the script name 'multiMap']. This module can
  * be included by any of three possible sources, each of which can specify
  * optional elements to be included:
- *      1. "Draw Map" button on Table Only page (tableOnly.php)
+ *      1. "Draw Map" button on Table Only page (tableOnly.php/map-multiples.js)
  *      2. Hike Page via hikePageTemplate.php   (hikePageData.php)
  *      3. Full page map via link on Hike Page  (fullPgMapLink.php)
  * Optional elements are waypoints and photo markers.
@@ -15,6 +15,9 @@
  * @license None at this time
  */
 require_once "../php/global_boot.php";
+
+$pub_hikes_req = "SELECT `indxNo` FROM `HIKES`;";
+$pub_hikes = $pdo->query($pub_hikes_req)->fetchAll(PDO::FETCH_COLUMN);
 
 $tblOnly = isset($hikeIndexNo) ? false : true;
 // tblOnly files are input via query string as an array of track names
@@ -103,6 +106,9 @@ foreach ($hike_tracks as $json) {
      *   ---- ESTABLISH ANY WAYPOINTS ----
      */
     if (isset($hikeIndexNo)) {
+        if (!in_array($hikeIndexNo, $pub_hikes)) {
+            die("You are trying to access a hike that does not exist...");
+        }
         $getAllWptsReq
             = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo}";
         $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_ASSOC);

@@ -3,10 +3,10 @@
  * This file is utilized when the user clicks on the hike page link to display
  * a full-page map, OR when the link is copied into the url without being on
  * the hike page. 
- * PHP Version 7.1
+ * PHP Version 8.3.9
  * 
- * @package GPSV_Mapping
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
 require "../php/global_boot.php";

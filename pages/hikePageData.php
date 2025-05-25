@@ -8,11 +8,10 @@
  * the page-in-edit is currently published (positive) or not (negative)]. If the
  * script was invoked via a link from standard published page code, e.g. map
  * link, the $clusterPage will be 'y'.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @license No license to date
  */
 
@@ -69,7 +68,8 @@ $basicPDO = $pdo->prepare($basic);
 $basicPDO->execute(["indxNo" => $hikeIndexNo]);
 $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
 if (empty($row)) {
-    throw new Exception("Hike index {$hikeIndexNo} not found");
+    //throw new Exception("Hike index {$hikeIndexNo} not found");
+    die("You are attempting to access a page that does not exist...");
 }
 $hikeTitle      = $row['pgTitle'];
 $hikeLocale     = $row['locale'];
