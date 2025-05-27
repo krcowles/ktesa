@@ -31,7 +31,7 @@ if (isset($_SESSION['userid'])) {  // since session may have expired
         $admin = true;
     }
 }
-if (!$admin) {
+if (!$admin && !isset($_GET['sess_only'])) {
     setcookie('nmh_id', '', 0, '/');
 }
 unset($_SESSION['username']);
