@@ -45,8 +45,8 @@
     <?php endif; ?>
     <span class="brown">Upload main/new gpx file:&nbsp;</span>
     <input id="gpxfile1" type="file" name="newgpx" /><br />
-    To reduce elevation 'jitter' in your gpx file, visit <a href=
-            "https://www.gpsvisualizer.com/elevation">Elevation DEM</a>
+    To add elevation data or reduce elevation 'jitter' in your gpx file, visit
+        <a href="https://www.gpsvisualizer.com/elevation">Elevation DEM</a>
 </div>
 
 <?php
