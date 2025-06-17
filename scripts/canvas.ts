@@ -10,6 +10,7 @@
  * @author Ken Cowles
  * @version 1.0 First release
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Added circle fct to tag elev points for calcs
  */
 
 /**
@@ -304,6 +305,16 @@ const drawLine = function drawLine(
     context.stroke();
     context.closePath();    
 };
+const drawDot = function drawDot(
+    ctxt: CanvasRenderingContext2D,
+    x: number,
+    y: number
+): void {
+    ctxt.strokeStyle = 'DarkSlateGray';
+    ctxt.beginPath();
+    ctxt.arc(x, y, 3, 0, 2 * Math.PI);
+    ctxt.stroke();
+}
 /**
  * This function will create the 'info box' as the user mouses over the chart. The
  * box is drawn on the canvas and displays the x & y coordinate values in miles/feet.

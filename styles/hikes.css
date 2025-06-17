@@ -21,12 +21,6 @@ body {
   background-color: darkslategray;
 }
 
-/* No longer a text item
-.navbar-brand {
-    color: $brand !important;
-    font-style: italic;
-}
-*/
 .nav-link {
   color: whitesmoke !important;
 }
@@ -191,7 +185,7 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-#cookie_state, #admin, #contrib, #admintools {
+#cookie_state, #admin, #contrib, #admintools, #club_member {
   display: none;
 }
 

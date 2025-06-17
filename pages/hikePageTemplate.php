@@ -199,6 +199,36 @@ if ($mobileTesting) {
         </div>
     </div>
 </div>
+<!-- Echart Differences -->
+<div class="modal" id="ediff" tabindex="-1"
+    aria-labelledby="Two Chart Point Differences" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Difference Between Points</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Differences between point A and point B:</h5>
+                <ul id="edelts">
+                    <li>Miles: <span id="emiles"></span></li>
+                    <li>Elevation: <span id="eelev"></span></li>
+                </ul>
+                <h5>Click on the 'Clear' Button to reset the
+                    chart before closing
+                </h5>  
+            </div>
+            <div class="modal-footer">
+                <button id="eclr" type="button" class="btn btn-success"
+                    onclick="clearChart()">Clear</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     // some vars not set for Cluster Pages...

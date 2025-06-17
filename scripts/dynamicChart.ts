@@ -28,7 +28,11 @@ interface GPSCoords {
     lat: number;
     lng: number;
 }
-
+interface ChartSetPoint {
+    set: boolean;
+    miles: number;
+    elev: number;
+}
 /**
  * @fileoverview This file supplies functions and variables to draw
  * an elevation profile on the page with a given gpx track name. It
@@ -43,6 +47,7 @@ interface GPSCoords {
  * @version 4.1 Modified viewport calculations to improve zoom performance
  * @version 4.2 Segregated #adnote for inclusion only in non-mobile case
  * @version 4.3 Fixed #advisory positioning when scrolling
+ * @version 5.0 Added echart measurement between points
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames: string[] = [];
@@ -54,11 +59,19 @@ var canvasEl = <HTMLCanvasElement>document.getElementById('grph');
 var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
+var imageData = new ImageData(10, 10);
+var clearModal = document.getElementById('ediff') as HTMLDivElement;
+var clearPoints = new bootstrap.Modal(clearModal); 
 // vars for setting chart dimension;
 var fullWidth: number;
 var chartHeight: number;
+// vars for measuring between points:
+var pointA = {set: false, miles: 0, elev: 0} as ChartSetPoint;
+var pointB = {set: false, miles: 0, elev: 0} as ChartSetPoint;
+var clrBtn = document.getElementById('eclr') as HTMLButtonElement;
 // misc.
-var cluspage = $('#cpg').text() === 'yes' ? true : false;
+const $dnote
+    = $('<div><em>Click points on chart to calculate differences</em></div>');var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
 var trackNumber: number;   // global used to identify current active track (topmost in tracklist)
 var chartConst: number;
@@ -105,6 +118,11 @@ else {
     chartConst = 1.0000;
 }
 $jqnote.hide();
+function clearChart(): void {
+    drawChart(trackNumber);
+    pointA = {set: false, miles: 0, elev: 0};
+    pointB = {set: false, miles: 0, elev: 0};
+}
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
@@ -255,6 +273,18 @@ setChartDims();
     $('iframe').width(chartWidth);
     return;
 }
+const chartNote = () => {
+    const cloc = canvasEl.getBoundingClientRect();
+    $dnote.css({
+        top: cloc.top,
+        left: cloc.left + 74,
+        zIndex: '500',
+        position: 'absolute',
+        display: 'inline-block',
+        color: 'brown'
+    });
+    $('#chartline').append($dnote);
+}
 /**
  * This function will draw the selected elevation profile in the canvas element
  * Note however that the sidepanel data may not correspond to the track -number-
@@ -262,7 +292,7 @@ setChartDims();
  * Therefore, use the name of the track from gpsvTracks.
  */
 function drawChart(trackNo: number) {
-    var chartData: ChartData = defineData(trackNo);
+    const chartData: ChartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
@@ -271,8 +301,10 @@ function drawChart(trackNo: number) {
             chartPlaced.resolve();
         }
     }
+    chartNote();
     return;
 }
+
 /**
  * The data being sent to the ChartObj is supplied here
  */
@@ -296,8 +328,6 @@ function defineData(track: number): ChartData {
  * of the elevation profile chart
  */
 function crossHairs(trackno: number) {
-    // onmouseout needs to have initialized ImageData() interface object:
-    var imageData = new ImageData(10, 10);
     canvasEl.onmousemove = function (e) {
         var loc = window2canvas(canvasEl, e.clientX, e.clientY);
         coords = dataReadout(loc, trackno);
@@ -323,6 +353,34 @@ function crossHairs(trackno: number) {
         let mapFrame = <HTMLIFrameElement>document.getElementById('mapline');
         let mapFrameWin = <MapWindow>mapFrame.contentWindow;
         mapFrameWin.chartMrkr.setMap(null);
+    }
+    canvasEl.onmousedown = function (e) {
+        const ctxt = <CanvasRenderingContext2D>canvasEl.getContext("2d");
+        var loc = window2canvas(canvasEl, e.clientX, e.clientY);
+        var mark = dataReadout(loc, trackno);
+        if (mark.x !== -1) {
+            if (!pointA.set) {
+                pointA.set = true;
+                pointA.miles = mark.x;
+                pointA.elev = mark.y;
+                drawDot(ctxt, mark.px as number, mark.py as number);
+                imageData = ctxt.getImageData(0, 0, canvasEl.width, canvasEl.height)
+            } else if (!pointB.set) {
+                pointB.set = true;
+                pointB.miles = mark.x;
+                pointB.elev = mark.y;
+                drawDot(ctxt, mark.px as number, mark.py as number);
+                const mdiff = (pointB.miles - pointA.miles).toFixed(2);
+                const melev = (pointB.elev  - pointA.elev).toFixed(1);
+                const modal_miles = document.getElementById('emiles') as HTMLSpanElement;
+                const modal_elev  = document.getElementById('eelev') as HTMLSpanElement;
+                modal_miles.textContent = mdiff;
+                modal_elev.textContent = melev;
+                imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
+                ctxt.putImageData(imageData, 0, 0);
+                clearPoints.show();
+            }
+        }
     }
     return;
 }
@@ -416,6 +474,7 @@ function findNeighbors(xDataPt: number, trackno: number): Bounds {
  */
 $(window).on('resize', function() {
     if (do_resize) {
+        $dnote.remove();
         prevCHairs = false;
         do_resize = false;
         setTimeout( function() {
@@ -424,7 +483,8 @@ $(window).on('resize', function() {
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);
-            do_resize = true; 
+            chartNote();
+            do_resize = true;
         }, 300);      
     } 
     return; 
