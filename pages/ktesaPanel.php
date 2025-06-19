@@ -277,6 +277,9 @@ if (isset($_SESSION['userid'])) {
                         <li><a id="latest" class="dropdown-item" href="#">
                             Recent Hikes</a>
                         </li>
+                        <li><a class="dropdown-item" href="../pages/additionals.php">
+                            Unlisted Hikes</a>
+                        </li>
                         <li id="hiking_club"><a class="dropdown-item"
                             href="../pages/clubAssets.php">Club Assets</a>
                         </li>

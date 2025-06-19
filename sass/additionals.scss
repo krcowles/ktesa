@@ -1,0 +1,28 @@
+@use "body" as *;
+@use "colors" as *;
+@use "ktesaNavbar" as *;
+
+#container {
+	margin: 1rem 2rem 0 3rem
+}
+table {
+	margin-top: 1rem;
+	border: 1px solid;
+	border-collapse: collapse;
+}
+table thead {
+	border: 2px solid;
+}
+table td {
+	border: 1px solid;
+	padding: 2px 6px 2px 8px;
+}
+table th {
+	padding: 2px 6px 2px 8px;
+	background-color: darkslategray;
+	color: floralwhite;
+	height: 40px;
+}
+table tr:nth-child(even) {
+	background-color: floralWhite;
+}
