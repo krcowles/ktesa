@@ -11,6 +11,7 @@
  * @author Ken Cowles
  * @version 1.0 First release
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Added circle fct to tag elev points for calcs
  */
 /**
  * Globals are used to pass data in the chart rendering functions without
@@ -295,6 +296,12 @@ var drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWi
     context.lineTo(endX, endY);
     context.stroke();
     context.closePath();
+};
+var drawDot = function drawDot(ctxt, x, y) {
+    ctxt.strokeStyle = 'DarkSlateGray';
+    ctxt.beginPath();
+    ctxt.arc(x, y, 3, 0, 2 * Math.PI);
+    ctxt.stroke();
 };
 /**
  * This function will create the 'info box' as the user mouses over the chart. The

@@ -138,7 +138,6 @@ if ($addcnt > 0) {
  *
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
-session_start();
 $alert_set = false;
 unset($_SESSION['uplmsg']);
 $_SESSION['gpsmsg'] = '';

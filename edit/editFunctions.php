@@ -752,6 +752,21 @@ function getTrackFileNames($pdo, $hikeNo, $state)
     }
     return [$track_array, $track_string, $mainfile];
 }
+
+/**
+ * From a file that contains json track data, extract only the track
+ * name.
+ * 
+ * @param string $filename The file name holding the json track data
+ * 
+ * @return string The track name
+ */
+function getTrackNameFromFile($filename)
+{
+    $track = file_get_contents("../json/{$filename}");
+    $json = json_decode($track, true);
+    return $json['name'];
+}
 /**
  * Replacement for former gpxFunction: getTrackDistAndElev.
  * gpxFunctions.php no longer exists. This function will

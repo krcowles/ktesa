@@ -137,8 +137,9 @@ $btncolor = empty($preview_name) ? "btn-warning" : "btn-success";
 $org_prev = '';
 if ($status == 'old') {
     $orgpic
-        = $pdo->query("SELECT `preview` FROM `HIKES` WHERE `indxNo`={$hike['stat']};")
-        ->fetch(PDO::FETCH_ASSOC);
+        = $pdo->query(
+            "SELECT `preview` FROM `HIKES` WHERE `indxNo`={$hike['stat']};"
+        )->fetch(PDO::FETCH_ASSOC);
     $org_prev = $orgpic['preview'];
 }
 

@@ -14,6 +14,7 @@
  * @version 4.1 Modified viewport calculations to improve zoom performance
  * @version 4.2 Segregated #adnote for inclusion only in non-mobile case
  * @version 4.3 Fixed #advisory positioning when scrolling
+ * @version 5.0 Added echart measurement between points
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames = [];
@@ -25,10 +26,18 @@ var canvasEl = document.getElementById('grph');
 var coords; // x,y location of mouse in chart
 var indxOfPt;
 var prevCHairs = false;
+var imageData = new ImageData(10, 10);
+var clearModal = document.getElementById('ediff');
+var clearPoints = new bootstrap.Modal(clearModal);
 // vars for setting chart dimension;
 var fullWidth;
 var chartHeight;
+// vars for measuring between points:
+var pointA = { set: false, miles: 0, elev: 0 };
+var pointB = { set: false, miles: 0, elev: 0 };
+var clrBtn = document.getElementById('eclr');
 // misc.
+var $dnote = $('<div><em>Click points on chart to calculate differences</em></div>');
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
 var trackNumber; // global used to identify current active track (topmost in tracklist)
@@ -76,6 +85,11 @@ else {
     chartConst = 1.0000;
 }
 $jqnote.hide();
+function clearChart() {
+    drawChart(trackNumber);
+    pointA = { set: false, miles: 0, elev: 0 };
+    pointB = { set: false, miles: 0, elev: 0 };
+}
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
@@ -228,6 +242,18 @@ function setChartDims() {
     $('iframe').width(chartWidth);
     return;
 }
+var chartNote = function () {
+    var cloc = canvasEl.getBoundingClientRect();
+    $dnote.css({
+        top: cloc.top,
+        left: cloc.left + 74,
+        zIndex: '500',
+        position: 'absolute',
+        display: 'inline-block',
+        color: 'brown'
+    });
+    $('#chartline').append($dnote);
+};
 /**
  * This function will draw the selected elevation profile in the canvas element
  * Note however that the sidepanel data may not correspond to the track -number-
@@ -244,6 +270,7 @@ function drawChart(trackNo) {
             chartPlaced.resolve();
         }
     }
+    chartNote();
     return;
 }
 /**
@@ -269,8 +296,6 @@ function defineData(track) {
  * of the elevation profile chart
  */
 function crossHairs(trackno) {
-    // onmouseout needs to have initialized ImageData() interface object:
-    var imageData = new ImageData(10, 10);
     canvasEl.onmousemove = function (e) {
         var loc = window2canvas(canvasEl, e.clientX, e.clientY);
         coords = dataReadout(loc, trackno);
@@ -297,6 +322,35 @@ function crossHairs(trackno) {
         var mapFrame = document.getElementById('mapline');
         var mapFrameWin = mapFrame.contentWindow;
         mapFrameWin.chartMrkr.setMap(null);
+    };
+    canvasEl.onmousedown = function (e) {
+        var ctxt = canvasEl.getContext("2d");
+        var loc = window2canvas(canvasEl, e.clientX, e.clientY);
+        var mark = dataReadout(loc, trackno);
+        if (mark.x !== -1) {
+            if (!pointA.set) {
+                pointA.set = true;
+                pointA.miles = mark.x;
+                pointA.elev = mark.y;
+                drawDot(ctxt, mark.px, mark.py);
+                imageData = ctxt.getImageData(0, 0, canvasEl.width, canvasEl.height);
+            }
+            else if (!pointB.set) {
+                pointB.set = true;
+                pointB.miles = mark.x;
+                pointB.elev = mark.y;
+                drawDot(ctxt, mark.px, mark.py);
+                var mdiff = (pointB.miles - pointA.miles).toFixed(2);
+                var melev = (pointB.elev - pointA.elev).toFixed(1);
+                var modal_miles = document.getElementById('emiles');
+                var modal_elev = document.getElementById('eelev');
+                modal_miles.textContent = mdiff;
+                modal_elev.textContent = melev;
+                imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height);
+                ctxt.putImageData(imageData, 0, 0);
+                clearPoints.show();
+            }
+        }
     };
     return;
 }
@@ -393,6 +447,7 @@ function findNeighbors(xDataPt, trackno) {
  */
 $(window).on('resize', function () {
     if (do_resize) {
+        $dnote.remove();
         prevCHairs = false;
         do_resize = false;
         setTimeout(function () {
@@ -401,6 +456,7 @@ $(window).on('resize', function () {
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);
+            chartNote();
             do_resize = true;
         }, 300);
     }
