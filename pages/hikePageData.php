@@ -168,7 +168,9 @@ if (!$clusterPage) {
     $trk_lngs = [];
     $gpsv_tick = [];
     $side_panel_data = prepareMappingData(
-        $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+        $pdo, $hike_tracks, $trk_nmes, $gpsv_trk,
+        $trk_lats, $trk_lngs, $gpsv_tick, 
+        (int) $hikeIndexNo, $htable
     );
     // Prepare SidePanel data
     $hike_data = []; // used to construct side panel
@@ -336,7 +338,9 @@ if (!$clusterPage) {
     $trk_lngs = [];
     $gpsv_tick = [];
     $pageData = prepareMappingData(
-        $tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+        $pdo, $tracks, $trk_nmes, $gpsv_trk,
+        $trk_lats, $trk_lngs, $gpsv_tick, 
+        (int) $hikeIndexNo, $htable
     );
     $main_dist = $pageData[0][0];
     $main_echg = $pageData[1][0];

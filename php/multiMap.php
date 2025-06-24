@@ -5,16 +5,21 @@
  * be included by any of three possible sources, each of which can specify
  * optional elements to be included:
  *      1. "Draw Map" button on Table Only page (tableOnly.php/map-multiples.js)
+ *          NO $hikeIndexNo or $htable
  *      2. Hike Page via hikePageTemplate.php   (hikePageData.php)
- *      3. Full page map via link on Hike Page  (fullPgMapLink.php)
+ *          $hikeIndexNo & $htable are defined here
+ *      3. Full page map via link on Hike Page  (fullPgMapLink.php):
+ *          $hikeIndexNo & $htable are defined here
  * Optional elements are waypoints and photo markers.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None at this time
  */
 require_once "../php/global_boot.php";
+$indxNo  = isset($hikeIndexNo) ? (int) $hikeIndexNo : 0;
+$hikeTbl = $htable ?? '';
 
 $pub_hikes_req = "SELECT `indxNo` FROM `HIKES`;";
 $pub_hikes = $pdo->query($pub_hikes_req)->fetchAll(PDO::FETCH_COLUMN);
@@ -30,7 +35,9 @@ if ($tblOnly) {
     $trk_lngs = [];
     $gpsv_tick = [];
     prepareMappingData(
-        $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+        $pdo, $hike_tracks, $trk_nmes, $gpsv_trk,
+        $trk_lats, $trk_lngs, $gpsv_tick,
+        $indxNo, $hikeTbl
     ); // returns miles, maxmin, asc, dsc & fills above array
     $map_opts = [
         'zoom' => 17,
@@ -133,7 +140,7 @@ foreach ($hike_tracks as $json) {
     if (!$tblOnly) {
         // see GPSVisualizer for complete list of icon styles:
         $mapicon = $defIconStyle;
-        $picReq = "SELECT * FROM {$ttable} WHERE indxNo = :hikeIndexNo;";
+        $picReq = "SELECT * FROM {$ttable} WHERE `indxNo` = :hikeIndexNo;";
         $dbdat = $pdo->prepare($picReq);
         $dbdat->bindValue(":hikeIndexNo", $hikeIndexNo);
         $dbdat->execute();

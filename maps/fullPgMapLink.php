@@ -20,6 +20,7 @@ if ($origin === 'x' || ($origin !== 'd' && $origin !== 'g')) {
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
 $table_age   = filter_input(INPUT_GET, 'tbl');
+$htable      = $table_age === 'new' ? 'EHIKES' : 'HIKES';
 $ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
 $wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
 $hike_list   = filter_input(INPUT_GET, 'json');
@@ -37,7 +38,9 @@ $trk_lats = [];
 $trk_lngs = [];
 $gpsv_tick = [];
 $pageData = prepareMappingData(
-    $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+    $pdo, $hike_tracks, $trk_nmes, $gpsv_trk, 
+    $trk_lat, $trk_lngs, 
+    $gpsv_tick, (int) $hikeIndexNo, $htable 
 ); // returns miles, maxmin, asc, dsc & fills above arrays
 
 /**

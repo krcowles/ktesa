@@ -282,7 +282,15 @@ function processGpx($pdo, $upload, $ifiles, $jfiles, $hikeNo)
 {
     $indx = array_search($upload['ifn'], $ifiles);
     $org_key = $jfiles[$indx];
-    $tmpfile = $upload['ifn'] . ".gpx";
+    $tmpfile = $upload['ifn'] . ".gpx"; // file is located in edit directory
+    if ($upload['ifn'] === 'newgpx') { // this is the only input file utilized
+        // to retrieve Ascent/Descent metadata (if present)
+        $ascent_descent = gpxAscentDescent("./{$tmpfile}");
+        $setMeta = "UPDATE `EHIKES` SET `meta`='{$ascent_descent}' WHERE " .
+            "`indxNo`={$hikeNo};";
+        $pdo->query($setMeta);
+        // NOTE: Track nos begin at 1 [not 0] in the a/d coded data retrieved
+    }
     $new_orgdat = makeTrackFiles(
         $pdo, $org_key, $upload['ufn'], $tmpfile, $hikeNo
     );
@@ -669,6 +677,92 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
     return $org_name;
 }
 /**
+ * If there is metadata in a gpx file relative to Ascent and Descent,
+ * it will be used instead of calculating this info on the hike page.
+ * The GPX Schema allows the following children of <trk>:
+ *    [name, cmt, desc, src, link, number, type, extensions, trkseg]
+ * It is assumed that any ascent/descent data is contained in the
+ * extension tag. Note that 'extensions' can contain a variety of
+ * different items, usually varying by creator: e.g. Garmin has
+ * its own set, Gaia uses 'line', etc. If no extensions, it is
+ * presumed there is no ascent/descent info. The attempts to use
+ * simpleXML fail, as it can't seem to handle the Garmin extensions:
+ * the children thereof appear blank and have no string content, (or
+ * debugger can't show it) hence I have reverted to the cumbersome but
+ * more reliable string search methods. Note that there may be more
+ * than one track in a gpx file.
+ * 
+ * @param string $gpx The gpx file location
+ * 
+ * @return string ascent/descent data, if any
+ */
+function gpxAscentDescent($gpx)
+{
+    $ad_data = [];
+    $xml = file_get_contents($gpx);
+    $trk_strs = explode("<trk>", $xml);
+    $noOfTracks = count($trk_strs);
+    if ($noOfTracks < 1) { // sanity check
+        return "";
+    }
+    for ($j=1; $j<$noOfTracks; $j++) { //  [0] has no track data
+        // Must have both Ascent and Descent:
+        if (str_contains($trk_strs[$j], "Ascent")
+            && str_contains($trk_strs[$j], "Descent")
+        ) {
+            $current = $trk_strs[$j];
+            $aloc = strpos($current, 'Ascent');
+            $bloc = strpos($current, 'Descent');
+            // Assuming Ascent/Descent are followed by tag ending ">"
+            $atxt = substr($current, $aloc+7, 50);
+            $dtxt = substr($current, $bloc+8, 50);
+            // Data is between tag and closing tag
+            $aclose = strpos($atxt, "<");
+            $bclose = strpos($dtxt, "<");
+            $ascent  = substr($atxt, 0, $aclose);
+            $descent = substr($dtxt, 0, $bclose);
+            $data = "{$j}:{$ascent}/{$descent}";
+        } else {
+            $data = "{$j}:0/0";
+        }
+        array_push($ad_data, $data);
+    }
+    $return_data = implode(",", $ad_data);
+    return $return_data;
+    /*
+    $track = $gpx_xml->trk;
+    $data = [0, 0];
+    if ($track->hasChildren()) {
+        $trk_children = $track->getChildren();
+        foreach ($trk_children as $child) {
+            $trk_tag = $child->getName();
+            // lookd for 'extensions' where presumed data resides
+            if ($trk_tag === 'extensions') {
+                $ext_items = $gpx_xml->trk->extensions;
+                // if the tag exists, it is presumed there are children:
+                if ($ext_items->hasChildren()) {
+                    $child_count = $ext_items->count();
+                    if ($child_count === 1) {
+                        // Garmins various children don't show up here
+                        $ext_els = $ext_items->getChildren();
+                        $contents = $ext_els->__toString();
+                    }
+                    foreach ($ext_els as $sxml) {
+                        $tag = $sxml->getName();
+                        $name = strtolower($tag);
+                        if (str_contains($name, 'ascent')) {
+                            $data[0] = $sxml;
+                        } else if (str_contains($name, 'descent')) {
+                            $data[1] = $sxml;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    */
+}
+/**
  * An often required function is presented to simplify access to the
  * gpx field and convert the contents to a corresponding php array.
  * 
@@ -767,6 +861,7 @@ function getTrackNameFromFile($filename)
     $json = json_decode($track, true);
     return $json['name'];
 }
+
 /**
  * Replacement for former gpxFunction: getTrackDistAndElev.
  * gpxFunctions.php no longer exists. This function will
@@ -784,6 +879,8 @@ function getGpxStats($xml_data, $track_no)
     if ($xml_data->rte->count() > 0) {
         $xml_data = convertRtePts($xml_data);
     }
+    // Look for any ascent/descent metadata
+
     $track_pts = [];
     $noOfSegs = $xml_data->trk[$track_no]->trkseg->count();
     for ($i=0; $i<$noOfSegs; $i++) {
@@ -911,25 +1008,55 @@ function trackStats($json_data, $trkname, &$lats, &$lngs, &$ticks, $trackno)
  * 'fillGpsvTemplate.php', those routines expect to have certain variables
  * pre-defined. This function establishes those variables derivable from
  * the json track files. The calculations performed also extract info for
- * the hike page side panel and that data is returned as a set of arrays
+ * the hike page side panel and that data is returned as a set of arrays.
+ * This function is invoked (currently) in 'fullPgMapLink.php', twice in
+ * 'hikePageData.php', and 'multiMap.php', where each script has access to
+ * the hike's indxNo.
  * 
- * @param array $tracks    An array of all track names (json files) to be mapped
- * @param array $trk_nmes  An array in caller holding the names of the tracks
- * @param array $gpsv_trk  An array in caller holding the gpsv-style track data
- * @param array $trk_lats  An array in caller holding lats stored in the files
- * @param array $trk_lngs  An array in caller holding lngs stored in the files
- * @param array $gpsv_tick An array in caller holding 
+ * @param PDO    $pdo       Database connection
+ * @param array  $tracks    An array of all track names (json files) to be mapped
+ * @param array  $trk_nmes  An array in caller holding the names of the tracks
+ * @param array  $gpsv_trk  An array in caller holding the gpsv-style track data
+ * @param array  $trk_lats  An array in caller holding lats stored in the files
+ * @param array  $trk_lngs  An array in caller holding lngs stored in the files
+ * @param array  $gpsv_tick An array in caller holding 
+ * @param int    $hikeNo    The hike page's indxNo
+ * @param string $table     Which database table to use [HIKES or EHIKES]
  * 
  * @return array calc data for side panel; $gpsv_trk = [];
  */
 function prepareMappingData(
-    $tracks, &$trk_nmes, &$gpsv_trk, &$trk_lats, &$trk_lngs, &$gpsv_tick
+    $pdo, $tracks, &$trk_nmes, &$gpsv_trk, &$trk_lats, &$trk_lngs, &$gpsv_tick,
+    $hikeNo = 0, $table = '' // multiMap.php may not have $hikeNo or $table...
 ) {
-    $trkno = 1;
-    $miles  = [];
-    $maxmin = [];
-    $asc    = [];
-    $dsc    = [];
+    $trkno    = 1;
+    $miles    = [];
+    $maxmin   = [];
+    $asc      = [];
+    $dsc      = [];
+    // assume less than 10 tracks per file...
+    $meta_asc = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
+    $meta_dsc = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
+    // is ascent/descent already provided via the gpx file?
+    if ($table === 'HIKES' || $table === 'EHIKES' && $hikeNo !== 0) {
+        $gpx_metaReq = "SELECT `meta` FROM `{$table}` WHERE `indxNo`={$hikeNo};";
+        $gpx_meta = $pdo->query($gpx_metaReq)->fetch(PDO::FETCH_ASSOC);
+        if (!empty($gpx_meta['meta'])) {
+            $ad = explode(",", $gpx_meta['meta']); // 1 dataset per track
+            for ($k=0; $k<count($ad); $k++) {
+                // strip off initial track no
+                $arg1 = substr($ad[$k], 2);
+                $data = explode("/", $arg1);
+                //$masc = substr($data[0], 2);
+                //$mdsc = substr($data[1], 2);
+                if ((int) $data[0] !== 0 && (int) $data[1] !== 0) {
+                    $meta_asc[$k] = (int) $data[0];
+                    $meta_dsc[$k] = (int) $data[1];
+                }
+            }
+        }
+    }
+    $ptr = 0;
     foreach ($tracks as $json_file) {
         $trk_file = "../json/" . $json_file;
         if (!file_exists($trk_file)) {
@@ -956,10 +1083,20 @@ function prepareMappingData(
         array_push($trk_lngs, $lngs);
         array_push($gpsv_tick, $ticks);
         // side panel data for hike pages
+
         array_push($miles, $calcs[0]);
-        array_push($maxmin, ($calcs[1] - $calcs[2]));
-        array_push($asc, $calcs[3]);
-        array_push($dsc, $calcs[4]);
+        array_push($maxmin, $calcs[1] - $calcs[2]);
+        if ($meta_asc[$ptr] !== -1) {
+            array_push($asc, $meta_asc[$ptr]);
+        } else {
+            array_push($asc, $calcs[3]);
+        }
+        if ($meta_dsc[$ptr] !== -1) {
+            array_push($dsc, $meta_dsc[$ptr]);
+        } else {
+            array_push($dsc, $calcs[4]);
+        }
+        $ptr++;
     }
     return [$miles, $maxmin, $asc, $dsc];
 }
