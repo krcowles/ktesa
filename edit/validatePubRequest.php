@@ -23,7 +23,9 @@ $ehk = $pdo->prepare($query);
 $ehk->execute(["hikeNo" => $hikeNo]);
 $ehike = $ehk->fetch(PDO::FETCH_ASSOC);
 if ($ehike === false) {
-    throw new Exception("EHIKE data not found for indxNo {$hikeNo}");
+    $msgout = urlencode("EHIKE data not found for indxNo {$hikeNo}");
+    echo $msgout;
+    exit;
 }
 $clusPgField = $ehike['pgTitle']; // used if publishing a new cluster page
 $cname = $ehike['cname'];
@@ -40,7 +42,7 @@ if ($clusterPage) {
     $cdat = $clusterData->fetch(PDO::FETCH_ASSOC);
     if (is_null($cdat['lat']) || is_null($cdat['lng'])) {
         $msgout 
-            .= "Missing lat or lng for Cluster {$clusPgField}\n";
+            .= "Missing lat or lng for Cluster Page {$clusPgField}<br />";
     }
 } else {
     // Data omission here will cause issues in mapJsData.php on home page,
@@ -52,27 +54,30 @@ if ($clusterPage) {
         $clusterData->execute([$cname]);
         $clusdat = $clusterData->fetch(PDO::FETCH_ASSOC);
         if ($clusdat === false) {
-            throw new Exception("Could not find {$cname} in CLUSTERS");
+            $msgout = urlencode("Could not find {$cname} in CLUSTERS");
+            echo $msgout;
+            exit;
         }
         if (empty($clusdat['lat']) || empty($clusdat['lng'])) {
-            $msgout .= "Missing lat or lng data in CLUSTERS\n";
+            $msgout .= "Missing lat or lng data in CLUSTERS<br />";
         }
     }
     if (empty($ehike['miles']) || empty($ehike['feet'])|| empty($ehike['diff'])) {
-        $msgout .= "Missing miles, feet, or difficulty data\n";
+        $msgout .= "Missing miles, feet, or difficulty data<br />";
     }
     if (empty($ehike['lat']) || empty($ehike['lng'])) {
-        $msgout .= "Missing lat or lng data\n";
+        $msgout .= "Missing lat or lng data<br />";
     }
     if (!$proposed) {
         if (empty($ehike['last_hiked'])) {
-            $msgout .= "Missing last_hiked data (from photos)\n";
+            $msgout .= "Missing last_hiked data (from photos)<br />";
         }
         if (empty($ehike['preview'])) {
-            $msgout .= "Missing preview/thumb data\n";
+            $msgout .= "Missing preview/thumb data<br />";
         }
         if (empty($ehike['bounds'])) {
-            $msgout .= "Missing hike bounds box: may require reloading gpx file\n";
+            $msgout .= "Missing hike bounds box: " .
+                "may require reloading gpx file<br />";
         }
     }
 }
@@ -82,5 +87,6 @@ if (empty($ehike['dirs'])) {
 if ($msgout == '') {
     echo "OK";
 } else {
-    echo $msgout;
+    $return = urlencode($msgout);
+    echo $return;
 }
