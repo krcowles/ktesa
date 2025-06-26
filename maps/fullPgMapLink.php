@@ -39,7 +39,7 @@ $trk_lngs = [];
 $gpsv_tick = [];
 $pageData = prepareMappingData(
     $pdo, $hike_tracks, $trk_nmes, $gpsv_trk, 
-    $trk_lat, $trk_lngs, 
+    $trk_lats, $trk_lngs, 
     $gpsv_tick, (int) $hikeIndexNo, $htable 
 ); // returns miles, maxmin, asc, dsc & fills above arrays
 
