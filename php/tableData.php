@@ -71,7 +71,8 @@ $table = $age === 'new' ? 'EHIKES' : 'HIKES';
 $state = $age === 'new' ? 'edit' : 'pub';
 $query = "SELECT * FROM {$table}";
 $user_qualifier = $show === 'usr' ? " WHERE `usrid`={$userid}" : '';
-$pending_pub = $pageType === 'PubReq' ? " AND `pubreq` IS NULL " : '';
+$pending_pub
+    = $pageType === 'PubReq' ? " AND `pubreq` IS NULL OR `pubreq`='' " : '';
 // NOTE: already published list must not be sorted in order to synch w/hike nos
 $sort_qualifier = $sort ? " ORDER BY `pgTitle`;" : ";";
 $query .= $user_qualifier . $pending_pub . $sort_qualifier;

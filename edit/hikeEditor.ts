@@ -177,17 +177,14 @@ $( function () { // DOM loaded
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';
-var shipit    = '../edit/notifyAdmin.php?hikeNo=';	
 $('table.sortable').attr('id', 'editTbl');
 var hikeno: string;
 var lnk: string;
-function setupClickBehavior(a: JQuery<HTMLElement>, name: string, 
-	hno: string, clus: string, mail: string)
+function setupClickBehavior(a: JQuery<HTMLElement>, name: string, hno: string, clus: string)
 {
 	a.on('click', function(ev) {
 		ev.preventDefault();
 		var ajaxdata = {hikeNo: hno, cluster: clus};
-		var $a = $(this);
 		$.ajax({
 			url: "validatePubRequest.php",
 			method: 'get',
@@ -195,26 +192,12 @@ function setupClickBehavior(a: JQuery<HTMLElement>, name: string,
 			dataType: 'text',
 			success: function(result) {
 				if (result === 'OK') {
-					var disabled = '<span style="color:gray;">' + name + '</span>';
-					$a.replaceWith(disabled);
-					$.ajax({
-						url: mail,
-						method: 'get',
-						dataType: 'text',
-						success: function(results) {
-							if (results === "OK") {
-								alert("An email has been sent to the admin");
-								window.location.replace(window.location.href);
-							} // no other results available in script
-						},
-						error: function (_jqXHR, _textStatus, _errorThrown) {
-							let msg = "hikeEditor.js: attempting to access " +
-								"notifyAdmin.php";
-							ajaxError(appMode, _jqXHR, _textStatus, msg);
-						}
-					});
+					let page = '../edit/publishRequest.php?mail=yes&hikeNo=' +
+						hno + '&name=' + name;
+					window.open(page, "_blank");
 				} else {
-					alert(result);
+					let query = '../edit/publishRequest.php?name=' + name + '&result=' + result;
+					window.open(query, "_blank");
 				}
 			},
 			error: function(_jqXHR, _textStatus, _errorThrown) {
@@ -234,11 +217,11 @@ $rows.each(function() {
 	var clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
 	// find the hike no:
 	var hikeloc = ptr.indexOf('hikeIndx=') + 9;
-	hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
 	if (ptr.indexOf('hikeIndx') == -1) {
 		alert("Could not locate hike");
 		return false;
 	}
+	hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
 	if (page_type === 'PubReq') {
 		var hindx: string;
 		var clus_parm = hikeno.indexOf('&');
@@ -248,9 +231,8 @@ $rows.each(function() {
 			hindx = hikeno.substring(0, clus_parm);
 		}
 		var clus = clushike ? 'Y' : 'N';
-		var loc = shipit + hindx + "&name=" + chosenHike;
 		// This is a request to publish a hike
-		setupClickBehavior($anchor, chosenHike, hindx, clus, loc);
+		setupClickBehavior($anchor, chosenHike, hindx, clus);
 	} else {
 		// *** THESE HIKES ARE NEW (EHIKES) ***
 		if (age === 'new') { // age is established in hikeEditor.php
