@@ -102,6 +102,7 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
     <option value="Loop">Loop</option>
     <option value="Two-Cars">Two-Cars</option>
     <option value="Out-and-back">Out-and-back</option>
+    <option value="One Way">One Way</option>
 </select>&nbsp;&nbsp;&nbsp;&nbsp;
 
 <p id="dif" style="display:none"><?=$diff;?></p>
