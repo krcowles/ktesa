@@ -98,6 +98,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
     $ip = retrieveIpAddress();
     $lastTrace = getExceptionTraceAsString(new Exception);
+    $lastTrace = "Production Error Handler invoked: " . $lastTrace;
     $loc = strpos($lastTrace, "Undefined index: userid");
     if ($loc > 0) { // For an expired session:
         error_log($lastTrace);
@@ -122,7 +123,7 @@ function ktesaExceptions($exception)
 {
     $ip = retrieveIpAddress();
     $lastTrace = getExceptionTraceAsString(new Exception);
-    $message = "An uncaught exception occurred:\n" .
+    $message = "An uncaught Exception occurred:\n" .
         "Code: " . $exception->getCode() . 
         " in file " . $exception->getFile() .
         " at line " . $exception->getLine() . "\n" .

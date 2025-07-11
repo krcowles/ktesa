@@ -115,8 +115,20 @@ if (!$admin) {
     if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
         // New method: former ipinfo site limits no of requests
         $country = '';
-        $numbers = preg_split("/\./", $user_ip);   
+        $numbers = preg_split("/\./", $user_ip);
+        // The variable array '$ranges' is defined in the following include file:   
         include "../ip_files/" . $numbers[0] . ".php";
+        if (empty($ranges)) {
+            $ascii_arr = array_map(
+                function ($char) {
+                    return ord($char);
+                }, str_split($numbers[0])
+            );
+            $ascii = implode(",", $ascii_arr);
+            $msg = "Ranges array not loaded for numbers[0]: {$numbers[0]}; " .
+                "ASCII: {$ascii}";
+            throw new Exception($msg);
+        }
         $code = ($numbers[0] * 16777216) + ($numbers[1] * 65536) +
             ($numbers[2] * 256) + ($numbers[3]);   
         foreach ($ranges as $key => $value) {
