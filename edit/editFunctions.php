@@ -719,8 +719,11 @@ function gpxAscentDescent($gpx)
             // Data is between tag and closing tag
             $aclose = strpos($atxt, "<");
             $bclose = strpos($dtxt, "<");
-            $ascent  = substr($atxt, 0, $aclose);
-            $descent = substr($dtxt, 0, $bclose);
+            $asc  = substr($atxt, 0, $aclose);
+            $des = substr($dtxt, 0, $bclose);
+            // Convert meters to feet
+            $ascent = round((float) $asc * 3.28084, 0);
+            $descent = round((float) $des * 3.28084, 0);
             $data = "{$j}:{$ascent}/{$descent}";
         } else {
             $data = "{$j}:0/0";
