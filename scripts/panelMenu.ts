@@ -1,5 +1,9 @@
 /// <reference types="jqueryui" />
 declare function ajaxError(mode: string, xhrobj: object, errtxt: string, message: string): void;
+interface FileUploadObject {
+    name: string;
+    data: string;
+}
 /**
  * @fileoverview This script controls actions of the bootstrap navbar
  * 
@@ -31,6 +35,7 @@ var bymiles   = new bootstrap.Modal(<HTMLElement>document.getElementById('bymile
 var byloc     = new bootstrap.Modal(<HTMLElement>document.getElementById('byloc'));
 var gpxedit   = new bootstrap.Modal(<HTMLElement>document.getElementById('ged'));
 var newpgs    = new bootstrap.Modal(<HTMLElement>document.getElementById('newpgs'));
+var appgpx    = new bootstrap.Modal(<HTMLElement>document.getElementById('appfiles'));
 const membens = new bootstrap.Modal(<HTMLElement>document.getElementById('membennies'));
 const $benmo  = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
     "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
@@ -406,5 +411,109 @@ $('#latest').on('click', function() {
         }
     });
 });
+
+// GPX File uploads to appGpxFiles
+var uploads = [] as FileUploadObject[];
+refreshChkboxList(); // initial setup prior to any uploads
+$('#gpxapp').on('click', function() {
+    appgpx.show();
+    if ('#available_gpx'.length) {
+        size_it();
+    }
+});
+$('#gpx-upload').on('change', function() {
+    uploads = [];
+    var selection = document.getElementById('gpx-upload') as HTMLInputElement;
+    var txt =
+        '<div id="sel_list"><span id="ufiles"><strong>Selected files:</strong></span>';
+    if ('files' in selection) {
+        const allfiles = selection.files as FileList;
+        for (var i = 0; i < allfiles.length; i++) {
+            const file = allfiles[i];
+            if ('name' in file) {
+                txt += "<br />" + file.name;
+            }
+            if ('size' in file) {
+                var kb = file.size/1000
+                var size = kb.toFixed(1);
+                txt += " (" + size + " kb)";
+            }
+            var reader = new FileReader();
+            reader.onload = (evt) => {
+                const event = <FileReader>evt.target;
+                const result = event.result as string;
+                //const parser = new DOMParser();
+                //const xmlDomDoc = parser.parseFromString(result, "text/xml");
+                const ajaxdata = {name:file.name, data: result};
+                uploads.push(ajaxdata);
+            }
+            reader.readAsText(file);
+        }
+    } 
+    txt += "</div>";
+    $('#upldfile').html(txt);
+});
+// uplodad user-selected files
+$('#getgpx').on('click', function(ev) {
+    ev.preventDefault();
+    if (uploads.length === 0) {
+        alert("No files selected to upload!");
+        return false;
+    }
+    for (var j=0; j<uploads.length; j++) {
+        $.ajax({
+            url: "../php/mobilefiles.php",
+            method: "POST",
+            data: uploads[j],
+            dataType: "text",
+            success: function(result) {
+                $('#upldfile').text("No files selected");
+                $('#nofiles').remove();
+                $('#available_gpx').remove();
+                // size up the gpxlist div before adding the table, then size_it
+                $('#gpxlist').prepend(result);
+                size_it();
+                refreshChkboxList();
+            },
+            error: function() {
+                alert("Failed upload");
+            }
+        });
+    }
+    return;
+});
+function size_it() {
+    $('#gpxlist').css('width', '100%');
+    const start_width = $('#available_gpx').width() as number;
+    $('#gpxlist').width(start_width + 20);
+}
+function refreshChkboxList() {
+    if ($('#available_gpx').length) {
+        var $table_items = $('#available_gpx');
+        var $chkboxes = $table_items.find('.delfile');
+        $chkboxes.each(function(i, item) { // have to specify 'i' tho unused!
+            $(item).on('click', function() {
+                if ($(this).is(':checked')) {
+                    const delete_file = $(this).parent().siblings().eq(0).text();
+                    const item = {fname: delete_file};
+                    const delete_row = $(this).parent().parent();
+                    $.post("../php/deleteAppFile.php", item, function() {
+                        delete_row.remove();
+                        var remainder = $('#gpxlist').find('tr').length as number;
+                        if (remainder === 1) {
+                            $('#gpxlist').empty();
+                            $('#gpxlist').css('width', '60%');
+                            const nofiles_msg = 
+                                '<span id="nofiles">There are no files available at this time</span>';
+                            $('#gpxlist').prepend(nofiles_msg);
+                        } else {
+                            size_it();
+                        }
+                    });
+                }
+            });
+        });
+    }
+}
 
 });  // end document ready

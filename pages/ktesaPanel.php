@@ -280,6 +280,9 @@ if (isset($_SESSION['userid'])) {
                         <li><a class="dropdown-item" href="../pages/additionals.php">
                             Unlisted Hikes</a>
                         </li>
+                        <li><a id="gpxapp" class="dropdown-item" href="#">
+                            Gpx Files for Apps</a>
+                        </li>
                         <li id="hiking_club"><a class="dropdown-item"
                             href="../pages/clubAssets.php">Club Assets</a>
                         </li>

@@ -8,6 +8,14 @@
  * @author  Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
+$gpxlist = scandir("../appGpxFiles");
+array_splice($gpxlist, 0, 2); // eliminate . and ..
+$rows = [];
+foreach ($gpxlist as $gpx) {
+    $row = "<tr><td class='fname'>{$gpx}</td>";
+    $row .= "<td class='gcbox'><input type='checkbox' class='delfile'></td></tr>";
+    array_push($rows, $row);                           
+}
 ?>
 <!-- Filter Hikes Modals (2) -->
 <div id="bymiles" class="modal" tabindex="-1">
@@ -236,6 +244,87 @@
                     These are the latest hike page additions, in order of
                     most recent:
                     <div id="newest"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- GPX Files available for apps to download -->
+<div id="appfiles" class="modal" tabindex="-1">
+    <style type="text/css">
+        input[type=file] {display:none;}
+        .custom-file-upload {border: 2px solid darkslategray;
+            border-radius:6px; display: inline-block;
+            padding: 6px 12px; cursor: pointer;}
+        #gpxlist {width: 60%; height:180px;
+            background-color: gainsboro;
+            overflow: auto; border: 1px darkgray solid;}
+        #available_gpx {margin-left:auto; margin-right:auto;
+            border: 1px black solid; border-collapse:collapse;
+            margin-top: 12px;}
+        .gcbox {border: 1px black solid; border-collapse:collapse;
+            padding:2px !important;text-align:center !important;}
+        .fname {border-collapse:collapse; border:1px black solid;
+            padding: 2px 4px 2px 4px;}
+        #sel_list {margin-left: 20px;}
+        #nofiles {position:relative; top:12px; 
+            left:16px; color:brown;}
+    </style>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">GPX Files for Apps</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p>List of GPX files available to be downloaded to mobile apps,
+                        such as 'GPX Viewer', 'GPX Tracker', etc. <span 
+                        style="text-decoration:underline">Simply type this URL in
+                        your app</span>, followed by the file to download:
+                        <br />
+                        <strong>https://nmhikes.com/appGpxFiles/&lt;file&gt;</strong>
+                       
+                    </p>
+                    Alphabetical list: can be scrolled if needed
+                    <div id="gpxlist">
+                        <?php if (count($rows) === 0) : ?>
+                        <span id="nofiles">There are no files available at
+                            this time</span>
+                        <?php else :?>
+                        <table id="available_gpx">
+                            <tbody>
+                                <tr>
+                                    <th class="fname"
+                                        style="background-color:moccasin;">
+                                        File Name</th>
+                                    <th class="fname"
+                                        style="background-color:moccasin;">
+                                        Remove</th>
+                                </tr>
+                                    <?php foreach ($rows as $row) : ?>
+                                        <?=$row?>
+                                    <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <?php endif; ?>
+                    </div>
+                    <br />
+                    <span><em>Add a GPX File to the List:</em></span>&nbsp;&nbsp;
+                    <input id="gpx-upload" name="gpx-upload[]"
+                        type="file" multiple/>
+                    <label for="gpx-upload" class="custom-file-upload">
+                        Browse
+                    </label>
+                    &nbsp;<span id="upldfile">No files selected</span><br />
+                    <button id="getgpx" type="button" class="btn btn-success">
+                        Upload file(s)
+                    </button> 
                 </div>
             </div>
             <div class="modal-footer">
