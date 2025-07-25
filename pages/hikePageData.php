@@ -244,6 +244,9 @@ if (!$clusterPage) {
             array_push($alblnks, $pics['alblnk']);
             $fbase = $pics['mid'] . "_" . $pics['thumb'];
             array_push($piclnks, $fbase);
+            if (is_null($pics['desc']) || empty($pic['desc'])) {
+                $pics['desc'] = "[No caption]";
+            } // null emits errorException
             $pDesc = htmlspecialchars($pics['desc']);
             $dateStr = $pics['date'];
             if ($dateStr == '') {

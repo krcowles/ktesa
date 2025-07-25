@@ -26,7 +26,10 @@ if ($download === 'V') {
     $data = $pdo->query("SHOW TABLES;");
     $tbls_list = $data->fetchALL(PDO::FETCH_BOTH);
     foreach ($tbls_list as $row) {
-        if (($row[0] !== 'EHIKES') && ($row[0] !== 'FAVORITES')) {
+        // don't download VISITORS
+        if (($row[0] !== 'EHIKES') && ($row[0] !== 'FAVORITES')
+            && $row[0] !== 'VISITORS'
+        ) {
             array_push($tables, $row[0]);
         }
     }

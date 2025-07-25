@@ -265,7 +265,7 @@ foreach ($gpxlist as $gpx) {
             overflow: auto; border: 1px darkgray solid;}
         #available_gpx {margin-left:auto; margin-right:auto;
             border: 1px black solid; border-collapse:collapse;
-            margin-top: 12px;}
+            margin-top: 12px; background-color:#ffffdf;}
         .gcbox {border: 1px black solid; border-collapse:collapse;
             padding:2px !important;text-align:center !important;}
         .fname {border-collapse:collapse; border:1px black solid;
