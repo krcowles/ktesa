@@ -27,6 +27,11 @@ if (isset($_SESSION['userid'])) {
         }
     }
 }
+if (!$clusterPage) {
+    $flickr = $photoAlbum !== '<br />' ? $photoAlbum : false; 
+} else {
+    $flickr = false;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -134,8 +139,8 @@ function off() {
                     <?= $hikeSeasons;?></span><br />
                 Region: <span class="sumClr"> <?= $hikeLocale;?></span><br />
                 Features: <span id="hwow" class="sumClr"><?= $hikeWow;?></span><br />
-                <?php if (!($photoAlbum === '<br />')) : ?>
-                    More photos: <?=$link;?><br />
+                <?php if ($flickr) : ?>
+                    More photos: <?=$flickr;?><br />
                 <?php endif; ?>
                 <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a>
                 <br />
@@ -161,6 +166,8 @@ function off() {
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
+    <?php endif; ?>
+    <?php if (isset($capCnt)) : ?>
     var photocnt  = <?=$capCnt;?>;
     var d  = "<?=implode("|", $descs);?>";
     var al = "<?=implode("|", $alblnks);?>";

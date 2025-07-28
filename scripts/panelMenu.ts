@@ -421,6 +421,7 @@ $('#gpxapp').on('click', function() {
         size_it();
     }
 });
+// show the user-selected files to be uploaded
 $('#gpx-upload').on('change', function() {
     uploads = [];
     var selection = document.getElementById('gpx-upload') as HTMLInputElement;
@@ -453,7 +454,7 @@ $('#gpx-upload').on('change', function() {
     txt += "</div>";
     $('#upldfile').html(txt);
 });
-// uplodad user-selected files
+// upload the user-selected files
 $('#getgpx').on('click', function(ev) {
     ev.preventDefault();
     if (uploads.length === 0) {
@@ -474,6 +475,8 @@ $('#getgpx').on('click', function(ev) {
                 $('#gpxlist').prepend(result);
                 size_it();
                 refreshChkboxList();
+                $('gpx-upload').val('');
+                uploads = [];
             },
             error: function() {
                 alert("Failed upload");
@@ -491,8 +494,8 @@ function refreshChkboxList() {
     if ($('#available_gpx').length) {
         var $table_items = $('#available_gpx');
         var $chkboxes = $table_items.find('.delfile');
-        $chkboxes.each(function(i, item) { // have to specify 'i' tho unused!
-            $(item).on('click', function() {
+        $chkboxes.each(function() {
+            $(this).on('click', function() {
                 if ($(this).is(':checked')) {
                     const delete_file = $(this).parent().siblings().eq(0).text();
                     const item = {fname: delete_file};
