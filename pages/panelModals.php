@@ -256,7 +256,7 @@ foreach ($gpxlist as $gpx) {
 <!-- GPX Files available for apps to download -->
 <div id="appfiles" class="modal" tabindex="-1">
     <style type="text/css">
-        input[type=file] {display:none;}
+        #gpx-upload {display:none;}
         .custom-file-upload {border: 2px solid darkslategray;
             border-radius:6px; display: inline-block;
             padding: 6px 12px; cursor: pointer;}
