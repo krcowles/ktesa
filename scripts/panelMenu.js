@@ -417,6 +417,7 @@ $(function () {
             size_it();
         }
     });
+    // show the user-selected files to be uploaded
     $('#gpx-upload').on('change', function () {
         uploads = [];
         var selection = document.getElementById('gpx-upload');
@@ -452,7 +453,7 @@ $(function () {
         txt += "</div>";
         $('#upldfile').html(txt);
     });
-    // uplodad user-selected files
+    // upload the user-selected files
     $('#getgpx').on('click', function (ev) {
         ev.preventDefault();
         if (uploads.length === 0) {
@@ -473,6 +474,8 @@ $(function () {
                     $('#gpxlist').prepend(result);
                     size_it();
                     refreshChkboxList();
+                    $('gpx-upload').val('');
+                    uploads = [];
                 },
                 error: function () {
                     alert("Failed upload");
@@ -490,13 +493,13 @@ $(function () {
         if ($('#available_gpx').length) {
             var $table_items = $('#available_gpx');
             var $chkboxes = $table_items.find('.delfile');
-            $chkboxes.each(function (i, item) {
-                $(item).on('click', function () {
+            $chkboxes.each(function () {
+                $(this).on('click', function () {
                     if ($(this).is(':checked')) {
                         var delete_file = $(this).parent().siblings().eq(0).text();
-                        var item_1 = { fname: delete_file };
+                        var item = { fname: delete_file };
                         var delete_row_1 = $(this).parent().parent();
-                        $.post("../php/deleteAppFile.php", item_1, function () {
+                        $.post("../php/deleteAppFile.php", item, function () {
                             delete_row_1.remove();
                             var remainder = $('#gpxlist').find('tr').length;
                             if (remainder === 1) {
