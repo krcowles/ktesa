@@ -103,51 +103,79 @@ if (!$admin) {
      * https://stackoverflow.com/questions/2199793/php-get-the-browser-name
      * For page url identification: [PSR syntax corrections made]
      * http://geeklabel.com/tutorial/track-visitors-php-tutorial/ 
-     * Using country identification method outline in 
+     * Using country identification method [ipv4] outlined in 
      * http://www.phptutorial.info/iptocountry/the_script.html#example1
-     * which is a free downloaded library not requiring http:// lookups.
+     * which is a free downloadable library not requiring http:// lookups.
      */
     $user_ip = getIpAddress(); // can be null!
     $user_ip = $user_ip ?? 'no ipaddr';
-    if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
-        die("Access not permitted");
-    }
-    if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
-        // New method: former ipinfo site limits no of requests
-        $country = '';
-        $numbers = preg_split("/\./", $user_ip);
-        // The variable array '$ranges' is defined in the following include file:   
-        include "../ip_files/" . $numbers[0] . ".php";
-        if (empty($ranges)) {
-            $ascii_arr = array_map(
-                function ($char) {
-                    return ord($char);
-                }, str_split($numbers[0])
-            );
-            $ascii = implode(",", $ascii_arr);
-            $msg = "Ranges array not loaded for numbers[0]: {$numbers[0]}; " .
-                "ASCII: {$ascii}";
-            throw new Exception($msg);
+    $iptype = 'not defined';
+    $numbers = [];
+    if ($user_ip !== 'no ipaddr') {
+        if (strpos($user_ip, ":") !== false) {
+            $iptype = 'ipv6';
+            $numbers = explode(":", $user_ip);
+        } else {
+            $iptype = 'ipv4';
+            $numbers = explode(".", $user_ip); // ipv4
         }
-        $code = ($numbers[0] * 16777216) + ($numbers[1] * 65536) +
-            ($numbers[2] * 256) + ($numbers[3]);   
-        foreach ($ranges as $key => $value) {
-            if ($key <= $code) {
-                if ($ranges[$key][0] >= $code) {
-                    $country = $ranges[$key][1];
-                    break;
+    }
+    /**
+     * The author has not deciphered ipv6 country origins yet, as they are very
+     * different in ipv6, and utilize the Regional Internet Registry - there are
+     * 5 regions:
+     *   AFRINIC  => African Network Information Center
+     *   ARIN     => American Registry for Internet Numbers
+     *   APNIC    => Asia Pacific Network Information Center
+     *   LACNIC   => Latin America and Caribbean Network Information Center
+     *   RIPE NCC => Rḗsaux IP Europḗens Network Coordination Centre
+     * In order to exclude foreign access to this site, the author would like to
+     * permit the ARIN region exclusively. The first 48 bits of ipv6 is the
+     * 'site prefix' (xxxx:yyyy:zzzz), but doesn't contain the region codes.
+     * The author is looking for a service to decode region/country not requiring
+     * fees...
+     */
+    if ($iptype === 'ipv4') {
+        if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
+            die("Access not permitted");
+        }
+        // Formerly used 'ipinfo' website, but it limits no. of requests
+        if ($user_ip !== '127.0.0.1' && $user_ip !== '::1'
+        ) { // browser's localhost addresses are excluded
+            $country = '';
+            // The variable array '$ranges' is defined in the following
+            include "../ip_files/" . $numbers[0] . ".php";
+            if (empty($ranges)) {
+                $ascii_arr = array_map(
+                    function ($char) {
+                        return ord($char);
+                    }, str_split($numbers[0])
+                );
+                $ascii = implode(",", $ascii_arr);
+                $msg = "Ranges array not loaded for numbers[0]: {$numbers[0]}; " .
+                    "ASCII: {$ascii}";
+                throw new Exception($msg);
+            }
+            $code = $numbers[0] * 16777216 + $numbers[1] * 65536 +
+                $numbers[2] * 256 + $numbers[3];   
+            foreach ($ranges as $key => $value) {
+                if ($key <= $code) {
+                    if ($ranges[$key][0] >= $code) {
+                        $country = $ranges[$key][1];
+                        break;
+                    }
                 }
             }
-        }
-        if ($country !== 'US') {
-            die("Access not permitted");
-        }
-        // Bad robot...
-        if (strpos($user_ip, '52.167.144') !== false
-            || strpos($user_ip, '40.77.167') !== false
-            || strpos($user_ip, '20.26.44') !== false
-        ) {
-            die("Access not permitted");
+            if ($country !== 'US') {
+                die("Access not permitted");
+            }
+            // Bad robot...
+            if (strpos($user_ip, '52.167.144') !== false
+                || strpos($user_ip, '40.77.167') !== false
+                || strpos($user_ip, '20.26.44') !== false
+            ) {
+                die("Access not permitted");
+            }
         }
     }
     $browser = getBrowserType(); // can be null!
