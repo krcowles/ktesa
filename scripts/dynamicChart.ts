@@ -60,8 +60,10 @@ var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
 var imageData = new ImageData(10, 10);
-var clearModal = document.getElementById('ediff') as HTMLDivElement;
-var clearPoints = new bootstrap.Modal(clearModal); 
+if (!mobile) {  // new in 5.0 (see clearPoints line #384)
+    var clearModal = document.getElementById('ediff') as HTMLDivElement;
+    var clearPoints = new bootstrap.Modal(clearModal); 
+}
 // vars for setting chart dimension;
 var fullWidth: number;
 var chartHeight: number;
@@ -378,7 +380,9 @@ function crossHairs(trackno: number) {
                 modal_elev.textContent = melev;
                 imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
                 ctxt.putImageData(imageData, 0, 0);
-                clearPoints.show();
+                if (!mobile) {
+                    clearPoints.show();
+                }
             }
         }
     }
