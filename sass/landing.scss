@@ -1,0 +1,130 @@
+@use "body" as *;
+@use "ktesaNavbar" as *;
+
+/* Main body section */
+#pgheader {
+  text-align: center;
+}
+#welcome {
+  text-align: center;
+  font-weight: bold;
+}
+
+#welcome, #detail, #usrview {
+  margin-bottom: 0px;
+}
+
+.landing_content {
+  position: relative;
+  clear: both;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+}
+
+h2 {
+  padding-top: 6px;
+  font-family: cursive;
+}
+
+::placeholder {
+  color: gray;
+}
+
+p {
+  margin-bottom: 2px;
+}
+
+#opts {
+  margin-top: 2px !important;
+}
+
+.flexitem {
+  display: block;
+}
+.dbl {
+  line-height: 90%;
+}
+.pair {
+  display: inline-block;
+  font-size: 1rem;
+  margin-right: 20px;
+}
+#table, #map, #save, #use {
+  border-style: solid;
+  border-width: 1px;
+  border-color: darkblue;
+}
+
+.pair:hover {
+  cursor: pointer;
+}
+
+#home {
+  margin-bottom: 4px;
+}
+
+#map {
+  border-style: solid;
+  border-width: 1px;
+  border-color: darkblue;
+}
+
+#utilize {
+  border-color: darkgreen;
+}
+
+.icons {
+  position: relative;
+}
+
+@media screen and (max-width: 390px) and (min-width: 280px) {
+  .icons {
+    transform: scale(0.69);
+    top: -14px;
+  }
+}
+@media screen and (min-width: 391px) and (max-width: 599px) {
+  .icons {
+    transform: scale(0.9);
+    top: -6px;
+  }
+
+}
+@media screen and (min-width: 600px) {
+  .icons {
+    transform: scale(1.0);
+    top: 4px;
+  }
+}
+@media screen and (max-width: 1000px) and (min-width: 601px) {
+  .landing_content {
+    width: 100%;
+  }
+  .flexitem {
+    display: inline-block;
+  }
+  .icons {
+    top: 8px;
+  }
+}
+
+#bennies {
+  width: max-content;
+  font-size: 0.92rem;
+  padding: 6px;
+  line-height: 1.3rem;
+  text-align: left;
+  margin-top: 0.8rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-color: darkblue;
+  border-width: 1px;
+}
+
+#memlist {
+  margin-bottom: 0px;
+}
+
+/*# sourceMappingURL=landing.css.map */
