@@ -44,7 +44,7 @@ $(function () {
         return;
     });
     $('#logout').on('click', function () {
-        var ajax = { expire: 'N' };
+        let ajax = { expire: 'N' };
         $.ajax({
             url: '../accounts/logout.php',
             data: ajax,
@@ -79,8 +79,8 @@ $(function () {
     });
     $('#send').on('click', function (ev) {
         ev.preventDefault();
-        var email = $('#cpwmail').val();
-        var data = { form: 'chg', email: email };
+        let email = $('#cpwmail').val();
+        let data = { form: 'chg', email: email };
         $.ajax({
             url: '../accounts/resetMail.php',
             data: data,
@@ -105,7 +105,7 @@ $(function () {
             },
             error: function () {
                 ajaxerror.show();
-                var err = { err: "Mobile - resetMail.php error" };
+                let err = { err: "Mobile - resetMail.php error" };
                 $.post('../php/ajaxError.php', err);
             }
         });

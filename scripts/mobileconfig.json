@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
       "moduleResolution": "Node",
+      "target": "es2020",
       "module": "none",
-      "lib": ["es2016", "DOM"],
+      "lib": ["es2020", "DOM"],
+      "skipLibCheck": true,
       "strict": true,
       "noImplicitAny": true,
       "alwaysStrict": true,
@@ -16,12 +18,15 @@
     "landing.ts",
     "loginState.ts",
     "logo.ts",
+    "viewMgr.ts",
     "mapOnly.ts",
     "navMenu.ts",
     "responsiveCaptions.ts",
     "responsivePics.ts",
     "responsiveTable.ts",
     "responsivePage.ts",
-    "searchbar.ts"
+    "searchbar.ts",
+    "ktesaOfflineDB.ts",
+    "useOffline.ts"
   ]
 }

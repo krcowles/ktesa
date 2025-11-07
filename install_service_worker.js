@@ -18,8 +18,6 @@ const registerServiceWorker = async () => {
                         console.log("Service worker installed");
                     } else if (reg.active) {
                         console.log("Service worker active");
-                    } else {
-                        console.log("Promise Pending...");
                     }
                     reg.addEventListener('updatefound', () => {
                         // An updated service worker while reg.installing

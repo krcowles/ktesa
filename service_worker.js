@@ -8,21 +8,28 @@ self.addEventListener("install", (event) => {
       .open("offline")
         .then((cache) => {
             cache.addAll([  // test site dir included here...
-                "./ld/pages/landing.html",
-                "./ld/styles/landing.css",
-                "./ld/styles/bootstrap.min.css",
-                "./ld/scripts/jquery.js",
-                "./ld/scripts/bootstrap.min.js",
-                "./ld/scripts/viewMgr.js",
-                "./ld/scripts/landing.js",
-                "./ld/scripts/loginState.js",
+                "https://nmhikes.com/pages/landing.html",
+                "https://nmhikes.com/images/hikers.png",
+                "https://nmhikes.com/images/trail.png",
+                "https://nmhikes.com/images/Tbl.png",
+                "https://nmhikes.com/images/MapsNmrkrs.png",
+                "https://nmhikes.com/images/Save.png",
+                "https://nmhikes.com/images/Use.png",
+                "https://nmhikes.com/styles/landing.css",
+                "https://nmhikes.com/styles/bootstrap.min.css",
+                "https://nmhikes.com/scripts/jquery.js",
+                "https://nmhikes.com/scripts/bootstrap.min.js",
+                "https://nmhikes.com/scripts/viewMgr.js",
+                "https://nmhikes.com/scripts/landing.js",
+                "https://nmhikes.com/scripts/loginState.js",
+                "https://nmhikes.com/pages/useOffline.html",
             ])
         })
     );
 });
 
 self.addEventListener("activate", (event) => {
-    event.waitUntil(deleteOldCaches());
+    //event.waitUntil(deleteOldCaches()); // cache contains tiles!
     self.clients.claim();
 });
   
@@ -45,11 +52,11 @@ caches.open("offline").then( (cache) => {
     fetch(offline_index).then((response) => {
         return cache.put(index, response);
     });
-    self.addEventListener("fetch", (event) => {
-        event.respondWith(cacheFirst(event.request));
-    });
 });
 
+self.addEventListener("fetch", (event) => {
+    event.respondWith(cacheFirst(event.request));
+});
 /**
  * Check the cache for assets before attempting to fetch
  */
@@ -77,4 +84,4 @@ const putInCache = async (request, response) => {
     //console.log("Caching ", response);
     const cache = await caches.open("offline");
     await cache.put(request, response);
-  };
+};

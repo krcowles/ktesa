@@ -23,7 +23,7 @@ var $mapEl;
 var $chartEl;
 var canvasEl;
 // Establish the placement of the map & chart in the viewport on load & resize
-var setMobileView = function () {
+const setMobileView = () => {
     var canvasWidth;
     // Height calcs
     var vpHeight = window.innerHeight;
@@ -59,9 +59,9 @@ $(function () {
 /**
  * Position the hike stats button first, as the favorites will sit on top
  */
-var buttonPos = function () {
-    var chartpos = $('#chartline').offset();
-    var hinfoTop = "".concat(chartpos.top - 80, "px");
+const buttonPos = () => {
+    let chartpos = $('#chartline').offset();
+    let hinfoTop = `${chartpos.top - 80}px`;
     $('#hinfo').css('left', '4px');
     $('#hinfo').css('top', hinfoTop);
     return;
@@ -69,10 +69,10 @@ var buttonPos = function () {
 /**
  * Place the favorites button above the hike stats button
  */
-var favoritesPos = function () {
-    var statsPos = $('#hinfo').offset();
-    var favtop = "".concat(statsPos.top - 40, "px");
-    var favwidth = $('#favs').width();
+const favoritesPos = () => {
+    let statsPos = $('#hinfo').offset();
+    let favtop = `${statsPos.top - 40}px`;
+    let favwidth = $('#favs').width();
     $('#favs').css('left', '4px');
     $('#favs').css('top', favtop);
     $('#hinfo').width(favwidth);
@@ -84,8 +84,8 @@ $.when(chartPlaced).then(function () {
     favoritesPos();
 });
 $('#favs').on('click', function () {
-    var newtext;
-    var favtype;
+    let newtext;
+    let favtype;
     if ($('#favs').text() === 'Unmark Favorite') {
         favtype = 'delete';
         newtext = 'Mark as Favorite';
@@ -94,7 +94,7 @@ $('#favs').on('click', function () {
         favtype = 'add';
         newtext = 'Unmark Favorite';
     }
-    var ajaxdata = { action: favtype, no: hikeno };
+    let ajaxdata = { action: favtype, no: hikeno };
     $.ajax({
         url: 'markFavorites.php',
         data: ajaxdata,

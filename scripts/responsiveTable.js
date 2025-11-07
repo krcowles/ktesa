@@ -12,8 +12,8 @@ $(function () {
     /**
      * This function merely positions the options drop-down wrt/table
      */
-    var optsPosition = function () {
-        var tblwidth = $('table').width();
+    const optsPosition = () => {
+        let tblwidth = $('table').width();
         $('#floater').width(tblwidth);
         return;
     };
@@ -22,7 +22,7 @@ $(function () {
         optsPosition();
     });
     $('#areas').hide();
-    var title = $('#trail').text();
+    let title = $('#trail').text();
     $('#ctr').text(title);
     var appMode = $('#appMode').text();
     // table parms
@@ -49,18 +49,18 @@ $(function () {
         near_modal.show();
     });
     // setup area links
-    var $loc_list = $('#alist').find('li a'); // drop-down list of locales
+    let $loc_list = $('#alist').find('li a'); // drop-down list of locales
     $loc_list.each(function () {
         $(this).on('click', function (ev) {
             ev.preventDefault();
-            var lochikes = [];
-            var locarea = $(this).text();
-            var hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
-            for (var i = 0; i < rows.length; i++) {
-                var item = $(rows[i]).data('indx');
-                var hikeno_1 = parseInt(item);
-                for (var j = 0; j < hikeset.length; j++) {
-                    if (hikeno_1 == hikeset[j]) {
+            let lochikes = [];
+            let locarea = $(this).text();
+            let hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
+            for (let i = 0; i < rows.length; i++) {
+                let item = $(rows[i]).data('indx');
+                let hikeno = parseInt(item);
+                for (let j = 0; j < hikeset.length; j++) {
+                    if (hikeno == hikeset[j]) {
                         lochikes.push(rows[i]);
                     }
                 }
@@ -72,7 +72,7 @@ $(function () {
     // show radius hikes
     $('#show').on('click', function (ev) {
         ev.preventDefault();
-        var retval = true;
+        let retval = true;
         var locale = $('#regions').val();
         var miles_str = $('#miles').val();
         var miles_no = parseFloat(miles_str);
@@ -133,10 +133,10 @@ $(function () {
      */
     function filterHikes(radius, geo) {
         var nearby = [];
-        for (var j = 0; j < rows.length; j++) {
-            var lat = $(rows[j]).data('lat');
-            var lng = $(rows[j]).data('lon');
-            var distance = radialDist(lat, lng, geo.lat, geo.lng, 'M');
+        for (let j = 0; j < rows.length; j++) {
+            let lat = $(rows[j]).data('lat');
+            let lng = $(rows[j]).data('lon');
+            let distance = radialDist(lat, lng, geo.lat, geo.lng, 'M');
             if (distance <= radius) {
                 nearby.push(rows[j]);
             }

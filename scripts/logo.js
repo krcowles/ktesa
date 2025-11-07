@@ -9,7 +9,7 @@
 /**
  * Small screens:
  */
-var ss = function (vw) {
+const ss = (vw) => {
     if (vw < 500) {
         $('#logo_left').text('Hike');
         $('#logo_right').text('NM');

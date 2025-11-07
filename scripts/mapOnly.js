@@ -16,25 +16,16 @@
  * @version 2.0 Rework asynchronous map handlers per map.ts
  * @version 3.0 Support for New GoogleMap marker type (AdvancedMarkerElement)
  */
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
-var hike_mrkr_icon = "../images/blue_nobg.png";
+const hike_mrkr_icon = "../images/blue_nobg.png";
 // <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
-var clus_mrkr_icon = "../images/star8.png";
-var initialValue = 0;
-var zoomThresh = 13; // Default zoom level for drawing tracks
+const clus_mrkr_icon = "../images/star8.png";
+const initialValue = 0;
+const zoomThresh = 13; // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
-var colors = [
+const colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
 var geoOptions = { enableHighAccuracy: true };
@@ -68,10 +59,10 @@ var mapTick = {
 var trail = "Welcome!";
 $('#ctr').text(trail);
 // position searchbar
-var navheight = $('nav').height();
-var logoheight = $('#logo').height();
+let navheight = $('nav').height();
+let logoheight = $('#logo').height();
 // 16px padding on navbar, 42px to eliminate interference with maptype
-var srchtop = navheight + 16 + logoheight + 14 + 42;
+let srchtop = navheight + 16 + logoheight + 14 + 42;
 $('#search').css({
     top: srchtop,
     left: '40px'
@@ -81,8 +72,8 @@ $('#search').css({
  * left of the google map zoom control
  */
 function locateGeoSym() {
-    var winht = window.innerHeight - 90;
-    var mapwd = $('#map').width() - 120;
+    let winht = window.innerHeight - 90;
+    let mapwd = $('#map').width() - 120;
     $('#geoCtrl').css({
         top: winht,
         left: mapwd
@@ -95,19 +86,19 @@ var locaters = []; // global used to popup info window on map when hike is searc
 /**
  * Collect the number of hikes associated with a clusterer for labelling purposes
  */
-var makeClusterLabel = function (markers) {
+const makeClusterLabel = (markers) => {
     var total = [];
     markers.forEach(function (mrkr) {
         total.push(Number(mrkr.hikes));
     });
-    var hike_total = total.reduce(function (accumulator, currentValue) { return accumulator + currentValue; }, initialValue);
+    var hike_total = total.reduce((accumulator, currentValue) => accumulator + currentValue, initialValue);
     return hike_total;
 };
 /**
  * Create a DOM element containing a marker or clusterer icon with a mrkr_cnt div showing
  * the number of hikes associated with it
  */
-var build_content = function (glyph, count) {
+const build_content = (glyph, count) => {
     var gtop;
     var glft;
     var gsize;
@@ -161,7 +152,7 @@ var build_content = function (glyph, count) {
  * And one for creating tracks:
  * 		tracks Array: ordered list of json file names
  */
-var nm_marker_data = [];
+const nm_marker_data = [];
 NM.forEach(function (hikeobj) {
     var mrkr_loc = hikeobj.loc;
     var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
@@ -170,17 +161,17 @@ NM.forEach(function (hikeobj) {
     iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
     iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
     iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-    var nm_icon = document.createElement("IMG");
+    const nm_icon = document.createElement("IMG");
     nm_icon.src = "../images/pins/greennm.png";
     var nm_title = hikeobj.name;
     var nm_marker = { position: mrkr_loc, iw_content: iwContent, title: nm_title };
     nm_marker_data.push(nm_marker);
 });
-var cl_marker_data = [];
+const cl_marker_data = [];
 CL.forEach(function (clobj) {
-    var mrkr_loc = clobj.loc;
-    var hikecnt = clobj.hikes.length;
-    var iwContent = '<div id="iwCH">';
+    const mrkr_loc = clobj.loc;
+    const hikecnt = clobj.hikes.length;
+    let iwContent = '<div id="iwCH">';
     var link;
     if (clobj.page > 0) {
         link = "hikePageTemplate.php?clus=y&hikeIndx=";
@@ -203,7 +194,7 @@ CL.forEach(function (clobj) {
 });
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-    var nmCtr = { lat: 34.450, lng: -106.042 };
+    const nmCtr = { lat: 34.450, lng: -106.042 };
     var options = {
         center: nmCtr,
         zoom: 7,
@@ -221,17 +212,17 @@ function initMap() {
         url: "https://nmhikes.com/maps/NM_Borders.kml",
         map: map
     });
-    var infoWindow = new google.maps.InfoWindow({
+    const infoWindow = new google.maps.InfoWindow({
         content: "",
         disableAutoPan: true,
         maxWidth: 400
     });
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
-    var nm_markers = nm_marker_data.map(function (mrkr_data) {
-        var position = mrkr_data.position;
-        var nm_title = mrkr_data.title;
+    const nm_markers = nm_marker_data.map((mrkr_data) => {
+        const position = mrkr_data.position;
+        const nm_title = mrkr_data.title;
         // THE MARKER:
-        var marker = new google.maps.marker.AdvancedMarkerElement({
+        const marker = new google.maps.marker.AdvancedMarkerElement({
             position: position,
             map: map,
             content: build_content(hike_mrkr_icon, 1),
@@ -239,15 +230,15 @@ function initMap() {
         });
         marker.hikes = 1;
         // MARKER SEARCH
-        var srchmrkr = {
+        const srchmrkr = {
             hikeid: mrkr_data.title,
             clicked: false,
             pin: marker
         };
         locaters.push(srchmrkr);
-        var itemno = locaters.length - 1;
+        const itemno = locaters.length - 1;
         // CLICK ON MARKER:
-        marker.addListener("click", function () {
+        marker.addListener("click", () => {
             zoom_level = map.getZoom();
             // newBounds is true if only a center change with no follow-on zoom
             // this statement must precede the setCenter cmd.
@@ -266,12 +257,12 @@ function initMap() {
         });
         return marker;
     });
-    var cl_markers = cl_marker_data.map(function (mrkr_data) {
-        var position = mrkr_data.position;
-        var cl_title = mrkr_data.title;
-        var hike_count = mrkr_data.hikecnt;
+    const cl_markers = cl_marker_data.map((mrkr_data) => {
+        const position = mrkr_data.position;
+        const cl_title = mrkr_data.title;
+        const hike_count = mrkr_data.hikecnt;
         // THE MARKER:
-        var marker = new google.maps.marker.AdvancedMarkerElement({
+        const marker = new google.maps.marker.AdvancedMarkerElement({
             position: position,
             map: map,
             content: build_content(hike_mrkr_icon, hike_count),
@@ -280,15 +271,15 @@ function initMap() {
         });
         marker.hikes = hike_count;
         // MARKER SEARCH:
-        var srchmrkr = {
+        const srchmrkr = {
             hikeid: mrkr_data.title,
             clicked: false,
             pin: marker
         };
         locaters.push(srchmrkr);
-        var itemno = locaters.length - 1;
+        const itemno = locaters.length - 1;
         // CLICK ON MARKER:
-        marker.addListener("click", function () {
+        marker.addListener("click", () => {
             zoom_level = map.getZoom();
             // newBounds is true if only a center change and no follow-on zoom
             window.newBounds = zoom_level >= zoomThresh ? true : false;
@@ -306,8 +297,8 @@ function initMap() {
         });
         return marker;
     });
-    var markers = __spreadArray(__spreadArray([], nm_markers, true), cl_markers, true);
-    var renderer = {
+    const markers = [...nm_markers, ...cl_markers];
+    const renderer = {
         /**
          * render( CLUSTER, stats, map) where CLUSTER 'Accessors' are bounds, count, position
          * and 'cluster' contains various properties, including _position, and markers[]
@@ -425,10 +416,10 @@ function tracksInBounds(boundsStr) {
             link = "responsivePage.php?clus=y&hikeIndx=";
         }
         clus.hikes.forEach(function (hike) {
-            var lat = hike.loc.lat;
-            var lng = hike.loc.lng;
+            let lat = hike.loc.lat;
+            let lng = hike.loc.lng;
             if (lng <= east && lng >= west && lat <= north && lat >= south) {
-                var cliw = '<div id="iwCH"><a href="' + link + hike.indx +
+                let cliw = '<div id="iwCH"><a href="' + link + hike.indx +
                     '" target="_blank">' + hike.name + '</a><br />Length: ' +
                     hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                     '<br />Difficulty: ' + hike.diff + '</div>';
@@ -442,10 +433,10 @@ function tracksInBounds(boundsStr) {
         });
     });
     NM.forEach(function (hike) {
-        var lat = hike.loc.lat;
-        var lng = hike.loc.lng;
+        let lat = hike.loc.lat;
+        let lng = hike.loc.lng;
         if (lng <= east && lng >= west && lat <= north && lat >= south) {
-            var nmiw = '<div id="iwNH"><a href="responsivePage.php?hikeIndx=' +
+            let nmiw = '<div id="iwNH"><a href="responsivePage.php?hikeIndx=' +
                 hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
                 hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                 '<br />Difficulty: ' + hike.diff + '</div>';
@@ -462,12 +453,12 @@ function tracksInBounds(boundsStr) {
  */
 function zoom_track(hikenos, infoWins, trackcolors) {
     var promises = [];
-    for (var i = 0, j = 0; i < hikenos.length; i++, j++) {
+    for (let i = 0, j = 0; i < hikenos.length; i++, j++) {
         if (!drawnHikes.includes(hikenos[i])) {
             if (tracks[hikenos[i]] !== '') {
-                var trackDef = $.Deferred();
+                let trackDef = $.Deferred();
                 promises.push(trackDef);
-                var trackfile = '../json/' + tracks[hikenos[i]];
+                let trackfile = '../json/' + tracks[hikenos[i]];
                 drawnHikes.push(hikenos[i]);
                 if (j === trackcolors.length) {
                     j = 0; // rollover colors when # of tracks > # of colors
@@ -482,7 +473,7 @@ function zoom_track(hikenos, infoWins, trackcolors) {
  * This function draws the track for the hike object
  */
 function drawTrack(json_filename, info_win, color, hikeno, deferred) {
-    var sgltrack;
+    let sgltrack;
     $.ajax({
         dataType: "json",
         url: json_filename,
@@ -502,18 +493,18 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             });
             sgltrack.setMap(map);
             // create the mouseover text:
-            var iw = new google.maps.InfoWindow({
+            let iw = new google.maps.InfoWindow({
                 content: info_win
             });
             sgltrack.addListener('mouseover', function (mo) {
-                var trkPtr = mo.latLng;
+                let trkPtr = mo.latLng;
                 iw.setPosition(trkPtr);
                 iw.open(map);
             });
             sgltrack.addListener('mouseout', function () {
                 iw.close();
             });
-            var newtrack = { hike: hikeno, track: sgltrack };
+            let newtrack = { hike: hikeno, track: sgltrack };
             drawnTracks.push(newtrack);
             deferred.resolve();
         },
@@ -524,7 +515,7 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
                 newDoc.close();
             }
             else { // production
-                var msg = 'Did not succeed in getting track data: ' +
+                let msg = 'Did not succeed in getting track data: ' +
                     json_filename + "\nWe apologize for any inconvenience\n" +
                     "The webmaster has been notified; please try again later";
                 alert(msg);
@@ -551,12 +542,12 @@ function highlightTracks() {
     if (!$.isEmptyObject(hilite_obj)) {
         if (hilite_obj.type === 'cl') { // object is an array of objects
             // wait for tracks to be drawn, if not already...
-            var cluster = hilite_obj.obj;
+            let cluster = hilite_obj.obj;
             cluster.forEach(function (track) {
-                var polyno = track.indx;
-                for (var k = 0; k < drawnTracks.length; k++) {
+                let polyno = track.indx;
+                for (let k = 0; k < drawnTracks.length; k++) {
                     if (drawnTracks[k].hike == polyno) {
-                        var polyline = drawnTracks[k].track;
+                        let polyline = drawnTracks[k].track;
                         polyline.setOptions({
                             strokeWeight: 4,
                             strokeColor: '#FFFF00',
@@ -571,11 +562,11 @@ function highlightTracks() {
         }
         else { // mrkr === 'nm'; object is a single object
             // wait for tracks to be drawn, if not already...
-            var nmobj = hilite_obj.obj;
-            var polyno = nmobj.indx;
-            for (var k = 0; k < drawnTracks.length; k++) {
+            let nmobj = hilite_obj.obj;
+            let polyno = nmobj.indx;
+            for (let k = 0; k < drawnTracks.length; k++) {
                 if (drawnTracks[k].hike == polyno) {
-                    var polyline = drawnTracks[k].track;
+                    let polyline = drawnTracks[k].track;
                     polyline.setOptions({
                         strokeWeight: 4,
                         strokeColor: '#FFFF00',
@@ -594,7 +585,7 @@ function highlightTracks() {
  * Undo any previous track highlighting
  */
 function restoreTracks() {
-    for (var n = 0; n < hilited.length; n++) {
+    for (let n = 0; n < hilited.length; n++) {
         hilited[n].setOptions({
             strokeOpacity: 0.60,
             strokeWeight: 3,
@@ -625,13 +616,13 @@ function setupLoc() {
         }
     } // end of watchSuccess function
     function error(eobj) {
-        var msg = 'Error retrieving position; Code: ' + eobj.code;
+        let msg = 'Error retrieving position; Code: ' + eobj.code;
         window.alert(msg);
     }
 }
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
 $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
-    var thisMapDoc = document;
+    let thisMapDoc = document;
     var isFullScreen = thisMapDoc.fullScreen ||
         thisMapDoc.mozFullScreen ||
         thisMapDoc.webkitIsFullScreen;

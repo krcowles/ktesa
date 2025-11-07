@@ -79,7 +79,6 @@ $(function () {
     });
     $(window).on('resize', function () {
         window.open("../index.html", "_self");
-        //location.reload();
     });
     /**
      * Page links
@@ -94,7 +93,7 @@ $(function () {
         window.open("../pages/saveOffline.php?logo=no");
     });
     $('#choice4').on('click', function () {
-        window.open("../pages/useOffline.php?type=mobile&logo=no");
+        window.open("../pages/useOffline.html");
     });
     $('.blocks').on('click', function () {
         alert("Members only: sign up for a free membership!");

@@ -13,6 +13,7 @@
  * @version 3.0 Rescripted for offline maps presentation
  */
 $(function() {
+
 // Show benefits or not...
 const logo = document.getElementById('logo') as HTMLDivElement;
 const logo_ht = logo.clientHeight as number;
@@ -28,26 +29,28 @@ var bene_alloc = view_space - consumed_space;
 if (bene_alloc <= bene_space) {
     $('#bennies').hide();
 }
+
 const member = $('#cookie_state').text() === 'OK' ? true : false;
-    if (!member) {
-        // disable choices 3 & 4
-        const c3pos = $('#choice3').offset() as JQuery.Coordinates;
-        const c4pos = $('#choice4').offset() as JQuery.Coordinates;
-        const saver = document.getElementById('choice3') as HTMLDivElement;
-        const useit = document.getElementById('choice4') as HTMLDivElement;
-        const svwidth = saver.offsetWidth;
-        const uswidth = useit.offsetWidth;
-        const svheight = saver.clientHeight;
-        const usheight = useit.clientHeight;
-        const block3 = "<div class='blocks' style='position:absolute;background-color:gainsboro;" +
-            "opacity:0.7;z-index:100;width:" + svwidth + "px;height:" + svheight + "px;top:" +
-            Math.round(c3pos.top) + "px;left:" + Math.round(c3pos.left) + "px;'><div>";
-        const block4 = "<div class='blocks' style='position:absolute;background-color:gainsboro;" +
-            "opacity:0.7;z-index:100;width:" + uswidth + "px;height:" + usheight + "px;top:" +
-            Math.round(c4pos.top) + "px;left:" + Math.round(c4pos.left) + "px;'><div>";
-        $('body').append(block3);
-        $('body').append(block4);
-    }
+if (!member) {
+    // disable choices 3 & 4
+    const c3pos = $('#choice3').offset() as JQuery.Coordinates;
+    const c4pos = $('#choice4').offset() as JQuery.Coordinates;
+    const saver = document.getElementById('choice3') as HTMLDivElement;
+    const useit = document.getElementById('choice4') as HTMLDivElement;
+    const svwidth = saver.offsetWidth;
+    const uswidth = useit.offsetWidth;
+    const svheight = saver.clientHeight;
+    const usheight = useit.clientHeight;
+    const block3 = "<div class='blocks' style='position:absolute;background-color:gainsboro;" +
+        "opacity:0.7;z-index:100;width:" + svwidth + "px;height:" + svheight + "px;top:" +
+        Math.round(c3pos.top) + "px;left:" + Math.round(c3pos.left) + "px;'><div>";
+    const block4 = "<div class='blocks' style='position:absolute;background-color:gainsboro;" +
+        "opacity:0.7;z-index:100;width:" + uswidth + "px;height:" + usheight + "px;top:" +
+        Math.round(c4pos.top) + "px;left:" + Math.round(c4pos.left) + "px;'><div>";
+    $('body').append(block3);
+    $('body').append(block4);
+}
+
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
     var newloc: string;
@@ -78,7 +81,6 @@ $('#membership').on('change', function() {
 });
 $(window).on('resize', function () {
     window.open("../index.html", "_self");
-    //location.reload();
 });
 /**
  * Page links
@@ -93,7 +95,7 @@ $('#choice3').on('click', function() {
     window.open("../pages/saveOffline.php?logo=no");
 });
 $('#choice4').on('click', function() {
-    window.open("../pages/useOffline.php?type=mobile&logo=no");
+    window.open("../pages/useOffline.html");
 });
 $('.blocks').on('click', function() {
     alert("Members only: sign up for a free membership!");
