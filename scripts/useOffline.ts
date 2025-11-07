@@ -18,6 +18,7 @@ interface LeafCoords {
  * NOTE: I cannot determine how to appease typescript for LatLngExpression
  * and GridDebug
  */
+/*
 const platform = type ? 'mobile' : 'notmobile';
 const selectedMap = $('#selectmap').text();
 if (selectedMap === '') {
@@ -77,6 +78,7 @@ if (selectedMap === '') {
         $('#zoomin').on('click', function() {
             alert("Zooming in");
         });
+ */
         // Establish cache for map tiles
         /*
         caches.open("Map1")
@@ -84,5 +86,10 @@ if (selectedMap === '') {
             cache.add("https://tile.openstreetmap.org/13/1674/3242.png");
         } );
          */
+/*
     });
 }
+*/
+readMapKeys().then( (result) => {
+    alert(result);
+});

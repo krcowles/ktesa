@@ -141,7 +141,8 @@ async function readMapKeys() {
     const mapdb = await openDB();
     const tx = mapdb.transaction(STORE, "readonly");
     const objStore = tx.objectStore(STORE);
-    const mapIndex = objStore.index("map");
+    const mapIndex = objStore.index("map_data");
+    
     const getData = mapIndex.getAllKeys();
     getData.onsuccess = () => {
         return getData.result;
