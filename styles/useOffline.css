@@ -1,0 +1,39 @@
+/* scss standard definitions */
+body {
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  body {
+    min-width: 960px;
+  }
+}
+
+#map {
+  overflow: hidden;
+  position: absolute;
+  height: 550px;
+  width: 700px;
+  border: 1px solid #AAA;
+}
+
+.modal-header, .modal-footer {
+  background-color: #dfe9e3;
+  color: black;
+}
+
+#back {
+  position: absolute;
+  z-index: 1000;
+  left: 60px;
+  top: 20px;
+}
+
+/*# sourceMappingURL=useOffline.css.map */

@@ -12,8 +12,12 @@
       "noUnusedParameters": true,
       "noImplicitReturns": true,
       "noFallthroughCasesInSwitch": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true, 
+      "allowJs": true
   },
+  "exclude": [
+    "**/*.js"
+  ],
   "files": [
     "landing.ts",
     "loginState.ts",

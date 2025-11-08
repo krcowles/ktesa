@@ -1,8 +1,15 @@
 <?php
 /**
- * This script pertains to mobile usage, and presents the html that comprises
- * the top-of-the-page menu-driven navigation bar and ktesa logo.
- * PHP Version 7.4
+ * This script pertains to mobile usage, and adds the 'tools'
+ * menu, offering options for offline maps. Note that some
+ * features, such as the logo and brand icon, are omitted in certain
+ * cases where more space is desired, such as offline map pages. In
+ * these cases, it is expected that the page is invoked with the query
+ * string "?logo=no". The appended javascript platform detection
+ * sets up availability for all the associated page globals. Some
+ * code is provided to test on a non-mobile platform, and is to be
+ * commented out for production.
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -10,6 +17,9 @@
  */
 require_once "../accounts/getLogin.php";
 require "../admin/mode_settings.php";
+$use_logo = isset($_GET['logo']) ? false : true;
+$js_logo  = $use_logo ? 'true' : 'false';
+$logged_in = isset($_SESSION['userid']) ? true : false;
 $policy = urlencode("PrivacyPolicy.pdf");
 ?>
 <p id="appMode" style="display:none"><?=$appMode;?></p>
@@ -22,9 +32,10 @@ $policy = urlencode("PrivacyPolicy.pdf");
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
-            <a class="navbar-brand" href="../pages/about.php">
-                <img src="../images/logos/logo32.png" alt="Brand Icon" />
-            </a>
+            <?php if ($use_logo) : ?>
+            <a id="maxPanel" class="navbar-brand" href="../pages/about.php">
+                <img src="../images/logos/logo32.png" /></a>
+            <?php endif; ?>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
@@ -76,6 +87,23 @@ $policy = urlencode("PrivacyPolicy.pdf");
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
+                    Tools
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item"
+                            href="../pages/saveOffline.php?logo=no"
+                            target="_blank">Save Offline Map</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                            href="../pages/useOffline.html"
+                            target="_blank">Use Offline Map</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     Help
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -92,6 +120,7 @@ $policy = urlencode("PrivacyPolicy.pdf");
         </div>
     </div>
 </nav>
+<?php if ($use_logo) : ?>
 <!-- ktesa Logo -->
 <div id="logo">
     <div id="pattern"></div> <!-- ktesa pattern bar -->
@@ -105,6 +134,7 @@ $policy = urlencode("PrivacyPolicy.pdf");
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>

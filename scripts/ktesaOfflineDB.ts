@@ -169,15 +169,22 @@ async function removeMap(map: string) {
 }
 
 async function readMapKeys() {
-	const mapdb = await openDB() as IDBDatabase;
-	const tx = mapdb.transaction(STORE, "readonly");
-	const  objStore = tx.objectStore(STORE);
-	const mapIndex = objStore.index("map_data");
-	const getData = mapIndex.getAllKeys();
-	getData.onsuccess = () => {
-		return getData.result;
-	}
-	getData.onerror = () =>{
-		return "Failed to read map keys";
-	}
+	var open_db = await openDB() as IDBDatabase;
+	var k_data  = await getKeyData(open_db);
+	return k_data;
 }
+function getKeyData(db: IDBDatabase) {
+	return new Promise( (resolve, reject) => {
+		const tx = db.transaction(STORE, "readonly");
+		const  objectStore = tx.objectStore(STORE);
+		const mapIndex = objectStore.index("track");
+		const getData = mapIndex.getAllKeys();
+		getData.onsuccess = () => {
+			resolve(getData.result);
+			// result is a string, but typescript type is complex
+		}
+		getData.onerror = () =>{
+			reject( "Failed to read map keys");
+		}
+	});
+} 

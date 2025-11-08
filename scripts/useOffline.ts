@@ -1,3 +1,4 @@
+/// <reference types="bootstrap" />
 declare var type: boolean;
 declare module 'leaflet' {
     namespace GridLayer {
@@ -16,16 +17,18 @@ interface LeafCoords {
  * @author Ken Cowles
  * @version 1.0 First release
  * NOTE: I cannot determine how to appease typescript for LatLngExpression
- * and GridDebug
+ * and GridDebug, so 'any' is utilized.
  */
-/*
-const platform = type ? 'mobile' : 'notmobile';
-const selectedMap = $('#selectmap').text();
-if (selectedMap === '') {
-    var modal = document.getElementById('use_offline') as HTMLDivElement;
-    var use_omap = new bootstrap.Modal(modal);
-    const modal_opts = $('#gotopts').html().trim();
-    if (modal_opts === 'none') {
+const opt_start = "<option value='";
+const opt_end   = "</option>";
+var maps_available = new bootstrap.Modal(document.getElementById('use_offline') as HTMLElement);
+readMapKeys().then( (result: any) => {
+    if (result.indexOf('Failed') !== -1) {
+        alert("Failed to read existing map data: contact admin");
+        return false;
+    }
+    if (result.length === 0) {
+        $('#available').css('display', 'none');
         $('#no_maps').css('display', 'block');
         $('#use_map').removeClass('btn-success');
         $('#use_map').addClass('btn-secondary');
@@ -33,20 +36,21 @@ if (selectedMap === '') {
         $('#off_close').removeClass('btn-secondary');
         $('#off_close').addClass('btn-primary');
     } else {
-        let sel_opts = document.createElement('TEXTNODE');
-        sel_opts.textContent = modal_opts;
-        $('#select_map').prepend(modal_opts);
-        $('#available').css('display', 'block');
+        let opts = '';
+        let modal_opts = result as Array<string>
+        modal_opts.forEach( (opt: string) => {
+            opts += opt_start + opt + "'>" + opt + opt_end;
+        });
+        $('#select_map').append(opts);
     }
-    use_omap.show();
-    $('#use_map').on('click', function() {
-        const choice = $('#select_map').val();
-        const newpage = `../pages/useOffline.php?type=${platform}&map=${choice}`;
-        use_omap.hide();
-        window.open(newpage, "_self");
-    });
-} else {
-    readMapData(selectedMap)
+    maps_available.show();
+    return;
+} );
+$('body').on('click', '#use_map', function() {
+    const choice = $('#select_map').val() as string;
+    maps_available.hide();
+    //alert("You chose " + choice);
+    readMapData(choice)
     .then((mapdat) => {
         // Map setup
         const ctr = mapdat[0] as string;
@@ -78,18 +82,8 @@ if (selectedMap === '') {
         $('#zoomin').on('click', function() {
             alert("Zooming in");
         });
- */
-        // Establish cache for map tiles
-        /*
-        caches.open("Map1")
-        .then( (cache) => {
-            cache.add("https://tile.openstreetmap.org/13/1674/3242.png");
-        } );
-         */
-/*
     });
-}
-*/
-readMapKeys().then( (result) => {
-    alert(result);
+});
+$('#back').on('click', function() {
+    window.open("../pages/member_landing.html", "_self");
 });

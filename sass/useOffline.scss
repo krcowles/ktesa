@@ -1,0 +1,19 @@
+@use "body" as *;
+
+#map {
+    overflow: hidden;
+    position: absolute;
+    height: 550px;
+    width: 700px;
+    border: 1px solid #AAA;
+}
+.modal-header, .modal-footer {
+    background-color: #dfe9e3;
+    color: black;
+}
+#back {
+  position: absolute;
+  z-index: 1000;
+  left: 60px;
+  top: 20px;
+}
