@@ -2,26 +2,23 @@
 /// <reference types="jqueryui" />
 /// <reference types="leaflet" />
 /// <reference types="geojson" />
+
+import { LatLngExpression } from "leaflet";
+
+declare var hikesources: string[];
 /**
- * @fileoverview Capturing map tiles and tracks for offline use;
- * NOTE: trying to typescript this module proved fruitless - the
- * only way to bring in certain leaflet types was to modularize 
- * a number of scripts - an overhead I decided, after some intial
- * attempts, to not accept.
- * 
+ * @fileoverview Capturing map tiles and tracks for offline use
  * @author Ken Cowles
  * @version 1.0 Initial release
  */
-// cache name is already defined and loaded when member enters site
-const MAIN_CACHE = "offline";
+// Opening page modal for user to select save option:
 var draw_inst = $('#drawer').detach();
 $('#impgpx').hide();
 $('#rect_btns').hide();
 $('#clearrect').hide();
-// Note: the name 'opener' conflicts with a DOM lib element: hence 'iopener'
-var recenter = new bootstrap.Modal(document.getElementById('rctr'));
-var iopener = new bootstrap.Modal(document.getElementById('intro'));
-var restart = new bootstrap.Modal(document.getElementById('redo'));
+var recenter = new bootstrap.Modal(document.getElementById('rctr') as HTMLDivElement);
+var iopener = new bootstrap.Modal(document.getElementById('intro') as HTMLDivElement);
+var restart = new bootstrap.Modal(document.getElementById('redo') as HTMLDivElement);
 iopener.show();
 /**
  * The default state is to import a hike from the site;
@@ -47,11 +44,11 @@ $('body').on('click', '#begin', function() {
     iopener.hide();
 });
 // globals
-var mobwidth = $('document').width();
+var mobwidth = $('document').width() as number;
 $('#form').width(mobwidth);
 $('#map').width(mobwidth);
-var mobheight = $('document').height();
-var barht = $('#nav').height();
+var mobheight = $('document').height() as number;
+var barht = $('#nav').height() as number;
 $('#map').height(mobheight - barht);
 
 var mapName = 'Unassigned';
@@ -71,13 +68,18 @@ for (var k = 0; k < 10; k++) {
 var tile_str = "https://tile.openstreetmap.org/";
 var maptiles = [];
 var tile_cnt;
-// tile positions as object {x:tilex, y:tiley}:
 var tile_coords = [];
-tile_coords[13] = []; 
+tile_coords[13] = []; // tile positions as object {x:tilex, y:tiley}
 tile_coords[14] = [];
 tile_coords[15] = [];
 tile_coords[16] = [];
-
+/*
+// northwest corners of NM at zoom levels: (initial values for NM)
+var corner13 = { '13x': 1614, '13y': 3188 };
+var corner14 = { '14x': 3228, '14y': 6376 };
+var corner15 = { '15x': 6458, '15y': 12754 };
+var corner16 = { '16x': 12916, '16y': 25508 };
+*/
 // expanded NW corners for North America
 var corner13 = { '13x': 313, '13y': 1905 };
 var corner14 = { '14x': 626, '14y': 3811 };
@@ -107,7 +109,7 @@ $('#setzoom').on('click', function () {
 // Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function () {
     $('#search').val("");
-    var searchbox = document.getElementById('search');
+    var searchbox = document.getElementById('search') as HTMLInputElement;
     searchbox.focus();
 });
 /**
@@ -136,9 +138,9 @@ function displayTrack(ajax_data, source) {
         se = [se[0]-latmarg, se[1]-lngmarg];
         var lat = result_array[2][0];
         var lng = result_array[2][1];
-        map_center = [lat, lng];
-        var idb_data;
+        map_center = [lat, lng] as LatLngExpression;
         var track_poly = result_array[3];
+        var idb_data = '';
         for (let i=3; i<result_array.length; i++) {
             //var trk_pt = [result_array[i][0]];
             idb_data = result_array[i].toString();
@@ -236,7 +238,7 @@ $('body').on('click', '#rect', function () {
     if (typeof rect !== 'undefined') {
         rect.remove();
     }
-    $('#map').on('click', function (e) {
+    $('#map').on('touchstart', 'click', function (e) {
         if (click_cnt === 0) {
             saveType = "draw";
             $('#map').on('mousemove', function (e) {
@@ -246,18 +248,37 @@ $('body').on('click', '#rect', function () {
         }
         else {
             end_rect(e);
+            /*
+            var endRect = map.mouseEventToLatLng(e.originalEvent);
+            endX = endRect.lat;
+            endY = endRect.lng;
+            var lat_ctr = startX - (startX - endX)/2;
+            var lng_ctr = startY + (endY - startY)/2;
+            map_center = [lat_ctr, lng_ctr];
+            $('#draw_inst').hide();
+            $('#map').off();
+            $('#rect').removeClass('btn-secondary');
+            $('#rect').addClass('btn-primary');
+            $('#rect').attr('disabled', false);
+            getRectTiles(zlevel);
+            //$('#rect').text("Clear Rect");
+            $('#rect_btns').hide();
+            $('#clearrect').show();
+            restart.show();
+            */
         }
         return;
     });
+    $('#map').on('touchend', function(ev) {
+        end_rect(ev);
+    })
     function start_rect(ev) {
         var startRect = map.mouseEventToLatLng(ev.originalEvent);
         startX = startRect.lat;
         startY = startRect.lng;
         var rectX = startX + 0.005;
         var rectY = startY + 0.005;
-        var crnr1 = L.latLng(startX, startY);
-        var crnr2 = L.latLng(rectX, rectY);
-        var latlngs = L.latLngBounds(crnr1, crnr2); //[[startX, startY], [rectX, rectY]];
+        var latlngs = [[startX, startY], [rectX, rectY]];
         var rectOpts = { color: 'Green', weight: 1 };
         rect = L.rectangle(latlngs, rectOpts);
         rect.addTo(map);
@@ -268,9 +289,7 @@ $('body').on('click', '#rect', function () {
         var newRect = map.mouseEventToLatLng(ev.originalEvent);
         var rectX = newRect.lat;
         var rectY = newRect.lng;
-        var crnr1 = L.latLng(startX, startY);
-        var crnr2 = L.latLng(rectX, rectY);
-        var latlngs = L.latLngBounds(crnr1, crnr2); //[[startX, startY], [rectX, rectY]];
+        var latlngs = [[startX, startY], [rectX, rectY]];
         var rectOpts = { color: 'Green', weight: 1 };
         rect = L.rectangle(latlngs, rectOpts);
         rect.addTo(map);
@@ -288,6 +307,7 @@ $('body').on('click', '#rect', function () {
         $('#rect').addClass('btn-primary');
         $('#rect').prop('disabled', false);
         getRectTiles(zlevel);
+        //$('#rect').text("Clear Rect");
         $('#rect_btns').hide();
         $('#clearrect').show();
         restart.show();
@@ -357,8 +377,8 @@ $('body').on('click', '#newctr', function() {
     recenter.show();
 });
 $('body').on('click', '#movectr', function() {
-    var newlat = $('#newlat').val();
-    var newlng = $('#newlng').val();
+    var newlat = $('#newlat').val() as string;
+    var newlng = $('#newlng').val() as string;
     if (newlat == '' || newlng == '') {
         alert("One or more values is missing");
         $('#newctr').prop('checked', false);
@@ -424,7 +444,7 @@ var next_zoom_tiles = function (next_level, delta_x, delta_y) {
     tile_coords[next_level].push(loc4);
     return;
 };
-function getTileURL(lat, lng, zoom) {
+function getTileURL(lat: number, lng: number, zoom: number) {
     var latrad = lat * Math.PI / 180;
     var tileX = Math.floor((lng + 180) / 360 * (1 << zoom));
     var tileY = Math.floor((1 - Math.log(Math.tan(latrad)
@@ -441,18 +461,16 @@ function getRectTiles(zoom_level) {
     maptiles = []; // clear for each invocation...
     var corner1 = getTileURL(startX, startY, zoom_level); // user start
     var corner2 = getTileURL(endX, endY, zoom_level);     // user end
-    var XY1_Corner = corner1.split("/");
-    var corner1XY = XY1_Corner.map(Number); // array:[0]=>zoom;[1]=>row;[2]=col
-    var XY2_Corner = corner2.split("/");
-    var corner2XY = XY2_Corner.map(Number);
+    var corner1XY = corner1.split("/"); // array:[0]=>zoom;[1]=>row;[2]=col
+    var corner2XY = corner2.split("/");
     var tileXmid = 0;
     var tileYmid = 0;
     /**
      * User may draw from any corner, so establish matrix as if it were
      * drawn from upper left to lower right to simplify processing
      */
-    var tile1 = []; // tileN => [row, col]
-    var tile2 = [];
+    var tile1: string[] = []; // tileN => [row, col]
+    var tile2: string[] = [];
     if (corner1XY[1] < corner2XY[1]) { // row check
         tile1[0] = corner1XY[1];
         tile2[0] = corner2XY[1];
@@ -719,6 +737,7 @@ $('body').on('click', '#save_map', function () {
 });
 
 function saveMapTiles(userMap) {
+
     saveStat.show();
     let bar = 0
     let tilecnt = maptiles.length;
@@ -730,7 +749,7 @@ function saveMapTiles(userMap) {
     } else {
         storeMap(userMap, map_center, zoom_level, false);
     }
-    caches.open(MAIN_CACHE)
+    caches.open(userMap)
     .then ( (cache) => {
         for (let j=0; j<tilecnt; j++) {
             bar = (j+1) * incr;
@@ -745,12 +764,6 @@ $('body').on('click', '#delmap', function () {
     $.get("../php/manageMapNames.php", {act: "delete", map: choice}, function(result) {
         if (result === "UPDATED") {
             removeMap(choice);  // IndexedDB
-            /**
-             * Need a method to remove only THIS map's cache
-             * entries from the main cache ("offline"):
-             * [use maptiles?]
-             */
-            /*
             caches.delete(choice).then(function(deleted) {
                 if (deleted) {
                   console.log(`Cache ${choice} was successfully deleted`);
@@ -758,7 +771,6 @@ $('body').on('click', '#delmap', function () {
                   console.log(`Cache ${choice} was not found or could not be deleted`);
                 }
             });
-            */
             $("#delchoice " + choice_opt).remove();
         } else {
             alert(result);
@@ -768,7 +780,6 @@ $('body').on('click', '#delmap', function () {
     return;
 });
 
-// Used in test/debug to eliminate test caches
 function clearCache(deletedMap) {
     caches.open(deletedMap) 
     .then((cache) => cache.keys())

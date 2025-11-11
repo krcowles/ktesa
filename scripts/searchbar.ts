@@ -1,6 +1,6 @@
 /// <reference path="./map.d.ts" />
 declare var infoWin_zoom: boolean;
-declare var hikeSources: AutoItem[];
+declare var hikeSources: JQueryUI.AutocompleteOptions;
 interface AutoItem {
     value: string;
     label: string;

@@ -67,6 +67,17 @@ input[type=checkbox] {
 #delchoice {
 	min-width: 140px;
 }
+/* Save Map Modal */
+#progress {
+	height: 48px;
+	width: 280px;
+	background-color: gainsboro;
+}
+#bar {
+	height: 48px;
+	width: 2px;
+	background-color: SeaGreen;
+}
 /* Recenter map modal */
 .latlngs {
 	width: 80px;

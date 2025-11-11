@@ -1,8 +1,4 @@
 /// <reference types="leaflet" />
-interface CreationObject {
-	map: string;
-	time: string;
-}
 interface IndexedReqResult extends EventTarget {
 	result?: IDBDatabase;
 	errorCode?: string;
@@ -21,9 +17,7 @@ interface MapObject extends Object {
 	time: Date;
 	poly: string;
 }
-interface IndexedAll extends EventTarget {
-	result: MapObject[];
-}
+
 /**
  * @fileoverview This script handles the indexedDB access for offline maps.
  * @author Ken Cowles
@@ -137,7 +131,6 @@ async function readMapData(mapname: string) {
 	open_db.close();
 	return [ctr, zm, itrk, time, trackPoly];
 }
-
 function getMap(db: IDBDatabase, map: string) {
 	return new Promise( (resolve, reject) => {
 		const tx = db.transaction(STORE);

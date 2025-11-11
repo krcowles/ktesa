@@ -158,7 +158,11 @@ function displayTrack(ajax_data, source) {
         endY   = se[1];
         saveType = "import";
         $(source).hide();
-        $('#clearrect').hide();
+        $('#newrect').hide();
+        $('#rctg').prop('checked', false);
+        $('#site').prop('checked', false);
+        $('#saveGpx').prop('checked', false);
+        $('#search').val("");
         restart.show();
     }
 }
@@ -233,10 +237,10 @@ $('body').on('click', '#rect', function () {
     if (typeof rect !== 'undefined') {
         rect.remove();
     }
-    $('#map').on('click', function (e) {
+    $('#map').on('ontouchstart', 'click', function (e) {
         if (click_cnt === 0) {
             saveType = "draw";
-            $('#map').on('mousemove', function (e) {
+            $('#map').on('ontouchmove', 'mousemove', function (e) {
                 draw_rect(e);
             });
             start_rect(e);
@@ -261,6 +265,25 @@ $('body').on('click', '#rect', function () {
         }
         return;
     });
+    $('#map').on('touchend', function(e)  {
+        var endRect = map.mouseEventToLatLng(e.originalEvent);
+        endX = endRect.lat;
+        endY = endRect.lng;
+        var lat_ctr = startX - (startX - endX)/2;
+        var lng_ctr = startY + (endY - startY)/2;
+        map_center = [lat_ctr, lng_ctr];
+        $('#draw_inst').hide();
+        $('#map').off();
+        $('#rect').removeClass('btn-secondary');
+        $('#rect').addClass('btn-primary');
+        $('#rect').attr('disabled', false);
+        getRectTiles(zlevel);
+        //$('#rect').text("Clear Rect");
+        $('#rect_btns').hide();
+        $('#clearrect').show();
+        restart.show();
+    }
+    
     function start_rect(ev) {
         var startRect = map.mouseEventToLatLng(ev.originalEvent);
         startX = startRect.lat;
@@ -282,6 +305,9 @@ $('body').on('click', '#rect', function () {
         var rectOpts = { color: 'Green', weight: 1 };
         rect = L.rectangle(latlngs, rectOpts);
         rect.addTo(map);
+    }
+    function end_rect(ev) {
+
     }
 });
 $('body').on('click', '#clearrect', function() {
@@ -751,6 +777,7 @@ $('body').on('click', '#delmap', function () {
     return;
 });
 
+// Used in certain test cases only
 function clearCache(deletedMap) {
     caches.open(deletedMap) 
     .then((cache) => cache.keys())

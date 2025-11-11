@@ -236,6 +236,7 @@ input[id^=q] {
   left: 6px;
 }
 
+/* clear is not actually used unless garbage appears in search */
 #clear {
   position: relative;
   font-size: 24px;
@@ -276,6 +277,19 @@ input[type=checkbox] {
 
 #delchoice {
   min-width: 140px;
+}
+
+/* Save Map Modal */
+#progress {
+  height: 48px;
+  width: 280px;
+  background-color: gainsboro;
+}
+
+#bar {
+  height: 48px;
+  width: 2px;
+  background-color: SeaGreen;
 }
 
 /* Recenter map modal */

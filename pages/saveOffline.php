@@ -86,8 +86,9 @@ require "../pages/mobileNavbar.php";
     <span id="lnote">NOTE: Zoom must be set to level 13 or higher;</span><br />
     <span>
         To draw, tap "Draw Rectangle" then tap on the map once at the
-        location where you wish to begin drawing the rectangle; move as
-        desired, then release to finish the rectangle.
+        location where you wish to begin drawing the rectangle; drag your
+        finger to a new location as desired, then release to finish the
+        rectangle.
     </span><br /><br />
     <p>Reload this page to add new maps</p>
     <span>Close this window to begin<br />
