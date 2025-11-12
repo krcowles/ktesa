@@ -4,10 +4,11 @@
 /// <reference types="geojson" />
 /**
  * @fileoverview Capturing map tiles and tracks for offline use;
+ * 
  * NOTE: trying to typescript this module proved fruitless - the
  * only way to bring in certain leaflet types was to modularize 
- * a number of scripts - an overhead I decided, after some intial
- * attempts, to not accept.
+ * a number of scripts - a burden, I decided, after some intial
+ * attempts, not to carry.
  * 
  * @author Ken Cowles
  * @version 1.0 Initial release
@@ -232,10 +233,22 @@ $('body').on('click', '#rect', function () {
     $(this).removeClass('btn-primary');
     $(this).addClass('btn-secondary');
     $(this).prop("disabled", true);
-    click_cnt = 0;
     if (typeof rect !== 'undefined') {
         rect.remove();
     }
+    
+    $('#map').on('touchstart', function(te) {
+        saveType = "draw";
+        $('#map').on('touchmove', function(te) {
+            draw_rect(te)
+        });
+        $('#map').on('touchend', function(te) {
+            end_rect(te)
+        });
+        start_rect();
+    });
+    /* comment out when posting to site */
+    click_cnt = 0;
     $('#map').on('click', function (e) {
         if (click_cnt === 0) {
             saveType = "draw";

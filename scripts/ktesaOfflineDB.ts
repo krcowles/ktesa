@@ -47,18 +47,18 @@ function openDB() {
 		openRequest.onsuccess = (ev) => {
 			var targ = ev.target as IndexedReqResult;
 			var db = targ.result;
-			console.log("db opened...");
+			//console.log("db opened...");
 			resolve(db);
 		}
 		openRequest.onerror = (e) => {
 			var targ = e.target as IndexedReqResult;
 			var msg = "Cannot open 'maps' database " + targ.errorCode
 			reject(msg);
-            alert(msg);
+            //alert(msg);
 		};
-		openRequest.onblocked = () => console.warn('pending till unblocked');
+		//openRequest.onblocked = () => console.warn('pending till unblocked');
 		
-		// one-time creation per user:
+		// one-time creation per user & browser:
 		openRequest.onupgradeneeded = (e: IDBVersionChangeEvent) => {
 			var targ = e.target as IndexedReqResult
 			const db = targ.result as IDBDatabase; // local scope
@@ -89,14 +89,14 @@ function addMap(db: IDBDatabase, mapObject: MapObject) {
 		const store = tx.objectStore(STORE);
 		const request = store.add(mapObject);
 		tx.oncomplete = () => {
-            console.log("Transaction complete");
+            //console.log("Transaction complete");
         }
 		request.onsuccess = () => {
 			console.log("Map added");
 			resolve(request.result);
 		}
 		request.onerror = () => {
-			alert("Could not save map: " + request.error);
+			//alert("Could not save map: " + request.error);
 			reject(request.error);
 		}
 	});
@@ -133,7 +133,7 @@ async function readMapData(mapname: string) {
 }
 function getMap(db: IDBDatabase, map: string) {
 	return new Promise( (resolve, reject) => {
-		const tx = db.transaction(STORE);
+		const tx = db.transaction(STORE, 'readonly');
 		const store = tx.objectStore(STORE);
 		const request = store.get(map)
 		request.onerror = () => {

@@ -1,5 +1,5 @@
-const offline_index = 'https://nmhikes.com/offline_index.html';
-const index = "https://nmhikes.com/ld/index.html";
+const offline_index = 'https://nmhikes.com/ld/offline_index.html';
+const index = "https://nmhikes.com/ld/ld/index.html";
 self.addEventListener("install", (event) => {
     //self.skipWaiting();  // Useful during debug
     console.log("ROOT worker install");
@@ -8,21 +8,27 @@ self.addEventListener("install", (event) => {
       .open("offline")
         .then((cache) => {
             cache.addAll([  // test site dir included here...
-                "https://nmhikes.com/pages/landing.html",
-                "https://nmhikes.com/images/hikers.png",
-                "https://nmhikes.com/images/trail.png",
-                "https://nmhikes.com/images/Tbl.png",
-                "https://nmhikes.com/images/MapsNmrkrs.png",
-                "https://nmhikes.com/images/Save.png",
-                "https://nmhikes.com/images/Use.png",
-                "https://nmhikes.com/styles/landing.css",
-                "https://nmhikes.com/styles/bootstrap.min.css",
-                "https://nmhikes.com/scripts/jquery.js",
-                "https://nmhikes.com/scripts/bootstrap.min.js",
-                "https://nmhikes.com/scripts/viewMgr.js",
-                "https://nmhikes.com/scripts/landing.js",
-                "https://nmhikes.com/scripts/loginState.js",
-                "https://nmhikes.com/pages/useOffline.html",
+                "https://nmhikes.com/ld/images/hikers.png",
+                "https://nmhikes.com/ld/images/trail.png",
+                "https://nmhikes.com/ld/images/Tbl.png",
+                "https://nmhikes.com/ld/images/MapsNmrkrs.png",
+                "https://nmhikes.com/ld/images/Save.png",
+                "https://nmhikes.com/ld/images/Use.png",
+                "https://nmhikes.com/ld/pages/member_landing.html",
+                "https://nmhikes.com/ld/pages/useOffline.html",
+                "https://nmhikes.com/ld/styles/landing.css",
+                "https://nmhikes.com/ld/styles/leaflet.css",
+                "https://nmhikes.com/ld/styles/useOffline.css",
+                "https://nmhikes.com/ld/styles/bootstrap.min.css",
+                "https://nmhikes.com/ld/scripts/jquery.js",
+                "https://nmhikes.com/ld/scripts/popper.min.js",
+                "https://nmhikes.com/ld/scripts/bootstrap.min.js",
+                "https://nmhikes.com/ld/scripts/viewMgr.js",
+                "https://nmhikes.com/ld/scripts/landing.js",
+                "https://nmhikes.com/ld/scripts/loginState.js",
+                "https://nmhikes.com/ld/scripts/leaflet.js",
+                "https://nmhikes.com/ld/scripts/ktesaOfflineDB.js",
+                "https://nmhikes.com/ld/scripts/useOffline.js",
             ])
         })
     );
