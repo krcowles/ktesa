@@ -49,6 +49,12 @@ $(function () {
         $('body').append(block3);
         $('body').append(block4);
     }
+    else {
+        // establish a localStorage item to save the list of browser maps
+        if (localStorage.getItem('mapnames') === null) {
+            localStorage.setItem('mapnames', 'none');
+        }
+    }
     $('#membership').on('change', function () {
         var id = $(this).find("option:selected").attr("id");
         var newloc;

@@ -74,8 +74,6 @@ $('body').on('click', '#use_map', function() {
         }).addTo(map);
         if (hasTrack !== 'n') {
             const poly = mapdat[4] as L.Polyline<GeoJSON.LineString | GeoJSON.MultiLineString, any>;
-            //const pline = JSON.parse(poly);
-            //const track = L.polyline(pline);
             poly.addTo(map);
         } 
         // Control buttons...

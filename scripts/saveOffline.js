@@ -354,7 +354,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.GridLayer.GridDebug = L.GridLayer.extend({
     createTile: function (coords) {
         var tile = document.createElement("DIV");
-        tile.style.outline = '1px solid black';
+        tile.style.outline = '1px solid #e6e6e6';
         tile.style.fontSize = '14pt';
         tile.style.color = "darkgray";
         tile.innerHTML = [coords.z, coords.x, coords.y].join('/');
@@ -701,34 +701,28 @@ $('body').on('click', '#save_map', function () {
         alert("You must select an area (or a hike/gpx)");
         return false;
     }
-    // everything looks good, proceed to save...
-    var ajaxdata = {map: mapName, act: "add"};
-    $.ajax({
-        url: "../php/manageMapNames.php", 
-        method: "GET",
-        data: ajaxdata,
-        dataType: "text",
-        success: function(result) {
-            if (result === "DUP") {
-                alert("This name is already used - please select a new name");
-                $('#map_name').val("");
-            } else if (result === "UPDATED") {
-                $('#delchoice').append($('<option>', {
-                    value: mapName,
-                    text: mapName
-                }));
-                saveMapTiles(mapName);
-                if (typeof rect !== 'undefined') {
-                    rect.remove();
-                }
-            } else {
-                alert(result);
-                }
-        }, 
-        error: function(_jqXHR, _textStatus, _error) {
-            alert("Error encountered: " + _textStatus + "; error " + _error);
-        }
-    });
+    var saved_maps = localStorage.getItem('mapnames');
+    var maplist = saved_maps.split(","); // array
+    if (maplist.includes(mapName)) {
+        alert("This name is already used - please select a new name");
+        $('#map_name').val("");
+        return false;
+    }
+    saveMapTiles(mapName);
+    if (typeof rect !== 'undefined') {
+        rect.remove();
+    }
+    if (saved_maps === 'none') {
+        localStorage.setItem('mapnames', mapName);
+    } else {
+        maplist.push(mapName);
+        var newlist = maplist.join(",");
+        localStorage.setItem('mapnames', newlist);
+    }
+    $('#delchoice').append($('<option>', {
+        value: mapName,
+        text: mapName
+    }));
 });
 
 function saveMapTiles(userMap) {
@@ -750,54 +744,65 @@ function saveMapTiles(userMap) {
             cache.add(maptiles[j]);
             $('#bar').css('width', bar+"%");
         }
+        // save maptiles in local storage for later clearing of cache
+        var tileurls = maptiles.join(",");
+        localStorage.setItem(userMap, tileurls);
     });
+    var oldnames = localStorage.getItem('mapnames');
+    var oldmaps  = oldnames.split(",");
+    if (oldmaps[0] === 'none') {
+        localStorage.setItem('mapnames', userMap);
+    } else {
+        oldmaps.push(userMap);
+        newmaps = oldmaps.join(",");
+        localStorage.setITem('mapnames', newmaps);
+    }
 }
 $('body').on('click', '#delmap', function () {
+    /**
+     * NOTE: to get here, there had to be at least one stored map!
+     * ----------------------------------------------------------------
+     * There is a possibility that two (or more) maps share tile urls,
+     * so when deleting tile urls in cache, care must be taken to avoid
+     * elimination of urls needed by other maps. All url strings are
+     * stored in local storage with the item name equal to the mapname
+     * used to save. Most items will be in the range of 10-20K, so impact
+      * is low, especiall since a low number of maps will be saved.
+     */
     var choice = $('#delchoice').val();
     var choice_opt = "option[value=" + choice + "]";
-    $.get("../php/manageMapNames.php", {act: "delete", map: choice}, function(result) {
-        if (result === "UPDATED") {
-            removeMap(choice);  // IndexedDB
-            /**
-             * Need a method to remove only THIS map's cache
-             * entries from the main cache ("offline"):
-             * [use maptiles?]
-             */
-            /*
-            caches.delete(choice).then(function(deleted) {
-                if (deleted) {
-                  console.log(`Cache ${choice} was successfully deleted`);
-                } else {
-                  console.log(`Cache ${choice} was not found or could not be deleted`);
-                }
-            });
-            */
-            $("#delchoice " + choice_opt).remove();
-        } else {
-            alert(result);
+    $("#delchoice " + choice_opt).remove();
+    var choice_dat = localStorage.getITem(choice);
+    var choice_urls = choice_dat.split(","); // array
+    localStorage.removeItem(choice);
+    var urls2delete = [];
+    var usermaps = localStorage.getItem('mapnames');
+    var map_list = usermaps.split(","); // array
+    var indx = map_list.indexOf(choice);
+    if (indx !== -1) {
+        map_list.splice(indx, 1);
+    }
+    usermaps = map_list.length === 0 ? "none" : map_list.join(",");
+    localStorage.setItem('mapnames', usermaps);
+    if (map_list.length === 0) {
+        urls2delete = [...choice_urls];
+    } else {  
+        var baseSet = new Set(choice_urls);    
+        for (let i=0; i<map_list.length; i++) {
+            var cmpmap = localStorage.getItem(map_list[i]);
+            var cmpSet = new Set(cmpmap.split(","));
+            baseSet = baseSet.difference(cmpSet);
         }
-        return;
-    });
-    return;
-});
-
-// Used in test/debug to eliminate test caches
-function clearCache(deletedMap) {
-    caches.open(deletedMap) 
-    .then((cache) => cache.keys())
-    .then((keys) => {
-        keys.forEach((request, index, array) => {
-            /*
-            cache.delete(deletedMap)
-            .then(function(status) {
-                if (status) {
-                console.log(`Cache ${deletedMap} was successfully deleted`);
-                } else {
-                console.log(`Cache ${deletedMap} was not found or could not be deleted`);
-                }
-            });
-            */
-            var r = request
+        // baseSet should now contain only no overlapping urls
+        urls2delete = Array.from(baseSet);
+    }
+    caches.open(MAIN_CACHE)
+    .then( (cache) => {
+        let cnt = 0;
+        urls2delete.forEach( (url) => {
+            cache.delete(url);
+            cnt++;
         });
+        console.log("Deleted ", cnt, " itmes");
     });
-}
+});

@@ -63,8 +63,6 @@ $('body').on('click', '#use_map', function () {
         }).addTo(map);
         if (hasTrack !== 'n') {
             const poly = mapdat[4];
-            //const pline = JSON.parse(poly);
-            //const track = L.polyline(pline);
             poly.addTo(map);
         }
         // Control buttons...
