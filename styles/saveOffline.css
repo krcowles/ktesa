@@ -230,13 +230,12 @@ input[id^=q] {
   font-size: 16px;
   padding-left: 6px;
   height: 32px;
-  width: 266px;
+  width: 216px;
   position: relative;
   top: 4px;
   left: 6px;
 }
 
-/* clear is not actually used unless garbage appears in search */
 #clear {
   position: relative;
   font-size: 24px;
@@ -245,6 +244,18 @@ input[id^=q] {
   color: brown;
   z-index: 220;
   cursor: pointer;
+}
+
+#nextsteps {
+  position: fixed;
+  bottom: 16px;
+  left: 12px;
+  display: none;
+  z-index: 1000;
+}
+
+#gpxfile {
+  width: 220px;
 }
 
 #impgpx {

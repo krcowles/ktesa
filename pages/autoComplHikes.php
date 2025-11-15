@@ -13,21 +13,28 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$sortedHikesReq = "SELECT `pgTitle` FROM `HIKES` ORDER BY `pgTitle`;";
-$allHikes = $pdo->query($sortedHikesReq)->fetchAll(PDO::FETCH_COLUMN);
+$sortedHikesReq = "SELECT `indxNo`,`pgTitle`,`gpx` FROM `HIKES` ORDER BY `pgTitle`;";
+$allHikes = $pdo->query($sortedHikesReq)->fetchAll(PDO::FETCH_ASSOC);
+$groupsReq = "SELECT `indxNo` FROM `CLUSHIKES`;";
+$allGroups = $pdo->query($groupsReq)->fetchAll(PDO::FETCH_COLUMN);
 
 define("ASCII_MAX_VAL", 127);
-$items   = [];
+$items  = [];
+$notgrp = [];
 
 foreach ($allHikes as $hike) {
-    $txtChars = mb_str_split($hike);
+    $txtChars = mb_str_split($hike['pgTitle']);
     foreach ($txtChars as &$char) {
         if (mb_ord($char) > ASCII_MAX_VAL) {
             $char = mapChar($char);
         }
     }
     $label = implode("", $txtChars);
-    $hikeObj = '{value:"' . $hike . '",label:"' . $label . '"}';
+    $hikeObj = '{value:"' . $hike['pgTitle'] . '",label:"' . $label . '"}';
+    if (!empty($hike['gpx'])) {
+        array_push($notgrp, $hikeObj);
+    }
     array_push($items, $hikeObj);
 }
 $jsItems  = '[' . implode(",", $items) . ']';
+$jsNoGrps = '[' . implode(",", $notgrp) . ']';

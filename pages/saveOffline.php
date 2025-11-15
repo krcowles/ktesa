@@ -15,22 +15,8 @@
  * @license No license to date
  */
 session_start();
-
 require "../php/global_boot.php";
 require "autoComplHikes.php";
-$userid = validSession('saveOffline.php');
-$mapnameReq = "SELECT `saved_maps` FROM `MEMBER_PREFS` WHERE `userid`=?;";
-$mapnames = $pdo->prepare($mapnameReq);
-$mapnames->execute([$userid]);
-$usermaps = $mapnames->fetch(PDO::FETCH_ASSOC);
-$saved_maps = explode(",", $usermaps['saved_maps']);
-if (!empty($saved_maps)) {
-    $select_opts = '';
-    foreach ($saved_maps as $saved) {
-        $select_opts .= '<option value="' . $saved . '">' . $saved . 
-            '</option>' . PHP_EOL;
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,8 +90,14 @@ require "../pages/mobileNavbar.php";
         btn-sm" onclick="this.blur();">Draw</button>
     </span>&nbsp;&nbsp;
     <span id="rectr">
-        Recenter&nbsp;<input type="checkbox" id="newctr" />
+        Recenter&nbsp;<input type="checkbox" id="newctr" class="pgboxes" />
     </span>
+</div>
+<div id="nextsteps">
+    <span id="mname"></span><br/>
+    <btn id="showsave" type="button" class="btn-primary btn-sm">Save?</btn> &nbsp;&nbsp;
+    <btn id="startover" type="button" class="btn-primary btn-sm">Redo</btn>
+
 </div>
 
 <div id="map"></div>
@@ -129,13 +121,16 @@ require "../pages/mobileNavbar.php";
                     click on the 'Save' button.
                 </p>
                 <label id="saveRect">
-                    <input id="rctg" type="checkbox" />&nbsp;&nbsp;Rectangular Area
+                    <input id="rctg" type="checkbox" class="pgboxes" />
+                    &nbsp;&nbsp;Rectangular Area
                 </label><br />
                 <label id="saveHike">
-                    <input id="site" type="checkbox" />&nbsp;&nbsp;Import Site Hike
+                    <input id="site" type="checkbox"  class="pgboxes"/>
+                    &nbsp;&nbsp;Import Site Hike
                 </label><br />
                 <label id="saveGpx">
-                    <input id="savegpx" type="checkbox" />&nbsp;&nbsp;Import GPX File
+                    <input id="savegpx" type="checkbox"  class="pgboxes"/>
+                    &nbsp;&nbsp;Import GPX File
                 </label><br />
                 
                 <?php if (empty($saved_maps)) : ?>
@@ -209,7 +204,7 @@ require "../pages/mobileNavbar.php";
     </div>
 </div>
 <!-- Start Over  Modal -->
-<div id="redo" class="modal" tabindex="-1"
+<div id="map_save" class="modal" tabindex="-1"
     aria-labelledby="Map Save Status" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -227,8 +222,8 @@ require "../pages/mobileNavbar.php";
                 <span id="newrect">
                     <button id="clearrect" type="button" class="btn btn-sm
                         btn-warning">Clear Rectangle</button>
-                        &nbsp;Redraw the rectangle
-                </span><br /><br />
+                        &nbsp;Redraw the rectangle<br />
+                </span><br />
                 <span>
                     <button id="restart" type="button" class="btn btn-sm
                         btn-danger">Restart</button> &nbsp;Start the map-selection
@@ -243,7 +238,7 @@ require "../pages/mobileNavbar.php";
     </div>
 </div>
 <script type="text/javascript">
-    var hikeSources = <?=$jsItems;?>;
+    var hikeSources = <?=$jsNoGrps;?>;
 </script>
 <script src="../scripts/ktesaOfflineDB.js"></script>
 <script src="../scripts/leaflet.js"></script>

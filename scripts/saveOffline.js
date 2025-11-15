@@ -13,17 +13,27 @@
  * @author Ken Cowles
  * @version 1.0 Initial release
  */
-// cache name is already defined and loaded when member enters site
+// cache ["offline"] is already defined and loaded when member enters site
 const MAIN_CACHE = "offline";
 var draw_inst = $('#drawer').detach();
 $('#impgpx').hide();
 $('#rect_btns').hide();
-$('#clearrect').hide();
+$('#newrect').hide();
 // Note: the name 'opener' conflicts with a DOM lib element: hence 'iopener'
 var recenter = new bootstrap.Modal(document.getElementById('rctr'));
 var iopener = new bootstrap.Modal(document.getElementById('intro'));
-var restart = new bootstrap.Modal(document.getElementById('redo'));
+var save_modal = new bootstrap.Modal(document.getElementById('map_save'));
+var saveStat = new bootstrap.Modal(document.getElementById('stat'));
 iopener.show();
+// Clear checkboxes on load or save_modal
+const clearCheckboxes = () => {
+    $("input[type=checkbox]").each((i, box) => {
+        if ($(box).prop('checked') === true) {
+            $(box).prop('checked', false);
+        }
+    });
+};
+clearCheckboxes();
 /**
  * The default state is to import a hike from the site;
  */
@@ -37,23 +47,49 @@ $('body').on('click', '#rctg', function() {
     $('#saveRect').after(draw_inst);
 });
 $('body').on('click', "#site", function() {
+    clearCheckboxes();
     iopener.hide();
 });
 $('body').on('click', '#savegpx', function() {
     $('#imphike').hide();
     $('#impgpx').show();
+    clearCheckboxes();
     iopener.hide();
 });
 $('body').on('click', '#begin', function() {
+    clearCheckboxes();
     iopener.hide();
 });
+$('body').on('click', '#showsave', () => {
+    save_modal.show();
+});
+$('body').on('click', '#startover', () => {
+    window.open('saveOffline.php?logo=no', '_self');
+});
+$('body').on('click', '#restart', () => {
+    window.open('saveOffline.php?logo=no', '_self');
+});
+$('body').on('click', '#clearrect', function() {
+    rect.removeFrom(map);
+    maptiles = [];
+    save_modal.hide();$('#rect_btns').show();
+});
+$('body').on('click', '#save_modal', function() {
+    location.reload();
+    clearCheckboxes();
+});
+// Zoom 13 is minimum to store tiles (limits memory consumption)
+$('body').on('click', '#setzoom', () => {
+    map.setZoom(13);
+});
 // globals
-var mobwidth = $('document').width();
+var mobwidth = window.screen.width;
 $('#form').width(mobwidth);
 $('#map').width(mobwidth);
-var mobheight = $('document').height();
+var mobheight = $(document).height();
 var barht = $('#nav').height();
-$('#map').height(mobheight - barht);
+var ht_avail = mobheight - barht;
+$('#map').height(ht_avail);
 
 var mapName = 'Unassigned';
 var zoom_level = 10;
@@ -88,13 +124,6 @@ var nw_corners = [corner13, corner14, corner15, corner16];
 var noOfCorners = nw_corners.length;
 var saveType = "unspecified";
 var gpximport = document.getElementById('gpxfile');
-// modal to show status of saving tiles:
-var saveStat = new bootstrap.Modal(document.getElementById('stat'));
-// Zoom 13 is minimum to store tiles (limits memory consumption)
-$('#setzoom').on('click', function () {
-     map.setZoom(13);
-});
-
 /**
  * There are three current methods provided to save maps:
  *  1. import a hike track from the site; track also displays on map
@@ -146,6 +175,10 @@ function displayTrack(ajax_data, source) {
             if (i === 3) {
                 idb_track = idb_data;
                 map.flyTo(map_center, 13);
+                setTimeout( () => {
+                    zoom_level = map.getZoom();
+                    zoomOptimizer(zoom_level);
+                }, 3000)
             } else {
                 idb_track += "," + idb_data;
             }
@@ -162,8 +195,9 @@ function displayTrack(ajax_data, source) {
         endY   = se[1];
         saveType = "import";
         $(source).hide();
-        $('#clearrect').hide();
-        restart.show();
+        $('#newrect').hide();
+        $('#mname').text(mapName);
+        $('#nextsteps').css('display', 'block');
     }
 }
 // Establish searchbar as jQueryUI widget
@@ -176,6 +210,7 @@ $("#search").on("autocompleteselect", function (event, ui) {
     // the searchbar dropdown uses 'label', but place 'value' in box & use that
     event.preventDefault();
     var entry = ui.item.value;
+    mapName = entry;
     $(this).val(entry);
     var src = '#imphike';
     $.ajax({
@@ -202,6 +237,8 @@ $('body').on('submit', '#form', (ev) => {
         return false;
     }
     var src = '#impgpx';
+    var file_contents = $('#gpxfile')[0].files[0];
+    mapName = file_contents.name;
     const formData = new FormData($('#form')[0])
     var url = "../php/importGpx.php";
     $.ajax({
@@ -302,17 +339,9 @@ $('body').on('click', '#rect', function () {
         $('#rect').prop('disabled', false);
         getRectTiles(zlevel);
         $('#rect_btns').hide();
-        $('#clearrect').show();
-        restart.show();
+        $('#newrect').show();
+        $('#nextsteps').css('display', 'block');
     }
-});
-$('body').on('click', '#clearrect', function() {
-    rect.removeFrom(map);
-    maptiles = [];
-    restart.hide();$('#rect_btns').show();
-});
-$('body').on('click', '#restart', function() {
-    location.reload();
 });
 
 /**
@@ -680,7 +709,7 @@ function zoomOptimizer(zoom) {
 }
 
 $('body').on('click', '#save_map', function () {
-    restart.hide();
+    save_modal.hide();
     // parameter validation:
     zoom_level = map.getZoom();
     if (zoom_level < 13) {
@@ -755,7 +784,7 @@ function saveMapTiles(userMap) {
     } else {
         oldmaps.push(userMap);
         newmaps = oldmaps.join(",");
-        localStorage.setITem('mapnames', newmaps);
+        localStorage.setItem('mapnames', newmaps);
     }
 }
 $('body').on('click', '#delmap', function () {

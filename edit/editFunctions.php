@@ -1172,7 +1172,7 @@ function gpxLatLng($gpxdat, $no_of_tracks)
     $maxlat = 0;
     $minlat = 100;
     $maxlng = -110;
-    $minlng = -106;
+    $minlng = -102;
     for ($i=0; $i<$no_of_tracks; $i++) {
         foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
             foreach ($trackdat->trkpt as $datum) {
