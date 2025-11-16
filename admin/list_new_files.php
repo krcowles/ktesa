@@ -1,14 +1,14 @@
 <?php
 /**
- * This script is common to two basic admin functions: "List New Files"
- * and "New Pictures"/"Pictures Newer Than...". The associated buttons on
- * admintools.php invoke this script via admintools.js. The action taken by
- * this script is dependent on the query string used to invoke it. For the
- * 'New Files' button, the query string generated in admintools.js is
- * 'request=files'; for both 'Pictures' buttons, the query string becomes
- * 'request=pictures'. The recursive action taken is the same for all cases,
- * but the files compared differ.  
- * PHP Version 7.4
+ * This script is common to three basic admin functions: "List New Pictures" [since
+ * last upload], "Pictures Newer Than..." date, and "List New Files" [since last
+ * upload]. The associated buttons in admintools.php will invoke this script via
+ * admintools.js, which specifies the appropriate query string.. The action taken by
+ * this script is then dependent on the incoming query string. For the 'List New
+ * Pictures' button, the query string is simply 'request=pictures'; for "Pictures
+ * Newer Than..." the query string becomes 'request=pictures&dtTime=[date string]'.
+ * In the case of "List New Files" the query string is 'request=files'.
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -21,8 +21,8 @@ $adminDir ="{$thisSiteRoot}/admin/";
 $uploadDate = filemtime("{$adminDir}/dummy.txt") + 20;
 //$inputDate = "02/20/2019 1:30:00";   // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-// additional parameters may be specified in the query string [below]
 $request = filter_input(INPUT_GET, 'request');
+$dtTime = $_GET['dtTime'] ?: false;
 if ($request === 'files') {
     $directories = [];
     // Note that no test sites or pictures are included here...
@@ -69,21 +69,10 @@ if ($request === 'files') {
     $previews_dir = "{$pic_dir}/previews";
     $thumbs_dir   = "{$pic_dir}/thumbs";
     $directories  = [$zsize_dir, $previews_dir, $thumbs_dir];
-    // look for additional query string parameters
-    $dtFile = isset($_GET['dtFile']) ?
-        filter_input(INPUT_GET, 'dtFile') : false;
-    $dtTime = isset($_GET['dtTime']) ?
-        filter_input(INPUT_GET, 'dtTime') : false;
-    // if either of the above are set, then 'Pictures Newer Than' has been invoked
-    $newerThan = $dtFile || $dtTime ? true : false;
-    if ($newerThan) {
-        // Get date from either photo specified ($dtFile) or calendar data ($dtTime)
-        if ($dtFile && $dtFile !== '') {
-            $uploadDate = filemtime("./{$dtFile}");
-        } else {
-            $uploadDate = strtotime($dtTime);
-        }
-    }
+    if ($dtTime) {
+        $uploadDate = strtotime($dtTime);
+    } // $uploadDate remains last upload date
+    
 }
 $udate = date(DATE_RFC2822, $uploadDate);
 /**

@@ -1,4 +1,5 @@
 "use strict";
+/// <reference types="jqueryui" />
 /**
  * @fileoverview This script executes all buttons on the admintools.php page
  *
@@ -15,12 +16,6 @@ $(function () {
     if (typeof (nopix) !== 'undefined') {
         alert(nopix);
     }
-    // disable pic/file downloads for test sites:
-    if ($('#siteType').text() === 'test site') {
-        $('#npix').prop("disabled", true);
-        $('#rel2pic').prop("disabled", true);
-        $('#lst').prop("disabled", true);
-    }
     var chksum_results = new bootstrap.Modal(document.getElementById('chksum_results'), {
         keyboard: false
     });
@@ -30,12 +25,12 @@ $(function () {
     var current_state = $('#currstate').text(); // appMode
     $('#switchstate').on('click', function () {
         alert("This will take a second or two...");
-        window.open('changeSiteMode.php?mode=' + current_state);
+        window.open('./changeSiteMode.php?mode=' + current_state);
         window.close();
     });
     $('#swdb').on('click', function () {
         alert("This will take a second or two...");
-        window.open('switchDb.php');
+        window.open('./switchDb.php');
         window.close();
     });
     /**
@@ -200,51 +195,31 @@ $(function () {
      * This should only need to be invoked infrequently
      */
     $('#lnk_test').on('click', function () {
-        window.open("linkValidate.php", "_blank");
+        window.open("./linkValidate.php", "_blank");
     });
     /**
      * Download Actions
      */
     // Changes only
     $('#chgs').on('click', function () {
-        window.open('export_all_tables.php?dwnld=C');
+        window.open('./export_all_tables.php?dwnld=C'); // see zipArchive.php
     });
-    // New pictures
+    // New pictures since last upload
     $('#npix').on('click', function () {
-        window.open('list_new_files.php?request=pictures', "_self");
+        window.open('./list_new_files.php?request=pictures', "_self");
     });
-    // 'Pictures newer than' specified by browse button:
-    var picfile = '';
-    var pselLoc = $('#psel').offset();
-    var dselLoc = $('#dsel').offset();
-    var dselCoord = { top: dselLoc.top, left: pselLoc.left };
-    $('#dsel').offset(dselCoord);
-    $('#cmppic').on('change', function (ev) {
-        var targ = ev.target;
-        var filearray = targ.files;
-        picfile = filearray[0].name;
-    });
-    // Pictures newer than date-time from calendar
+    /**
+     * Either 'cmmpic' [picfile] or 'pic_sel' [calendar date] inputs can be fired
+     * resulting in preparation for picture downloads; Once the 'rel2pic' button is
+     * clicked, these inputs are checked for content and a window.open is issued
+     * accordingly.
+     */
     $('#rel2pic').on('click', function () {
-        picloc = '';
-        var dateSelected = $('#pic_sel').val();
-        if (picfile === '' && dateSelected === '') {
-            alert("No image or date has been selected");
+        if (newer_than === '') {
+            alert("No date has been selected");
         }
         else {
-            /**
-             * If photo is specified, picloc will hold directory location, dateSelected is empty
-             * If date is selected, picloc is empty and dateSelected is specified
-             */
-            var picscript = "list_new_files.php?request=pictures";
-            if (picfile !== '') {
-                var picloc = "pictures/zsize/" + picfile;
-                $('#cmppic').val('');
-                picscript += "&dtFile=" + picloc;
-            }
-            else {
-                picscript += "&dtTime=" + dateSelected;
-            }
+            var picscript = "./list_new_files.php?request=pictures&dtTime=" + newer_than;
             var getpix = encodeURI(picscript);
             window.open(getpix, "_self");
         }
@@ -253,7 +228,7 @@ $(function () {
      * Listings
      */
     $('#lst').on('click', function () {
-        window.open("list_new_files.php?request=files", "_blank");
+        window.open("./list_new_files.php?request=files", "_blank");
     });
     /**
      * Database management tools
@@ -501,20 +476,20 @@ $(function () {
         $.when(newdbDef).then(function () {
             if (confirm("Do you really want to drop all tables and reload them?")) {
                 if (hostIs !== 'localhost') {
-                    window.open('export_all_tables.php?dwnld=N', "_blank");
+                    window.open('./export_all_tables.php?dwnld=N', "_blank");
                     var dwnldResult;
                     var downloadTimer = setInterval(function () {
                         dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
                         if (dwnldResult === '1234') {
                             clearInterval(downloadTimer);
                             if (confirm("Proceed with reload?")) {
-                                window.open('drop_all_tables.php', "_blank");
+                                window.open('./drop_all_tables.php', "_blank");
                             }
                         }
                     }, 1000);
                 }
                 else {
-                    window.open('drop_all_tables.php', "_blank");
+                    window.open('./drop_all_tables.php', "_blank");
                 }
             }
         });
@@ -522,7 +497,7 @@ $(function () {
     $('#hard_reload').on('click', function () {
         var ans = confirm("No checks performed: are you sure?");
         if (ans) {
-            window.open('drop_all_tables.php', "_blank");
+            window.open('./drop_all_tables.php', "_blank");
         }
     });
     // Drop All Tables (only - not a part of "Reload Database")
@@ -534,17 +509,17 @@ $(function () {
                 chksum_results.show();
             }
             if (confirm("Do you really want to drop all tables?")) {
-                window.open('drop_all_tables.php?no=all', "_blank");
+                window.open('./drop_all_tables.php?no=all', "_blank");
             }
         });
     });
     // Load All Tables
     $('#ldall').on('click', function () {
-        window.open('load_all_tables.php', "_blank");
+        window.open('./load_all_tables.php', "_blank");
     });
     // Export All Tables
     $('#exall').on('click', function () {
-        window.open('export_all_tables.php?dwnld=N', "_blank");
+        window.open('./export_all_tables.php?dwnld=N', "_blank");
     });
     // Check for DB Changes
     $('#dbchanges').on('click', function () {
@@ -572,7 +547,7 @@ $(function () {
     });
     // Show All Tables
     $('#show').on('click', function () {
-        window.open('show_tables.php', "_blank_");
+        window.open('./show_tables.php', "_blank_");
     });
     /**
      * Miscellaneous Tools
@@ -622,33 +597,33 @@ $(function () {
     });
     // Cleanup Pictures
     $('#cleanPix').on('click', function () {
-        window.open('cleanPix.php', "_blank");
+        window.open('./cleanPix.php', "_blank");
     });
     // Cleanup extraneous gpx/json files
     $('#gpxClean').on('click', function () {
-        window.open('cleanJSON.php', "_blank");
+        window.open('./cleanJSON.php', "_blank");
     });
     // Read the ktesa error log
     $('#rdlog').on('click', function () {
-        window.open('errlogRdr.html', "_blank");
+        window.open('./errlogRdr.html', "_blank");
     });
     // PHP Info
     $('#pinfo').on('click', function () {
-        window.open('phpInfo.php', "_blank");
+        window.open('./phpInfo.php', "_blank");
     });
     // Add Book to BOOKS Table
     $('#addbk').on('click', function () {
-        window.open("addBook.php", "_blank");
+        window.open("./addBook.php", "_blank");
     });
     /**
      * Hike Management
      */
     // Publish a hike
     $('#pub').on('click', function () {
-        window.open("reldel.php?act=rel", "_blank");
+        window.open("./reldel.php?act=rel", "_blank");
     });
     $('#postpub').on('click', function () {
-        window.open("postPublish.php");
+        window.open("./postPublish.php");
     });
     $('#delgit').on('click', function () {
         $.get("deletePostPublish.php", function () {
@@ -657,41 +632,41 @@ $(function () {
     });
     // Delete a hike
     $('#ehdel').on('click', function () {
-        window.open("reldel.php?act=del", "_blank");
+        window.open("./reldel.php?act=del", "_blank");
     });
     /**
      * Download/upload only the VISITORS database
      */
     $('#getVdat').on('click', function () {
-        window.open("export_all_tables.php?dwnld=V", "_blank");
+        window.open("./export_all_tables.php?dwnld=V", "_blank");
     });
     $('#loadVdat').on('click', function () {
-        window.open("loadVisitors.php", "_blank");
+        window.open("./loadVisitors.php", "_blank");
     });
     /**
      * Display of visitation data
      */
     $('#today').on('click', function () {
-        var link = "visitor_data.php?time=today";
+        var link = "./visitor_data.php?time=today";
         window.open(link, "_blank");
     });
     $('#wk').on('click', function () {
-        var link = "visitor_data.php?time=week";
+        var link = "./visitor_data.php?time=week";
         window.open(link, "_blank");
     });
     $('#dmo').on('click', function () {
         var vsel = $('#vmonth').val(); // w/leading 0's as needed
-        var link = "visitor_data.php?time=month&mo=" + vsel;
+        var link = "./visitor_data.php?time=month&mo=" + vsel;
         window.open(link, "_blank");
     });
     $('#range').on('click', function () {
         var rge = $('#begin').val() + ":" + $('#end').val();
-        var link = "visitor_data.php?time=range&rg=" + rge;
+        var link = "./visitor_data.php?time=range&rg=" + rge;
         window.open(link, "_blank");
     });
     $('#arch').on('click', function () {
         var ysel = $('#archyr').val();
-        var url = "archiveVDAT.php?yr=" + ysel;
+        var url = "./archiveVDAT.php?yr=" + ysel;
         window.open(url, "_blank");
         var ans = confirm("Delete the data from the database?");
         if (ans) {
