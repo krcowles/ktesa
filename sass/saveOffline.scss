@@ -2,9 +2,6 @@
 @use  "colors" as *;
 @use "ktesaNavbar" as *;
 
-#saver {
-	margin-bottom: 4px;
-}
 #map_name {
 	width: 112px;
     position: relative;
@@ -12,7 +9,7 @@
     height: 32px;
     border-radius: 6px;
 }
-/* Default save method is imphike [see comments in saveOffline.js] */
+/* Default save method is import hike [comments in saveOffline.js] */
 #imphike {
 	margin-left: 1rem;
 	margin-bottom: 8px;
@@ -39,13 +36,28 @@
 	z-index: 220;
 	cursor: pointer;
 }
+#saveit {
+	position: fixed;
+	display: none;
+	bottom: 12px;
+	left: 100px;
+	z-index: 2000;
+}
+#reselect {
+	position: fixed;
+	bottom: 12px;
+	left: 12px;
+	z-index: 2000;
+}
+/* When displaying gpx or import */
 #nextsteps {
 	position: fixed;
 	bottom: 16px;
 	left: 12px;
 	display: none;
-	z-index: 1000;
+	z-index: 500;
 }
+/* Import gpx file */
 #gpxfile {
 	width: 220px;
 }

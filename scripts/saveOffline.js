@@ -15,13 +15,16 @@
  */
 // cache ["offline"] is already defined and loaded when member enters site
 const MAIN_CACHE = "offline";
-var draw_inst = $('#drawer').detach();
+// hide some display options; default display is #imphike
 $('#impgpx').hide();
 $('#rect_btns').hide();
-$('#newrect').hide();
+const replacer = $('<button id="rect" type="button" class="btn btn-primary ' +
+        'btn-sm" onclick="this.blur();">Draw</button>');
+
 // Note: the name 'opener' conflicts with a DOM lib element: hence 'iopener'
 var recenter = new bootstrap.Modal(document.getElementById('rctr'));
-var iopener = new bootstrap.Modal(document.getElementById('intro'));
+var iopener  = new bootstrap.Modal(document.getElementById('intro'));
+var rectinst = new bootstrap.Modal(document.getElementById('rim'));
 var save_modal = new bootstrap.Modal(document.getElementById('map_save'));
 var saveStat = new bootstrap.Modal(document.getElementById('stat'));
 iopener.show();
@@ -38,17 +41,17 @@ clearCheckboxes();
  * The default state is to import a hike from the site;
  */
 $('body').on('click', '#rctg', function() {
+    iopener.hide();
     $('#imphike').hide();
+    $('#impgpx').hide();
     $('#rect_btns').show();
-    $('#options').hide();
-    $('#saveHike').hide();
-    $('#saveGpx').hide();
-    $('#allmaps').hide();
-    $('#saveRect').after(draw_inst);
+    rectinst.show();
 });
 $('body').on('click', "#site", function() {
     clearCheckboxes();
     iopener.hide();
+    $('#nextsteps').css('display', 'none');
+    $('#reselect').show();
 });
 $('body').on('click', '#savegpx', function() {
     $('#imphike').hide();
@@ -56,12 +59,12 @@ $('body').on('click', '#savegpx', function() {
     clearCheckboxes();
     iopener.hide();
 });
-$('body').on('click', '#begin', function() {
-    clearCheckboxes();
-    iopener.hide();
-});
-$('body').on('click', '#showsave', () => {
+$('body').on('click', '#saveit', () => {
     save_modal.show();
+});
+$('body').on('click', '#begin', function() {
+    rectinst.hide();
+    clearCheckboxes();
 });
 $('body').on('click', '#startover', () => {
     window.open('saveOffline.php?logo=no', '_self');
@@ -72,7 +75,15 @@ $('body').on('click', '#restart', () => {
 $('body').on('click', '#clearrect', function() {
     rect.removeFrom(map);
     maptiles = [];
-    save_modal.hide();$('#rect_btns').show();
+    $('#nextsteps').hide();
+    $('#reselect').show();
+    // reset bootstrap draw button:
+    $('#rect').attr('disabled', false);
+    $('#rect').removeClass('btn-secondary');
+    $('#rect').addClass('btn-primary');
+});
+$('body').on('click', '#showsave', () => {
+    save_modal.show();
 });
 $('body').on('click', '#save_modal', function() {
     location.reload();
@@ -82,6 +93,10 @@ $('body').on('click', '#save_modal', function() {
 $('body').on('click', '#setzoom', () => {
     map.setZoom(13);
 });
+$('body').on('click', '#reselect', ()=> {
+    window.open("../pages/saveOffline.php?logo=no", "_self");
+});
+
 // globals
 var mobwidth = window.screen.width;
 $('#form').width(mobwidth);
@@ -134,12 +149,7 @@ var gpximport = document.getElementById('gpxfile');
 /**
  * IMPORTING A SITE HIKE
  */
-// Clear searchbar contents when user clicks on the "X"
-$('#clear').on('click', function () {
-    $('#search').val("");
-    var searchbox = document.getElementById('search');
-    searchbox.focus();
-});
+
 /**
  * This function converts json data to data suitable to be
  * stored in the indexedDB and also to be displayed on the map.
@@ -147,12 +157,13 @@ $('#clear').on('click', function () {
 function displayTrack(ajax_data, source) {
     if (ajax_data === 'Upload') {
         alert("File upload error - please check the selected file");
-        return;
+        return false;
     } else if (ajax_data === 'Extension') {
         alert("Selected file does not have a gpx extension");
-        return;
+        return false;
     } else if (ajax_data.indexOf("There is an error") !== -1) {
         alert(ajax_data);
+        return false;
     } else {
         var result_array = JSON.parse(ajax_data);
         var ul = result_array[0];
@@ -195,11 +206,20 @@ function displayTrack(ajax_data, source) {
         endY   = se[1];
         saveType = "import";
         $(source).hide();
-        $('#newrect').hide();
-        $('#mname').text(mapName);
-        $('#nextsteps').css('display', 'block');
+        $('#saveit').css({
+            left: '108px',
+            display: 'block'
+        });
+        clearCheckboxes();
+        return;
     }
 }
+// Clear searchbar contents when user clicks on the "X"
+$('#clear').on('click', function () {
+    $('#search').val("");
+    var searchbox = document.getElementById('search');
+    searchbox.focus();
+});
 // Establish searchbar as jQueryUI widget
 $(".search").autocomplete({
     source: hikeSources,
@@ -273,6 +293,7 @@ $('body').on('click', '#rect', function () {
     if (typeof rect !== 'undefined') {
         rect.remove();
     }
+
     
     $('#map').on('touchstart', function(te) {
         saveType = "draw";
@@ -332,15 +353,15 @@ $('body').on('click', '#rect', function () {
         var lat_ctr = startX - (startX - endX)/2;
         var lng_ctr = startY + (endY - startY)/2;
         map_center = [lat_ctr, lng_ctr];
-        $('#draw_inst').hide();
         $('#map').off();
-        $('#rect').removeClass('btn-secondary');
-        $('#rect').addClass('btn-primary');
-        $('#rect').prop('disabled', false);
+        $('#reselect').css('display', 'none');
         getRectTiles(zlevel);
-        $('#rect_btns').hide();
-        $('#newrect').show();
-        $('#nextsteps').css('display', 'block');
+        $('#nextsteps').show();
+        /*
+        var draw_btn = document.getElementById('rect');
+        var bs_btn = new bootstrap.Button(draw_btn);
+        bs_btn.toggle();
+        */
     }
 });
 
@@ -748,10 +769,6 @@ $('body').on('click', '#save_map', function () {
         var newlist = maplist.join(",");
         localStorage.setItem('mapnames', newlist);
     }
-    $('#delchoice').append($('<option>', {
-        value: mapName,
-        text: mapName
-    }));
 });
 
 function saveMapTiles(userMap) {
@@ -787,51 +804,3 @@ function saveMapTiles(userMap) {
         localStorage.setItem('mapnames', newmaps);
     }
 }
-$('body').on('click', '#delmap', function () {
-    /**
-     * NOTE: to get here, there had to be at least one stored map!
-     * ----------------------------------------------------------------
-     * There is a possibility that two (or more) maps share tile urls,
-     * so when deleting tile urls in cache, care must be taken to avoid
-     * elimination of urls needed by other maps. All url strings are
-     * stored in local storage with the item name equal to the mapname
-     * used to save. Most items will be in the range of 10-20K, so impact
-      * is low, especiall since a low number of maps will be saved.
-     */
-    var choice = $('#delchoice').val();
-    var choice_opt = "option[value=" + choice + "]";
-    $("#delchoice " + choice_opt).remove();
-    var choice_dat = localStorage.getITem(choice);
-    var choice_urls = choice_dat.split(","); // array
-    localStorage.removeItem(choice);
-    var urls2delete = [];
-    var usermaps = localStorage.getItem('mapnames');
-    var map_list = usermaps.split(","); // array
-    var indx = map_list.indexOf(choice);
-    if (indx !== -1) {
-        map_list.splice(indx, 1);
-    }
-    usermaps = map_list.length === 0 ? "none" : map_list.join(",");
-    localStorage.setItem('mapnames', usermaps);
-    if (map_list.length === 0) {
-        urls2delete = [...choice_urls];
-    } else {  
-        var baseSet = new Set(choice_urls);    
-        for (let i=0; i<map_list.length; i++) {
-            var cmpmap = localStorage.getItem(map_list[i]);
-            var cmpSet = new Set(cmpmap.split(","));
-            baseSet = baseSet.difference(cmpSet);
-        }
-        // baseSet should now contain only no overlapping urls
-        urls2delete = Array.from(baseSet);
-    }
-    caches.open(MAIN_CACHE)
-    .then( (cache) => {
-        let cnt = 0;
-        urls2delete.forEach( (url) => {
-            cache.delete(url);
-            cnt++;
-        });
-        console.log("Deleted ", cnt, " itmes");
-    });
-});

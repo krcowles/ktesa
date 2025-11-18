@@ -48,6 +48,12 @@ require "../pages/mobileNavbar.php";
 
 <p id="active" style="display:none">Offline</p>
 <p id="appMode" style="display:none"><?=$appMode;?></p>
+<button id="reselect" type="button" class="btn-sm btn-primary">
+    Start Over
+</button>
+<button id="saveit" type="button" class="btn-sm btn-primary">
+    Save
+</button>
 
 <!--<span id="imphike">-->
 <div id="imphike" class="ui-widget">
@@ -68,20 +74,6 @@ require "../pages/mobileNavbar.php";
         <input id="gpxfile" type="file" name="gpxfile" /> 
     </form>
 </div>
-<h5 id="drawer">
-    <span id="lnote">NOTE: Zoom must be set to level 13 or higher;</span><br />
-    <span>
-        To draw, tap "Draw Rectangle" then tap on the map once at the
-        location where you wish to begin drawing the rectangle; drag your
-        finger to a new location as desired, then release to finish the
-        rectangle.
-    </span><br /><br />
-    <p>Reload this page to add new maps</p>
-    <span>Close this window to begin<br />
-        <button id="begin" type="button" class="btn btn-sm btn-success">
-            Begin</button>
-    </span>
-</h5>
 <div id="rect_btns">
     <button id="setzoom" type="button" class="btn btn-secondary
         btn-sm" onclick="this.blur();">Set Zoom 13</button>&nbsp;&nbsp;
@@ -94,10 +86,11 @@ require "../pages/mobileNavbar.php";
     </span>
 </div>
 <div id="nextsteps">
-    <span id="mname"></span><br/>
-    <btn id="showsave" type="button" class="btn-primary btn-sm">Save?</btn> &nbsp;&nbsp;
-    <btn id="startover" type="button" class="btn-primary btn-sm">Redo</btn>
-
+    <button id="showsave" type="button" class="btn-primary btn-sm">
+        Save</button>&nbsp;&nbsp;
+    <button id="clearrect" type="button" class="btn-warning btn-sm">
+        Clear</button>&nbsp;&nbsp;
+    <button id="startover" type="button" class="btn-primary btn-sm">Start Over</button>
 </div>
 
 <div id="map"></div>
@@ -111,14 +104,13 @@ require "../pages/mobileNavbar.php";
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Save Options</h5>
+                    Offline Maps</h5>
                 <button type="button" class="btn-close"
                     data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="options">Select one of the options below to save your
-                    offline map. You will be prompted for a map name when you
-                    click on the 'Save' button.
+                <p id="options">You will be prompted for a map name when you
+                    click to 'Save' the map.
                 </p>
                 <label id="saveRect">
                     <input id="rctg" type="checkbox" class="pgboxes" />
@@ -132,18 +124,31 @@ require "../pages/mobileNavbar.php";
                     <input id="savegpx" type="checkbox"  class="pgboxes"/>
                     &nbsp;&nbsp;Import GPX File
                 </label><br />
-                
-                <?php if (empty($saved_maps)) : ?>
-                    Saved Maps: &nbsp;No saved maps
-                <?php else : ?>
-                    <div id="allmaps">
-                        Saved Maps:&nbsp;
-                        <select id="delchoice"><?=$select_opts;?></select>
-                        &nbsp;&nbsp;<button id="delmap" type="button"
-                            class="btn btn-danger btn-sm"
-                            onclick="this.blur();">Delete Map</button>
-                    </div>
-                <?php endif; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Rectangle Inst. Modal -->
+<div id="rim" class="modal" tabindex="-1"
+    aria-labelledby="Map Save Status" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Instructions</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 id="drawer">
+                    <span>NOTE: Set to level 13 or higher to draw;</span><br /><br />
+                    <button id="begin" type="button" class="btn-sm btn-success">
+                        Begin</button>
+                </h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -203,7 +208,7 @@ require "../pages/mobileNavbar.php";
         </div>
     </div>
 </div>
-<!-- Start Over  Modal -->
+<!-- Map Saver Modal -->
 <div id="map_save" class="modal" tabindex="-1"
     aria-labelledby="Map Save Status" aria-hidden="true">
     <div class="modal-dialog">
@@ -219,15 +224,9 @@ require "../pages/mobileNavbar.php";
                 <input id="map_name" type="text" />&nbsp;&nbsp;
                 <button type="button" id="save_map" class="btn btn-success btn-sm">
                     Save Map</button><br /><br />
-                <span id="newrect">
-                    <button id="clearrect" type="button" class="btn btn-sm
-                        btn-warning">Clear Rectangle</button>
-                        &nbsp;Redraw the rectangle<br />
-                </span><br />
-                <span>
-                    <button id="restart" type="button" class="btn btn-sm
-                        btn-danger">Restart</button> &nbsp;Start the map-selection
-                        process over
+                <button id="restart" type="button" class="btn btn-sm
+                    btn-danger">Restart</button> &nbsp;Start the map-selection
+                    process over
                 </span>
             </div>
             <div class="modal-footer">

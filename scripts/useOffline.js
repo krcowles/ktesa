@@ -1,14 +1,16 @@
 "use strict";
 /// <reference types="bootstrap" />
+/// <reference types="jquery" />
+/// <reference types="leaflet" />
 /**
  * @fileoverview When using offline maps already created by 'Create Offline':
  * @author Ken Cowles
  * @version 1.0 First release
- * NOTE: I cannot determine how to appease typescript for LatLngExpression
- * and GridDebug, so 'any' is utilized.
+ * Note: this version of the typescript compiler config is not yet supporting
+ * ES2025, so that the 'Set.difference' method is not known and results in
+ * a compiler error.
  */
-const opt_start = "<option value='";
-const opt_end = "</option>";
+const MAIN_CACHE = 'offline';
 var maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
 readMapKeys().then((result) => {
     if (result.indexOf('Failed') !== -1) {
@@ -28,7 +30,7 @@ readMapKeys().then((result) => {
         let opts = '';
         let modal_opts = result;
         modal_opts.forEach((opt) => {
-            opts += opt_start + opt + "'>" + opt + opt_end;
+            opts += "<option value='" + opt + "'>" + opt + "</option>";
         });
         $('#select_map').append(opts);
     }
@@ -70,7 +72,61 @@ $('body').on('click', '#use_map', function () {
             alert("Zooming in");
         });
     });
+    $('#select_map').append($('<option>', {
+        value: choice,
+        text: choice
+    }));
 });
 $('#back').on('click', function () {
     window.open("../pages/member_landing.html", "_self");
+});
+$('body').on('click', '#delmap', function () {
+    /**
+     * NOTE: to get here, there had to be at least one stored map!
+     * ----------------------------------------------------------------
+     * There is a possibility that two (or more) maps share tile urls,
+     * so when deleting tile urls in cache, care must be taken to avoid
+     * elimination of urls needed by other maps. All url strings are
+     * stored in local storage with the item name equal to the mapname
+     * used to save. Most items will be in the range of 10-20K, so impact
+      * is low, especiall since a low number of maps will be saved.
+     */
+    var choice = $('#select_map').val();
+    var choice_opt = "option[value=" + choice + "]";
+    $("#select_map " + choice_opt).remove();
+    var choice_dat = localStorage.getItem(choice);
+    var choice_urls = choice_dat.split(","); // array
+    localStorage.removeItem(choice);
+    var urls2delete = [];
+    var usermaps = localStorage.getItem('mapnames');
+    var map_list = usermaps.split(","); // array
+    var indx = map_list.indexOf(choice);
+    if (indx !== -1) {
+        map_list.splice(indx, 1);
+    }
+    usermaps = map_list.length === 0 ? "none" : map_list.join(",");
+    localStorage.setItem('mapnames', usermaps);
+    if (map_list.length === 0) {
+        urls2delete = [...choice_urls];
+    }
+    else {
+        var baseSet = new Set(choice_urls);
+        for (let i = 0; i < map_list.length; i++) {
+            var cmpmap = localStorage.getItem(map_list[i]);
+            var cmpSet = new Set(cmpmap.split(","));
+            baseSet = baseSet.difference(cmpSet);
+        }
+        // baseSet should now contain only no overlapping urls
+        urls2delete = Array.from(baseSet);
+    }
+    caches.open(MAIN_CACHE)
+        .then((cache) => {
+        let cnt = 0;
+        urls2delete.forEach((url) => {
+            cache.delete(url);
+            cnt++;
+        });
+        alert(choice + " deleted");
+        console.log("Deleted ", cnt, " items");
+    });
 });
