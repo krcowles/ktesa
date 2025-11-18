@@ -47,9 +47,16 @@ if (isset($_SESSION['alerts'][0])) {
     $admin_alert = $_SESSION['alerts'][0];
     unset($_SESSION['alerts']);
 }
+/**
+ * Browsers keep changing! $_SERVER['SERVER_NAME'] used to return 'localhost' 
+ * for the workstation's locally installed server (e.g. Apache or Nginx); 
+ * It now returns an empty string, so adjustments had to be made:
+ */
+$host = $_SERVER['SERVER_NAME'] ?: 'localhost';
 $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     'test' : 'main';
 $whichSite = $testSite ? 'test site' : 'main site';
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -66,12 +73,16 @@ $whichSite = $testSite ? 'test site' : 'main site';
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
+        var newer_than = '';
         $(function() {
-            $( ".datepicker" ).datepicker({
-                dateFormat: "yy-mm-dd"
+            $('.datepicker').datepicker({
+                dateFormat: "yy-mm-dd",
+                onSelect: (picdate) => {
+                    newer_than = picdate;
+                }
             });
         });
-        var hostIs = "<?=$_SERVER['SERVER_NAME'];?>";
+        var hostIs = "<?=$host;?>";
         var server_loc = "<?=$server_loc;?>";
         var dbState = "<?=$dbState;?>";
         var auth;
@@ -149,10 +160,8 @@ $whichSite = $testSite ? 'test site' : 'main site';
             &nbsp;[Downloads new pictures since last Site upload: Max 20MB]<br />
         <button id="rel2pic" type="button" class="btn 
             btn-secondary">Pictures newer than &hellip;</button>&nbsp;&nbsp;
-            <span id="psel">Select a file from the 'pictures' directory</span>
-                &nbsp;&nbsp;<input id="cmppic" type="file" /><br />
-            <span id="dsel">OR specify calendar date&nbsp;&nbsp;
-            <input id="pic_sel"
+            <span id="dsel">Specify calendar date&nbsp;&nbsp;
+            <input id="newer_than"
                 class="datepicker" type="text" name="datepicker" /></span><br />
         <span class="cats">Listings:</span><br />
         <button id="lst" type="button" class="btn btn-secondary">List New Files
@@ -316,6 +325,6 @@ $whichSite = $testSite ? 'test site' : 'main site';
         </div>
     </div>
 </div>
-<script src="admintools.js"></script>
+<script src="../admin/admintools.js"></script>
 </body>
 </html>
