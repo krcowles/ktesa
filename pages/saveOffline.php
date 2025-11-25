@@ -1,13 +1,13 @@
 <?php
 /**
- * It is now possible to create one or more limited size offline
- * map for use when hiking and no internet is available. This page
- * allows the user to specify a location, site hike, or gpx file
- * which will be saved on the browser in its indexedDB database for
- * a limited time (undetermined right now). The user will need to
- * connect to the site while there is still internet available in
- * order to create and save an offline map. Currently zoom is limited
- * to 13-16 in order to minimize browser memory consumption.
+ * Create one or more maps for use when hiking and no internet is
+ * available. This page allows the user to specify a location,
+ * specify a site hike or gpx file, any of which can be saved on
+ * the browser in the browser's indexedDB database and cache for a
+ * limited period of time (undetermined at this time). The user will
+ * need to be connected to the site in order to create and save an
+ * offline map. Saving maps currently requires zoom to be in the
+ * range of 13-16 in order to minimize browser memory consumption.
  * PHP Version 8.3.9
  * 
  * @package Ktesa
@@ -45,17 +45,38 @@ require "autoComplHikes.php";
 require "../pages/mobileNavbar.php";
 ?>
 
-
 <p id="active" style="display:none">Offline</p>
 <p id="appMode" style="display:none"><?=$appMode;?></p>
-<button id="reselect" type="button" class="btn-sm btn-primary">
-    Start Over
-</button>
-<button id="saveit" type="button" class="btn-sm btn-primary">
-    Save
-</button>
 
-<!--<span id="imphike">-->
+<div id="map_grp1">
+    <button id="start1" type="button" class="redos btn-primary btn-sm">
+        Start Over
+    </button>
+    <button id="home" type="button" class="btn-success btn-sm">
+        Home
+    </button>
+</div>
+<div id="map_grp2">
+    <button id="start2" type="button" class=" redos btn-primary btn-sm">
+        Start Over 
+    </button>
+    <button id="save2" type="button" class=" save_btns btn-sm btn-success">
+        Save
+    </button>
+</div>
+<div id="map_grp3">
+    <button id="start3" type="button" class="redos btn-primary btn-sm">
+        Start Over 
+    </button>
+    <button id="clearrect" type="button" class="btn-warning btn-sm">
+        Clear
+    </button>
+    <button id="save3" type="button" class="save_btns btn-sm btn-success">
+        Save
+    </button>
+</div>
+
+<!-- Use a site hike topper-->
 <div id="imphike" class="ui-widget">
     <style type="text/css">
         ul.ui-widget {
@@ -67,6 +88,7 @@ require "../pages/mobileNavbar.php";
     <input id="search" class="search" placeholder="Search for a Hike" />
     <span id="clear">X</span>
 </div>
+<!-- Import a gpx file topper-->
 <div id="impgpx">
     <form id="form" enctype="multipart/form-data">
         <button id="gpxfileImport" type="submit" class="btn btn-sm btn-success">
@@ -74,6 +96,7 @@ require "../pages/mobileNavbar.php";
         <input id="gpxfile" type="file" name="gpxfile" /> 
     </form>
 </div>
+<!-- Draw a rectangle topper -->
 <div id="rect_btns">
     <button id="setzoom" type="button" class="btn btn-secondary
         btn-sm" onclick="this.blur();">Set Zoom 13</button>&nbsp;&nbsp;
@@ -84,13 +107,6 @@ require "../pages/mobileNavbar.php";
     <span id="rectr">
         Recenter&nbsp;<input type="checkbox" id="newctr" class="pgboxes" />
     </span>
-</div>
-<div id="nextsteps">
-    <button id="showsave" type="button" class="btn-primary btn-sm">
-        Save</button>&nbsp;&nbsp;
-    <button id="clearrect" type="button" class="btn-warning btn-sm">
-        Clear</button>&nbsp;&nbsp;
-    <button id="startover" type="button" class="btn-primary btn-sm">Start Over</button>
 </div>
 
 <div id="map"></div>
@@ -132,7 +148,7 @@ require "../pages/mobileNavbar.php";
         </div>
     </div>
 </div>
-<!-- Rectangle Inst. Modal -->
+<!-- Rectangle Instructions Modal -->
 <div id="rim" class="modal" tabindex="-1"
     aria-labelledby="Map Save Status" aria-hidden="true">
     <div class="modal-dialog">
@@ -149,32 +165,6 @@ require "../pages/mobileNavbar.php";
                     <button id="begin" type="button" class="btn-sm btn-success">
                         Begin</button>
                 </h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Tile Save Status Modal -->
-<div id="stat" class="modal" tabindex="-1"
-    aria-labelledby="Map Save Status" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    Map Tile Save Status</h5>
-                <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <span>Total Number of Map Tiles to be Saved: </span>
-                <span id="tcnt"></span><br />
-                <div id="progress">
-                    <div id="bar"></div>
-                </div>
-                <p id="complete" style="display:none;color:brown;">SAVED!</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -225,9 +215,7 @@ require "../pages/mobileNavbar.php";
                 <button type="button" id="save_map" class="btn btn-success btn-sm">
                     Save Map</button><br /><br />
                 <button id="restart" type="button" class="btn btn-sm
-                    btn-danger">Restart</button> &nbsp;Start the map-selection
-                    process over
-                </span>
+                    btn-primary">Start Over</button>&nbsp;&nbsp;[Map not saved]
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -236,22 +224,40 @@ require "../pages/mobileNavbar.php";
         </div>
     </div>
 </div>
+<!-- Tile Save Status Modal -->
+<div id="stat" class="modal" tabindex="-1"
+    aria-labelledby="Map Save Status" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Map Tile Save Status</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>Total Number of Map Tiles to be Saved: </span>
+                <span id="tcnt"></span><br />
+                <div id="progress">
+                    <div id="bar"></div>
+                </div>
+                <p id="complete" style="display:none;color:brown;">SAVED!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var hikeSources = <?=$jsNoGrps;?>;
 </script>
-<script src="../scripts/ktesaOfflineDB.js"></script>
+<!-- <script src="../scripts/ktesaOfflineDB.js"></script>
+  [declared in mobileNavbar.php-->
 <script src="../scripts/leaflet.js"></script>
 <script src="../scripts/saveOffline.js"></script>
-
-<?php
-// During testing, delete certain caches as needed
-$deleteCaches = false;
-$names = '["carlito", "carl"]';
-if ($deleteCaches) {
-    echo "<script type='text/javascript'>var cacheNames = {$names}</script>";
-    echo '<script src="../scripts/removeTestCache.js"></script>';
-}
-?>
 
 </body>
 </html>

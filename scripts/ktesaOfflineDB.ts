@@ -17,7 +17,9 @@ interface MapObject extends Object {
 	time: Date;
 	poly: string;
 }
-
+interface EventError extends EventTarget {
+	error: string;
+}
 /**
  * @fileoverview This script handles the indexedDB access for offline maps.
  * @author Ken Cowles
@@ -181,3 +183,33 @@ function getKeyData(db: IDBDatabase) {
 		}
 	});
 } 
+async function clearObjectStore() {
+    var opened_db = await openDB() as IDBDatabase;
+    await clearStore(opened_db, STORE);
+    opened_db.close();
+    return;
+}
+function clearStore(db: IDBDatabase, store: string) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([store], 'readwrite');
+        const objectStore = transaction.objectStore(store);
+        const request = objectStore.clear();
+    
+        request.onsuccess = () => {
+            console.log("Object store " + store + " cleared successfully.");
+            resolve("cleared");
+        };
+        request.onerror = (event) => {
+			var etarget = event.target as EventError;
+            console.error("Error clearing object store " + store + 
+                "; " + etarget.error);
+            reject(etarget.error);
+        };
+        transaction.onerror = (event) => {
+			var etarget = event.target as EventError;
+            console.error(`Transaction error for clearing: `, 
+                etarget.error);
+        };
+    });
+}
+

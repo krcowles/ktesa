@@ -19,8 +19,8 @@ body {
 #map {
   overflow: hidden;
   position: absolute;
-  height: 550px;
-  width: 700px;
+  height: 100vh;
+  width: 100vw;
   border: 1px solid #AAA;
 }
 

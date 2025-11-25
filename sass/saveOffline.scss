@@ -2,12 +2,15 @@
 @use  "colors" as *;
 @use "ktesaNavbar" as *;
 
-#map_name {
-	width: 112px;
-    position: relative;
-    top: 2px;
-    height: 32px;
-    border-radius: 6px;
+/* Map & Modal buttons */
+#map_grp1, #map_grp2, #map_grp3 {
+	display: none;
+	width: fit-content;
+	height: fit-content;
+	position: fixed;
+	bottom: 12px;
+	left: 12px;
+	z-index: 1000;
 }
 /* Default save method is import hike [comments in saveOffline.js] */
 #imphike {
@@ -36,27 +39,6 @@
 	z-index: 220;
 	cursor: pointer;
 }
-#saveit {
-	position: fixed;
-	display: none;
-	bottom: 12px;
-	left: 100px;
-	z-index: 2000;
-}
-#reselect {
-	position: fixed;
-	bottom: 12px;
-	left: 12px;
-	z-index: 2000;
-}
-/* When displaying gpx or import */
-#nextsteps {
-	position: fixed;
-	bottom: 16px;
-	left: 12px;
-	display: none;
-	z-index: 500;
-}
 /* Import gpx file */
 #gpxfile {
 	width: 220px;
@@ -65,16 +47,20 @@
 	margin-left: 4px;
 	width: 300px;
 }
+
 #map {
 	overflow: hidden;
 	min-height: 300px;
 	max-height: calc(100% - 32px);
-    width: 100%;
+    width: 98vw;
     border: 1px solid #AAA;
 	margin-left: 0px;
 
 }
 /* Intro Modal */
+input[type=checkbox] {
+	transform: scale(1.4);
+}
 #options {
 	margin-bottom: 6px;
 }
@@ -82,13 +68,11 @@
 	cursor: pointer;
 	position: relative;
 }
-input[type=checkbox] {
-	transform: scale(1.2);
-}
-#delchoice {
-	min-width: 140px;
-}
 /* Save Map Modal */
+#map_name {
+	width: 160px;
+}
+/* Save Status Modal */
 #progress {
 	height: 48px;
 	width: 280px;

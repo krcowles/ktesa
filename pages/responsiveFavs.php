@@ -10,7 +10,11 @@
  */
 session_start();
 require "../php/global_boot.php";
-$userid = $_SESSION['userid'];
+if (!isset($_SESSION['userid'])) {
+    $msg = "You are not a member or your session has expired: "
+        . "Access is not permitted";
+    die($msg);
+}
 
 $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
 $usrfavs = $pdo->prepare($favreq);

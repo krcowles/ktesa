@@ -26,6 +26,28 @@ $(function () {
     /**
      * Menu operation
      */
+    async function deleteNamedCache(cacheName) {
+        if ('caches' in window) {
+            try {
+                const wasDeleted = await caches.delete(cacheName);
+                if (wasDeleted) {
+                    console.log(`Cache "${cacheName}" successfully deleted.`);
+                }
+                else {
+                    console.log(`Cache "${cacheName}" not found.`);
+                }
+                return wasDeleted;
+            }
+            catch (error) {
+                console.error(`Error deleting cache "${cacheName}":`, error);
+                throw error;
+            }
+        }
+        else {
+            console.warn("Cache API not supported in this environment.");
+            return false;
+        }
+    }
     $('#login').on('click', function () {
         $.get('../accounts/lockStatus.php', function (lock_status) {
             if (lock_status.result !== "ok") {
@@ -44,35 +66,35 @@ $(function () {
         return;
     });
     $('#logout').on('click', function () {
-        let ajax = { expire: 'N' };
-        $.ajax({
-            url: '../accounts/logout.php',
-            data: ajax,
-            method: "get",
-            success: function () {
-                if (mobile) {
-                    window.open('../pages/landing.php', '_self');
+        var ans = confirm("Logging out will delete any saved " +
+            "maps. Proceed?");
+        if (ans) {
+            deleteNamedCache("offline");
+            clearObjectStore();
+            $.ajax({
+                url: '../accounts/logout.php?expire=N',
+                method: "get",
+                success: function () {
+                    window.open("https://nmhikes.com/ld", "_self");
+                    // Service worker will be uninstalled...
+                },
+                error: function (_jqXHR, _textStatus, _errorThrown) {
+                    if (appMode === 'development') {
+                        var newDoc = document.open();
+                        newDoc.write(_jqXHR.responseText);
+                        newDoc.close();
+                    }
+                    else { // production
+                        var ajaxerr = "Trying to access mobile logout;\nError text: " +
+                            _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
+                            _jqXHR.responseText;
+                        var errobj = { err: ajaxerr };
+                        $.post('../php/ajaxError.php', errobj);
+                        ajaxerror.show();
+                    }
                 }
-                else {
-                    window.open('../pages/home.php', '_self');
-                }
-            },
-            error: function (_jqXHR, _textStatus, _errorThrown) {
-                if (appMode === 'development') {
-                    var newDoc = document.open();
-                    newDoc.write(_jqXHR.responseText);
-                    newDoc.close();
-                }
-                else { // production
-                    var ajaxerr = "Trying to access mobile logout;\nError text: " +
-                        _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
-                        _jqXHR.responseText;
-                    var errobj = { err: ajaxerr };
-                    $.post('../php/ajaxError.php', errobj);
-                    ajaxerror.show();
-                }
-            }
-        });
+            });
+        }
     });
     $('#chg').on('click', function () {
         chg_modal.show();

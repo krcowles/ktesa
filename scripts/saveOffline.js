@@ -13,22 +13,36 @@
  * @author Ken Cowles
  * @version 1.0 Initial release
  */
-// cache ["offline"] is already defined and loaded when member enters site
 const MAIN_CACHE = "offline";
 // hide some display options; default display is #imphike
 $('#impgpx').hide();
 $('#rect_btns').hide();
-const replacer = $('<button id="rect" type="button" class="btn btn-primary ' +
-        'btn-sm" onclick="this.blur();">Draw</button>');
-
 // Note: the name 'opener' conflicts with a DOM lib element: hence 'iopener'
-var recenter = new bootstrap.Modal(document.getElementById('rctr'));
 var iopener  = new bootstrap.Modal(document.getElementById('intro'));
 var rectinst = new bootstrap.Modal(document.getElementById('rim'));
+var recenter = new bootstrap.Modal(document.getElementById('rctr'));
 var save_modal = new bootstrap.Modal(document.getElementById('map_save'));
 var saveStat = new bootstrap.Modal(document.getElementById('stat'));
 iopener.show();
-// Clear checkboxes on load or save_modal
+const show_grp = (grpno) => {
+    $('#map_grp1').css('display', 'none');
+    $('#map_grp2').css('display', 'none');
+    $('#map_grp3').css('display', 'none');
+    switch (grpno) {
+        case 1:
+            $('#map_grp1').css('display', 'block');
+            break;
+        case 2:
+            $('#map_grp2').css('display', 'block');
+            break;
+        case 3:
+            $('#map_grp3').css('display', 'block');
+            break;
+        default:
+            alert("Invalid button group number!");
+    }
+};
+show_grp(1); // default display for 'imphike'
 const clearCheckboxes = () => {
     $("input[type=checkbox]").each((i, box) => {
         if ($(box).prop('checked') === true) {
@@ -37,64 +51,151 @@ const clearCheckboxes = () => {
     });
 };
 clearCheckboxes();
+// DISPLAY THE MAP:
+var map = L.map('map', {
+    center: [35.1, -106.65],
+    minZoom: 6,
+    maxZoom: 17,
+    zoom: 10
+});
 /**
  * The default state is to import a hike from the site;
+ * The following represent checkboxes on the 'intro' modal
  */
 $('body').on('click', '#rctg', function() {
+    clearCheckboxes();
     iopener.hide();
     $('#imphike').hide();
     $('#impgpx').hide();
     $('#rect_btns').show();
+    show_grp(1);
     rectinst.show();
 });
 $('body').on('click', "#site", function() {
     clearCheckboxes();
     iopener.hide();
-    $('#nextsteps').css('display', 'none');
-    $('#reselect').show();
+    show_grp(1); 
 });
 $('body').on('click', '#savegpx', function() {
-    $('#imphike').hide();
-    $('#impgpx').show();
     clearCheckboxes();
     iopener.hide();
+    $('#imphike').hide();
+    $('#impgpx').show();
+    show_grp(1);
 });
-$('body').on('click', '#saveit', () => {
-    save_modal.show();
+/**
+ * Button actions
+ */
+var redos = $('.redos'); // all the "Start Over" buttons
+redos.each( (i, btn) => {
+    $(btn).on('click', () => {
+        map.dragging.enable();
+        window.open('../pages/saveOffline.php?logo=no', '_self');
+    });
 });
-$('body').on('click', '#begin', function() {
-    rectinst.hide();
-    clearCheckboxes();
+$('#home').on('click', () => {
+    window.open("../pages/member_landing.html", "_self");
 });
-$('body').on('click', '#startover', () => {
-    window.open('saveOffline.php?logo=no', '_self');
-});
-$('body').on('click', '#restart', () => {
-    window.open('saveOffline.php?logo=no', '_self');
+var savers = $('.save_btns'); // all the "Save" buttons
+savers.each( (i, btn) => {
+    $(btn).on('click', () => {
+        save_modal.show();
+    });  
 });
 $('body').on('click', '#clearrect', function() {
     rect.removeFrom(map);
     maptiles = [];
-    $('#nextsteps').hide();
-    $('#reselect').show();
     // reset bootstrap draw button:
     $('#rect').attr('disabled', false);
     $('#rect').removeClass('btn-secondary');
     $('#rect').addClass('btn-primary');
 });
-$('body').on('click', '#showsave', () => {
-    save_modal.show();
-});
-$('body').on('click', '#save_modal', function() {
-    location.reload();
+// modal buttons
+$('body').on('click', '#begin', function() {  // rim modal
+    rectinst.hide();
     clearCheckboxes();
+});
+$('body').on('click', '#movectr', function() {
+    var newlat = $('#newlat').val();
+    var newlng = $('#newlng').val();
+    if (newlat == '' || newlng == '') {
+        alert("One or more values is missing");
+        $('#newctr').prop('checked', false);
+        return false;
+    }
+    let lat = parseFloat(newlat);
+    let lng = parseFloat(newlng);
+    if (!(typeof lat === 'number') || isNaN(lat)
+            ||!(typeof lng === 'number') || isNaN(lng)) {
+        alert("One or more values is not numeric");
+        $('#newctr').prop('checked', false);
+        return false;
+    }
+    if (lat < 20 || lat > 70) {
+        alert("Latitude is out of range: must be between 20 & 70");
+        $('#newctr').prop('checked', false);
+        return false;
+    }
+    if (lng < -170 || lng > -60) {
+        alert("Longitude must be a number between -60 and -170");
+        $('#newctr').prop('checked', false);
+        return false;
+    }
+    let ctr = L.latLng(lat, lng);
+    //let mag = map.getZoom();
+    let mag = 12;
+    map.setView(ctr, mag);
+    recenter.hide();
+    $('#newctr').prop('checked', false);
+});
+$('body').on('click', '#save_map', function () {
+    save_modal.hide();
+    show_grp(1);
+    // parameter validation:
+    zoom_level = map.getZoom();
+    if (zoom_level < 13) {
+        alert("Please use zoom 13 or higher to specify area");
+        return false;
+    }
+    zoomOptimizer(zoom_level);
+    zoom_level = map.getZoom(); // zoom may have changed by above call
+    mapName = $('#map_name').val();
+    if (mapName === '') {
+        alert("Please specify a name for the map");
+        return false;
+    }
+    if (saveType === "import") {
+        getRectTiles(zoom_level);
+    }
+    if (maptiles.length === 0) {
+        alert("You must select an area (or a hike/gpx)");
+        return false;
+    }
+    var saved_maps = localStorage.getItem('mapnames');
+    var maplist = saved_maps.split(","); // array
+    if (maplist.includes(mapName)) {
+        alert("This name is already used - please select a new name");
+        $('#map_name').val("");
+        return false;
+    }
+    saveMapTiles(mapName);
+    if (typeof rect !== 'undefined') {
+        rect.remove();
+    }
+    if (saved_maps === 'none') {
+        localStorage.setItem('mapnames', mapName);
+    } else {
+        maplist.push(mapName);
+        var newlist = maplist.join(",");
+        localStorage.setItem('mapnames', newlist);
+    }
+});
+$('body').on('click', '#restart', () => {
+    window.open('../pages/saveOffline.php?logo=no', '_self');
 });
 // Zoom 13 is minimum to store tiles (limits memory consumption)
 $('body').on('click', '#setzoom', () => {
     map.setZoom(13);
-});
-$('body').on('click', '#reselect', ()=> {
-    window.open("../pages/saveOffline.php?logo=no", "_self");
 });
 
 // globals
@@ -281,12 +382,12 @@ $('body').on('submit', '#form', (ev) => {
  * DRAWING A RECTANGLE DEFINING AREA TO BE SAVED
  */
 $('body').on('click', '#rect', function () {
+    show_grp(1);
     const zlevel = map.getZoom();
     if (zlevel < 13) {
         alert("Minimum zoom level is 13");
         return false;
     }
-    $('#draw_inst').show();
     $(this).removeClass('btn-primary');
     $(this).addClass('btn-secondary');
     $(this).prop("disabled", true);
@@ -294,18 +395,24 @@ $('body').on('click', '#rect', function () {
         rect.remove();
     }
 
-    
-    $('#map').on('touchstart', function(te) {
+    // Setup touch event handling
+    map.dragging.disable();
+    var container = map.getContainer();
+    L.DomEvent.on(container, 'touchstart', function(e) {
+        L.DomEvent.preventDefault(e);
         saveType = "draw";
-        $('#map').on('touchmove', function(te) {
-            draw_rect(te)
-        });
-        $('#map').on('touchend', function(te) {
-            end_rect(te)
-        });
-        start_rect();
+        start_rect(e);
     });
-    /* comment out when posting to site */
+    L.DomEvent.on(container, 'touchmove', function(e) {
+        L.DomEvent.preventDefault(e);
+        draw_rect(e)
+    });
+    L.DomEvent.on(container, 'touchend', function(e) {
+        L.DomEvent.preventDefault(e);
+        end_rect(e)
+    });
+    /* comment out non-mobile when posting to site */
+    /*
     click_cnt = 0;
     $('#map').on('click', function (e) {
         if (click_cnt === 0) {
@@ -320,8 +427,12 @@ $('body').on('click', '#rect', function () {
         }
         return;
     });
+    */
+
     function start_rect(ev) {
-        var startRect = map.mouseEventToLatLng(ev.originalEvent);
+        var touch = ev.touches[0];
+        //var startRect = map.mouseEventToLatLng(ev.originalEvent);
+        var startRect = map.mouseEventToLatLng(touch);
         startX = startRect.lat;
         startY = startRect.lng;
         var rectX = startX + 0.005;
@@ -332,11 +443,13 @@ $('body').on('click', '#rect', function () {
         var rectOpts = { color: 'Green', weight: 1 };
         rect = L.rectangle(latlngs, rectOpts);
         rect.addTo(map);
-        click_cnt = 1;
+        //click_cnt = 1;
     }
     function draw_rect(ev) {
         rect.removeFrom(map);
-        var newRect = map.mouseEventToLatLng(ev.originalEvent);
+        var touch = ev.touches[0];
+        var newRect = map.mouseEventToLatLng(touch);
+        //var newRect = map.mouseEventToLatLng(ev.originalEvent);
         var rectX = newRect.lat;
         var rectY = newRect.lng;
         var crnr1 = L.latLng(startX, startY);
@@ -347,33 +460,21 @@ $('body').on('click', '#rect', function () {
         rect.addTo(map);
     }
     function end_rect(ev) {
-        var endRect = map.mouseEventToLatLng(ev.originalEvent);
+        var touchlist = ev.changedTouches;
+        var items = touchlist.length;
+        var touch = touchlist.item(items-1);
+        var endRect = map.mouseEventToLatLng(touch);
+        //var endRect = map.mouseEventToLatLng(ev.originalEvent);
         endX = endRect.lat;
         endY = endRect.lng;
         var lat_ctr = startX - (startX - endX)/2;
         var lng_ctr = startY + (endY - startY)/2;
         map_center = [lat_ctr, lng_ctr];
-        $('#map').off();
-        $('#reselect').css('display', 'none');
+        //map.dragging.enable();
+        show_grp(3);
         getRectTiles(zlevel);
-        $('#nextsteps').show();
-        /*
-        var draw_btn = document.getElementById('rect');
-        var bs_btn = new bootstrap.Button(draw_btn);
-        bs_btn.toggle();
-        */
+        $('#map').off();
     }
-});
-
-/**
- * DISPLAY THE MAP
- */
-
-var map = L.map('map', {
-    center: [35.1, -106.65],
-    minZoom: 6,
-    maxZoom: 17,
-    zoom: 10
 });
 // track zoom level on map
 const zctrl = document.createElement("DIV");
@@ -418,38 +519,6 @@ map.addLayer(L.gridLayer.gridDebug());
 
 $('body').on('click', '#newctr', function() {
     recenter.show();
-});
-$('body').on('click', '#movectr', function() {
-    var newlat = $('#newlat').val();
-    var newlng = $('#newlng').val();
-    if (newlat == '' || newlng == '') {
-        alert("One or more values is missing");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    let lat = parseFloat(newlat);
-    let lng = parseFloat(newlng);
-    if (!(typeof lat === 'number') || isNaN(lat)
-            ||!(typeof lng === 'number') || isNaN(lng)) {
-        alert("One or more values is not numeric");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    if (lat < 20 || lat > 70) {
-        alert("Latitude is out of range: must be between 20 & 70");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    if (lng < -170 || lng > -60) {
-        alert("Longitude must be a number between -60 and -170");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    let ctr = L.latLng(lat, lng);
-    let mag = map.getZoom();
-    map.setView(ctr, mag);
-    recenter.hide();
-    $('#newctr').prop('checked', false);
 });
 
 /**
@@ -729,47 +798,7 @@ function zoomOptimizer(zoom) {
     return;
 }
 
-$('body').on('click', '#save_map', function () {
-    save_modal.hide();
-    // parameter validation:
-    zoom_level = map.getZoom();
-    if (zoom_level < 13) {
-        alert("Please use zoom 13 or higher to specify area");
-        return false;
-    }
-    zoomOptimizer(zoom_level);
-    zoom_level = map.getZoom(); // zoom may have changed by above call
-    mapName = $('#map_name').val();
-    if (mapName === '') {
-        alert("Please specify a name for the map");
-        return false;
-    }
-    if (saveType === "import") {
-        getRectTiles(zoom_level);
-    }
-    if (maptiles.length === 0) {
-        alert("You must select an area (or a hike/gpx)");
-        return false;
-    }
-    var saved_maps = localStorage.getItem('mapnames');
-    var maplist = saved_maps.split(","); // array
-    if (maplist.includes(mapName)) {
-        alert("This name is already used - please select a new name");
-        $('#map_name').val("");
-        return false;
-    }
-    saveMapTiles(mapName);
-    if (typeof rect !== 'undefined') {
-        rect.remove();
-    }
-    if (saved_maps === 'none') {
-        localStorage.setItem('mapnames', mapName);
-    } else {
-        maplist.push(mapName);
-        var newlist = maplist.join(",");
-        localStorage.setItem('mapnames', newlist);
-    }
-});
+
 
 function saveMapTiles(userMap) {
     saveStat.show();

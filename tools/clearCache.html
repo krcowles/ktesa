@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Clear Cache</title>
+    <meta charset="utf-8" />
+    <!-- if search engine keys are desired, 
+        use: <meta name="keywords" content="key1, key2, .." -->
+    <meta name="description" content="Clear Cache/Worker" />
+    <meta name="author" content="Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/iconLinks.html"; ?>
+</head>
+<body>
+
+<div>This page is a tool to clear cache and uninstall the service worker
+    on a mobile browser. Access via https://nmhikes.com/tools/clearCache
+</div>
+<script src="../scripts/uninstall_service_workers.js"></script>
+<script type="text/javascript">
+    async function deleteNamedCache(cacheName) {
+        if ('caches' in window) {
+            try {
+                const wasDeleted = await caches.delete(cacheName);
+                if (wasDeleted) {
+                    console.log(`Cache "${cacheName}" successfully deleted.`);
+                } else {
+                    console.log(`Cache "${cacheName}" not found.`);
+                }
+                return wasDeleted;
+            } catch (error) {
+                console.error(`Error deleting cache "${cacheName}":`, error);
+                throw error;
+            }
+        } else {
+            console.warn("Cache API not supported in this environment.");
+            return false;
+        }
+    }
+    deleteNamedCache("offline");
+    alert("Done");
+</script>
+
+</body>
+</html>

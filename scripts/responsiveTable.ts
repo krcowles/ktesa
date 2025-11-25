@@ -114,6 +114,7 @@ $('#show').on('click', function(ev) {
                     }
                 }
                 filterHikes(miles_no, coords);
+                near_modal.hide();
             },
             error: function(_jqXHR, _textStatus, _errorThrown) {
                 if (appMode === 'development') {

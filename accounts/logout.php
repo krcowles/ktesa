@@ -26,11 +26,14 @@ if (isset($_GET['redo']) && $_GET['redo'] === 'Y' ) { // no $_SESSION['userid'] 
 }
 $admin = false;
 if (isset($_SESSION['userid'])) {  // since session may have expired
-    if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2') {
+    if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2'
+        || $_SESSION['userid'] === '14'
+    ) {
         setcookie('nmh_mstr', '', 0, '/');
         $admin = true;
     }
 }
+// sess_only is for timeouts when session expires; don't unset cookie
 if (!$admin && !isset($_GET['sess_only'])) {
     setcookie('nmh_id', '', 0, '/');
 }

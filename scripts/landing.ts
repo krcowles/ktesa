@@ -55,7 +55,32 @@ if (!member) {
             localStorage.setItem('mapnames', 'none');
     }
 }
-
+$('#select_map').on('focus', () => {
+    if (!navigator.onLine) {
+        alert("Internet Required to select options");
+        return false;
+    }
+    return;
+});
+async function deleteNamedCache(cacheName: string) {
+    if ('caches' in window) {
+        try {
+            const wasDeleted = await caches.delete(cacheName);
+            if (wasDeleted) {
+                console.log(`Cache "${cacheName}" successfully deleted.`);
+            } else {
+                console.log(`Cache "${cacheName}" not found.`);
+            }
+            return wasDeleted;
+        } catch (error) {
+            console.error(`Error deleting cache "${cacheName}":`, error);
+            throw error;
+        }
+    } else {
+        console.warn("Cache API not supported in this environment.");
+        return false;
+    }
+}
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
     var newloc: string;
@@ -69,16 +94,23 @@ $('#membership').on('change', function() {
             window.open(newloc, "_self");
             break;
         case 'logout':
-            $.ajax({
-                url: '../accounts/logout.php?expire=N&mobile=T',
-                method: "get",
-                success: function () {
-                    window.open("../index.html", "_self");
-                },
-                error: function () {
-                    alert("Something went wrong!");
-                }
-            });
+            var ans = confirm("Logging out will delete any saved " +
+                "maps. Proceed?");
+            if (ans) {
+                deleteNamedCache("offline");
+                clearObjectStore();
+                $.ajax({
+                    url: '../accounts/logout.php?expire=N',
+                    method: "get",
+                    success: function () {
+                        window.open("https://nmhikes.com/ld", "_self");
+                        // Service worker will be uninstalled...
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                    }
+                });
+            }
             break;
         default:
             alert("This should never happen!");

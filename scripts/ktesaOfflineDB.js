@@ -157,3 +157,30 @@ function getKeyData(db) {
         };
     });
 }
+async function clearObjectStore() {
+    var opened_db = await openDB();
+    await clearStore(opened_db, STORE);
+    opened_db.close();
+    return;
+}
+function clearStore(db, store) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([store], 'readwrite');
+        const objectStore = transaction.objectStore(store);
+        const request = objectStore.clear();
+        request.onsuccess = () => {
+            console.log("Object store " + store + " cleared successfully.");
+            resolve("cleared");
+        };
+        request.onerror = (event) => {
+            var etarget = event.target;
+            console.error("Error clearing object store " + store +
+                "; " + etarget.error);
+            reject(etarget.error);
+        };
+        transaction.onerror = (event) => {
+            var etarget = event.target;
+            console.error(`Transaction error for clearing: `, etarget.error);
+        };
+    });
+}
