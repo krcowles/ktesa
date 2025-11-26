@@ -12,6 +12,7 @@
  */
 const MAIN_CACHE = 'offline';
 var maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
+var marker = null;
 readMapKeys().then((result) => {
     if (result.indexOf('Failed') !== -1) {
         alert("Failed to read existing map data: contact admin");
@@ -53,7 +54,7 @@ $('body').on('click', '#use_map', function () {
         const hasTrack = mapdat[2];
         const timeStamp = mapdat[3];
         console.log(timeStamp);
-        var map = L.map('map', {
+        map = L.map('map', {
             center: display_center,
             minZoom: 8,
             maxZoom: 17,
@@ -70,6 +71,24 @@ $('body').on('click', '#use_map', function () {
         // Control buttons...
         $('#zoomin').on('click', function () {
             alert("Zooming in");
+        });
+        const gpsOptions = { watch: true, enableHighAccuracy: true, 
+            setView: false, maxZoom: 17 };
+        const iconOptions = {
+            iconUrl: '../images/geodot.png',
+            iconSize: [16, 16]
+        };
+        const mrkr_icon = L.icon(iconOptions);
+        const markerOptions = {
+            icon: mrkr_icon
+        };
+        map.locate(gpsOptions);
+        map.on('locationfound', (ev) => {
+            if (marker !== null) {
+                marker.remove();
+            }
+            marker = new L.Marker(ev.latlng, markerOptions);
+            marker.addTo(map);
         });
     });
     $('#select_map').append($('<option>', {

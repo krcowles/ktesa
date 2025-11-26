@@ -307,10 +307,7 @@ function displayTrack(ajax_data, source) {
         endY   = se[1];
         saveType = "import";
         $(source).hide();
-        $('#saveit').css({
-            left: '108px',
-            display: 'block'
-        });
+        show_grp(2);
         clearCheckboxes();
         return;
     }

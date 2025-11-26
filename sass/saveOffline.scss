@@ -49,10 +49,11 @@
 }
 
 #map {
+	box-sizing: border-box;
 	overflow: hidden;
 	min-height: 300px;
-	max-height: calc(100% - 32px);
     width: 98vw;
+	height: 95vh;
     border: 1px solid #AAA;
 	margin-left: 0px;
 
