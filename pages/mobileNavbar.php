@@ -215,4 +215,5 @@ $policy = urlencode("PrivacyPolicy.pdf");
 <script src="../scripts/ktesaOfflineDB.js"></script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/loginState.js"></script>
+<script src="../scripts/cacheDeleteFct.js"></script>
 <script src="../scripts/navMenu.js"></script>

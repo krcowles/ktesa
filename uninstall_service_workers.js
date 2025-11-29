@@ -1,7 +1,10 @@
 navigator.serviceWorker.getRegistrations()
-.then( function(registrations) { 
+.then( async function(registrations) { 
     for(let registration of registrations) { 
-        registration.unregister() 
+        await registration.unregister();
+        console.log("Unregistered service worker")
+        
+        /*
         .then(function() { return self.clients.matchAll(); }) 
         .then(function(clients) { 
             clients.forEach(client => {
@@ -9,6 +12,7 @@ navigator.serviceWorker.getRegistrations()
                     client.navigate(client.url); 
                 } 
             }); 
-        }) 
+        })
+        */
     }
 }); 

@@ -242,6 +242,9 @@ require "../pages/mobileNavbar.php";
                     <div id="bar"></div>
                 </div>
                 <p id="complete" style="display:none;color:brown;">SAVED!</p>
+                <p>
+                To use offline maps, select <i>Tools->Use Offline</i> in the
+                menu.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"

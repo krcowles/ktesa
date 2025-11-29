@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Clear Cache</title>
+    <title>Reset Offline Storage</title>
     <meta charset="utf-8" />
     <!-- if search engine keys are desired, 
         use: <meta name="keywords" content="key1, key2, .." -->
@@ -9,26 +9,28 @@
     <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <?php require "../pages/iconLinks.html"; ?>
 </head>
 <body>
 
 <div>This page is a tool to clear cache and uninstall the service worker
     on a mobile browser. Access via https://nmhikes.com/tools/clearCache
 </div>
-<script src="../scripts/uninstall_service_workers.js"></script>
 <script type="text/javascript">
+    var msg = '';
     async function deleteNamedCache(cacheName) {
         if ('caches' in window) {
             try {
                 const wasDeleted = await caches.delete(cacheName);
                 if (wasDeleted) {
+                    msg += `Cache "${cacheName}" successfully deleted.`
                     console.log(`Cache "${cacheName}" successfully deleted.`);
                 } else {
+                    msg += `Cache "${cacheName}" not found.`
                     console.log(`Cache "${cacheName}" not found.`);
                 }
                 return wasDeleted;
             } catch (error) {
+                msg += `Error deleting cache "${cacheName}":` + error;
                 console.error(`Error deleting cache "${cacheName}":`, error);
                 throw error;
             }
@@ -37,8 +39,23 @@
             return false;
         }
     }
-    deleteNamedCache("offline");
-    alert("Done");
+    navigator.serviceWorker.getRegistrations()
+    .then( async function(registrations) { 
+        var i = 0;
+        for(let registration of registrations) {
+            i++;
+            // This code won't execute when there are no registrations
+            if (i === 1) { // In case of multiple service_workers 
+                await registration.unregister();
+                if (typeof msg !== 'undefined') {
+                    msg += "Unregistered service worker\n";
+                }
+                await deleteNamedCache("offline");
+                localStorage.removeItem('mapnames');
+                alert(msg);
+            }
+        }
+    }); 
 </script>
 
 </body>

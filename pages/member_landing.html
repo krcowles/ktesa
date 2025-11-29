@@ -24,6 +24,12 @@
          * Portrait views will vary slightly in text and object placement
          * compared to landscape views. The js will adjust views accordingly.
          * Portrait content is designed to fit in the 320/480px state;
+         * 
+         * NOTE: This script is invoked when the user is a member; when
+         * the user is not a registered member, nonmember_landing.html is
+         * invoked. This page requires being online for landing.js to
+         * provide functionality for the "membership" selects, and can
+         * therefore NOT be cached by the service_worker.
          */
     </script>
 </head>
@@ -101,6 +107,7 @@
 <script src="../scripts/ktesaOfflineDB.js"></script>
 <script src="../scripts/loginState.js"></script>
 <script src="../scripts/viewMgr.js"></script>
+<script src="../scripts/cacheDeleteFct.js"></script>
 <script src="../scripts/landing.js"></script>
 
 <script src="../install_service_worker.js"></script>
