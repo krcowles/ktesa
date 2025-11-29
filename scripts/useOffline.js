@@ -12,7 +12,6 @@
  */
 const MAIN_CACHE = 'offline';
 var maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
-var marker = null;
 readMapKeys().then((result) => {
     if (result.indexOf('Failed') !== -1) {
         alert("Failed to read existing map data: contact admin");
@@ -54,7 +53,7 @@ $('body').on('click', '#use_map', function () {
         const hasTrack = mapdat[2];
         const timeStamp = mapdat[3];
         console.log(timeStamp);
-        map = L.map('map', {
+        var map = L.map('map', {
             center: display_center,
             minZoom: 8,
             maxZoom: 17,
@@ -72,24 +71,6 @@ $('body').on('click', '#use_map', function () {
         $('#zoomin').on('click', function () {
             alert("Zooming in");
         });
-        const gpsOptions = { watch: true, enableHighAccuracy: true, 
-            setView: false, maxZoom: 17 };
-        const iconOptions = {
-            iconUrl: '../images/geodot.png',
-            iconSize: [16, 16]
-        };
-        const mrkr_icon = L.icon(iconOptions);
-        const markerOptions = {
-            icon: mrkr_icon
-        };
-        map.locate(gpsOptions);
-        map.on('locationfound', (ev) => {
-            if (marker !== null) {
-                marker.remove();
-            }
-            marker = new L.Marker(ev.latlng, markerOptions);
-            marker.addTo(map);
-        });
     });
     $('#select_map').append($('<option>', {
         value: choice,
@@ -97,6 +78,10 @@ $('body').on('click', '#use_map', function () {
     }));
 });
 $('#back').on('click', function () {
+    if (!navigator.onLine) {
+        alert("Internet is required for membership activites " +
+            "on this page");
+    }
     window.open("../pages/member_landing.html", "_self");
 });
 $('body').on('click', '#delmap', function () {
@@ -135,7 +120,7 @@ $('body').on('click', '#delmap', function () {
             var cmpSet = new Set(cmpmap.split(","));
             baseSet = baseSet.difference(cmpSet);
         }
-        // baseSet should now contain only no overlapping urls
+        // baseSet should now contain only non-overlapping urls
         urls2delete = Array.from(baseSet);
     }
     caches.open(MAIN_CACHE)

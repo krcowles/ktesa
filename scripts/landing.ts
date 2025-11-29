@@ -1,9 +1,10 @@
 /// <reference types="jquery" />
+declare function deleteNamedCache(cache: string): void;
 /**
  * @fileoverview This script performs basic menu operations and page setup
  * for the landing site. Due to the fact that there is no mobileNavbar.php
- * and accompanying navMenu.js, this script supplies member activities
- * separately.
+ * and accompanying navMenu.js, this script supplies membership selections
+ * independently.
  * 
  * @author Ken Cowles
  * 
@@ -55,32 +56,6 @@ if (!member) {
             localStorage.setItem('mapnames', 'none');
     }
 }
-$('#select_map').on('focus', () => {
-    if (!navigator.onLine) {
-        alert("Internet Required to select options");
-        return false;
-    }
-    return;
-});
-async function deleteNamedCache(cacheName: string) {
-    if ('caches' in window) {
-        try {
-            const wasDeleted = await caches.delete(cacheName);
-            if (wasDeleted) {
-                console.log(`Cache "${cacheName}" successfully deleted.`);
-            } else {
-                console.log(`Cache "${cacheName}" not found.`);
-            }
-            return wasDeleted;
-        } catch (error) {
-            console.error(`Error deleting cache "${cacheName}":`, error);
-            throw error;
-        }
-    } else {
-        console.warn("Cache API not supported in this environment.");
-        return false;
-    }
-}
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
     var newloc: string;
@@ -99,6 +74,7 @@ $('#membership').on('change', function() {
             if (ans) {
                 deleteNamedCache("offline");
                 clearObjectStore();
+                localStorage.removeItem('mapnames');
                 $.ajax({
                     url: '../accounts/logout.php?expire=N',
                     method: "get",

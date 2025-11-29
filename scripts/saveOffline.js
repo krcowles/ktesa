@@ -58,6 +58,9 @@ var map = L.map('map', {
     maxZoom: 17,
     zoom: 10
 });
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www,openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 /**
  * The default state is to import a hike from the site;
  * The following represent checkboxes on the 'intro' modal
@@ -96,6 +99,9 @@ redos.each( (i, btn) => {
 $('#home').on('click', () => {
     window.open("../pages/member_landing.html", "_self");
 });
+$('body').on('click', '#newctr', function() {
+    recenter.show();
+});
 var savers = $('.save_btns'); // all the "Save" buttons
 savers.each( (i, btn) => {
     $(btn).on('click', () => {
@@ -114,6 +120,13 @@ $('body').on('click', '#clearrect', function() {
 $('body').on('click', '#begin', function() {  // rim modal
     rectinst.hide();
     clearCheckboxes();
+});
+$('body').on('click', '#restart', () => {
+    window.open('../pages/saveOffline.php?logo=no', '_self');
+});
+// Zoom 13 is minimum to store tiles (limits memory consumption)
+$('body').on('click', '#setzoom', () => {
+    map.setZoom(13);
 });
 $('body').on('click', '#movectr', function() {
     var newlat = $('#newlat').val();
@@ -146,7 +159,6 @@ $('body').on('click', '#movectr', function() {
     let mag = 12;
     map.setView(ctr, mag);
     recenter.hide();
-    $('#newctr').prop('checked', false);
 });
 $('body').on('click', '#save_map', function () {
     save_modal.hide();
@@ -190,13 +202,6 @@ $('body').on('click', '#save_map', function () {
         localStorage.setItem('mapnames', newlist);
     }
 });
-$('body').on('click', '#restart', () => {
-    window.open('../pages/saveOffline.php?logo=no', '_self');
-});
-// Zoom 13 is minimum to store tiles (limits memory consumption)
-$('body').on('click', '#setzoom', () => {
-    map.setZoom(13);
-});
 
 // globals
 var mobwidth = window.screen.width;
@@ -211,7 +216,7 @@ var mapName = 'Unassigned';
 var zoom_level = 10;
 var idb_track;
 var map_center;
-var click_cnt = 0;
+//var click_cnt = 0; For testing on non-mobile platform
 var rect;
 var startX;
 var startY;
@@ -242,18 +247,17 @@ var saveType = "unspecified";
 var gpximport = document.getElementById('gpxfile');
 /**
  * There are three current methods provided to save maps:
- *  1. import a hike track from the site; track also displays on map
- *  2. draw a rectangle on the map representing the area desired for offline
+ *  1. draw a rectangle on the map representing the area desired for offline
+ *  2. import a hike track from the site; track also displays on map
  *  3. import a gpx track and center the map display on it
  */
 
 /**
- * IMPORTING A SITE HIKE
- */
-
-/**
- * This function converts json data to data suitable to be
- * stored in the indexedDB and also to be displayed on the map.
+ * This function is utilized by both import methods to display data
+ * retrieved from the importHike.php utility. The ajax data retrieved
+ * is parsed to extract the track data and then forms a boundary box
+ * around it. The appropriate 'Save' buttons are displayed for next
+ * steps.
  */
 function displayTrack(ajax_data, source) {
     if (ajax_data === 'Upload') {
@@ -312,6 +316,9 @@ function displayTrack(ajax_data, source) {
         return;
     }
 }
+/**
+ * IMPORT A SITE HIKE
+ */
 // Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function () {
     $('#search').val("");
@@ -346,7 +353,7 @@ $("#search").on("autocompleteselect", function (event, ui) {
 });
 
 /**
- * IMPORTING A GPX FILE
+ * IMPORT A GPX FILE
  */
 $('body').on('submit', '#form', (ev) => {
     ev.preventDefault();
@@ -490,10 +497,6 @@ map.addEventListener("zoomend", () => {
     $('#zval').text(" " + zoom_level);
 });
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www,openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
 /**
  * This layer provides a map grid of tiles with the tile id's
  * supplied in each tile. This is primarily used for debug in order
@@ -513,10 +516,6 @@ L.gridLayer.gridDebug = function (opts) {
     return new L.GridLayer.GridDebug(opts);
 };
 map.addLayer(L.gridLayer.gridDebug());
-
-$('body').on('click', '#newctr', function() {
-    recenter.show();
-});
 
 /**
  * Define tile urls within the rectangle for saving later;

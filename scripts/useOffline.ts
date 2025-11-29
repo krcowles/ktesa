@@ -77,6 +77,10 @@ $('body').on('click', '#use_map', function() {
     }));
 });
 $('#back').on('click', function() {
+    if (!navigator.onLine) {
+        alert("Internet is required for membership activites " +
+            "on this page");
+    }
     window.open("../pages/member_landing.html", "_self");
 });
 $('body').on('click', '#delmap', function () {
@@ -114,7 +118,7 @@ $('body').on('click', '#delmap', function () {
             var cmpSet = new Set<string>(cmpmap.split(","));
             baseSet = baseSet.difference(cmpSet);
         }
-        // baseSet should now contain only no overlapping urls
+        // baseSet should now contain only non-overlapping urls
         urls2delete = Array.from(baseSet);
     }
     caches.open(MAIN_CACHE)
