@@ -12,9 +12,12 @@
 </head>
 <body>
 
-<div>This page is a tool to clear cache and uninstall the service worker
-    on a mobile browser. Access via https://nmhikes.com/tools/clearCache
+<div>This page is a tool to clear cache, uninstall the service worker
+    and clear the indexedDB and localStorage on a mobile browser.<br />
+    Access via https://nmhikes.com/tools/offlineReset.html
 </div>
+
+<script src="../scripts/ktesaOfflineDB.js"></script>
 <script type="text/javascript">
     var msg = '';
     async function deleteNamedCache(cacheName) {
@@ -51,6 +54,13 @@
                     msg += "Unregistered service worker\n";
                 }
                 await deleteNamedCache("offline");
+                var status = await clearObjectStore();
+                if (status === 'cleared') {
+                    msg += "\nIndexedDB data cleared";
+                } else {
+                    msg += "\nThere was an error clearing the indexed " 
+                        + "db: " + status;
+                }
                 localStorage.removeItem('mapnames');
                 alert(msg);
             }

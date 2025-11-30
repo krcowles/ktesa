@@ -150,18 +150,19 @@ function getKeyData(db) {
         const getData = mapIndex.getAllKeys();
         getData.onsuccess = () => {
             resolve(getData.result);
-            // result is a string, but typescript type is complex
+            // result is an array
         };
         getData.onerror = () => {
-            reject("Failed to read map keys");
+            // keep as array like result
+            reject(["Failed to read map keys"]);
         };
     });
 }
 async function clearObjectStore() {
     var opened_db = await openDB();
-    await clearStore(opened_db, STORE);
+    var result = await clearStore(opened_db, STORE);
     opened_db.close();
-    return;
+    return result;
 }
 function clearStore(db, store) {
     return new Promise((resolve, reject) => {
@@ -177,10 +178,6 @@ function clearStore(db, store) {
             console.error("Error clearing object store " + store +
                 "; " + etarget.error);
             reject(etarget.error);
-        };
-        transaction.onerror = (event) => {
-            var etarget = event.target;
-            console.error(`Transaction error for clearing: `, etarget.error);
         };
     });
 }

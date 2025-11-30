@@ -211,7 +211,7 @@ require "../pages/mobileNavbar.php";
             </div>
             <div class="modal-body">
                 Map Name:
-                <input id="map_name" type="text" />&nbsp;&nbsp;
+                <input id="map_name" type="text" /><br />
                 <button type="button" id="save_map" class="btn btn-success btn-sm">
                     Save Map</button><br /><br />
                 <button id="restart" type="button" class="btn btn-sm
@@ -242,7 +242,7 @@ require "../pages/mobileNavbar.php";
                     <div id="bar"></div>
                 </div>
                 <p id="complete" style="display:none;color:brown;">SAVED!</p>
-                <p>
+                <p style="color:brown;">
                 To use offline maps, select <i>Tools->Use Offline</i> in the
                 menu.</p>
             </div>

@@ -13,11 +13,8 @@
 const MAIN_CACHE = 'offline';
 var maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
 readMapKeys().then((result) => {
-    if (result.indexOf('Failed') !== -1) {
-        alert("Failed to read existing map data: contact admin");
-        return false;
-    }
-    if (result.length === 0) {
+    const keyvals = result;
+    if (keyvals.length === 0) {
         $('#available').css('display', 'none');
         $('#no_maps').css('display', 'block');
         $('#use_map').removeClass('btn-success');
@@ -27,8 +24,12 @@ readMapKeys().then((result) => {
         $('#off_close').addClass('btn-primary');
     }
     else {
+        if (keyvals[0].indexOf('Failed') !== -1) {
+            alert("Failed to read existing map data: contact admin");
+            return false;
+        }
         let opts = '';
-        let modal_opts = result;
+        let modal_opts = keyvals;
         modal_opts.forEach((opt) => {
             opts += "<option value='" + opt + "'>" + opt + "</option>";
         });
@@ -42,7 +43,8 @@ $('body').on('click', '#use_map', function () {
     maps_available.hide();
     //alert("You chose " + choice);
     readMapData(choice)
-        .then((mapdat) => {
+        .then((mapdata) => {
+        const mapdat = mapdata;
         // Map setup
         const ctr = mapdat[0];
         const mapctr = ctr.split(",");
@@ -67,6 +69,19 @@ $('body').on('click', '#use_map', function () {
             const poly = mapdat[4];
             poly.addTo(map);
         }
+        var marker = null;
+        const customIcon = L.icon({
+            iconUrl: "../images/geodot.png"
+        });
+        map.locate({ enableHighAccuracy: true, setView: false, watch: true, maxZoom: 17 });
+        map.on('locationfound', function (e) {
+            if (marker !== null) {
+                marker.remove();
+            }
+            // Create marker with custom icon at user's location
+            marker = L.marker(e.latlng, { icon: customIcon })
+                .addTo(map);
+        });
         // Control buttons...
         $('#zoomin').on('click', function () {
             alert("Zooming in");
@@ -78,10 +93,6 @@ $('body').on('click', '#use_map', function () {
     }));
 });
 $('#back').on('click', function () {
-    if (!navigator.onLine) {
-        alert("Internet is required for membership activites " +
-            "on this page");
-    }
     window.open("../pages/member_landing.html", "_self");
 });
 $('body').on('click', '#delmap', function () {
@@ -120,7 +131,7 @@ $('body').on('click', '#delmap', function () {
             var cmpSet = new Set(cmpmap.split(","));
             baseSet = baseSet.difference(cmpSet);
         }
-        // baseSet should now contain only non-overlapping urls
+        // baseSet should now contain only no overlapping urls
         urls2delete = Array.from(baseSet);
     }
     caches.open(MAIN_CACHE)
