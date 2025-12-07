@@ -6,6 +6,7 @@
  * @fileoverview When using offline maps already created by 'Create Offline':
  * @author Ken Cowles
  * @version 1.0 First release
+ *
  * Note: this version of the typescript compiler config is not yet supporting
  * ES2025, so that the 'Set.difference' method is not known and results in
  * a compiler error.
@@ -41,7 +42,6 @@ readMapKeys().then((result) => {
 $('body').on('click', '#use_map', function () {
     const choice = $('#select_map').val();
     maps_available.hide();
-    //alert("You chose " + choice);
     readMapData(choice)
         .then((mapdata) => {
         const mapdat = mapdata;
@@ -65,13 +65,29 @@ $('body').on('click', '#use_map', function () {
             maxZoom: 17,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+        L.GridLayer.GridDebug = L.GridLayer.extend({
+            createTile: function (coords) {
+                var tile = document.createElement("DIV");
+                tile.style.outline = '1px solid azure';
+                tile.style.fontSize = '14pt';
+                tile.style.color = "azure";
+                tile.innerHTML = [coords.z, coords.x, coords.y].join('/');
+                return tile;
+            }
+        });
+        L.gridLayer.gridDebug = function (opts) {
+            return new L.GridLayer.GridDebug(opts);
+        };
+        map.addLayer(L.gridLayer.gridDebug());
         if (hasTrack !== 'n') {
             const poly = mapdat[4];
             poly.addTo(map);
         }
         var marker = null;
         const customIcon = L.icon({
-            iconUrl: "../images/geodot.png"
+            iconUrl: "../images/geodot.png",
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
         });
         map.locate({ enableHighAccuracy: true, setView: false, watch: true, maxZoom: 17 });
         map.on('locationfound', function (e) {
@@ -81,10 +97,6 @@ $('body').on('click', '#use_map', function () {
             // Create marker with custom icon at user's location
             marker = L.marker(e.latlng, { icon: customIcon })
                 .addTo(map);
-        });
-        // Control buttons...
-        $('#zoomin').on('click', function () {
-            alert("Zooming in");
         });
     });
     $('#select_map').append($('<option>', {

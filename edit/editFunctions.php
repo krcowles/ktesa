@@ -1152,12 +1152,13 @@ function createPseudoJson($clat, $clng)
  * NOTE: if there are multiple segments within a track, they are effectively
  * combined into one segment.
  * 
- * @param SimpleXMLElement $gpxdat       Pre-loaded simplexml for gpx file
- * @param int              $no_of_tracks Write one json file per track
+ * @param SimpleXMLElement $gpxdat        Pre-loaded simplexml for gpx file
+ * @param int              $no_of_tracks  Write one json file per track
+ * @param boolean          $north_america Expanded bounds for offline maps
  * 
  * @return array $track_data
  */
-function gpxLatLng($gpxdat, $no_of_tracks)
+function gpxLatLng($gpxdat, $no_of_tracks, $north_america=false)
 {
     if ($gpxdat->rte->count() > 0) {
         $gpxdat = convertRtePts($gpxdat);
@@ -1171,8 +1172,15 @@ function gpxLatLng($gpxdat, $no_of_tracks)
     // for bounds determination...
     $maxlat = 0;
     $minlat = 100;
-    $maxlng = -110;
-    $minlng = -102;
+    if ($north_america) {
+        $maxlng = -170;
+        $minlng = -60;
+    } else {
+        $maxlng = -110;
+        $minlng = -102;
+    }
+    $maxlng = -170;
+    $minlng = -60;
     for ($i=0; $i<$no_of_tracks; $i++) {
         foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
             foreach ($trackdat->trkpt as $datum) {

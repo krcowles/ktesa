@@ -17,6 +17,10 @@
 session_start();
 require "../php/global_boot.php";
 require "autoComplHikes.php";
+// Without this, debug is painful!
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+header("Pragma: no-cache"); // HTTP 1.0.
+//header("Expires: 0");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,29 +53,29 @@ require "../pages/mobileNavbar.php";
 <p id="appMode" style="display:none"><?=$appMode;?></p>
 
 <div id="map_grp1">
-    <button id="start1" type="button" class="redos btn-primary btn-sm">
+    <button id="start1" type="button" class="redos btn btn-primary btn-sm">
         Start Over
     </button>
-    <button id="home" type="button" class="btn-success btn-sm">
+    <button id="home" type="button" class="btn btn-success btn-sm">
         Home
     </button>
 </div>
 <div id="map_grp2">
-    <button id="start2" type="button" class=" redos btn-primary btn-sm">
+    <button id="start2" type="button" class="redos btn btn-primary btn-sm">
         Start Over 
     </button>
-    <button id="save2" type="button" class=" save_btns btn-sm btn-success">
+    <button id="save2" type="button" class="save_btns btn btn-sm btn-success">
         Save
     </button>
 </div>
 <div id="map_grp3">
-    <button id="start3" type="button" class="redos btn-primary btn-sm">
+    <button id="start3" type="button" class="redos btn btn-primary btn-sm">
         Start Over 
     </button>
-    <button id="clearrect" type="button" class="btn-warning btn-sm">
+    <button id="clearrect" type="button" class="btn btn-warning btn-sm">
         Clear
     </button>
-    <button id="save3" type="button" class="save_btns btn-sm btn-success">
+    <button id="save3" type="button" class="save_btns btn btn-sm btn-success">
         Save
     </button>
 </div>
@@ -98,14 +102,16 @@ require "../pages/mobileNavbar.php";
 </div>
 <!-- Draw a rectangle topper -->
 <div id="rect_btns">
-    <button id="setzoom" type="button" class="btn btn-secondary
+    <button id="setzoom" type="button" class="btn btn-primary
         btn-sm" onclick="this.blur();">Set Zoom 13</button>&nbsp;&nbsp;
     <span id="drawbtn">
         <button id="rect" type="button" class="btn btn-primary
         btn-sm" onclick="this.blur();">Draw</button>
     </span>&nbsp;&nbsp;
     <span id="rectr">
-        Recenter&nbsp;<input type="checkbox" id="newctr" class="pgboxes" />
+        <button id="newctr" class="btn btn-primary btn-sm">
+            Locate Me
+        </button>
     </span>
 </div>
 
@@ -128,18 +134,35 @@ require "../pages/mobileNavbar.php";
                 <p id="options">You will be prompted for a map name when you
                     click to 'Save' the map.
                 </p>
-                <label id="saveRect">
-                    <input id="rctg" type="checkbox" class="pgboxes" />
-                    &nbsp;&nbsp;Rectangular Area
-                </label><br />
-                <label id="saveHike">
-                    <input id="site" type="checkbox"  class="pgboxes"/>
-                    &nbsp;&nbsp;Import Site Hike
-                </label><br />
-                <label id="saveGpx">
-                    <input id="savegpx" type="checkbox"  class="pgboxes"/>
-                    &nbsp;&nbsp;Import GPX File
-                </label><br />
+                <table>
+                    <tr>
+                        <td>
+                            <button id="rctg" type="button" class="btn btn-primary
+                                btn-sm">Draw</button>
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;Rectangular Area
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="site" type="button" class="btn btn-primary
+                                btn-sm">Site</button>
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;Import Site Hike
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="savegpx" type="button" class="btn btn-primary
+                                btn-sm">Gpx</button>
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;Import GPX File
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -161,37 +184,13 @@ require "../pages/mobileNavbar.php";
             </div>
             <div class="modal-body">
                 <h5 id="drawer">
-                    <span>NOTE: Set to level 13 or higher to draw;</span><br /><br />
+                    <span style="color:brown;"><em>
+                        NOTE: Set to level 13 or higher to draw;</em></span><br />
                     <button id="begin" type="button" class="btn-sm btn-success">
                         Begin</button>
-                </h5>
+                </h5><br />
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Recenter Map Modal -->
-<div id="rctr" class="modal" tabindex="-1"
-    aria-labelledby="Map Save Status" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    Recenter Map</h5>
-                <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Lat: <input id="newlat" class="latlngs" />&nbsp;Lng:
-                <input id="newlng" class="latlngs" />
-            </div>
-            <div class="modal-footer">
-                <button id="movectr" class="btn-sm btn-success">
-                    Recenter Map
-                </button>
                 <button type="button" class="btn btn-secondary"
                     data-bs-dismiss="modal">Close</button>
             </div>

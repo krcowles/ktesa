@@ -17,6 +17,10 @@
 session_start();
 require "../php/global_boot.php";
 require_once "../accounts/getLogin.php";
+// Without this, debug is painful!
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+header("Pragma: no-cache"); // HTTP 1.0.
+//header("Expires: 0");
 if ($_SESSION['cookie_state'] === "OK") {
     $redirect = "../pages/member_landing.html";
 } else {

@@ -69,10 +69,8 @@ ul.dropdown-menu {
   clear: both;
   margin-top: 4px;
   margin-bottom: 0px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  display: inline-block;
-  width: fit-content;
 }
 
 #rightside {
@@ -248,10 +246,6 @@ p {
   display: block;
 }
 
-.dbl {
-  line-height: 90%;
-}
-
 .pair {
   display: inline-block;
   font-size: 1rem;
@@ -262,6 +256,13 @@ p {
   border-style: solid;
   border-width: 1px;
   border-color: darkblue;
+}
+
+#nosave, #nouse {
+  border-style: solid;
+  border-width: 1px;
+  border-color: darkblue;
+  opacity: 0.3;
 }
 
 .pair:hover {
@@ -280,6 +281,10 @@ p {
 
 #utilize {
   border-color: darkgreen;
+}
+
+.dbl {
+  padding-bottom: 1px;
 }
 
 .icons {

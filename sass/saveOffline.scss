@@ -12,6 +12,10 @@
 	left: 12px;
 	z-index: 1000;
 }
+/* Draw Rectangle */
+#rect_btns {
+	padding: 3px;
+}
 /* Default save method is import hike [comments in saveOffline.js] */
 #imphike {
 	margin-left: 1rem;
@@ -43,6 +47,15 @@
 #gpxfile {
 	width: 220px;
 }
+#gpxfile::file-selector-button {
+	border: 2px brown solid;
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: blanchedalmond;
+}
+form {
+	padding: 3px;
+}
 #impgpx {
 	margin-left: 4px;
 	width: 300px;
@@ -59,9 +72,6 @@
 
 }
 /* Intro Modal */
-input[type=checkbox] {
-	transform: scale(1.4);
-}
 #options {
 	margin-bottom: 6px;
 }

@@ -5,10 +5,10 @@
 /**
  * @fileoverview Capturing map tiles and tracks for offline use;
  * 
- * NOTE: trying to typescript this module proved fruitless - the
- * only way to bring in certain leaflet types was to modularize 
- * a number of scripts - a burden, I decided, after some intial
- * attempts, not to carry.
+ * NOTE: trying to typescript this module proved fruitless : the 
+ * 'types' reference did not recognize standard leaflet types,
+ * and the only other means was to convert this to a module and
+ * import the leaflet classes - a burden I decided against.
  * 
  * @author Ken Cowles
  * @version 1.0 Initial release
@@ -20,7 +20,6 @@ $('#rect_btns').hide();
 // Note: the name 'opener' conflicts with a DOM lib element: hence 'iopener'
 var iopener  = new bootstrap.Modal(document.getElementById('intro'));
 var rectinst = new bootstrap.Modal(document.getElementById('rim'));
-var recenter = new bootstrap.Modal(document.getElementById('rctr'));
 var save_modal = new bootstrap.Modal(document.getElementById('map_save'));
 var saveStat = new bootstrap.Modal(document.getElementById('stat'));
 iopener.show();
@@ -43,14 +42,6 @@ const show_grp = (grpno) => {
     }
 };
 show_grp(1); // default display for 'imphike'
-const clearCheckboxes = () => {
-    $("input[type=checkbox]").each((i, box) => {
-        if ($(box).prop('checked') === true) {
-            $(box).prop('checked', false);
-        }
-    });
-};
-clearCheckboxes();
 // DISPLAY THE MAP:
 var map = L.map('map', {
     center: [35.1, -106.65],
@@ -61,12 +52,36 @@ var map = L.map('map', {
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www,openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+map.on('locationfound', function (e) {
+    map.panTo(e.latlng);
+});
+/**
+ * This layer provides a map grid of tiles with the tile id's
+ * supplied in each tile. This is primarily used for debug in order
+ * to identify tiles within the area selected for saving offline.
+ */
+L.GridLayer.GridDebug = L.GridLayer.extend({
+    createTile: function (coords) {
+        var tile = document.createElement("DIV");
+        tile.style.outline = '1px solid azure'; //#e6e6e6
+        tile.style.fontSize = '14pt';
+        tile.style.color = "azure";
+        tile.innerHTML = [coords.z, coords.x, coords.y].join('/');
+        return tile;
+    }
+});
+L.gridLayer.gridDebug = function (opts) {
+    return new L.GridLayer.GridDebug(opts);
+};
+map.addLayer(L.gridLayer.gridDebug());
+findMe = () => {
+    map.locate({enableHighAccuracy: true, setView: false, watch: false, maxZoom: 17});
+}
 /**
  * The default state is to import a hike from the site;
  * The following represent checkboxes on the 'intro' modal
  */
 $('body').on('click', '#rctg', function() {
-    clearCheckboxes();
     iopener.hide();
     $('#imphike').hide();
     $('#impgpx').hide();
@@ -75,12 +90,10 @@ $('body').on('click', '#rctg', function() {
     rectinst.show();
 });
 $('body').on('click', "#site", function() {
-    clearCheckboxes();
     iopener.hide();
     show_grp(1); 
 });
 $('body').on('click', '#savegpx', function() {
-    clearCheckboxes();
     iopener.hide();
     $('#imphike').hide();
     $('#impgpx').show();
@@ -99,9 +112,6 @@ redos.each( (i, btn) => {
 $('#home').on('click', () => {
     window.open("../pages/member_landing.html", "_self");
 });
-$('body').on('click', '#newctr', function() {
-    recenter.show();
-});
 var savers = $('.save_btns'); // all the "Save" buttons
 savers.each( (i, btn) => {
     $(btn).on('click', () => {
@@ -119,7 +129,6 @@ $('body').on('click', '#clearrect', function() {
 // modal buttons
 $('body').on('click', '#begin', function() {  // rim modal
     rectinst.hide();
-    clearCheckboxes();
 });
 $('body').on('click', '#restart', () => {
     window.open('../pages/saveOffline.php?logo=no', '_self');
@@ -127,40 +136,12 @@ $('body').on('click', '#restart', () => {
 // Zoom 13 is minimum to store tiles (limits memory consumption)
 $('body').on('click', '#setzoom', () => {
     map.setZoom(13);
+    $('#setzoom').removeClass('btn-primary');
+    $('#setzoom').addClass('btn-secondary');
 });
-$('body').on('click', '#movectr', function() {
-    var newlat = $('#newlat').val();
-    var newlng = $('#newlng').val();
-    if (newlat == '' || newlng == '') {
-        alert("One or more values is missing");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    let lat = parseFloat(newlat);
-    let lng = parseFloat(newlng);
-    if (!(typeof lat === 'number') || isNaN(lat)
-            ||!(typeof lng === 'number') || isNaN(lng)) {
-        alert("One or more values is not numeric");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    if (lat < 20 || lat > 70) {
-        alert("Latitude is out of range: must be between 20 & 70");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    if (lng < -170 || lng > -60) {
-        alert("Longitude must be a number between -60 and -170");
-        $('#newctr').prop('checked', false);
-        return false;
-    }
-    let ctr = L.latLng(lat, lng);
-    //let mag = map.getZoom();
-    let mag = 12;
-    map.setView(ctr, mag);
-    recenter.hide();
-});
+$('body').on('click', '#newctr', findMe);
 $('body').on('click', '#save_map', function () {
+    // Run validation tasks before saving...
     save_modal.hide();
     show_grp(1);
     // parameter validation:
@@ -169,8 +150,6 @@ $('body').on('click', '#save_map', function () {
         alert("Please use zoom 13 or higher to specify area");
         return false;
     }
-    zoomOptimizer(zoom_level);
-    zoom_level = map.getZoom(); // zoom may have changed by above call
     mapName = $('#map_name').val();
     if (mapName === '') {
         alert("Please specify a name for the map");
@@ -183,6 +162,9 @@ $('body').on('click', '#save_map', function () {
         alert("You must select an area (or a hike/gpx)");
         return false;
     }
+    if (saveType === "import") {
+        zoomOptimizer(zoom_level);
+    }
     var saved_maps = localStorage.getItem('mapnames');
     var maplist = saved_maps.split(","); // array
     if (maplist.includes(mapName)) {
@@ -190,17 +172,29 @@ $('body').on('click', '#save_map', function () {
         $('#map_name').val("");
         return false;
     }
-    saveMapTiles(mapName);
-    if (typeof rect !== 'undefined') {
-        rect.remove();
-    }
-    if (saved_maps === 'none') {
-        localStorage.setItem('mapnames', mapName);
-    } else {
-        maplist.push(mapName);
-        var newlist = maplist.join(",");
-        localStorage.setItem('mapnames', newlist);
-    }
+    // Enable the tile cache event listener in the service worker
+    navigator.serviceWorker.controller.postMessage({
+        type: "Tiles",
+        action: "Enable"
+    });
+    saveMapTiles(mapName)
+    .then( () => {
+        if (typeof rect !== 'undefined') {
+            rect.remove();
+        }
+        if (saved_maps === 'none') {
+            localStorage.setItem('mapnames', mapName);
+        } else {
+            maplist.push(mapName);
+            var newlist = maplist.join(",");
+            localStorage.setItem('mapnames', newlist);
+        }
+         // Disable the openstream fetch event listener in the service worker
+        navigator.serviceWorker.controller.postMessage({
+            type: "Tiles",
+            action: "Disable"
+        });
+    }); 
 });
 
 // globals
@@ -235,14 +229,6 @@ tile_coords[13] = [];
 tile_coords[14] = [];
 tile_coords[15] = [];
 tile_coords[16] = [];
-
-// expanded NW corners for North America
-var corner13 = { '13x': 313, '13y': 1905 };
-var corner14 = { '14x': 626, '14y': 3811 };
-var corner15 = { '15x': 1263, '15y': 7623 };
-var corner16 = { '16x': 2507, '16y': 16246 };
-var nw_corners = [corner13, corner14, corner15, corner16];
-var noOfCorners = nw_corners.length;
 var saveType = "unspecified";
 var gpximport = document.getElementById('gpxfile');
 /**
@@ -275,9 +261,16 @@ function displayTrack(ajax_data, source) {
         var lr = result_array[1];
         var nw = ul.map(Number); // convert to number
         var se = lr.map(Number);
-        // add margin to boundary
+        /**
+         * I always mess up handling negative numbers, so here I use
+         * absolute values and convert back for longitudes
+         * NOPTE: [0] is lat value, [1] is lng value
+         */
         var latmarg = 0.10*(nw[0] - se[0])/2;
-        var lngmarg = 0.20*(nw[1] - se[1])/2;
+        var abslng_west = Math.abs(nw[1]);
+        var abslng_east = Math.abs(se[1]);
+        var absmarg = 0.20*(abslng_west - abslng_east)/2
+        var lngmarg = -absmarg;
         nw = [nw[0]+latmarg, nw[1]+lngmarg];
         se = [se[0]-latmarg, se[1]-lngmarg];
         var lat = result_array[2][0];
@@ -286,7 +279,6 @@ function displayTrack(ajax_data, source) {
         var idb_data;
         var track_poly = result_array[3];
         for (let i=3; i<result_array.length; i++) {
-            //var trk_pt = [result_array[i][0]];
             idb_data = result_array[i].toString();
             if (i === 3) {
                 idb_track = idb_data;
@@ -294,7 +286,7 @@ function displayTrack(ajax_data, source) {
                 setTimeout( () => {
                     zoom_level = map.getZoom();
                     zoomOptimizer(zoom_level);
-                }, 3000)
+                }, 2500)
             } else {
                 idb_track += "," + idb_data;
             }
@@ -312,7 +304,6 @@ function displayTrack(ajax_data, source) {
         saveType = "import";
         $(source).hide();
         show_grp(2);
-        clearCheckboxes();
         return;
     }
 }
@@ -480,7 +471,7 @@ $('body').on('click', '#rect', function () {
         $('#map').off();
     }
 });
-// track zoom level on map
+// track the zoom level on map
 const zctrl = document.createElement("DIV");
 const zsym  = document.createTextNode("Z: ");
 zctrl.style.marginLeft = "8px";
@@ -495,63 +486,30 @@ $('.leaflet-top.leaflet-left').append(zctrl);
 map.addEventListener("zoomend", () => {
     zoom_level = map.getZoom();
     $('#zval').text(" " + zoom_level);
-});
-
-/**
- * This layer provides a map grid of tiles with the tile id's
- * supplied in each tile. This is primarily used for debug in order
- * to identify tiles within the area selected for saving offline.
- */
-L.GridLayer.GridDebug = L.GridLayer.extend({
-    createTile: function (coords) {
-        var tile = document.createElement("DIV");
-        tile.style.outline = '1px solid #e6e6e6';
-        tile.style.fontSize = '14pt';
-        tile.style.color = "darkgray";
-        tile.innerHTML = [coords.z, coords.x, coords.y].join('/');
-        return tile;
+    if (zoom_level < 13) {
+        $('#setzoom').removeClass('btn-secondary');
+        $('#setzoom').addClass('btn-primary');
+    } else {
+        $('#setzoom').removeClass('btn-primary');
+        $('#setzoom').addClass('btn-secondary');
     }
 });
-L.gridLayer.gridDebug = function (opts) {
-    return new L.GridLayer.GridDebug(opts);
-};
-map.addLayer(L.gridLayer.gridDebug());
-
-/**
- * Define tile urls within the rectangle for saving later;
- * All tile urls are store in maptiles
- */
-var get_nw_corner = function (zoom_level) {
-    var zx = zoom_level + 'x';
-    var zy = zoom_level + 'y';
-    var xmin = 0;
-    var ymin = 0;
-    for (var i = 0; i < noOfCorners; i++) {
-        var pos = Object.keys(nw_corners[i]); // returns array
-        if ($.inArray(zx, pos) !== -1) {
-            xmin = parseInt(nw_corners[i][zx]); // min tile no. at zoom
-            ymin = parseInt(nw_corners[i][zy]);
-            break;
-        }
-    }
-    return { nwx: xmin, nwy: ymin };
-};
-var next_zoom_tiles = function (next_level, delta_x, delta_y) {
-    var new_corner = get_nw_corner(next_level);
-    var x_a = new_corner.nwx + 2 * delta_x;
-    var x_b = x_a + 1;
-    var y_a = new_corner.nwy + 2 * delta_y;
-    var y_b = y_a + 1;
-    var loc1 = { x: x_a, y: y_a };
-    var loc2 = { x: x_b, y: y_a };
-    var loc3 = { x: x_a, y: y_b };
-    var loc4 = { x: x_b, y: y_b };
+// Finding tile coordinates for a higher zoom
+var next_zoom_tiles = function(next_level, prevx, prevy) {
+    var newx_a = 2 * prevx;
+    var newx_b = newx_a + 1;
+    var newy_a = 2 * prevy;
+    var newy_b = newy_a + 1;
+    var loc1 = { x: newx_a, y: newy_a };
+    var loc2 = { x: newx_b, y: newy_a };
+    var loc3 = { x: newx_a, y: newy_b };
+    var loc4 = { x: newx_b, y: newy_b };
     tile_coords[next_level].push(loc1);
     tile_coords[next_level].push(loc2);
     tile_coords[next_level].push(loc3);
     tile_coords[next_level].push(loc4);
     return;
-};
+}
 function getTileURL(lat, lng, zoom) {
     var latrad = lat * Math.PI / 180;
     var tileX = Math.floor((lng + 180) / 360 * (1 << zoom));
@@ -579,7 +537,7 @@ function getRectTiles(zoom_level) {
      * User may draw from any corner, so establish matrix as if it were
      * drawn from upper left to lower right to simplify processing
      */
-    var tile1 = []; // tileN => [row, col]
+    var tile1 = []; // tileN => [zoom, row, col]
     var tile2 = [];
     if (corner1XY[1] < corner2XY[1]) { // row check
         tile1[0] = corner1XY[1];
@@ -604,6 +562,7 @@ function getRectTiles(zoom_level) {
         tile2[i] = parseInt(element);
     });
     // begin with array where 0,1 is range of upper left; 2,0 => lower right
+    // each tile[] is an array of 2 (see global variables, above)
     tile[0] = tile1.slice(); // tile1 row, col
     tile[1] = tile1.slice();
     tile[2] = tile2.slice(); // tile2 row, col
@@ -735,15 +694,14 @@ function getRectTiles(zoom_level) {
      * Find each tile's deeper zoom level tiles. Each tile produces 4 tiles
      * at the next zoom level; therefore there will be 85 tiles per zoom level
      * 13 tiles input to the routine. Get this done in the background while waiting
-     * to invoke 'Save'...
+     * to invoke 'Save'. Each level's tile coords have already been established
+     * and are held in 'tile_coords'.
      */
     for (var zoom = zoom_level; zoom < 16; zoom++) { // don't get 'next level' 17
-        var corner = get_nw_corner(zoom);
-        // tile_coords obtained earlier in routine...
-        for (var j = 0; j < tile_coords[zoom].length; j++) {
-            var delx = tile_coords[zoom][j].x - corner.nwx;
-            var dely = tile_coords[zoom][j].y - corner.nwy;
-            next_zoom_tiles(zoom + 1, delx, dely);
+        for (let k=0; k<tile_coords[zoom].length; k++) {
+            var xtile = tile_coords[zoom][k].x;
+            var ytile = tile_coords[zoom][k].y;
+            next_zoom_tiles(zoom+1, xtile, ytile);
         }
     }
     var makeTile = function (level) {
@@ -794,9 +752,7 @@ function zoomOptimizer(zoom) {
     return;
 }
 
-
-
-function saveMapTiles(userMap) {
+async function saveMapTiles(userMap) {
     saveStat.show();
     let bar = 0
     let tilecnt = maptiles.length;
@@ -804,9 +760,9 @@ function saveMapTiles(userMap) {
     $('#tcnt').text(tilecnt);
     // save the  map_data in the idb
     if (saveType === "import" && typeof idb_track !== 'undefined') {
-        storeMap(userMap, map_center, zoom_level, true, idb_track);
+        await storeMap(userMap, map_center, zoom_level, true, idb_track);
     } else {
-        storeMap(userMap, map_center, zoom_level, false);
+        await storeMap(userMap, map_center, zoom_level, false);
     }
     caches.open(MAIN_CACHE)
     .then ( (cache) => {

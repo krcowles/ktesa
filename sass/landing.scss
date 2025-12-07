@@ -42,9 +42,6 @@ p {
 .flexitem {
   display: block;
 }
-.dbl {
-  line-height: 90%;
-}
 .pair {
   display: inline-block;
   font-size: 1rem;
@@ -55,7 +52,12 @@ p {
   border-width: 1px;
   border-color: darkblue;
 }
-
+#nosave, #nouse {
+  border-style: solid;
+  border-width: 1px;
+  border-color: darkblue;
+  opacity: 0.3;
+}
 .pair:hover {
   cursor: pointer;
 }
@@ -72,6 +74,10 @@ p {
 
 #utilize {
   border-color: darkgreen;
+}
+
+.dbl {
+  padding-bottom: 1px;
 }
 
 .icons {
