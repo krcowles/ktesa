@@ -2,7 +2,7 @@
 /**
  * This script sends the user a link to reset his/her password, or, if
  * a new user, set the password.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -58,7 +58,7 @@ if ($type === 'own') { // someone is requesting ownership :-)
         exit;
     }
     $from = "noreply@mail.com";
-    $from_note = "Do hit not reply";
+    $from_note = "Do not hit reply";
     $to = $email;
     $name = $status['username'];
     $replyTo = $from;

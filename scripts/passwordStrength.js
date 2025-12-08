@@ -141,7 +141,24 @@ var rangeCheck = function (ev) {
         }
     }
 };
-// password input has classname 'renpass'
+/**
+ * Attempting to detect autosuggest is tricky and may be imperfect, but this
+ * should work on most modern browsers. What's NOT covered is, for instance,
+ * the case where someone uses autosuggest, then deletes or changes it...
+ * In the case of autosuggest, the strength indicator is set to 'strong'
+ */
+var passInput = document.getElementById('password');
+var userTyped = false;
+passInput.addEventListener('animationstart', function (ev) {
+    if (ev.animationName === 'onAutoFillStart') {
+        total = 12;
+        $('#wk').hide();
+        $('#st').show();
+        $('#st').css('color', 'darkgreen');
+        $('#showdet').css('display', 'none');
+    }
+});
+// password input has classname 'renpass'; assumes keydown means no autosuggest
 $('.renpass').on('focus', function () {
     document.addEventListener('keydown', keyChecker);
     document.addEventListener('keyup', rangeCheck);
