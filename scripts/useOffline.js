@@ -5,14 +5,97 @@
 /**
  * @fileoverview When using offline maps already created by 'Create Offline':
  * @author Ken Cowles
- * @version 1.0 First release
+ * @version 1.0 First release of offline maps
+ * @version 2.0 Added gps tracking capabiity
  *
  * Note: this version of the typescript compiler config is not yet supporting
  * ES2025, so that the 'Set.difference' method is not known and results in
- * a compiler error.
+ * a transpiler error.
  */
 const MAIN_CACHE = 'offline';
+const $fname = $('#gpxname');
+$fname.val("");
+var tracking = false;
+var gpx_text = '';
+var dwnld_name = '';
+var polydat = [];
 var maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
+var track_saver = new bootstrap.Modal(document.getElementById('gpx_track'));
+$('#clear').hide();
+$('#save').hide();
+$('#track').on('click', () => {
+    const $tracker = $('#track');
+    if ($tracker.text().includes("Off")) {
+        $tracker.text("Track (On)");
+        $('#clear').show();
+        $('#save').show();
+        $('#back').hide();
+        tracking = true;
+    }
+    else {
+        $tracker.text("Track (Off)");
+        $('#clear').hide();
+        $('#save').hide();
+        $('#back').show();
+        tracking = false;
+    }
+});
+$('#save').on('click', () => {
+    if (!navigator.onLine) {
+        alert("You must have an internet connection to save the track");
+        return false;
+    }
+    track_saver.show();
+    return;
+});
+$('#clear').on('click', () => {
+    polydat = [];
+    const ans = confirm("Stop tracking after clear?");
+    if (ans) {
+        const trkbtn = document.getElementById('track');
+        trkbtn.click();
+    }
+});
+const downloadGpx = (gpxstring, fname) => {
+    const blob = new Blob([gpxstring], { type: 'text/plain' });
+    const blobUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("A");
+    anchor.href = blobUrl;
+    anchor.download = fname;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(blobUrl);
+};
+$('body').on('click', '#dwnld_track', () => {
+    // convert to gpx and download...
+    const track_name = $fname.val();
+    if (track_name === '') {
+        alert("You must supply a track name");
+        return false;
+    }
+    track_saver.hide();
+    dwnld_name = track_name + ".gpx";
+    const ajax_string = JSON.stringify(polydat);
+    //
+    $.ajax({
+        url: "../php/dwnld_gpx.php",
+        method: "post",
+        data: { name: track_name, linedata: ajax_string },
+        dataType: "text",
+        success: function (gpx_contents) {
+            downloadGpx(gpx_contents, dwnld_name);
+        },
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            var msg = "An error has occurred: " +
+                "Report this message to the admin\n";
+            "Error text: " + _textStatus + "; Error: " +
+                _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+            alert(msg);
+        }
+    });
+    return;
+});
 readMapKeys().then((result) => {
     const keyvals = result;
     if (keyvals.length === 0) {
@@ -50,7 +133,8 @@ $('body').on('click', '#use_map', function () {
         const mapctr = ctr.split(",");
         const lat = parseFloat(mapctr[0]);
         const lng = parseFloat(mapctr[1]);
-        const display_center = [lat, lng];
+        const cctr = [lat, lng];
+        const display_center = cctr;
         const zoom = parseInt(mapdat[1]);
         const hasTrack = mapdat[2];
         const timeStamp = mapdat[3];
@@ -65,6 +149,7 @@ $('body').on('click', '#use_map', function () {
             maxZoom: 17,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+        /*
         L.GridLayer.GridDebug = L.GridLayer.extend({
             createTile: function (coords) {
                 var tile = document.createElement("DIV");
@@ -79,9 +164,11 @@ $('body').on('click', '#use_map', function () {
             return new L.GridLayer.GridDebug(opts);
         };
         map.addLayer(L.gridLayer.gridDebug());
+        */
         if (hasTrack !== 'n') {
-            const poly = mapdat[4];
-            poly.addTo(map);
+            const idb_trk = mapdat[4];
+            const saved_trk = idb_trk;
+            saved_trk.addTo(map);
         }
         var marker = null;
         const customIcon = L.icon({
@@ -95,8 +182,19 @@ $('body').on('click', '#use_map', function () {
                 marker.remove();
             }
             // Create marker with custom icon at user's location
-            marker = L.marker(e.latlng, { icon: customIcon })
-                .addTo(map);
+            marker = L.marker(e.latlng, { icon: customIcon }).addTo(map);
+            if (tracking) {
+                map.eachLayer((layer) => {
+                    if (layer instanceof L.Polyline) {
+                        // remove previous polyline before extending new one
+                        map.removeLayer(layer);
+                    }
+                });
+                polydat.push(e.latlng);
+                if (polydat.length > 1) {
+                    L.polyline(polydat).addTo(map);
+                }
+            }
         });
     });
     $('#select_map').append($('<option>', {

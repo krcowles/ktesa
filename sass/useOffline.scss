@@ -1,5 +1,14 @@
 @use "body" as *;
 
+.btn {
+  position: relative;
+  z-index: 500;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+#back {
+  margin-left: 4px;
+}
 #map {
     overflow: hidden;
     position: absolute;
@@ -10,10 +19,4 @@
 .modal-header, .modal-footer {
     background-color: #dfe9e3;
     color: black;
-}
-#back {
-  position: absolute;
-  z-index: 1000;
-  left: 60px;
-  top: 20px;
 }

@@ -17,8 +17,8 @@
     Access via https://nmhikes.com/tools/offlineReset.html
 </div>
 
-<!-- Not on main site yet -->
-<script src="../ld/scripts/ktesaOfflineDB.js"></script>
+<!-- Not on main site yet [adjust test site for scripts]-->
+<script src="../scripts/ktesaOfflineDB.js"></script>
 <script type="text/javascript">
     var msg = '';
     async function deleteNamedCache(cacheName) {
@@ -62,9 +62,15 @@
                     msg += "\nThere was an error clearing the indexed " 
                         + "db: " + status;
                 }
-                localStorage.removeItem('mapnames');
-                alert(msg);
+                var allmaps = localStorage.getItem('mapnames');
+                var map_list = allmaps.split(",");
+                if (map_list.length > 0) {
+                    for (let k=0; k<map_list.length; k++) {
+                        localStorage.removeItem(map_list[k]);
+                    }
+                } 
             }
+            alert(msg);
         }
     }); 
 </script>

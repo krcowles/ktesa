@@ -147,12 +147,15 @@ $('body').on('click', '#save_map', function () {
     // parameter validation:
     zoom_level = map.getZoom();
     if (zoom_level < 13) {
+        // NOTE: clicking on alerts closes the modal
         alert("Please use zoom 13 or higher to specify area");
+        save_modal.show();
         return false;
     }
     mapName = $('#map_name').val();
     if (mapName === '') {
         alert("Please specify a name for the map");
+        save_modal.show();
         return false;
     }
     if (saveType === "import") {
@@ -160,6 +163,7 @@ $('body').on('click', '#save_map', function () {
     }
     if (maptiles.length === 0) {
         alert("You must select an area (or a hike/gpx)");
+        save_modal.show();
         return false;
     }
     if (saveType === "import") {
@@ -170,6 +174,7 @@ $('body').on('click', '#save_map', function () {
     if (maplist.includes(mapName)) {
         alert("This name is already used - please select a new name");
         $('#map_name').val("");
+        save_modal.show();
         return false;
     }
     // Enable the tile cache event listener in the service worker
