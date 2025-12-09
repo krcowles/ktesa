@@ -60,20 +60,24 @@ var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
 var imageData = new ImageData(10, 10);
+var $dnote: JQuery;
 if (!mobile) {  // new in 5.0 (see clearPoints line #384)
     var clearModal = document.getElementById('ediff') as HTMLDivElement;
     var clearPoints = new bootstrap.Modal(clearModal); 
+     $dnote
+    = $('<div><em>Click points on chart to calculate differences</em></div>');
+    var cluspage = $('#cpg').text() === 'yes' ? true : false;
 }
 // vars for setting chart dimension;
 var fullWidth: number;
 var chartHeight: number;
 // vars for measuring between points:
-var pointA = {set: false, miles: 0, elev: 0} as ChartSetPoint;
-var pointB = {set: false, miles: 0, elev: 0} as ChartSetPoint;
-var clrBtn = document.getElementById('eclr') as HTMLButtonElement;
+if (!mobile) {
+    var pointA = {set: false, miles: 0, elev: 0} as ChartSetPoint;
+    var pointB = {set: false, miles: 0, elev: 0} as ChartSetPoint;
+    var clrBtn = document.getElementById('eclr') as HTMLButtonElement;
+}
 // misc.
-const $dnote
-    = $('<div><em>Click points on chart to calculate differences</em></div>');var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
 var trackNumber: number;   // global used to identify current active track (topmost in tracklist)
 var chartConst: number;
@@ -120,10 +124,13 @@ else {
     chartConst = 1.0000;
 }
 $jqnote.hide();
+
 function clearChart(): void {
-    drawChart(trackNumber);
-    pointA = {set: false, miles: 0, elev: 0};
-    pointB = {set: false, miles: 0, elev: 0};
+    if (!mobile) {
+        drawChart(trackNumber);
+        pointA = {set: false, miles: 0, elev: 0};
+        pointB = {set: false, miles: 0, elev: 0};
+    }
 }
 /**
  * Once a track is identified for display, show that gpx file's data in the
@@ -275,17 +282,20 @@ setChartDims();
     $('iframe').width(chartWidth);
     return;
 }
+
 const chartNote = () => {
-    const cloc = canvasEl.getBoundingClientRect();
-    $dnote.css({
-        top: cloc.top,
-        left: cloc.left + 74,
-        zIndex: '500',
-        position: 'absolute',
-        display: 'inline-block',
-        color: 'brown'
-    });
-    $('#chartline').append($dnote);
+    if (!mobile) {
+        const cloc = canvasEl.getBoundingClientRect();
+        $dnote.css({
+            top: cloc.top,
+            left: cloc.left + 74,
+            zIndex: '500',
+            position: 'absolute',
+            display: 'inline-block',
+            color: 'brown'
+        });
+        $('#chartline').append($dnote);
+    }
 }
 /**
  * This function will draw the selected elevation profile in the canvas element
@@ -357,31 +367,33 @@ function crossHairs(trackno: number) {
         mapFrameWin.chartMrkr.setMap(null);
     }
     canvasEl.onmousedown = function (e) {
-        const ctxt = <CanvasRenderingContext2D>canvasEl.getContext("2d");
-        var loc = window2canvas(canvasEl, e.clientX, e.clientY);
-        var mark = dataReadout(loc, trackno);
-        if (mark.x !== -1) {
-            if (!pointA.set) {
-                pointA.set = true;
-                pointA.miles = mark.x;
-                pointA.elev = mark.y;
-                drawDot(ctxt, mark.px as number, mark.py as number);
-                imageData = ctxt.getImageData(0, 0, canvasEl.width, canvasEl.height)
-            } else if (!pointB.set) {
-                pointB.set = true;
-                pointB.miles = mark.x;
-                pointB.elev = mark.y;
-                drawDot(ctxt, mark.px as number, mark.py as number);
-                const mdiff = (pointB.miles - pointA.miles).toFixed(2);
-                const melev = (pointB.elev  - pointA.elev).toFixed(1);
-                const modal_miles = document.getElementById('emiles') as HTMLSpanElement;
-                const modal_elev  = document.getElementById('eelev') as HTMLSpanElement;
-                modal_miles.textContent = mdiff;
-                modal_elev.textContent = melev;
-                imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
-                ctxt.putImageData(imageData, 0, 0);
-                if (!mobile) {
-                    clearPoints.show();
+        if (!mobile) {
+            const ctxt = <CanvasRenderingContext2D>canvasEl.getContext("2d");
+            var loc = window2canvas(canvasEl, e.clientX, e.clientY);
+            var mark = dataReadout(loc, trackno);
+            if (mark.x !== -1) {
+                if (!pointA.set) {
+                    pointA.set = true;
+                    pointA.miles = mark.x;
+                    pointA.elev = mark.y;
+                    drawDot(ctxt, mark.px as number, mark.py as number);
+                    imageData = ctxt.getImageData(0, 0, canvasEl.width, canvasEl.height)
+                } else if (!pointB.set) {
+                    pointB.set = true;
+                    pointB.miles = mark.x;
+                    pointB.elev = mark.y;
+                    drawDot(ctxt, mark.px as number, mark.py as number);
+                    const mdiff = (pointB.miles - pointA.miles).toFixed(2);
+                    const melev = (pointB.elev  - pointA.elev).toFixed(1);
+                    const modal_miles = document.getElementById('emiles') as HTMLSpanElement;
+                    const modal_elev  = document.getElementById('eelev') as HTMLSpanElement;
+                    modal_miles.textContent = mdiff;
+                    modal_elev.textContent = melev;
+                    imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
+                    ctxt.putImageData(imageData, 0, 0);
+                    if (!mobile) {
+                        clearPoints.show();
+                    }
                 }
             }
         }

@@ -240,10 +240,10 @@ $(function () {
      * failed to complete after already dropping tables, then the Checksums
      * table won't be present; therefore the existence of that table is verified,
      * and if not present, the admin is notified, the deferred promise is
-     * resolved, and the  the admin may choose to continue with the reload or not.
-     * Also, when the  "Reload Database" is performed on the server, the extra
+     * resolved, and the admin may choose to continue with the reload or not.
+     * Also, when the "Reload Database" is performed on the server, the extra
      * precaution is taken to save the current database before reloading (not so
-     * for local machine). The function 'retrieveDwnldCookie' is related to that case.
+     * for local machine).
      *
      * NOTE: In order to prevent accidentally over-writing of new USERS or user
      * hikes-in-edit (not admin hikes) various tests are made, and results
@@ -433,66 +433,45 @@ $(function () {
         });
         return;
     }
-    function retrieveDwnldCookie(dcname) {
-        var parts = document.cookie.split(dcname + "=");
-        var returnitem = '';
-        if (parts.length == 2) {
-            var lastitem = parts.pop();
-            var itemarray = lastitem.split(";"); // .split(";").shift();
-            returnitem = itemarray.shift();
-        }
-        return returnitem;
-    }
     // -------------- end reload functions ------------
     // ---------------- click on reload ---------------
     $('#reload').on('click', function () {
-        // check for the existence of a Checksums table
-        var checksumsDef = $.Deferred();
-        var newdbDef = $.Deferred();
-        // When reloading the test db, it is not necessary to perform db checking
-        if (dbState !== 'test') {
+        if (dbState === 'test') {
+            // When reloading the test db, it is not necessary to perform db checking
+            window.open('./drop_all_tables.php', "_blank");
+        }
+        else {
+            // check for the existence of a Checksums table
+            var checksumsDef_1 = $.Deferred();
+            var newdbDef_1 = $.Deferred();
             $.get("checksumTest.php", function (result) {
                 if (result === 'no') {
                     alert("No Checksum table currently exists");
-                    checksumsDef.resolve();
+                    checksumsDef_1.resolve();
                 }
                 else {
-                    checkChecksums(checksumsDef);
+                    checkChecksums(checksumsDef_1);
+                }
+            });
+            // after validating Checksums table exists (or not), check against new db (only if main)
+            $.when(checksumsDef_1).then(function () {
+                checkAgainstNewDB(newdbDef_1);
+            });
+            $.when(newdbDef_1).then(function () {
+                if (confirm("Do you really want to drop all tables and reload them?")) {
+                    if (hostIs !== 'localhost') {
+                        window.open('./export_all_tables.php?dwnld=N', "_blank");
+                        if (confirm("Proceed with reload?")) {
+                            window.open('./drop_all_tables.php', "_blank");
+                        }
+                    }
+                    else {
+                        // localhost dev site
+                        window.open('./drop_all_tables.php', "_blank");
+                    }
                 }
             });
         }
-        else {
-            checksumsDef.resolve();
-        }
-        // after validating Checksums table exists (or not), check against new db (only if main)
-        $.when(checksumsDef).then(function () {
-            if (dbState !== 'test') {
-                checkAgainstNewDB(newdbDef);
-            }
-            else {
-                newdbDef.resolve();
-            }
-        });
-        $.when(newdbDef).then(function () {
-            if (confirm("Do you really want to drop all tables and reload them?")) {
-                if (hostIs !== 'localhost') {
-                    window.open('./export_all_tables.php?dwnld=N', "_blank");
-                    var dwnldResult;
-                    var downloadTimer = setInterval(function () {
-                        dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
-                        if (dwnldResult === '1234') {
-                            clearInterval(downloadTimer);
-                            if (confirm("Proceed with reload?")) {
-                                window.open('./drop_all_tables.php', "_blank");
-                            }
-                        }
-                    }, 1000);
-                }
-                else {
-                    window.open('./drop_all_tables.php', "_blank");
-                }
-            }
-        });
     });
     $('#hard_reload').on('click', function () {
         var ans = confirm("No checks performed: are you sure?");
