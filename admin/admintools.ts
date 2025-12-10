@@ -455,6 +455,16 @@ function checkAgainstNewDB (deferred:JQueryDeferred<void>) {
 // -------------- end reload functions ------------
 
 // ---------------- click on reload ---------------
+const reload_modal = document.getElementById('new_reload') as HTMLDialogElement;
+const dialogClose = document.getElementById('dont') as HTMLButtonElement;
+dialogClose.addEventListener('click', () => {
+    reload_modal.close();
+});
+$('#doit').on('click', () => {
+    reload_modal.close();
+    window.open('./drop_all_tables.php', "_blank");
+    // NOTE: Checksums are re-generated, and may no longer agree w/.sql file
+});
 $('#reload').on('click', function() {
     if (dbState === 'test') {
         // When reloading the test db, it is not necessary to perform db checking
@@ -476,17 +486,7 @@ $('#reload').on('click', function() {
             checkAgainstNewDB(newdbDef);
         });
         $.when(newdbDef).then(function() {
-            if (confirm("Do you really want to drop all tables and reload them?")) {
-                if (hostIs !== 'localhost') {
-                    window.open('./export_all_tables.php?dwnld=N', "_blank");
-                    if (confirm("Proceed with reload?")) {
-                        window.open('./drop_all_tables.php', "_blank");
-                    }
-                } else {
-                    // localhost dev site
-                    window.open('./drop_all_tables.php', "_blank");
-                }
-            }
+            reload_modal.showModal();
         });
     }
 });

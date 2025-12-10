@@ -3,13 +3,13 @@
  * As a part of checking database differences prior to executing a reload,
  * this script will examine the EHIKES and USERS tables in the .sql file
  * to be utilized for the reload, and compare them to the contents of the
- * resident database.  Changes in these tables constitute the primary indicators
+ * resident database. Changes in these tables constitute the primary indicators
  * that the reload could potentially overwrite valid user data. Both tables are
  * historically small and thus time impact to perform the test is minimal.
  * The Checksums table is also scanned for new or missing entries in the sql.
  * NOTE: Some tables or checksums may be missing due to a failed/partial
  * reload: verify first that the tables exist!
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -51,9 +51,16 @@ if ($chksums_exists && $users_exists && $ehikes_exists) {
     $resEhikesReq = "SELECT `pgTitle` FROM `EHIKES`;";
     $resEhikes    = $pdo->query($resEhikesReq)->fetchAll(PDO::FETCH_COLUMN);
 
-    // LOAD sql fle
+    /**
+     * Extract corresponding data from .sql file. NOTE: the "INSERT INTO [TABLE]"
+     * statements can appear more than once when the table contains more than 100
+     * entries. Each set of 100 is terminated with a ";" prior to the next INSERT,
+     * so the loop will catch all contiguous INSERT's appropriately as each line
+     * in the file is examined: the following table's data won't begin until the
+     * last INSERT for the table being examined is processed.
+     */
     $dbFile = "../data/nmhikesc_main.sql";
-    $sqlFile = file($dbFile);
+    $sqlFile = file($dbFile, FILE_IGNORE_NEW_LINES);
     if (!$sqlFile) {
         throw new Exception(
             __FILE__ . " Line: " . __LINE__ . 
@@ -65,27 +72,28 @@ if ($chksums_exists && $users_exists && $ehikes_exists) {
     $checksums  = [];
     for ($k=0; $k<count($sqlFile); $k++) {
         if (strpos($sqlFile[$k], "INSERT INTO Checksums") !== false) {
-            while (strpos($sqlFile[$k], ";") === false) {
+            while (strpos($sqlFile[$k], ");") === false) {
                 $k++;
                 array_push($checksums, $sqlFile[$k]);
             }
         }
         if (strpos($sqlFile[$k], "INSERT INTO USERS") !== false) {
-            while (strpos($sqlFile[$k], ";") === false) {
+            while (strpos($sqlFile[$k], ");") === false) {
                 $k++;
                 array_push($users_data, $sqlFile[$k]);
             }
         }
         if (strpos($sqlFile[$k], "INSERT INTO EHIKES") !== false) {
-            while (strpos($sqlFile[$k], ";") === false) {
+            while (strpos($sqlFile[$k], ");") === false) {
                 $k++;
                 array_push($ehike_data, $sqlFile[$k]);
             }
         }
     }
     /**
-     * Process the arrays to format as the resident db key data arrays;
-     * Eliminate key quotes with string
+     * Process the arrays to format similar to the resident db data arrays;
+     * Eliminate key quotes with string;
+     * Find any table items that are in one list but not the other...
      */
     // Checksums:
     $sqlTbls = [];
@@ -111,12 +119,6 @@ if ($chksums_exists && $users_exists && $ehikes_exists) {
         $ehike_lgth  = $ehike_end - $ehike_start;
         $ehike_pg    = substr($ehike, $ehike_start, $ehike_lgth);
         array_push($sqlEhikes, $ehike_pg);
-        /*
-        $remainder   = substr($ehike, $ehike_end + 1);
-        $hike_id_end = strpos($remainder, "|");
-        $id          = substr($remainder, 0, $hike_id_end);
-        $sqlEhikes[$ehike_pg] = $id;
-        */
     }
     // Users
     $sqlUsers = [];
