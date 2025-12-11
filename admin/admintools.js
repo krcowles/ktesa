@@ -457,11 +457,18 @@ $(function () {
             $.get("checksumTest.php", function (result) {
                 if (result === 'no') {
                     alert("No Checksum table currently exists");
-                    checksumsDef_1.resolve();
                 }
+                /**
+                 * Whether checksums have changed since the last time
+                 * they were generated isn't really germane to a reload,
+                 * only the comparison of the db to the new .sql file
+                 * is relevant; e.g.checksums can change after publishing a
+                 * new hike, or by admin action. OLD CODE:
                 else {
-                    checkChecksums(checksumsDef_1);
+                    checkChecksums(checksumsDef);
                 }
+                */
+                checksumsDef_1.resolve();
             });
             // after validating Checksums table exists (or not), check against new db (only if main)
             $.when(checksumsDef_1).then(function () {
