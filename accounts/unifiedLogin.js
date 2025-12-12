@@ -336,6 +336,7 @@ $(function () {
                 return true;
             });
             break;
+        // The 'renew' case also covers those completing registration
         case 'renew':
             if (mobile) {
                 $('#rp').css('font-size', '18px');
@@ -436,7 +437,8 @@ $(function () {
                     dataType: 'text',
                     success: function (result) {
                         if (result === 'OK') {
-                            alert("Your password has been updated\nAnd you are logged in");
+                            alert("Your password has been updated\nAnd you are logged in\n" +
+                                "Please close the first window used to begin this process");
                             window.open('../index.html', '_self');
                         }
                         else {
