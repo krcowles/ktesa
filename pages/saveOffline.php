@@ -79,6 +79,17 @@ require "../pages/mobileNavbar.php";
         Save
     </button>
 </div>
+<div id="map_grp4">
+    <button id="home4" type="button" class="btn btn-success btn-sm">
+        Home
+    </button>
+    <button id="start4" type="button" class="redos btn btn-primary btn-sm">
+        Start Over 
+    </button>
+    <button id="omap" type="button" class="btn btn-sm btn-info">
+        Use Map
+    </button>
+</div>
 
 <!-- Use a site hike topper-->
 <div id="imphike" class="ui-widget">

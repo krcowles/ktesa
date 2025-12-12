@@ -5,11 +5,6 @@
 /**
  * @fileoverview Capturing map tiles and tracks for offline use;
  * 
- * NOTE: trying to typescript this module proved fruitless : the 
- * 'types' reference did not recognize standard leaflet types,
- * and the only other means was to convert this to a module and
- * import the leaflet classes - a burden I decided against.
- * 
  * @author Ken Cowles
  * @version 1.0 Initial release
  */
@@ -22,11 +17,17 @@ var iopener  = new bootstrap.Modal(document.getElementById('intro'));
 var rectinst = new bootstrap.Modal(document.getElementById('rim'));
 var save_modal = new bootstrap.Modal(document.getElementById('map_save'));
 var saveStat = new bootstrap.Modal(document.getElementById('stat'));
+$('#stat').on('hidden.bs.modal', () => {
+    show_grp(4);
+});
+// vanilla method (w/o jquery):
+// (document.getElementById('stat')).addEventListener('hidden.bs.modal', () => {});
 iopener.show();
 const show_grp = (grpno) => {
     $('#map_grp1').css('display', 'none');
     $('#map_grp2').css('display', 'none');
     $('#map_grp3').css('display', 'none');
+    $('#map_grp4').css('display', 'none');
     switch (grpno) {
         case 1:
             $('#map_grp1').css('display', 'block');
@@ -36,6 +37,9 @@ const show_grp = (grpno) => {
             break;
         case 3:
             $('#map_grp3').css('display', 'block');
+            break;
+        case 4:
+            $('#map_grp4').css('display', 'block');
             break;
         default:
             alert("Invalid button group number!");
@@ -49,6 +53,7 @@ var map = L.map('map', {
     maxZoom: 17,
     zoom: 10
 });
+
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www,openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -109,7 +114,7 @@ redos.each( (i, btn) => {
         window.open('../pages/saveOffline.php?logo=no', '_self');
     });
 });
-$('#home').on('click', () => {
+$('button[id^=home]').on('click', () => {
     window.open("../pages/member_landing.html", "_self");
 });
 var savers = $('.save_btns'); // all the "Save" buttons
@@ -125,6 +130,9 @@ $('body').on('click', '#clearrect', function() {
     $('#rect').attr('disabled', false);
     $('#rect').removeClass('btn-secondary');
     $('#rect').addClass('btn-primary');
+});
+$('body').on('click', '#omap', () => {
+    window.open('../pages/useOffline.html');
 });
 // modal buttons
 $('body').on('click', '#begin', function() {  // rim modal
