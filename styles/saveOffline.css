@@ -294,6 +294,10 @@ form {
 /* Save Map Modal */
 #map_name {
   width: 160px;
+  border-color: brown;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
 }
 
 /* Save Status Modal */
