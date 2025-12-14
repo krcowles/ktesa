@@ -1,28 +1,57 @@
 /// <reference types="bootstrap" />
 /// <reference types="jquery" />
 /// <reference types="leaflet" />
+interface ScreenChangeType extends EventTarget {
+    type: string;
+}
 /**
- * @fileoverview When using offline maps already created by 'Create Offline':
+ * @fileoverview User selects offline map already created by 'Create Offline':
  * @author Ken Cowles
  * @version 1.0 First release of offline maps
  * @version 2.0 Added gps tracking capabiity
  * 
  * Note: this version of the typescript compiler config is not yet supporting
  * ES2025, so that the 'Set.difference' method is not known and results in
- * a transpiler error.
+ * a transpiler error. Typescript also complains that invalidateSize doesn't
+ * exist...
  */
+// Globals
 const MAIN_CACHE = 'offline';
 const $fname = $('#gpxname');
 $fname.val("");
 var tracking = false;
 var gpx_text = '';
 var dwnld_name = '';
+var leaflet_map: L.Map;
 var polydat: L.LatLngLiteral[] = [];
+const maps_available = new bootstrap.Modal(document.getElementById('use_offline') as HTMLDivElement);
+const track_saver = new bootstrap.Modal(document.getElementById('gpx_track') as HTMLDivElement);
 
-var maps_available = new bootstrap.Modal(document.getElementById('use_offline') as HTMLDivElement);
-var track_saver = new bootstrap.Modal(document.getElementById('gpx_track') as HTMLDivElement);
-$('#clear').hide();
-$('#save').hide();
+// Handling screen orientation:
+if (screen.orientation) {
+    screen.orientation.addEventListener('change', () => {
+        //const target = ev.target as ScreenChangeType;
+        //const type = target.type; // 'portatrait-primary', 'landcape-secondary'
+        //console.log(type);
+        leaflet_map.invalidateSize({
+            animate: true,
+            pan: true
+        });
+    });
+} else {
+    $(window).on('resize', () => {
+        leaflet_map.invalidateSize({
+            animate: true,
+            pan: true
+        });
+    });
+}
+
+/**
+ * Functions to enable tracking and/or download a track specified by the user;
+ * The track is in native leaflet form as a polyline and must be converted
+ * to gpx. No elevation data yet...
+ */
 $('#track').on('click', () => {
     const $tracker = $('#track');
     if ($tracker.text().includes("Off")) {
@@ -39,14 +68,6 @@ $('#track').on('click', () => {
         tracking = false;
     } 
 });
-$('#save').on('click', () => {
-    if (!navigator.onLine) {
-        alert("You must have an internet connection to save the track");
-        return false;
-    }
-    track_saver.show();
-    return;
-});
 $('#clear').on('click', () => {
     polydat = [];
     const ans = confirm("Stop tracking after clear?");
@@ -55,6 +76,35 @@ $('#clear').on('click', () => {
         trkbtn.click();
     }
 });
+$('#save').on('click', () => {
+    track_saver.show();
+    return;
+});
+$('#back').on('click', function () {
+    window.open("../pages/member_landing.html", "_self");
+});
+const convertTrackToGpx = (polyline:L.LatLngLiteral[], trk_name: string) => {
+    // no elevation data at this time...
+    var gpxHdr = "<?xml version='1.0'?>\n";
+    gpxHdr += "<gpx xmlns='http://www.topografix.com/GPX/1/1' ";
+    gpxHdr += "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' ";
+    gpxHdr += "version='1.1' ";
+    gpxHdr += "xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd' ";
+    gpxHdr += "creator='nmhikes.com'>\n";
+    const endGpx = "</gpx>\n";
+    var trkData = "  <trk>\n";
+    trkData += `    <name>${trk_name}</name>\n`;
+    trkData += "    <trkseg>\n";
+    for (let j=0; j<polyline.length; j++) {
+        var pt = "      <trkpt lat='" + polyline[j].lat;
+        pt += "' lon='" + polyline[j].lng + "'></trkpt>\n";
+        trkData += pt;
+    }
+    trkData += "    </trkseg>\n";
+    trkData += "  <trk>\n";
+    trkData += endGpx;
+    return trkData;
+};
 const downloadGpx = (gpxstring: string, fname: string) => {
     const blob = new Blob([gpxstring], {type: 'text/plain'});
     const blobUrl = URL.createObjectURL(blob);
@@ -65,9 +115,8 @@ const downloadGpx = (gpxstring: string, fname: string) => {
     anchor.click();
     document.body.removeChild(anchor);
     URL.revokeObjectURL(blobUrl);
-} 
+};
 $('body').on('click', '#dwnld_track', () => {
-    // convert to gpx and download...
     const track_name = $fname.val() as string;
     if (track_name === '') {
         alert("You must supply a track name");
@@ -75,27 +124,80 @@ $('body').on('click', '#dwnld_track', () => {
     }
     track_saver.hide();
     dwnld_name = track_name + ".gpx";
-    const ajax_string = JSON.stringify(polydat);
-    //
-    $.ajax({
-        url: "../php/dwnld_gpx.php",
-        method: "post",
-        data: {name: track_name, linedata: ajax_string},
-        dataType: "text",
-        success: function(gpx_contents) {
-            downloadGpx(gpx_contents, dwnld_name);
-        },
-        error: function(_jqXHR, _textStatus, _errorThrown) {
-            var msg = "An error has occurred: " +
-                "Report this message to the admin\n";
-                "Error text: " + _textStatus + "; Error: " +
-                _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
-            alert(msg);
-        }
-    });
+    var user_track = convertTrackToGpx(polydat, track_name);
+    downloadGpx(user_track, dwnld_name);
     return;
 });
 
+// Initialization:
+$('#clear').hide();
+$('#save').hide();
+const displayMap = (map_name:string) => {
+    readMapData(map_name)
+        .then((mapdata) => {
+        const mapdat = mapdata as string[];
+        // Map setup
+        const ctr = mapdat[0];
+        const mapctr = ctr.split(",");
+        const lat = parseFloat(mapctr[0]);
+        const lng = parseFloat(mapctr[1]);
+        const cctr = [lat, lng] as unknown;
+        const display_center = cctr as L.LatLngLiteral;
+        const zoom = parseInt(mapdat[1]);
+        const hasTrack = mapdat[2];
+        const timeStamp = mapdat[3];
+        console.log(timeStamp);
+        leaflet_map = L.map('map', {
+            center: display_center,
+            minZoom: 8,
+            maxZoom: 17,
+            zoom: zoom
+        });
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 17,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(leaflet_map);
+        if (hasTrack !== 'n') {
+            const idb_trk = mapdat[4] as unknown;
+            const saved_trk = idb_trk as L.Polyline;
+            saved_trk.addTo(leaflet_map);
+        }
+        var marker: any = null;
+        const customIcon = L.icon({
+            iconUrl: "../images/geodot.png",
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
+        });
+        leaflet_map.locate({ enableHighAccuracy: true, setView: false, watch: true, maxZoom: 17 });
+        leaflet_map.on('locationfound', function (event:L.LocationEvent) {
+            if (marker !== null) {
+                marker.remove();
+            }
+            // Create marker with custom icon at user's location
+            marker = L.marker(event.latlng, { icon: customIcon }).addTo(leaflet_map);
+            if (tracking) {
+                leaflet_map.eachLayer( (layer:L.Layer) => {
+                    if (layer instanceof L.Polyline) {
+                        // remove previous polyline before extending new one
+                        leaflet_map.removeLayer(layer);
+                    }
+                });
+                polydat.push(event.latlng);
+                if (polydat.length > 1) {
+                    L.polyline(polydat).addTo(leaflet_map);
+                }
+            }
+        });
+    });
+    $('#select_map').append($('<option>', {
+        value: leaflet_map,
+        text: leaflet_map
+    }));
+};
+/**
+ * For the page load, id the maps available to be displayed;
+ * When a map is selected and #use_map is clicked, display the map;
+ */
 readMapKeys().then((result) => {
     const keyvals = result as string[];
     if (keyvals.length === 0) {
@@ -124,87 +226,15 @@ readMapKeys().then((result) => {
 });
 $('body').on('click', '#use_map', function () {
     const choice = $('#select_map').val() as string;
+    localStorage.setItem('choice', choice);
     maps_available.hide();
-    readMapData(choice)
-        .then((mapdata) => {
-        const mapdat = mapdata as string[];
-        // Map setup
-        const ctr = mapdat[0];
-        const mapctr = ctr.split(",");
-        const lat = parseFloat(mapctr[0]);
-        const lng = parseFloat(mapctr[1]);
-        const cctr = [lat, lng] as unknown;
-        const display_center = cctr as L.LatLngLiteral;
-        const zoom = parseInt(mapdat[1]);
-        const hasTrack = mapdat[2];
-        const timeStamp = mapdat[3];
-        console.log(timeStamp);
-        var map = L.map('map', {
-            center: display_center,
-            minZoom: 8,
-            maxZoom: 17,
-            zoom: zoom
-        });
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 17,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-        /*
-        L.GridLayer.GridDebug = L.GridLayer.extend({
-            createTile: function (coords) {
-                var tile = document.createElement("DIV");
-                tile.style.outline = '1px solid azure';
-                tile.style.fontSize = '14pt';
-                tile.style.color = "azure";
-                tile.innerHTML = [coords.z, coords.x, coords.y].join('/');
-                return tile;
-            }
-        });
-        L.gridLayer.gridDebug = function (opts) {
-            return new L.GridLayer.GridDebug(opts);
-        };
-        map.addLayer(L.gridLayer.gridDebug());
-        */
-        if (hasTrack !== 'n') {
-            const idb_trk = mapdat[4] as unknown;
-            const saved_trk = idb_trk as L.Polyline;
-            saved_trk.addTo(map);
-        }
-        var marker: any = null;
-        const customIcon = L.icon({
-            iconUrl: "../images/geodot.png",
-            iconSize: [16, 16],
-            iconAnchor: [8, 8]
-        });
-        map.locate({ enableHighAccuracy: true, setView: false, watch: true, maxZoom: 17 });
-        map.on('locationfound', function (e) {
-            if (marker !== null) {
-                marker.remove();
-            }
-            // Create marker with custom icon at user's location
-            marker = L.marker(e.latlng, { icon: customIcon }).addTo(map);
-            if (tracking) {
-                map.eachLayer( (layer) => {
-                    if (layer instanceof L.Polyline) {
-                        // remove previous polyline before extending new one
-                        map.removeLayer(layer);
-                    }
-                });
-                polydat.push(e.latlng);
-                if (polydat.length > 1) {
-                    L.polyline(polydat).addTo(map);
-                }
-            }
-        });
-    });
-    $('#select_map').append($('<option>', {
-        value: choice,
-        text: choice
-    }));
+    displayMap(choice);
+    return;
 });
-$('#back').on('click', function () {
-    window.open("../pages/member_landing.html", "_self");
-});
+
+/**
+ * When a user wishes, he may delete a saved map:
+ */
 $('body').on('click', '#delmap', function () {
     /**
      * NOTE: to get here, there had to be at least one stored map!

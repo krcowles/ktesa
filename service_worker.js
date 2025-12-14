@@ -11,16 +11,16 @@ self.addEventListener("install", (event) => {
       .open("offline")
         .then((cache) => {
             cache.addAll([  // TEST SITE DIR included here...
-                "https://nmhikes.com/ld/pages/useOffline.html",
-                "https://nmhikes.com/ld/styles/bootstrap.min.css",
-                "https://nmhikes.com/ld/styles/leaflet.css",
-                "https://nmhikes.com/ld/styles/useOffline.css",
-                "https://nmhikes.com/ld/scripts/jquery.js",
-                "https://nmhikes.com/ld/scripts/popper.min.js",
-                "https://nmhikes.com/ld/scripts/bootstrap.min.js",
-                "https://nmhikes.com/ld/scripts/ktesaOfflineDB.js",
-                "https://nmhikes.com/ld/scripts/useOffline.js",
-                "https://nmhikes.com/ld/scripts/leaflet.js",
+                "https://nmhikes.com/mobile_maps/pages/useOffline.html",
+                "https://nmhikes.com/mobile_maps/styles/bootstrap.min.css",
+                "https://nmhikes.com/mobile_maps/styles/leaflet.css",
+                "https://nmhikes.com/mobile_maps/styles/useOffline.css",
+                "https://nmhikes.com/mobile_maps/scripts/jquery.js",
+                "https://nmhikes.com/mobile_maps/scripts/popper.min.js",
+                "https://nmhikes.com/mobile_maps/scripts/bootstrap.min.js",
+                "https://nmhikes.com/mobile_maps/scripts/ktesaOfflineDB.js",
+                "https://nmhikes.com/mobile_maps/scripts/useOffline.js",
+                "https://nmhikes.com/mobile_maps/scripts/leaflet.js",
             ])
         })
     );
@@ -49,7 +49,7 @@ const preload = async (request) => {
     const networkResponse = await fetch(request);
     var resource_url = request.url;
     var url_string = resource_url.toString();
-    if (request.method === "GET" && url_string.includes("nmhikes.com/ld")) {
+    if (request.method === "GET" && url_string.includes("nmhikes.com/mobile_maps")) {
         putInCache(request, networkResponse.clone());
     }
     return networkResponse;

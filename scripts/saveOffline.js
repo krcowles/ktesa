@@ -8,6 +8,19 @@
  * @author Ken Cowles
  * @version 1.0 Initial release
  */
+if (screen.orientation) {
+    screen.orientation.addEventListener('change', (ev) => {
+        const target = ev.target;
+        const type = target.type; // 'portatrait-primary', 'landcape-secondary'
+        console.log(type);
+        map.invalidateSize();
+    });
+} else {
+    $(window).on('resize', () => {
+        map.invalidateSize();
+    });
+}
+
 const MAIN_CACHE = "offline";
 // hide some display options; default display is #imphike
 $('#impgpx').hide();
