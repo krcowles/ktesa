@@ -40,4 +40,8 @@ body {
   color: black;
 }
 
+#gpxname {
+  border: 1px solid brown;
+}
+
 /*# sourceMappingURL=useOffline.css.map */

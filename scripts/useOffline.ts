@@ -24,26 +24,23 @@ var gpx_text = '';
 var dwnld_name = '';
 var leaflet_map: L.Map;
 var polydat: L.LatLngLiteral[] = [];
+var track_poly: L.Polyline;
 const maps_available = new bootstrap.Modal(document.getElementById('use_offline') as HTMLDivElement);
 const track_saver = new bootstrap.Modal(document.getElementById('gpx_track') as HTMLDivElement);
 
-// Handling screen orientation:
+const redraw = () => {
+    leaflet_map.invalidateSize({
+        animate: true,
+        pan: true
+    });
+};
 if (screen.orientation) {
     screen.orientation.addEventListener('change', () => {
-        //const target = ev.target as ScreenChangeType;
-        //const type = target.type; // 'portatrait-primary', 'landcape-secondary'
-        //console.log(type);
-        leaflet_map.invalidateSize({
-            animate: true,
-            pan: true
-        });
+        redraw();
     });
 } else {
     $(window).on('resize', () => {
-        leaflet_map.invalidateSize({
-            animate: true,
-            pan: true
-        });
+        redraw();
     });
 }
 
@@ -176,15 +173,10 @@ const displayMap = (map_name:string) => {
             // Create marker with custom icon at user's location
             marker = L.marker(event.latlng, { icon: customIcon }).addTo(leaflet_map);
             if (tracking) {
-                leaflet_map.eachLayer( (layer:L.Layer) => {
-                    if (layer instanceof L.Polyline) {
-                        // remove previous polyline before extending new one
-                        leaflet_map.removeLayer(layer);
-                    }
-                });
+                track_poly.remove();
                 polydat.push(event.latlng);
                 if (polydat.length > 1) {
-                    L.polyline(polydat).addTo(leaflet_map);
+                    track_poly = L.polyline(polydat).addTo(leaflet_map);
                 }
             }
         });
