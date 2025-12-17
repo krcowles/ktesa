@@ -25,10 +25,10 @@ require "autoComplHikes.php";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" -->
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <link href="../styles/mapOnly.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

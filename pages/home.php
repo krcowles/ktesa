@@ -45,10 +45,10 @@ chdir($startDir);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/home.css" rel="stylesheet" />    
-    <link href="../styles/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

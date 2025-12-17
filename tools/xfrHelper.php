@@ -120,7 +120,7 @@ for ($j=2; $j<count($assets); $j++) {
         }
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

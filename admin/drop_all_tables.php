@@ -43,7 +43,7 @@ if (isset($_REQUEST['no'])) { // 'no' => not a reload
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <link href="../styles/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <style type="text/css">
         body {
             background-color: #eaeaea;
@@ -52,7 +52,7 @@ if (isset($_REQUEST['no'])) { // 'no' => not a reload
         #bar { width: 0px; height: 36px; background-color: #aa0033; }
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 <body>
 <script src="../scripts/popper.min.js"></script>

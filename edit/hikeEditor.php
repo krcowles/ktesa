@@ -57,7 +57,7 @@ $jsInEdit = json_encode($nowInEdit);
     <link href="../styles/tables.css" type="text/css" rel="stylesheet" />
     <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>
