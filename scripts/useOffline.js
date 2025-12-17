@@ -64,12 +64,20 @@ $('#track').on('click', () => {
     }
 });
 $('#clear').on('click', () => {
-    polydat = [];
+    if (typeof track_poly === 'undefined') {
+        alert("No track is available");
+        return;
+    }
+    else {
+        polydat = [];
+        track_poly.remove();
+    }
     const ans = confirm("Stop tracking after clear?");
     if (ans) {
         const trkbtn = document.getElementById('track');
         trkbtn.click();
     }
+    return;
 });
 $('#save').on('click', () => {
     track_saver.show();
@@ -96,7 +104,7 @@ const convertTrackToGpx = (polyline, trk_name) => {
         trkData += pt;
     }
     trkData += "    </trkseg>\n";
-    trkData += "  <trk>\n";
+    trkData += "  </trk>\n";
     trkData += endGpx;
     return trkData;
 };
@@ -170,7 +178,9 @@ const displayMap = (map_name) => {
             // Create marker with custom icon at user's location
             marker = L.marker(event.latlng, { icon: customIcon }).addTo(leaflet_map);
             if (tracking) {
-                track_poly.remove();
+                if (typeof track_poly !== 'undefined') {
+                    track_poly.remove();
+                }
                 polydat.push(event.latlng);
                 if (polydat.length > 1) {
                     track_poly = L.polyline(polydat).addTo(leaflet_map);
