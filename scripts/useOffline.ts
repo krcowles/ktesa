@@ -66,6 +66,7 @@ $('#track').on('click', () => {
     } 
 });
 $('#clear').on('click', () => {
+<<<<<<< Updated upstream
     if (typeof track_poly === 'undefined') {
         alert("No track is available");
         return;
@@ -77,6 +78,19 @@ $('#clear').on('click', () => {
     if (ans) {
         const trkbtn = document.getElementById('track') as HTMLButtonElement;
         trkbtn.click();
+=======
+    polydat = [];
+    if (typeof track_poly === 'undefined') {
+        alert("No track has been found");
+        return;
+    } else {
+        track_poly.remove();
+        const ans = confirm("Stop tracking?");
+        if (ans) {
+            const trkbtn = document.getElementById('track') as HTMLButtonElement;
+            trkbtn.click();
+        }
+>>>>>>> Stashed changes
     }
     return;
 });
@@ -97,7 +111,7 @@ const convertTrackToGpx = (polyline:L.LatLngLiteral[], trk_name: string) => {
     gpxHdr += "creator='nmhikes.com'>\n";
     const endGpx = "</gpx>\n";
     var trkData = "  <trk>\n";
-    trkData += `    <name>${trk_name}</name>\n`;
+    trkData += `    <name>${trk_name}</name>\n`; // no .gpx here
     trkData += "    <trkseg>\n";
     for (let j=0; j<polyline.length; j++) {
         var pt = "      <trkpt lat='" + polyline[j].lat;
@@ -114,11 +128,12 @@ const downloadGpx = (gpxstring: string, fname: string) => {
     const blobUrl = URL.createObjectURL(blob);
     const anchor = document.createElement("A") as HTMLAnchorElement;
     anchor.href  = blobUrl;
-    anchor.download = fname;
+    anchor.download = fname; // has .gpx file extension
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
     URL.revokeObjectURL(blobUrl);
+    return;
 };
 $('body').on('click', '#dwnld_track', () => {
     const track_name = $fname.val() as string;
@@ -130,6 +145,7 @@ $('body').on('click', '#dwnld_track', () => {
     dwnld_name = track_name + ".gpx";
     var user_track = convertTrackToGpx(polydat, track_name);
     downloadGpx(user_track, dwnld_name);
+    alert(`${track_name} Downloaded`);
     return;
 });
 

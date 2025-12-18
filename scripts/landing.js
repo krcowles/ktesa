@@ -104,10 +104,10 @@ $(function () {
         window.open("../pages/mapOnly.php", "_self");
     });
     $('#choice3').on('click', function () {
-        window.open("../pages/saveOffline.php?logo=no");
+        window.open("../pages/saveOffline.php?logo=no", "_self");
     });
     $('#choice4').on('click', function () {
-        window.open("../pages/useOffline.html");
+        window.open("../pages/useOffline.html", "_self");
     });
     $('.blocks').on('click', function () {
         alert("Members only: sign up for a free membership!");

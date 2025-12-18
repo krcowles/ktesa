@@ -145,7 +145,7 @@ $('body').on('click', '#clearrect', function() {
     $('#rect').addClass('btn-primary');
 });
 $('body').on('click', '#omap', () => {
-    window.open('../pages/useOffline.html');
+    window.open('../pages/useOffline.html', '_self');
 });
 // modal buttons
 $('body').on('click', '#begin', function() {  // rim modal
