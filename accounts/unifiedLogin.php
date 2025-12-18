@@ -148,6 +148,7 @@ if ($newusr) {
             <button id="formsubmit">Submit</button>
         </div> 
     </form>
+<!-- 'renew' includes those completing registration -->
 <?php elseif ($form === 'renew') : ?>
     <h3 id="rp">Reset Password:</h3>
     <form id="form" action="#" method="post">
@@ -168,8 +169,8 @@ if ($newusr) {
         </div>
         <div>
             <input id="password" type="password" name="password"
-                autocomplete="new-password" required class="wide renpass"
-                placeholder="New Password" /><br />
+                autocomplete="new-password" required class="wide renpass
+                autofill-detect" placeholder="New Password" /><br />
             <div id="usrinfo">
                 <span id="wk">Weak</span>
                 <span id="st">Strong</span>&nbsp;&nbsp;

@@ -106,3 +106,14 @@ input[type=file]:hover {
 #filebrowse {
     margin-bottom: 6px;
 }
+/* dialog box */
+dialog {
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px #FFEBCD
+}
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+

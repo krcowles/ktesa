@@ -284,6 +284,20 @@ button {
   padding: 5px;
 }
 
+.autofill-detect:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  /* Required for Firefox compatibility with custom events */
+  transition: background-color 1s ease-out;
+}
+
+@keyframes onAutoFillStart {
+  from {
+    color: cadetblue;
+  }
+  to {
+    color: darkblue;
+  }
+}
 #st {
   display: none;
 }

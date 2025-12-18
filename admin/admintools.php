@@ -97,6 +97,13 @@ $whichSite = $testSite ? 'test site' : 'main site';
 <p id="active" style="display:none">Admin</p>
 <p id="siteType" style="display:none;"><?=$whichSite;?></p>
 
+<dialog id="new_reload">
+    <p>Do you really want to drop all tables<br />and reload them?</p>
+    <button id="doit" type="button" class="btn btn-sm btn-success">Yes!
+    </button>&nbsp;&nbsp;
+    <button id="dont" type="button" class="btn btn-sm btn-danger">No</button>
+</dialog>
+
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
     <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
     <?php $_SESSION['nopix'] = ''; ?>
