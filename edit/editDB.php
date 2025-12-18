@@ -18,7 +18,7 @@ require "../php/global_boot.php";
 require "dataForEditor.php";
 require "../pages/autoComplHikes.php";
 $tinymce = "https://cdn.tiny.cloud/1/" .
-    "q5s4ci6ofnx0rvv1oix9zgxsd4cvw83kimrrw0n5ugz3n6d3/tinymce/5/tinymce.min.js";
+    "q5s4ci6ofnx0rvv1oix9zgxsd4cvw83kimrrw0n5ugz3n6d3/tinymce/8/tinymce.min.js";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
