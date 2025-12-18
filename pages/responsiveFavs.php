@@ -170,7 +170,6 @@ $jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
     var tracks = <?=$jsTracks;?>;
     var google_bounds = <?=$jsBounds;?>;
 </script>
-<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsiveFmap.js"></script>
 <script async defer src="<?=GOOGLE_MAP;?>"></script>
 </body>

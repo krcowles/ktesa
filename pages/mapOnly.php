@@ -71,7 +71,6 @@ require "getFavorites.php";
     window.name = "homePage";
     window.newBounds = false;
 </script>
-<script src="../scripts/logo.js"></script>
 <script src="../scripts/markerclusterer.min.js"></script>
 <script src="../scripts/searchbar.js"></script>
 <script src="../scripts/mapOnly.js"></script>

@@ -117,6 +117,5 @@ require "../php/global_boot.php";
     </div>
 </div>
 
-<script src="../scripts/logo.js"></script>
 <script src="../scripts/about.js"></script>
 </html>

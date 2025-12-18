@@ -177,7 +177,6 @@ function off() {
     var w  = "<?=implode("|", $widths);?>";
     <?php endif; ?>
 </script>
-<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsivePage.js"></script>
 <script src="../scripts/responsivePics.js"></script>
 <script src="../scripts/prepareTracks.js"></script>

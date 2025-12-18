@@ -116,7 +116,6 @@ require "respTableData.php";
 </div>
 
 <script type="text/javascript">var regions = <?=$locale_groups;?>;</script>
-<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsiveTable.js"></script>
 </body>
 </html>
