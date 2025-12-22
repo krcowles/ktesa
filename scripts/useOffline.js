@@ -182,7 +182,7 @@ const displayMap = (map_name) => {
             if (!zooming) {
                 zooming = true;
                 setTimeout(() => {
-                    var moving_zoom = map.getZoom();
+                    var moving_zoom = leaflet_map.getZoom();
                     $('#zval').text(" " + moving_zoom);
                     zooming = false;
                 }, 200);

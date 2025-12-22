@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "nmhikes.com",
+  "short_name": "nmhikes",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

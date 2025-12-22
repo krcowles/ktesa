@@ -21,12 +21,6 @@ if (screen.orientation) {
     });
 }
 
-// temp test code:
-navigator.serviceWorker.addEventListener('message', (event) => {
-    alert("Size in bytes: " + event.data);
-    console.log(`The service worker sent: ${event.data}`);
-});
-//
 const MAIN_CACHE = "offline";
 // hide some display options; default display is #imphike
 $('#impgpx').hide();
