@@ -58,7 +58,7 @@ if ($mail_admin) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/pubrequest.css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>

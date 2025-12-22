@@ -39,7 +39,7 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/editClusterPage.css" type="text/css" rel="stylesheet" />
     <link href="refs.css" type="text/css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
 </head>
 <body>

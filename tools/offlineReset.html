@@ -62,17 +62,20 @@
                     msg += "\nThere was an error clearing the indexed " 
                         + "db: " + status;
                 }
-                var allmaps = localStorage.getItem('mapnames');
-                var map_list = allmaps.split(",");
-                if (map_list.length > 0) {
-                    for (let k=0; k<map_list.length; k++) {
-                        localStorage.removeItem(map_list[k]);
-                    }
-                } 
             }
-            alert(msg);
         }
-    }); 
+    });
+    var allmaps = localStorage.getItem('mapnames');
+    var maplist = allmaps.split(",");
+    if (maplist.length > 0 && maplist[0] !== "none") {
+        for (let k=0; k<maplist.length; k++) {
+            localStorage.removeItem(maplist[k]);
+            msg += "\nRemoved " + maplist[k];
+        }
+    }
+    localStorage.removeItem('mapnames');
+    msg += "\nMapnames removed";
+    alert(msg);
 </script>
 
 </body>

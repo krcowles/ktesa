@@ -50,10 +50,13 @@ if (member) {
             alert(message);
         }
     }, 400);
-    // establish a localStorage item to save the list of browser maps
-    if (localStorage.getItem('mapnames') === null) {
+    // although synchronous, disruptive delays have been experienced:
+    const name_store = localStorage.getItem('mapnames');
+    setTimeout( () => {
+        if (name_store === null) {
             localStorage.setItem('mapnames', 'none');
     }
+    }, 500);
 }
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");

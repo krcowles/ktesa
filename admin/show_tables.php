@@ -24,6 +24,7 @@ $show = $list[0];
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <style type='text/css'>

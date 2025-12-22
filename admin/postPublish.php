@@ -118,6 +118,7 @@ foreach ($current_json as $json) {
     <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <style type="text/css">
         #contents { margin-left: 3rem;}

@@ -25,6 +25,7 @@ require "respTableData.php";
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.htnl";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/responsiveTable.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>

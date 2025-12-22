@@ -41,6 +41,7 @@ if (isset($_REQUEST['no'])) { // 'no' => not a reload
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" rel="stylesheet" />

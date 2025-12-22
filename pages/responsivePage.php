@@ -42,6 +42,7 @@ if (!$clusterPage) {
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/responsivePage.css" rel="stylesheet" />
     <script type="text/javascript">

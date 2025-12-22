@@ -23,6 +23,8 @@ var dwnld_name = '';
 var leaflet_map;
 var polydat = [];
 var track_poly;
+var zooming = false;
+var moving_zoom;
 const maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
 const track_saver = new bootstrap.Modal(document.getElementById('gpx_track'));
 const redraw = () => {
@@ -64,7 +66,6 @@ $('#track').on('click', () => {
     }
 });
 $('#clear').on('click', () => {
-<<<<<<< Updated upstream
     if (typeof track_poly === 'undefined') {
         alert("No track is available");
         return;
@@ -78,21 +79,6 @@ $('#clear').on('click', () => {
         const trkbtn = document.getElementById('track');
         trkbtn.click();
     }
-=======
-    polydat = [];
-    if (typeof track_poly === 'undefined') {
-        alert("No track has been found");
-        return;
-    }
-    else {
-        track_poly.remove();
-        const ans = confirm("Stop tracking?");
-        if (ans) {
-            const trkbtn = document.getElementById('track');
-            trkbtn.click();
-        }
-    }
->>>>>>> Stashed changes
     return;
 });
 $('#save').on('click', () => {
@@ -167,16 +153,41 @@ const displayMap = (map_name) => {
         const hasTrack = mapdat[2];
         const timeStamp = mapdat[3];
         console.log(timeStamp);
-        leaflet_map = L.map('map', {
+        const mapopts = {
             center: display_center,
             minZoom: 8,
-            maxZoom: 17,
+            maxZoom: 18,
             zoom: zoom
-        });
+        };
+        leaflet_map = L.map('map', mapopts);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 17,
+            maxZoom: 18,
+            maxNativeZoom: 16,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(leaflet_map);
+        // point to the starting zoom level
+        const zctrl = document.createElement("DIV");
+        const zsym = document.createTextNode("Z: ");
+        zctrl.style.marginLeft = "8px";
+        zctrl.style.fontSize = "14px";
+        zctrl.style.color = "brown";
+        zctrl.style.fontWeight = "bold";
+        const zval = document.createElement("SPAN");
+        zval.id = "zval";
+        zval.textContent = zoom.toString();
+        zctrl.append(zsym, zval);
+        $('.leaflet-top.leaflet-left').append(zctrl);
+        // debounce zoom: zoomend doesn't work in this case
+        leaflet_map.addEventListener("zoom", () => {
+            if (!zooming) {
+                zooming = true;
+                setTimeout(() => {
+                    var moving_zoom = map.getZoom();
+                    $('#zval').text(" " + moving_zoom);
+                    zooming = false;
+                }, 200);
+            }
+        });
         if (hasTrack !== 'n') {
             const idb_trk = mapdat[4];
             const saved_trk = idb_trk;

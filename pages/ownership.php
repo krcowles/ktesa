@@ -22,7 +22,7 @@ require "../php/global_boot.php";
     <meta name="robots" content="nofollow" />
     <link href="../styles/ownership.css" rel="stylesheet" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
 </head>
 <body>

@@ -32,7 +32,7 @@ $faultInfo = $_SESSION['symfault'];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/correctableFault.css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
 </head>
 <body>

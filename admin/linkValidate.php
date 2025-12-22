@@ -21,6 +21,7 @@ $default_size = 50;
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/linkValidate.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 <body>

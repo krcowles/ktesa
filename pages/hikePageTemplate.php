@@ -37,7 +37,7 @@ if ($mobileTesting) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>

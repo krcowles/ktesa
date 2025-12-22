@@ -55,7 +55,7 @@ $jsInEdit = json_encode($nowInEdit);
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/hikeEditor.css" rel="stylesheet" />
     <link href="../styles/tables.css" type="text/css" rel="stylesheet" />
-    <?php require "../pages/iconLinks.html"; ?>
+    <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>

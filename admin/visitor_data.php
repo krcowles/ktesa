@@ -93,6 +93,7 @@ foreach ($visitor_data as $row) {
     <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/visitor_data.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" rel="stylesheet" />
