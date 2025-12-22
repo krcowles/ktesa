@@ -1,3 +1,15 @@
+<?php
+/**
+ * This script is the landig page when the visitor is
+ * not a registered member: offline tools are unavailable.
+ * PHP Version 8.3.9
+ * 
+ * @package Ktesa
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -6,6 +18,7 @@
     <meta name="description" content="Mobile site for New Mexico Hikes" />
     <meta name="author" content="Ken Cowles" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/landing.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>

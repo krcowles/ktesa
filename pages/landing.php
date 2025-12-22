@@ -24,6 +24,6 @@ header("Pragma: no-cache"); // HTTP 1.0.
 if ($_SESSION['cookie_state'] === "OK") {
     $redirect = "../pages/member_landing.html";
 } else {
-    $redirect = "../pages/nonmember_landing.html";
+    $redirect = "../pages/nonmember_landing.php";
 }
 header("Location:{$redirect}", true);
