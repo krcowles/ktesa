@@ -185,7 +185,7 @@ const displayMap = (map_name) => {
                     var moving_zoom = leaflet_map.getZoom();
                     $('#zval').text(" " + moving_zoom);
                     zooming = false;
-                }, 200);
+                }, 100);
             }
         });
         if (hasTrack !== 'n') {
@@ -253,10 +253,9 @@ readMapKeys().then((result) => {
     return;
 });
 $('body').on('click', '#use_map', function () {
-    const choice = $('#select_map').val();
-    localStorage.setItem('choice', choice);
+    const map_choice = $('#select_map').val();
     maps_available.hide();
-    displayMap(choice);
+    displayMap(map_choice);
     return;
 });
 /**
@@ -286,9 +285,11 @@ $('body').on('click', '#delmap', function () {
     if (indx !== -1) {
         map_list.splice(indx, 1);
     }
+    // remaining items...
     usermaps = map_list.length === 0 ? "none" : map_list.join(",");
     localStorage.setItem('mapnames', usermaps);
     if (map_list.length === 0) {
+        // last map - delete all urls
         urls2delete = [...choice_urls];
     }
     else {

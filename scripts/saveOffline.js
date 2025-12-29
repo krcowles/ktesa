@@ -97,7 +97,7 @@ findMe = () => {
 }
 /**
  * The default state is to import a hike from the site;
- * The following represent checkboxes on the 'intro' modal
+ * The following represent buttons on the 'intro' modal
  */
 $('body').on('click', '#rctg', function() {
     iopener.hide();
@@ -118,7 +118,7 @@ $('body').on('click', '#savegpx', function() {
     show_grp(1);
 });
 /**
- * Button actions
+ * Button group (see saveOffline.php button groups) actions
  */
 var redos = $('.redos'); // all the "Start Over" buttons
 redos.each( (i, btn) => {
@@ -147,7 +147,9 @@ $('body').on('click', '#clearrect', function() {
 $('body').on('click', '#omap', () => {
     window.open('../pages/useOffline.html', '_self');
 });
-// modal buttons
+/**
+ * Buttons in modals
+ */
 $('body').on('click', '#begin', function() {  // rim modal
     rectinst.hide();
 });
@@ -180,15 +182,12 @@ $('body').on('click', '#save_map', function () {
         return false;
     }
     if (saveType === "import") {
-        getRectTiles(zoom_level);
+        getRectTiles();
     }
     if (maptiles.length === 0) {
         alert("You must select an area (or a hike/gpx)");
         save_modal.show();
         return false;
-    }
-    if (saveType === "import") {
-        zoomOptimizer(zoom_level);
     }
     var saved_maps = localStorage.getItem('mapnames');
     var maplist = saved_maps.split(","); // array
@@ -248,9 +247,12 @@ for (var k = 0; k < 10; k++) {
 }
 var tile_str = "https://tile.openstreetmap.org/";
 var maptiles = [];
-var tile_cnt;
+var tile_cnt = 0;
 // tile positions as object {x:tilex, y:tiley}:
 var tile_coords = [];
+tile_coords[10] = [];
+tile_coords[11] = [];
+tile_coords[12] = [];
 tile_coords[13] = []; 
 tile_coords[14] = [];
 tile_coords[15] = [];
@@ -520,8 +522,198 @@ map.addEventListener("zoomend", () => {
         $('#setzoom').addClass('btn-secondary');
     }
 });
+function getTileURL(lat, lng, zoom) {
+    var latrad = lat * Math.PI / 180;
+    var tileX = Math.floor((lng + 180) / 360 * (1 << zoom));
+    var tileY = Math.floor((1 - Math.log(Math.tan(latrad)
+        + 1 / Math.cos(latrad)) / Math.PI) / 2 * (1 << zoom));
+    return zoom + "/" + tileX + "/" + tileY;
+}
+/**
+ * This function identifies tile addresses for the user-selected region
+ * and propagates them out to zoom level 16 and in to zoom level 12. The
+ * addresses are stored in the global 'maptiles'. Note that the maximum number
+ * of tiles allowed for capture is a 3 x 3 matrix. Otherwise memory storage
+ * gets too large.
+ */
+function getRectTiles() {
+    maptiles = []; // clear for each invocation...
+    var corner1 = getTileURL(startX, startY, zoom_level); // = user start STRING
+    var corner2 = getTileURL(endX, endY, zoom_level);     // = user end STRING
+    var XY1_Corner = corner1.split("/"); // array of strings
+    var corner1XY = XY1_Corner.map(Number); // array:[0]=>zoom;[1]=>row;[2]=col: NUMERIC
+    var XY2_Corner = corner2.split("/"); // array of strings
+    var corner2XY = XY2_Corner.map(Number); // [z, r, c]
+// ********** TESTING ******** 1X2
+corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
+// ***************************
+    var tileXmid = 0;
+    var tileYmid = 0;
+    /**
+     * User may draw from any corner, so establish matrix as if it were
+     * drawn from upper left to lower right to simplify processing;
+     * ul_tile, lr_tile are arrays for upper left tile and lower right tile.
+     */
+    var ul_tile = []; // UPPER_LEFT  => [ul_row, ul_col]; NUMERIC
+    var lr_tile = []; // LOWER RIGHT => [lr_row, lr_col]; NUMERIC
+    if (corner1XY[1] < corner2XY[1]) { // row check
+        ul_tile[0] = corner1XY[1];
+        lr_tile[0] = corner2XY[1];
+    }
+    else { 
+        ul_tile[0] = corner2XY[1];
+        lr_tile[0] = corner1XY[1];
+    }
+    if (corner1XY[2] < corner2XY[2]) { // col check
+        ul_tile[1] = corner1XY[2];
+        lr_tile[1] = corner2XY[2];
+    }
+    else {
+        ul_tile[1] = corner2XY[2];
+        lr_tile[1] = corner1XY[2];
+    } 
+    /**
+     * The 'tile' array will be flushed out to contain all captured tiles:
+     * The starting point (tile[0]) is below:
+     */
+    tile[0] = ul_tile.slice(); // ul_tile row, col: NUMERIC COPY
+    var rangeX = lr_tile[0] - ul_tile[0]; // #rows - 1
+    var rangeY = lr_tile[1] - ul_tile[1]; // #cols - 1
+    if (rangeX > 2 || rangeY > 2) {
+        alert("Too big: Please select a smaller area");
+        return false;
+    }
+    if (rangeX > 1 || rangeY > 1) {
+        /**
+         * Determine intermediate tile values: [1x3, 3x1, 2x3, 3x2, 3x3]:
+         * For rangeX or rangeY = 2 [max], there will be 3 across or 3 down,
+         * and will include a 'mid' tile in the resulting 'captured' matrix:
+         * i.e. tile[] array
+         */
+        if (rangeX > 1) {  // 3 rows  
+            tileXmid = ul_tile[0] + 1; // row mid
+        }
+        if (rangeY > 1) { // 3 cols     
+            tileYmid = ul_tile[1] + 1; // col mid
+        }
+        if (rangeX * rangeY !== 0){ 
+            // 2x3, 3x2, 3x3 only...
+            if (tileXmid > 0) {  // 3 rows; rangeX = 2
+                if (tileYmid > 0) {  // 3 cols; rangeY = 2
+                    tile_cnt = 9;
+                    // captured 9 tiles [tile[0] unchanged]
+                    tile[1][0] = tileXmid;
+                    tile[1][1] = ul_tile[1]; // midx row, ul col
+                    tile[2][0] = lr_tile[0];
+                    tile[2][1] = ul_tile[1]; // ul row+2, ul col
+                    tile[3][0] = ul_tile[0];
+                    tile[3][1] = tileYmid;
+                    tile[4][0] = tileXmid;
+                    tile[4][1] = tileYmid;
+                    tile[5][0] = lr_tile[0]
+                    tile[5][1] = tileYmid;
+                    tile[6][0] = ul_tile[0];
+                    tile[6][1] = lr_tile[1];
+                    tile[7][0] = tileXmid
+                    tile[7][1] = lr_tile[1];
+                    tile[8][0] = lr_tile[0];
+                    tile[8][1] = lr_tile[1];
+                } else { // tileYmid = 0; rangeY = 1; 3x2
+                    tile_cnt = 6;
+                    // tile[0] ok as is
+                    tile[1][0] = tileXmid;
+                    tile[1][1] = tile[0][1];
+                    tile[2][0] = lr_tile[0];
+                    tile[2][1] = tile[0][1];
+                    tile[3][0] = ul_tile[0];
+                    tile[3][1] = lr_tile[1];
+                    tile[4][0] = tileXmid;
+                    tile[4][1] = lr_tile[1];
+                    tile[5] = lr_tile.slice();
+                }
+            } else if (tileMidY > 0) { // rangeX = 1; rangeY = 2: 2x3
+                tile_cnt = 6;
+                // tile[0] ok as is
+                tile[1][0] = lr_tile[0]; // row
+                tile[1][1] = ul_tile[1]; // col
+                tile[2][0] = ul_tile[0];
+                tile[2][1] = tileYmid;
+                tile[3][0] = lr_tile[0];
+                tile[3][1] = tileYmid;
+                tile[4][0] = ul_tile[0];
+                tile[4][1] = lr_tile[1];
+                tile[5] = lr_tile.slice();
+            } else { // rangeX & rangeY = 1; 2 x 2
+                tile_cnt = 4;
+                tile[1][0] = lr_tile[0];
+                tile[1][1] = tile[0][1];
+                tile[2][0] = tile[0][0];
+                tile[2][1] = lr_tile[1];
+                tile[3] = lr_tile.slice();
+            }
+        } else {  // 1x3 and 3x1 [rangeX * rangeY = 0]
+            tile_cnt = 3;
+            if (tileXmid > 0) { // 3x1 tile[0] ok as is
+                tile[1][0] = tileXmid;
+                tile[1][1] = tile[0][1];
+                tile[2] = lr_tile.slice();
+            } else { // 1x3 [yMid > 0] tile[0] ok as is
+                tile[1][0] = tile[0][0];
+                tile[1][1] = tileYmid;
+                tile[2] = lr_tile.slice();
+            }
+        }
+    } else {
+        // neither rangeX nor rangeY > 1
+        if (rangeX === 0 && rangeY ===0) {
+            tile_cnt = 1; // tile[0] is the tile
+        } else if (rangeX === 0 || rangeY === 0) {
+            // 1x2 or 2x1: tile[0] is the start, lr_tile is the end
+            tile_cnt = 2;
+            tile[1] = lr_tile.slice();
+        }
+    }
+    // ----- End of Tile Calcs ----
+
+    for (var j = 0; j < tile_cnt; j++) {
+        var loc = { x: tile[j][0], y: tile[j][1] };
+        tile_coords[zoom_level].push(loc);
+    }
+    /**
+     * Find each tile's deeper zoom level tiles. Each tile produces 4 tiles
+     * at the next zoom level; therefore there will be 85 tiles per zoom level
+     * 13 tiles input to the routine. Get this done in the background while waiting
+     * to invoke 'Save'. Each level's tile coords have already been established
+     * and are held in 'tile_coords'.
+     */
+    for (var zoom = zoom_level; zoom < 16; zoom++) { // don't get 'next level' 17
+        for (let k=0; k<tile_coords[zoom].length; k++) {
+            var xtile = tile_coords[zoom][k].x;
+            var ytile = tile_coords[zoom][k].y;
+            zoom_in_tiles(zoom+1, xtile, ytile);
+        }
+    }
+    // Convert tile_coords to maptiles:
+    for (var level = zoom_level; level < 17; level++) {
+        makeTile(level);
+    }
+    // Refer to diagram 'ZoomOutTiles.html'
+    var seed = ul_tile.slice();
+    loadZoomOutTiles(seed, zoom_level);
+    for (var zo_level=zoom_level-1; zo_level>9; zo_level--) { // zoom_level already saved
+        makeTile(zo_level);
+    }
+    return;
+}
+function makeTile(level) {
+    tile_coords[level].forEach(function (tcoord) {
+        var zoomdir = level + "/";
+        var url = tile_str + zoomdir + tcoord.x + "/" + tcoord.y + ".png";
+        maptiles.push(url);
+    });
+};
 // Finding tile coordinates for a higher zoom
-var next_zoom_tiles = function(next_level, prevx, prevy) {
+function zoom_in_tiles(next_level, prevx, prevy) {
     var newx_a = 2 * prevx;
     var newx_b = newx_a + 1;
     var newy_a = 2 * prevy;
@@ -535,215 +727,43 @@ var next_zoom_tiles = function(next_level, prevx, prevy) {
     tile_coords[next_level].push(loc3);
     tile_coords[next_level].push(loc4);
     return;
-}
-function getTileURL(lat, lng, zoom) {
-    var latrad = lat * Math.PI / 180;
-    var tileX = Math.floor((lng + 180) / 360 * (1 << zoom));
-    var tileY = Math.floor((1 - Math.log(Math.tan(latrad)
-        + 1 / Math.cos(latrad)) / Math.PI) / 2 * (1 << zoom));
-    return zoom + "/" + tileX + "/" + tileY;
-}
-/**
- * This function identifies tile addresses for the user-selected region
- * and propagates them out to zoom level 16. The addresses are stored
- * in the global 'maptiles'. Note that the maximum number of tiles allowed
- * for capture is a 3 x 3 matrix. Otherwise memory storage gets too large.
- */
-function getRectTiles(zoom_level) {
-    maptiles = []; // clear for each invocation...
-    var corner1 = getTileURL(startX, startY, zoom_level); // user start
-    var corner2 = getTileURL(endX, endY, zoom_level);     // user end
-    var XY1_Corner = corner1.split("/");
-    var corner1XY = XY1_Corner.map(Number); // array:[0]=>zoom;[1]=>row;[2]=col
-    var XY2_Corner = corner2.split("/");
-    var corner2XY = XY2_Corner.map(Number);
-    var tileXmid = 0;
-    var tileYmid = 0;
+};
+function loadZoomOutTiles(ul_corner, start_zoom) {
     /**
-     * User may draw from any corner, so establish matrix as if it were
-     * drawn from upper left to lower right to simplify processing
+     * Assumption: the most tiles in a portrait display will be 4x2, but when
+     * rotated the display will contain 2x4. Only the 2 in each display are common.
+     * [Refer to the diagram 'ZoomOutTiles.html'. A base set of four tiles [appearing 
+     * in both landscape and portrait] forms the core of the next lower level.
+     * Horizontal & portrait displays can be completely covered by a matrix of
+     * 16 tiles at the next lower level ['Gang of 16']. All tiles can be derived from
+     * one: the upper-left corner of the saved map. The upper left corner will always
+     * be in the same position at each zoom level.
      */
-    var tile1 = []; // tileN => [zoom, row, col]
-    var tile2 = [];
-    if (corner1XY[1] < corner2XY[1]) { // row check
-        tile1[0] = corner1XY[1];
-        tile2[0] = corner2XY[1];
-    }
-    else { 
-        tile1[0] = corner2XY[1];
-        tile2[0] = corner1XY[1];
-    }
-    if (corner1XY[2] < corner2XY[2]) { // col check
-        tile1[1] = corner1XY[2];
-        tile2[1] = corner2XY[2];
-    }
-    else {
-        tile1[1] = corner2XY[2];
-        tile2[1] = corner1XY[2];
-    }
-    tile1.forEach(function (element, i) {
-        tile1[i] = parseInt(element);
-    });
-    tile2.forEach(function (element, i) {
-        tile2[i] = parseInt(element);
-    });
-    // begin with array where 0,1 is range of upper left; 2,0 => lower right
-    // each tile[] is an array of 2 (see global variables, above)
-    tile[0] = tile1.slice(); // tile1 row, col
-    tile[1] = tile1.slice();
-    tile[2] = tile2.slice(); // tile2 row, col
-    tile[3] = tile2.slice();
-    var rangeX = tile2[0] - tile1[0]; // no. of map rows
-    var rangeY = tile2[1] - tile1[1]; // no. of map cols
-    // determine intermdiate tile values if required
-    if (rangeX > 1 || rangeY > 1) {
-        // required whether 6 or 9 tiles captured
-        tile[4] = tile2.slice();
-        tile[5] = tile2.slice();
-        if (rangeX > 1) {
-            // 3 tiles across
-            if (rangeX > 2) {
-                alert("Too big: Please select a smaller area");
-                return false;
-            }
-            else {
-                tileXmid = tile1[0] + 1;
+    var row = ul_corner[0];
+    var col = ul_corner[1];
+    for (let k=start_zoom-1; k>9; k--) { // no added tiles at start_zoom
+        var zoom_minus1 = zoom_out_tile(row, col);
+        row = zoom_minus1.x - 1;  // go from row-1 to row+2
+        col = zoom_minus1.y - 1;  // go from col-1 to col+2
+        // Fill out the Gang of 16:
+        for (let i=0; i<4; i++) {
+            for (let j=0; j<4; j++) {
+                var loc = { x: row+j, y: col+i };
+                tile_coords[k].push(loc);
             }
         }
-        if (rangeY > 1) {
-            // 3 tiles vertical
-            if (rangeY > 2) {
-                alert("Too big: Please select a smaller area");
-                return false;
-            }
-            else {
-                tileYmid = tile1[1] + 1;
-            }
-        }
-        /**
-         * For rangeX or rangeY = 2 [max], there will be 3 across and will
-         * include a 'mid' tile, resulting in either a 6x6, 6x9, 9x6 or 9x9
-         * matrix.
-         */
-        if (tileXmid > 0) {
-            if (tileYmid > 0) {
-                // captured 9 tiles
-                tile_cnt = 9;
-                tile[6] = tile2.slice();
-                tile[7] = tile2.slice();
-                tile[8] = tile2.slice();
-                // tile[0] is ok as is
-                var midx = tile1[0] + 1;
-                var midy = tile1[1] + 1;
-                tile[1][0] = midx;
-                tile[1][1] = tile1[1];
-                tile[2][0] = tile1[0] + 2;
-                tile[2][1] = tile1[1];
-                tile[3][0] = tile1[0];
-                tile[3][1] = midy;
-                tile[4][0] = midx;
-                tile[4][1] = midy;
-                tile[5][1] = midy;
-                tile[6][0] = tile1[0];
-                tile[7][1] = midy;
-                tile[8][0] = tile1[0];
-                tile[8][1] = tile2[1];
-                tile[7][0] = midx;
-                tile[7][1] = tile2[1];
-                tile[8][0] = tile2[0];
-                tile[8][1] = tile2[1];
-            } else {
-                tile_cnt = 6;
-                tile[1][0] = tileXmid;
-                tile[1][1] = tile[0][1];
-                tile[2][0] = tile2[0];
-                tile[2][1] = tile[0][1];
-                tile[3][0] = tile1[0];
-                tile[3][1] = tile2[1];
-                tile[4][0] = tileXmid;
-                tile[4][1] = tile2[1];
-                // tile[5] is already established above
-            }
-        }
-        else if (tileYmid > 0) { // tileXmid already checked above
-            tile_cnt = 6;
-            tile[1][0] = tile2[0];
-            tile[1][1] = tile1[1];
-            tile[2][0] = tile1[0];
-            tile[2][1] = tileYmid;
-            tile[3][0] = tile2[0];
-            tile[3][1] = tileYmid;
-            tile[4][0] = tile1[0];
-            tile[4][1] = tile2[1];
-            tile[5][0] = tile2[0];
-            tile[5][1] = tile2[1];
-        }
     }
-    else {
-        // quad
-        tile_cnt = 4;
-        tile[0] = tile1.slice();
-        tile[1] = tile1.slice();
-        tile[1][0] = tile2[0];
-        tile[2] = tile2.slice();
-        tile[2][0] = tile1[0];
-        tile[3] = tile2.slice();
-        // quad may reside in 1 or 2 tiles
-        if ((tile[3][0] - tile[0][0]) === 0 && (tile[3][1] - tile[0][1]) === 0) {
-            tile_cnt = 1;
-        }
-        else if (tile[3][0] - tile[0][0] === 0) {
-            tile_cnt = 2;
-        }
-        else if (tile[3][1] - tile[0][1] === 0) {
-            tile_cnt = 2;
-        }
-    }
-    for (var j = 0; j < tile_cnt; j++) {
-        var loc = { x: tile[j][0], y: tile[j][1] };
-        switch (zoom_level) {
-            case 13:
-                tile_coords[13].push(loc);
-                break;
-            case 14:
-                tile_coords[14].push(loc);
-                break;
-            case 15:
-                tile_coords[15].push(loc);
-                break;
-            case 16:
-                tile_coords[16].push(loc);
-        }
-        
-    }
-    /**
-     * Find each tile's deeper zoom level tiles. Each tile produces 4 tiles
-     * at the next zoom level; therefore there will be 85 tiles per zoom level
-     * 13 tiles input to the routine. Get this done in the background while waiting
-     * to invoke 'Save'. Each level's tile coords have already been established
-     * and are held in 'tile_coords'.
-     */
-    for (var zoom = zoom_level; zoom < 16; zoom++) { // don't get 'next level' 17
-        for (let k=0; k<tile_coords[zoom].length; k++) {
-            var xtile = tile_coords[zoom][k].x;
-            var ytile = tile_coords[zoom][k].y;
-            next_zoom_tiles(zoom+1, xtile, ytile);
-        }
-    }
-    var makeTile = function (level) {
-        tile_coords[level].forEach(function (tcoord) {
-            var zoomdir = level + "/";
-            var url = tile_str + zoomdir + tcoord.x + "/" + tcoord.y + ".png";
-            maptiles.push(url);
-        });
+}
+function zoom_out_tile(row, col) {  // for all cases, (currZoom, outZoom, col, row)
+    //const zoomDiff = currZoom - outZoom;
+    //const divisor = Math.pow(2, zoomDiff);
+    const divisor = 2; // for this routine only
+    return {
+        x: Math.floor(row / divisor),
+        y: Math.floor(col / divisor),
+        //zoom: outZoom
     };
-    // Convert tile_coords to maptiles:
-    for (var level = zoom_level; level < 17; level++) {
-        makeTile(level);
-    }
-    return;
-}
-
+};
 /**
  * This function will acquire and return the map bounds for the zlevel+1
  * zoom.

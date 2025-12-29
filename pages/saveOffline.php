@@ -132,7 +132,7 @@ require "../pages/mobileNavbar.php";
 <!-- MODALS -->
 <!-- Page Intro Modal -->
 <div id="intro" class="modal" tabindex="-1"
-    aria-labelledby="Set up save choices" aria-hidden="true">
+    aria-labelledby="Set up save choices" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -184,7 +184,7 @@ require "../pages/mobileNavbar.php";
 </div>
 <!-- Rectangle Instructions Modal -->
 <div id="rim" class="modal" tabindex="-1"
-    aria-labelledby="Map Save Status" aria-hidden="true">
+    aria-labelledby="Map Save Status" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -210,7 +210,7 @@ require "../pages/mobileNavbar.php";
 </div>
 <!-- Map Saver Modal -->
 <div id="map_save" class="modal" tabindex="-1"
-    aria-labelledby="Map Save Status" aria-hidden="true">
+    aria-labelledby="Map Save Status" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -236,7 +236,7 @@ require "../pages/mobileNavbar.php";
 </div>
 <!-- Tile Save Status Modal -->
 <div id="stat" class="modal" tabindex="-1"
-    aria-labelledby="Map Save Status" aria-hidden="true">
+    aria-labelledby="Map Save Status" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
