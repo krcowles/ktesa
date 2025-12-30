@@ -15,18 +15,12 @@
  */
 // Globals
 const MAIN_CACHE = 'offline';
-const $fname = $('#gpxname');
-$fname.val("");
-var tracking = false;
-var gpx_text = '';
-var dwnld_name = '';
 var leaflet_map;
 var polydat = [];
 var track_poly;
 var zooming = false;
 var moving_zoom;
 const maps_available = new bootstrap.Modal(document.getElementById('use_offline'));
-const track_saver = new bootstrap.Modal(document.getElementById('gpx_track'));
 const redraw = () => {
     leaflet_map.invalidateSize({
         animate: true,
@@ -43,101 +37,10 @@ else {
         redraw();
     });
 }
-/**
- * Functions to enable tracking and/or download a track specified by the user;
- * The track is in native leaflet form as a polyline and must be converted
- * to gpx. No elevation data yet...
- */
-$('#track').on('click', () => {
-    const $tracker = $('#track');
-    if ($tracker.text().includes("Off")) {
-        $tracker.text("Track (On)");
-        $('#clear').show();
-        $('#save').show();
-        $('#back').hide();
-        tracking = true;
-    }
-    else {
-        $tracker.text("Track (Off)");
-        $('#clear').hide();
-        $('#save').hide();
-        $('#back').show();
-        tracking = false;
-    }
-});
-$('#clear').on('click', () => {
-    if (typeof track_poly === 'undefined') {
-        alert("No track is available");
-        return;
-    }
-    else {
-        polydat = [];
-        track_poly.remove();
-    }
-    const ans = confirm("Stop tracking after clear?");
-    if (ans) {
-        const trkbtn = document.getElementById('track');
-        trkbtn.click();
-    }
-    return;
-});
-$('#save').on('click', () => {
-    track_saver.show();
-    return;
-});
+// Back to landing site
 $('#back').on('click', function () {
     window.open("../pages/member_landing.html", "_self");
 });
-const convertTrackToGpx = (polyline, trk_name) => {
-    // no elevation data at this time...
-    var gpxHdr = "<?xml version='1.0'?>\n";
-    gpxHdr += "<gpx xmlns='http://www.topografix.com/GPX/1/1' ";
-    gpxHdr += "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' ";
-    gpxHdr += "version='1.1' ";
-    gpxHdr += "xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd' ";
-    gpxHdr += "creator='nmhikes.com'>\n";
-    const endGpx = "</gpx>\n";
-    var trkData = "  <trk>\n";
-    trkData += `    <name>${trk_name}</name>\n`; // no .gpx here
-    trkData += "    <trkseg>\n";
-    for (let j = 0; j < polyline.length; j++) {
-        var pt = "      <trkpt lat='" + polyline[j].lat;
-        pt += "' lon='" + polyline[j].lng + "'></trkpt>\n";
-        trkData += pt;
-    }
-    trkData += "    </trkseg>\n";
-    trkData += "  </trk>\n";
-    trkData += endGpx;
-    return trkData;
-};
-const downloadGpx = (gpxstring, fname) => {
-    const blob = new Blob([gpxstring], { type: 'text/plain' });
-    const blobUrl = URL.createObjectURL(blob);
-    const anchor = document.createElement("A");
-    anchor.href = blobUrl;
-    anchor.download = fname; // has .gpx file extension
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-    URL.revokeObjectURL(blobUrl);
-    return;
-};
-$('body').on('click', '#dwnld_track', () => {
-    const track_name = $fname.val();
-    if (track_name === '') {
-        alert("You must supply a track name");
-        return false;
-    }
-    track_saver.hide();
-    dwnld_name = track_name + ".gpx";
-    var user_track = convertTrackToGpx(polydat, track_name);
-    downloadGpx(user_track, dwnld_name);
-    alert(`${track_name} Downloaded`);
-    return;
-});
-// Initialization:
-$('#clear').hide();
-$('#save').hide();
 const displayMap = (map_name) => {
     readMapData(map_name)
         .then((mapdata) => {
@@ -206,15 +109,6 @@ const displayMap = (map_name) => {
             }
             // Create marker with custom icon at user's location
             marker = L.marker(event.latlng, { icon: customIcon }).addTo(leaflet_map);
-            if (tracking) {
-                if (typeof track_poly !== 'undefined') {
-                    track_poly.remove();
-                }
-                polydat.push(event.latlng);
-                if (polydat.length > 1) {
-                    track_poly = L.polyline(polydat).addTo(leaflet_map);
-                }
-            }
         });
     });
     $('#select_map').append($('<option>', {

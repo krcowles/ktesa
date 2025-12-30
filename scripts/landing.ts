@@ -33,30 +33,13 @@ if (bene_alloc <= bene_space) {
 
 const member = $('#cookie_state').text() === 'OK' ? true : false;
 if (member) {
-    // Time allowed for service worker to install
-    setTimeout( () => {
-        const message = "Some features required for offline maps are not " +
-            "available in this browser";
-        var features_supported = true;
-        if ("serviceWorker" in navigator) {
-            if (!navigator.serviceWorker.controller) {
-                features_supported = false;
-            }
-        }
-        if (!window.indexedDB) {
-            features_supported = false;
-        }
-        if (!features_supported) {
-            alert(message);
-        }
-    }, 400);
-    // although synchronous, disruptive delays have been experienced:
+    // although 'synchronous', disruptive delays have been experienced:
     const name_store = localStorage.getItem('mapnames');
     setTimeout( () => {
         if (name_store === null) {
             localStorage.setItem('mapnames', 'none');
     }
-    }, 500);
+    }, 300);
 }
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");

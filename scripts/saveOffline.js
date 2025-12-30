@@ -544,9 +544,6 @@ function getRectTiles() {
     var corner1XY = XY1_Corner.map(Number); // array:[0]=>zoom;[1]=>row;[2]=col: NUMERIC
     var XY2_Corner = corner2.split("/"); // array of strings
     var corner2XY = XY2_Corner.map(Number); // [z, r, c]
-// ********** TESTING ******** 1X2
-corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
-// ***************************
     var tileXmid = 0;
     var tileYmid = 0;
     /**
@@ -618,7 +615,7 @@ corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
                     tile[7][1] = lr_tile[1];
                     tile[8][0] = lr_tile[0];
                     tile[8][1] = lr_tile[1];
-                } else { // tileYmid = 0; rangeY = 1; 3x2
+                } else { // tileYmid = 1; rangeY = ; 3x2
                     tile_cnt = 6;
                     // tile[0] ok as is
                     tile[1][0] = tileXmid;
@@ -631,7 +628,8 @@ corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
                     tile[4][1] = lr_tile[1];
                     tile[5] = lr_tile.slice();
                 }
-            } else if (tileMidY > 0) { // rangeX = 1; rangeY = 2: 2x3
+            } else if (tileYmid > 0) { 
+                // rangeX = 1; rangeY = 2: 2x3
                 tile_cnt = 6;
                 // tile[0] ok as is
                 tile[1][0] = lr_tile[0]; // row
@@ -643,14 +641,7 @@ corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
                 tile[4][0] = ul_tile[0];
                 tile[4][1] = lr_tile[1];
                 tile[5] = lr_tile.slice();
-            } else { // rangeX & rangeY = 1; 2 x 2
-                tile_cnt = 4;
-                tile[1][0] = lr_tile[0];
-                tile[1][1] = tile[0][1];
-                tile[2][0] = tile[0][0];
-                tile[2][1] = lr_tile[1];
-                tile[3] = lr_tile.slice();
-            }
+            } // at least one var must be > 1, so both = 1 is not here
         } else {  // 1x3 and 3x1 [rangeX * rangeY = 0]
             tile_cnt = 3;
             if (tileXmid > 0) { // 3x1 tile[0] ok as is
@@ -664,13 +655,21 @@ corner2XY = [corner1XY[0], corner1XY[1]+2, corner1XY[2]+2]; // 3x3
             }
         }
     } else {
-        // neither rangeX nor rangeY > 1
         if (rangeX === 0 && rangeY ===0) {
+            // neither rangeX nor rangeY > 1
             tile_cnt = 1; // tile[0] is the tile
         } else if (rangeX === 0 || rangeY === 0) {
             // 1x2 or 2x1: tile[0] is the start, lr_tile is the end
             tile_cnt = 2;
             tile[1] = lr_tile.slice();
+        } else if (rangeX === 1 && rangeY === 1) {
+            // both rangeX & rangeY = 1: 2 x 2
+            tile_cnt = 4;
+            tile[1][0] = lr_tile[0];
+            tile[1][1] = tile[0][1];
+            tile[2][0] = tile[0][0];
+            tile[2][1] = lr_tile[1];
+            tile[3] = lr_tile.slice();
         }
     }
     // ----- End of Tile Calcs ----

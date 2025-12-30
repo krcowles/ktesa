@@ -64,18 +64,20 @@
                 }
             }
         }
-    });
-    var allmaps = localStorage.getItem('mapnames');
-    var maplist = allmaps.split(",");
-    if (maplist.length > 0 && maplist[0] !== "none") {
-        for (let k=0; k<maplist.length; k++) {
-            localStorage.removeItem(maplist[k]);
-            msg += "\nRemoved " + maplist[k];
+        var allmaps = localStorage.getItem('mapnames');
+        if (allmaps !== null) {
+            var maplist = allmaps.split(",");
+            if (maplist.length > 0 && maplist[0] !== "none") {
+                for (let k=0; k<maplist.length; k++) {
+                    localStorage.removeItem(maplist[k]);
+                    msg += "\nRemoved " + maplist[k];
+                }
+            }
+            localStorage.removeItem('mapnames');
+            msg += "\nMapnames removed";
         }
-    }
-    localStorage.removeItem('mapnames');
-    msg += "\nMapnames removed";
-    alert(msg);
+        alert(msg);
+    });
 </script>
 
 </body>
