@@ -45,9 +45,7 @@ header("Pragma: no-cache"); // HTTP 1.0.
 <!-- body tag must be read prior to invoking bootstrap.js -->
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php 
-require "../pages/mobileNavbar.php";
-?>
+<?php require "../pages/mobileNavbar.php"; ?>
 
 <p id="active" style="display:none">Offline</p>
 <p id="appMode" style="display:none"><?=$appMode;?></p>

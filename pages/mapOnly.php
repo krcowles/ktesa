@@ -23,7 +23,6 @@ require "autoComplHikes.php";
     <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" -->
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <link href="../styles/mapOnly.css" rel="stylesheet" />
@@ -36,26 +35,27 @@ require "autoComplHikes.php";
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "mobileNavbar.php"; ?>
-<div id="trail">Welcome!</div>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
 
-<div id="map"></div>
-
-<img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
-
-<div class="ui-widget">
-  <style type="text/css">
-      ul.ui-widget {
-        width: 300px;
-        clear: both;
-      }
-  </style>
-  <input id="search" placeholder="Search for a Hike" />
+<div id="mapview">
+    <div id="imphike" class="ui-widget">
+        <style type="text/css">
+            ul.ui-widget {
+                width: 266px;
+                clear: both;
+                z-index: 1000;
+            }
+        </style>
+        <input id="search" class="search" placeholder="Search for a Hike" />
+        <span id="clear">X</span>
+    </div>
+    <div id="map"></div>
 </div>
+
 
 <?php
 require "../php/mapJsData.php";
-require "getFavorites.php";
+require "../pages/getFavorites.php";
 ?>
 
 <script>

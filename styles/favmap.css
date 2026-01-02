@@ -1,0 +1,42 @@
+body {
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  body {
+    min-width: 960px;
+  }
+}
+
+/* "global" colors: local exceptions are contained in their respective modules */
+.navbar {
+  background-color: darkslategray;
+}
+
+.nav-link {
+  color: whitesmoke !important;
+}
+
+ul.dropdown-menu {
+  background-color: whitesmoke !important;
+}
+
+#admin, #cookie_state {
+    display: none;
+}
+#favlist {
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 10px;
+    z-index: 100;
+}
+#map {
+  width: 100vw;
+}

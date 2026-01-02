@@ -15,10 +15,16 @@
  * @version 1.1 Typescripted
  * @version 2.0 Rework asynchronous map handlers per map.ts
  * @version 3.0 Support for New GoogleMap marker type (AdvancedMarkerElement)
+ * @version 4.0 Eliminated logo, increased space for map
  */
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
+const mapview = window.innerHeight;
+const navht = $('#nav').height();
+const srch_div_ht = $('#imphike').height();
+const map_ht = mapview - navht - srch_div_ht - 12 + "px";
+$('#map').css('height', map_ht);
 const hike_mrkr_icon = "../images/blue_nobg.png";
 // <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
 const clus_mrkr_icon = "../images/star8.png";
@@ -28,13 +34,11 @@ const zoomThresh = 13; // Default zoom level for drawing tracks
 const colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
-var geoOptions = { enableHighAccuracy: true };
 var markers;
 var appMode = $('#appMode').text();
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
-var $map = $('#map');
-var mapEl = $map.get(0);
+var mapEl = document.getElementById('map');
 var mapht;
 // track vars
 var drawnHikes = []; // hike numbers which have had tracks created
@@ -56,32 +60,10 @@ var mapTick = {
     strokeColor: 'Red',
     strokeWeight: 2
 };
-var trail = "Welcome!";
-$('#ctr').text(trail);
-// position searchbar
-let navheight = $('nav').height();
-let logoheight = $('#logo').height();
-// 16px padding on navbar, 42px to eliminate interference with maptype
-let srchtop = navheight + 16 + logoheight + 14 + 42;
-$('#search').css({
-    top: srchtop,
-    left: '40px'
-});
-/**
- * This function positions the geosymbol in the bottom right corner of the map,
- * left of the google map zoom control
- */
-function locateGeoSym() {
-    let winht = window.innerHeight - 90;
-    let mapwd = $('#map').width() - 120;
-    $('#geoCtrl').css({
-        top: winht,
-        left: mapwd
-    });
-    return;
-}
-locateGeoSym();
-$('#geoCtrl').on('click', setupLoc);
+const points = [
+    { lat: 37, lng: -103.5 },
+    { lat: 31.3, lng: -108.5 }
+];
 var locaters = []; // global used to popup info window on map when hike is searched
 /**
  * Collect the number of hikes associated with a clusterer for labelling purposes
@@ -197,15 +179,17 @@ function initMap() {
     const nmCtr = { lat: 34.450, lng: -106.042 };
     var options = {
         center: nmCtr,
-        zoom: 7,
+        zoom: 8,
         mapId: "39681f98dcd429f8", // vector map; all styling
         // optional settings:
+        cameraControl: false,
         isFractionalZoomEnabled: true,
         zoomControl: true,
         scaleControl: true,
         fullscreenControl: true,
         streetViewControl: false,
         rotateControl: false,
+        mapTypeControl: false,
     };
     map = new google.maps.Map(mapEl, options);
     new google.maps.KmlLayer({
@@ -385,6 +369,11 @@ function initMap() {
             }
         });
     }
+    const bounds = new google.maps.LatLngBounds();
+    points.forEach(point => bounds.extend(point));
+    setTimeout(() => {
+        map.fitBounds(bounds);
+    }, 1000);
 }
 // ////////////////////// END OF MAP INITIALIZATION  ///////////////////////
 // ///////////////////////////  TRACK DRAWING  /////////////////////////////
@@ -595,31 +584,6 @@ function restoreTracks() {
     return;
 }
 // /////////////////////////  END TRACK DRAWING  ///////////////////////////
-// //////////////////////////  GEOLOCATION CODE ////////////////////////////
-function setupLoc() {
-    navigator.geolocation.getCurrentPosition(success, error, geoOptions);
-    function success(pos) {
-        var geoPos = pos.coords;
-        var geoLat = geoPos.latitude;
-        var geoLng = geoPos.longitude;
-        var newWPos = { lat: geoLat, lng: geoLng };
-        new google.maps.Marker({
-            position: newWPos,
-            map: map,
-            icon: "../images/currentLoc.png"
-        });
-        var currzoom = map.getZoom();
-        window.newBounds = currzoom >= zoomThresh ? true : false;
-        map.setCenter(newWPos);
-        if (!window.newBounds) {
-            map.setZoom(zoomThresh);
-        }
-    } // end of watchSuccess function
-    function error(eobj) {
-        let msg = 'Error retrieving position; Code: ' + eobj.code;
-        window.alert(msg);
-    }
-}
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
 $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
     let thisMapDoc = document;
@@ -637,8 +601,4 @@ $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', fu
         console.log('NO fullScreen!');
     }
 });
-// //////////////////////  WINDOW RESIZE EVENT  //////////////////////
-$(window).on('resize', function () {
-    locateGeoSym();
-});
-// //////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////

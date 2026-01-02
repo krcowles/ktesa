@@ -6,7 +6,15 @@
  * @author Ken Cowles
  *
  * @version 3.0 Modified method for deploying Latin1 charset
+ * @version 4.0 Changed to enable clearing searchbar
  */
+var hilite_obj;
+// Clear searchbar contents when user clicks on the "X"
+$('#clear').on('click', function () {
+    $('#search').val("");
+    var searchbox = document.getElementById('search');
+    searchbox.focus();
+});
 // Autocomplete search bar (jQueryUI):
 $("#search").autocomplete({
     source: hikeSources,
@@ -61,13 +69,8 @@ function popupHikeName(hikename) {
  * This function will click the subject hike's marker, which will pop up
  * the marker's info window (see map.js). If the marker was previously clicked,
  * then the map re-centers at the marker
- *
- * @param {string} hike The name of the hike whose infoWindow will be clicked
- * @returns {null}
  */
 function infoWin(hike, loc) {
-    // highlight track for either searchbar or zoom-to icon:
-    applyHighlighting = true;
     // find the marker associated with the input parameters and pop up its info window
     for (let k = 0; k < locaters.length; k++) {
         if (locaters[k].hikeid == hike) {

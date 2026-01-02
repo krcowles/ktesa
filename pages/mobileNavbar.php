@@ -17,8 +17,6 @@
  */
 require_once "../accounts/getLogin.php";
 require "../admin/mode_settings.php";
-$use_logo = isset($_GET['logo']) ? false : true;
-$js_logo  = $use_logo ? 'true' : 'false';
 $logged_in = isset($_SESSION['userid']) ? true : false;
 $policy = urlencode("PrivacyPolicy.pdf");
 ?>
@@ -32,10 +30,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
-            <?php if ($use_logo) : ?>
-            <a id="maxPanel" class="navbar-brand" href="../pages/about.php">
-                <img src="../images/logos/logo32.png" /></a>
-            <?php endif; ?>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
@@ -53,11 +47,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
                         <li><a class="dropdown-item"
                             href="../pages/responsiveFavs.php">Show Favorites</a>
                         </li>
-                        <div id="admintools">
-                            <div class="dropdown-divider"></div>
-                            <li><a id="adminmenu" class="dropdown-item"
-                                href="../admin/admintools.php">Admintools</a></li>
-                        </div>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -104,7 +93,7 @@ $policy = urlencode("PrivacyPolicy.pdf");
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    Help
+                    More&hellip;
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item"
@@ -120,21 +109,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
         </div>
     </div>
 </nav>
-<?php if ($use_logo) : ?>
-<!-- ktesa Logo -->
-<div id="logo">
-    <div id="pattern"></div> <!-- ktesa pattern bar -->
-    <div id="leftside" class="logo_items">
-        <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-        <p id="logo_left">Hike New Mexico</p>
-    </div>
-    <div id="ctr" class="logo_items"></div>
-    <div id="rightside" class="logo_items">
-        <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-        <p id="logo_right">w/Tom &amp; Ken</p>
-    </div>
-</div>
-<?php endif; ?>
 
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>

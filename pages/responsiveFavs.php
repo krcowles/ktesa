@@ -14,6 +14,8 @@ if (!isset($_SESSION['userid'])) {
     $msg = "You are not a member or your session has expired: "
         . "Access is not permitted";
     die($msg);
+} else {
+    $userid = $_SESSION['userid'];
 }
 
 $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
@@ -76,7 +78,7 @@ $jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/mapOnly.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/favmap.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 </head>
 
@@ -85,12 +87,13 @@ $jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "mobileNavbar.php"; ?>
-<p id="trail">Your Favorites</p>
 <p id="favmode" style="display:none;"><?=$favmode;?></p>
 
-<p id="geoSetting">ON</p>
-<img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
-
+<!-- Links to favorites -->
+<button id="favlist" type="button" class="btn btn-primary"
+    data-bs-toggle="modal" data-bs-target="#favs">
+  List Favorites Pages
+</button>
 <div id="map"></div>
 
 <!-- Modal when no favorites are found -->
@@ -115,11 +118,6 @@ $jsBounds  = "{east:" . $max_east . ",north:" . $max_north . ",south:" .
     </div>
 </div>
 
-<!-- Links to favorites -->
-<button id="favlist" type="button" class="btn btn-primary"
-    data-bs-toggle="modal" data-bs-target="#favs">
-  List Favorites Pages
-</button>
 <div id="favs" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

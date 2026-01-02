@@ -1,6 +1,6 @@
 @use "body" as *;
 @use  "colors" as *;
-@use "ktesaNavbar" as *;
+@use "mobileNavbar" as *;
 
 /* Map & Modal buttons */
 #map_grp1, #map_grp2, #map_grp3, #map_grp4 {
@@ -39,7 +39,7 @@
 	font-size: 24px;
 	top: 7px;
 	left: -26px;
-	color: brown;
+	color: $brown;
 	z-index: 220;
 	cursor: pointer;
 }
@@ -48,7 +48,7 @@
 	width: 220px;
 }
 #gpxfile::file-selector-button {
-	border: 2px brown solid;
+	border: 2px $brown solid;
 	border-radius: 3px;
 	cursor: pointer;
 	background-color: blanchedalmond;
@@ -82,7 +82,7 @@ form {
 /* Save Map Modal */
 #map_name {
 	width: 160px;
-	border-color: brown;
+	border-color: $brown;
 	border-style: solid;
 	border-width: 1px;
 	border-radius: 6px;

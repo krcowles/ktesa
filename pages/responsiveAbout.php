@@ -30,16 +30,17 @@ require "../php/global_boot.php";
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "mobileNavbar.php"; ?>
 
-<div>
-    <p id="banner">Authors on Deception Pk</p>
+<div id="content">
     <div id="authors">
+        <p id="banner">Authors on Deception Pk</p>
         <img id="tompic" src="../images/TomAndKenSummit.JPG" 
             alt="Authors on Deception Peak" title="Authors on Deception Peak" />
     </div>
     <div id="intro">
-        <p id="introp" class="lht" ><span id="hikes">The Hikes:</span> all hikes
-            have been undertaken by the authors. They cover a broad, cross-state
-            array of possibilities in the diverse terrain of New Mexico -
+        <p id="introp" class="lht" ><span id="hikes">The Hikes:</span> most of
+            the hikes have been undertaken by the authors, although members are
+            contributing more as time goes by. The hikes cover a broad,
+            cross-state array of possibilities in the diverse terrain of New Mexico -
             from short treks, to longer, uphill/downhill ascents.
         </p> 
         <p id="features" class="lht">
@@ -51,8 +52,11 @@ require "../php/global_boot.php";
     <p id="expect">The Mobile Site:</p>
     <div id="expl">
         <p class="lht">
-        More features are available when viewed on a laptop or desktop. Hike
-        page creation/editing is one example.
+        While generally more features are available when viewed on a laptop or
+        desktop,the mobile site offers offline maps. Editing functions (creating
+        and editing hike pages) can only be done on a desktop or laptop; editing
+        of GPX files and some other features are also available on non-mobile
+        platforms.
         </p>
         
         <div id="m" class="twisty-right"></div>
@@ -62,31 +66,41 @@ require "../php/global_boot.php";
             <li>Maps are standard Google maps, which allow pan, zoom and full-screen
                     display.
             </li>
-            <li>Marker pins (purple) display "info-windows" when clicked, showing
-                    hike details, and containing links to the corresponding website
-                    and Google directions to the location of the hike's trail head.
+            <li>The 'red star' markers represent groups of hike markers, and will
+                zoom in and expand when clicked;
+            </li>
+            <li>
+                Blue circular markers display the number of hikes at the marked
+                location, and will display "info-windows" when tapped. The info
+                info-windows show hike details, and contain links to the
+                corresponding website and Google directions to the location of the
+                hike's trail head.
             </li>
             <li>When zoomed in sufficiently, tracks indicating the trail or path
-                    the authors took will display, with arrows indicating
-                    the direction the authors traveled. Mousing over a track will
-                    also display an info-window with a link to the hike page.
+                the authors took will display, with arrows indicating
+                the direction the authors traveled. Hovering over a track will
+                also display an info-window with a link to the hike page.
             </li>
         </ul>
         <div id="t" class="twisty-right"></div>
         <p id="tblfeat" class="maindisp lht">&nbsp;Table Only Features:</p>
         <ul id = 'tul' class="dashed">
-            <li>A brief summary of hike statistics is presented, and also links
-                to the corresponding hike page.
+            <li>A brief summary of hike statistics is presented in the displayed
+                table, along with links to the corresponding hike page.
             </li>
-            <li>You can filter the table of hikes by radial distance from a
-                set of pre-defined regions.
+            <li>You can select hikes within a radius of a pre-defined area by tapping
+                the 'Table Options' drop-down and selecting 'Hikes by Region'.
+            </li>
+            <li>Alternately, you can filter the table of hikes by radial distance
+                from a set of pre-defined regions by tapping the 'Table Options' and
+                selecting 'Hikes within&hellip;'
             </li>
         </ul>
         <div id="h" class="twisty-right"></div>
         <p id="hikefeat" class="maindisp lht">&nbsp;Hike Pages:</p>
         <ul id='hul' class="dashed lht">
             <li>The hikes pages include a local map showing the hike track
-                and an interactive elevation chart, showing the elevation at any
+                and an interactive elevation chart, which shows the elevation at any
                 point along the track.
             </li>
             <li>As you cursor along the chart, the corresponding hike location
@@ -107,8 +121,11 @@ require "../php/global_boot.php";
             accessible, or accessible only in modified form. Primarily:</p>
         <ul id="disasters" class="lht">
             <li> Fires: Cerro Grande (Los Alamos, 2000); Los Conchas (Valles Caldera,
-            2011); Gila (2012); Dog Head (Monzano Mtns, 2016)</li>
-            <li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
+            2011); Gila (2012); Dog Head (Monzano Mtns, 2016); Hermit's Peak/Calf 
+            Canyon (Mora and Las Vegas, 2022), Black Fire (Gila Natl Forest, 2022),
+            and the South Fork Fire (Ruidoso, 2024)</li>
+            <li> Floods: Bandelier (2011); Rinconada Canyon (2013),
+                Ruidoso (2024)</li>
             <li> Volcanoes & Earthquakes: we hope not!</li>
         </ul>
         <p class="lht">If you see something that you'd like to comment on -

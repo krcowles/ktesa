@@ -10,21 +10,9 @@
 // Globals
 var select_favorites = allHikes.length > 1 && $('#favmode').text() === 'no' ? true : false;
 var zoomThresh = 13;
-// Positioning of elements on page
-var title = $('#trail').text();
-$('#ctr').text(title);
-/**
- * Position the links button
- */
-var links_btn = function () {
-    var navht = $('#nav').height() + 16; // padding
-    var logoht = $('#logo').height();
-    var favtop = navht + logoht + 8 + 'px';
-    var favlft = $('#map').width() - 240 + 'px';
-    $('#favlist').css('top', favtop);
-    $('#favlist').css('left', favlft);
-};
-links_btn();
+const viewht = (window.innerHeight - $('#nav').height()) + 'px';
+$('#map').css('height', viewht);
+
 // Create links to favs: appear in same order as listed on responsiveFavs.php
 var link_base = '<a href="../pages/hikePageTemplate.php?hikeIndx=';
 for (var j = 0; j < allHikes.length; j++) {
@@ -100,21 +88,7 @@ var mapTick = {
     strokeColor: 'Red',
     strokeWeight: 2
 };
-/**
- * This function positions the geosymbol in the bottom right corner of the map,
- * left of the google map zoom control
- */
-function locateGeoSym() {
-    var winht = window.innerHeight - 86;
-    var mapwd = $('#map').width() - 124;
-    $('#geoCtrl').css({
-        top: winht,
-        left: mapwd
-    });
-    return;
-}
-locateGeoSym();
-$('#geoCtrl').on('click', setupLoc);
+
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 var mapdone = $.Deferred();
 function initMap() {
@@ -131,6 +105,7 @@ function initMap() {
         fullscreenControl: true,
         streetViewControl: false,
         rotateControl: false,
+        mapTypeControl: false
     });
     mapdone.resolve();
     var _loop_1 = function (j) {
@@ -228,48 +203,9 @@ function drawTrack(jsonfile, color, lindx, def) {
     return;
 } // end drawTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
-// ////////////////////////////  GEOLOCATION CODE //////////////////////////
-/**
- * Locate the user on the map
- */
-function setupLoc() {
-    if (navigator.geolocation) {
-        var geoOptions = { enableHighAccuracy: true };
-        var myGeoLoc = navigator.geolocation.getCurrentPosition(success, error, geoOptions);
-        function success(pos) {
-            var geoPos = pos.coords;
-            var geoLat = geoPos.latitude;
-            var geoLng = geoPos.longitude;
-            var newWPos = { lat: geoLat, lng: geoLng };
-            var geopin = new google.maps.marker.PinElement({
-                scale: 1.2,
-                glyph: "X",
-                background: "FireBrick",
-                glyphColor: "white"
-            });
-            new google.maps.marker.AdvancedMarkerElement({
-                map: map,
-                position: newWPos,
-                content: geopin.element
-            });
-            map.setCenter(newWPos);
-            var currzoom = map.getZoom();
-            if (currzoom < 13) {
-                map.setZoom(13);
-            }
-        } // end of watchSuccess function
-        function error(eobj) {
-            var msg = '<p>Error in get position call: code ' + eobj.code + '</p>';
-            window.alert(msg);
-        }
-    }
-    else {
-        window.alert('Geolocation not supported on this browser');
-    }
-}
+
 // //////////////////////  WINDOW RESIZE EVENT  //////////////////////
 $(window).on('resize', function () {
-    locateGeoSym();
     links_btn();
 });
 // //////////////////////////////////////////////////////////////

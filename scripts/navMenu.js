@@ -34,7 +34,7 @@ $(function () {
             }
             else {
                 localStorage.removeItem('lockout');
-                window.open("../accounts/unifiedLogin.php?form=log");
+                window.open("../accounts/unifiedLogin.php?form=log", "_self");
             }
         }, "json");
     });

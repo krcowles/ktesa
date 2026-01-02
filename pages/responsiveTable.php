@@ -25,7 +25,7 @@ require "respTableData.php";
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <?php require "../pages/favicon.htnl";?>
+    <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/responsiveTable.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
@@ -36,8 +36,6 @@ require "respTableData.php";
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "mobileNavbar.php";?>
-<div id="trail">Table of Hikes</div>
-<br />
 
 <div id="floater">
     <div id="opts" class="dropdown">
@@ -71,7 +69,6 @@ require "respTableData.php";
                     <th class="hdr_row" data-sort="lan">Length</th>
                     <th class="hdr_row" data-sort="lan">Elev Chg</th>
                     <th class="hdr_row" data-sort="std">Difficulty</th>
-                    <th class="hdr_row">Sun</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,10 +79,9 @@ require "respTableData.php";
                 <tr <?= $hikeHiddenDat[$j];?>>
                     <td><a href="<?= $pgLink[$j];?>"
                         target="_blank"><?= $hikeName[$j];?></a></td>
-                    <td><?= $hikeLgth[$j];?> miles</td>
+                    <td><?= $hikeLgth[$j];?> mi</td>
                     <td><?= $hikeElev[$j];?> ft</td>
                     <td><?= $hikeDiff[$j];?></td>
-                    <td><?= $hikeExpIcon[$j];?></td>
                 </tr>
                 <?php endfor; ?>
             <?php endif; ?>
