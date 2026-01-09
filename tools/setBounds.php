@@ -25,7 +25,7 @@ foreach ($hikes as $hikeNo => $gpx) {
             $maxlat = 0;
             $minlat = 100;
             $maxlng = -110;
-            $minlng = -106;
+            $minlng = -102;
             // calculate bounds for all json files associated w/'main'
             $contents = file_get_contents('../json/' . $files[$i]);
             $contents_as_array = json_decode($contents, true);
