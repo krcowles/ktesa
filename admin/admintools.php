@@ -70,9 +70,9 @@ $whichSite = $testSite ? 'test site' : 'main site';
     <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
     <script type="text/javascript">
         var newer_than = '';
         $(function() {

@@ -39,16 +39,16 @@ chdir($startDir);
     <title>New Mexico Hikes</title> 
     <meta charset="utf-8">
     <meta name="description"
-          content="Listing of hikes the authors have undertaken in New Mexico" />
+        content="Listing of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/home.css" rel="stylesheet" />    
-    <link href="../styles/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

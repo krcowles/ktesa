@@ -61,12 +61,6 @@ foreach ($hikes as $hikeNo => $gpx) {
             $updateBoundsReq = "UPDATE `HIKES` SET `bounds`='{$bounds}' WHERE " .
                 "`indxNo`={$hikeNo};";
             $pdo->query($updateBoundsReq);
-            /*
-            if ($hikeNo == 38) {
-                echo "West: " . $bnds[3] . "; East: " . $bnds[2];
-                exit;
-            }
-            */
         }
     }
 }

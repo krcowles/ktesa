@@ -476,6 +476,8 @@ $('#reload').on('click', function() {
         $.get("checksumTest.php", function(result) {
             if (result === 'no') {
                 alert("No Checksum table currently exists");
+                checksumsDef.reject();
+                newdbDef.reject();
             } 
             /** 
              * Whether checksums have changed since the last time

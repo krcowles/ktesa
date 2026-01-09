@@ -96,9 +96,9 @@ foreach ($visitor_data as $row) {
     <?php require "../pages/favicon.html";?>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/visitor_data.css" rel="stylesheet" />
-    <link href="../styles/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

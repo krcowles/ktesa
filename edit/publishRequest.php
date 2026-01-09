@@ -60,7 +60,7 @@ if ($mail_admin) {
     <link href="../styles/pubrequest.css" rel="stylesheet" />
     <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
 </head>
 
 <body>

@@ -229,6 +229,7 @@ if ($mobileTesting) {
         </div>
     </div>
 </div>
+<hr style="color:white;" />
 
 <script type="text/javascript">
     // some vars not set for Cluster Pages...
