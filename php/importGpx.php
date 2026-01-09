@@ -62,6 +62,7 @@ foreach ($trk_data as $track) {
         array_push($poly, $llpair);
     }
     array_push($alltracks, $poly);
+    $poly = [];
 }
 
 $bounds = explode(",", $latlngbounds);
@@ -71,7 +72,10 @@ $se = [$bounds[1], $bounds[2]];
 array_push($combined_data, $nw);
 array_push($combined_data, $se);
 $ctrLat = $bounds[1] + ($bounds[0] - $bounds[1])/2;
-$ctrLng = $bounds[2] + ($bounds[3] - $bounds[2])/2;
+$avlnge = abs($bounds[2]);
+$avlngw = abs($bounds[3]);
+$ctrLng = -($avlnge + ($avlngw - $avlnge)/2);
+//$ctrLng = $bounds[2] + ($bounds[3] - $bounds[2])/2;
 $map_center = [$ctrLat, $ctrLng];
 array_push($combined_data, $map_center);
 array_push($combined_data, $alltracks);

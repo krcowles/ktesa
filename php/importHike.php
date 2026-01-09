@@ -46,6 +46,7 @@ $json = getTrackFileNames($pdo, $hikeNo, 'pub');
  * the map's center.
  */
 $tracklist = $json[0];
+$track_set = [];
 foreach ($tracklist as $track) {
     $json = "../json/{$track}";
     $track_file = file_get_contents($json);
@@ -57,9 +58,9 @@ foreach ($tracklist as $track) {
         $point = [$loc->lat, $loc->lng]; 
         array_push($polyline, $point);
     }
-    array_push($polylines, [$polyline]); // result 3...n
+    array_push($track_set, [$polyline]); // result 3...n
 }
+array_push($polylines, $track_set);
 $track_data = json_encode($polylines);
-//file_put_contents("poly.txt", $track_data);
 // return all data to js for storage in indexedDB
 echo $track_data;

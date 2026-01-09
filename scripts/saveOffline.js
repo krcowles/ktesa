@@ -259,6 +259,9 @@ tile_coords[15] = [];
 tile_coords[16] = [];
 var saveType = "unspecified";
 var gpximport = document.getElementById('gpxfile');
+// Add rollover if no of tracks exceeds 8: so far, unlikely!
+var track_colors = ['Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue',
+    'Chocolate', 'DarkMagenta', 'Black'];
 /**
  * There are three current methods provided to save maps:
  *  1. draw a rectangle on the map representing the area desired for offline
@@ -301,28 +304,35 @@ function displayTrack(ajax_data, source) {
         var lngmarg = -absmarg;
         nw = [nw[0]+latmarg, nw[1]+lngmarg];
         se = [se[0]-latmarg, se[1]-lngmarg];
+        var trkbounds = [nw, se];
+        // bounds includes all tracks
+        L.rectangle(trkbounds, {color:'darkgreen', fill: false, weight: 2}).addTo(map);
         var lat = result_array[2][0];
         var lng = result_array[2][1];
         map_center = [lat, lng];
-        var idb_data;
+        // Create layers and add them before 'flyTo'
         var track_poly = result_array[3];
-        for (let i=3; i<result_array.length; i++) {
-            idb_data = result_array[i].toString();
-            if (i === 3) {
-                idb_track = idb_data;
-                map.flyTo(map_center, 13);
-                setTimeout( () => {
-                    zoom_level = map.getZoom();
-                    zoomOptimizer(zoom_level);
-                }, 2500)
+        let n=0;
+        track_poly.forEach(function(segment) {
+            L.polyline(segment, {color: track_colors[n]}).addTo(map);
+            n++;
+        })
+        var no_of_tracks = track_poly.length;
+        var idb_data;
+        for (let i=0; i<no_of_tracks; i++) {
+            if (i === 0) {
+                idb_data = track_poly[0].toString();
             } else {
-                idb_track += "," + idb_data;
+                idb_data += "," + track_poly[i].toString();
             }
         }
-        var hike = L.polyline(track_poly);
-        hike.addTo(map);
-        var trkbounds = [nw, se];
-        L.rectangle(trkbounds, {color:'darkgreen', fill: false, weight: 2}).addTo(map);
+        idb_track = idb_data; // indexedDB track polys, separated by ","
+        // tracks & bounds rectangle are added, now pan to center of map
+        map.flyTo(map_center, 13, {duration: 1.5});
+        setTimeout( () => {
+            zoom_level = map.getZoom();
+            zoomOptimizer(zoom_level);
+        }, 2000);
         // establish points on map representing area to be saved
         maptiles = [];
         startX = nw[0];

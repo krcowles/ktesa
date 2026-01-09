@@ -1179,8 +1179,6 @@ function gpxLatLng($gpxdat, $no_of_tracks, $north_america=false)
         $maxlng = -110;
         $minlng = -102;
     }
-    $maxlng = -170;
-    $minlng = -60;
     for ($i=0; $i<$no_of_tracks; $i++) {
         foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
             foreach ($trackdat->trkpt as $datum) {
