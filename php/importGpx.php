@@ -36,12 +36,19 @@ if (!$dom->load($tmpfile)) {
     echo $_SESSION['alerts'][0];
     exit;
 }
-if (!$dom->schemaValidate(
-    "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
-)
-) {
-    displayGpxUserAlert($filename, 0);
-    echo $_SESSION['alerts'][0];
+try {
+    if (!$dom->schemaValidate(
+        "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+    )
+    ) {
+        $filename = "importGpx.php";
+        displayGpxUserAlert($filename, 0);
+        echo $_SESSION['alerts'][0];
+        exit;
+    }
+} catch (Exception $e) {
+    $syntax = "There is an error: {$e->getMessage()}";
+    echo $syntax;
     exit;
 }
 // passed validation
