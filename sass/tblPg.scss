@@ -126,8 +126,6 @@ $tableBorder: gainsboro;
 	/* firefox */
 	-moz-transform: rotate(270deg);
 	-moz-transform-origin: center;
-	/* internet explorer - not tried yet */
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 #backup:hover {
 	@include tableButtonHover;

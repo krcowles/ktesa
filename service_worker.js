@@ -11,16 +11,16 @@ self.addEventListener("install", (event) => {
       .open("offline")
         .then((cache) => {
             cache.addAll([  // TEST SITE DIR included here...
-                "https://nmhikes.com/mobile_maps/pages/useOffline.html",
-                "https://nmhikes.com/mobile_maps/styles/bootstrap.min.css",
-                "https://nmhikes.com/mobile_maps/styles/leaflet.css",
-                "https://nmhikes.com/mobile_maps/styles/useOffline.css",
-                "https://nmhikes.com/mobile_maps/scripts/jquery.js",
-                "https://nmhikes.com/mobile_maps/scripts/popper.min.js",
-                "https://nmhikes.com/mobile_maps/scripts/bootstrap.min.js",
-                "https://nmhikes.com/mobile_maps/scripts/ktesaOfflineDB.js",
-                "https://nmhikes.com/mobile_maps/scripts/useOffline.js",
-                "https://nmhikes.com/mobile_maps/scripts/leaflet.js",
+                "https://nmhikes.com/pages/useOffline.html",
+                "https://nmhikes.com/styles/bootstrap.min.css",
+                "https://nmhikes.com/styles/leaflet.css",
+                "https://nmhikes.com/styles/useOffline.css",
+                "https://nmhikes.com/scripts/jquery.js",
+                "https://nmhikes.com/scripts/popper.min.js",
+                "https://nmhikes.com/scripts/bootstrap.min.js",
+                "https://nmhikes.com/scripts/ktesaOfflineDB.js",
+                "https://nmhikes.com/scripts/useOffline.js",
+                "https://nmhikes.com/scripts/leaflet.js",
             ])
         })
     );
@@ -49,7 +49,7 @@ const preload = async (request) => {
     const networkResponse = await fetch(request);
     var resource_url = request.url;
     var url_string = resource_url.toString();
-    if (request.method === "GET" && url_string.includes("nmhikes.com/mobile_maps")) {
+    if (request.method === "GET" && url_string.includes("nmhikes.com")) {
         putInCache(request, networkResponse.clone());
     }
     return networkResponse;
