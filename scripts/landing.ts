@@ -41,10 +41,15 @@ const member = $('#cookie_state').text() === 'OK' ? true : false;
 if (member) {
     const name_store = localStorage.getItem('mapnames');
     const sw_version = parseInt($('#version').text());
+    const ud_state = 'A' + sw_version;
     if (name_store === null) {
         // this is the user's first entry to the mobile site...
         localStorage.setItem('mapnames', 'none');
-        const ud_state = 'A' + sw_version;
+        localStorage.setItem('ud_resp', ud_state);
+    }
+    // address users already using maps but have no 'ud_resp' yet
+    const ls_exists = localStorage.getItem('ud_resp') === null ? false : true;
+    if (!ls_exists) {
         localStorage.setItem('ud_resp', ud_state);
     }
     const update_dialog = document.getElementById('update') as HTMLDialogElement;
