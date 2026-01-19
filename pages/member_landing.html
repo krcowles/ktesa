@@ -14,32 +14,11 @@
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/landing.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script type="text/javascript">
-        /**
-         * This is the mobile landing site for New Mexico Hikes.
-         * Viewport data was derived from https://yesviz.com/viewport/
-         * Major phone brands are supported for offline maps; omitted
-         * are some Chinese, brands but they have similar characteristics
-         * and should work with this script. Tablets and watches are not
-         * explicitly supported, as these do not represent useful hiking
-         * platforms. The very large pixel Sony Xperia (540 x 960) may
-         * not have optimal visual display, but will still render properly.
-         *   Portrait:  widths range from 320-440 (540); 
-         *   Landscape: widths range from 480-960. 
-         * Portrait views will vary slightly in text and object placement
-         * compared to landscape views. The js will adjust views accordingly.
-         * Portrait content is designed to fit in the 320/480px state;
-         * 
-         * NOTE: This script is invoked when the user is a member; when
-         * the user is not a registered member, nonmember_landing.html is
-         * invoked. This page requires being online for landing.js to
-         * provide functionality for the "membership" selects, and can
-         * therefore NOT be cached by the service_worker.
-         */
-    </script>
 </head>
 
 <body>
+<!-- Admin: Sets new version value when it's time for an offlibe maps software update! -->
+<span id="version" style="display:none;">1</span>
 
 <div id="logo">
     <div id="pattern">
@@ -66,9 +45,16 @@
         </div>
     </div>   
 </div>
-
 <p id="cookie_state">OK</p>
-    
+
+<dialog id="update">
+    <p>There has been a software upgrade for offline maps - do you wish to install it? If yes,
+        you will also have to clear your browser's cache - any saved maps are retained. If not,
+        no problem - keep on using offline maps as is.</p>
+    <button id="proceed" type="button" class="btn btn-sm btn-success">Update</button><br /><br />
+    <button id="keep" type="button" class="btn btn-sm btn-warning">Not Now</button><br />
+</dialog> 
+
 <h2 id="welcome">The New Mexico Hiking Site</h2>
 <div class="landing_content">
     <p id="opts">Choose from the following

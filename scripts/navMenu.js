@@ -13,6 +13,10 @@ $(function () {
     /**
      * Menu setup
      */
+    const CACHE_NAMES = {
+        tiles: 'map_tiles',
+        code: 'map_source'
+    };
     var appMode = $('#appMode').text(); // LOCAL navbar var
     var chg_modal = new bootstrap.Modal(document.getElementById('cpw'), {
         keyboard: false
@@ -44,17 +48,19 @@ $(function () {
         return;
     });
     $('#logout').on('click', function () {
-        var ans = confirm("Logging out will delete any saved " +
+        var ans = confirm("Logging out will delete any saved offline" +
             "maps. Proceed?");
         if (ans) {
-            deleteNamedCache("offline");
+            deleteNamedCache(CACHE_NAMES.code);
+            deleteNamedCache(CACHE_NAMES.tiles);
             clearObjectStore();
             localStorage.removeItem('mapnames');
+            localStorage.removeItem('ud_resp');
             $.ajax({
                 url: '../accounts/logout.php?expire=N',
                 method: "get",
                 success: function () {
-                    window.open("https://nmhikes.com/ld", "_self");
+                    window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
                     // Service worker will be uninstalled...
                 },
                 error: function (_jqXHR, _textStatus, _errorThrown) {

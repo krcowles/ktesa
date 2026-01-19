@@ -128,7 +128,7 @@ if ($mobileTesting) {
                 on and off for display.
             </div>
             <p id="problems">If you are having problems with this page, please: 
-                <a href="mailto:krcowles29@gmail.com">send us a note!</a>
+                <a href="mailto:admin@nmhikes.com">send us a note!</a>
             </p>
         <?php else : ?>
             <?php include "relatedInfo.php"; ?>

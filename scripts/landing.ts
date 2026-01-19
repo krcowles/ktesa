@@ -4,7 +4,8 @@ declare function deleteNamedCache(cache: string): void;
  * @fileoverview This script performs basic menu operations and page setup
  * for the landing site. Due to the fact that there is no mobileNavbar.php
  * and accompanying navMenu.js, this script supplies membership selections
- * independently.
+ * independently. This script is invoked by both memeber and nonmember
+ * landing sites.
  * 
  * @author Ken Cowles
  * 
@@ -15,7 +16,11 @@ declare function deleteNamedCache(cache: string): void;
  */
 $(function() {
 
-// Show benefits or not...
+const CACHE_NAMES = {
+    tiles: 'map_tiles',
+    code: 'map_source'
+};
+// Show benefits, depending on available space...
 const logo = document.getElementById('logo') as HTMLDivElement;
 const logo_ht = logo.clientHeight as number;
 const welcome = document.getElementById('welcome') as HTMLHeadElement;
@@ -32,15 +37,38 @@ if (bene_alloc <= bene_space) {
 }
 
 const member = $('#cookie_state').text() === 'OK' ? true : false;
+
 if (member) {
-    // although 'synchronous', disruptive delays have been experienced:
     const name_store = localStorage.getItem('mapnames');
-    setTimeout( () => {
-        if (name_store === null) {
-            localStorage.setItem('mapnames', 'none');
+    const sw_version = parseInt($('#version').text());
+    if (name_store === null) {
+        // this is the user's first entry to the mobile site...
+        localStorage.setItem('mapnames', 'none');
+        const ud_state = 'A' + sw_version;
+        localStorage.setItem('ud_resp', ud_state);
     }
-    }, 300);
+    const update_dialog = document.getElementById('update') as HTMLDialogElement;
+    const reload = document.getElementById('proceed') as HTMLButtonElement
+    const stay = document.getElementById('keep') as HTMLButtonElement;
+    // Accept update
+    reload.addEventListener("click", () => {
+        update_dialog.close();
+        localStorage.setItem('ud_resp', 'A'+ sw_version);
+        window.open("../tools/offlineReset.html", "_self");
+    });
+    // Reject update
+    stay.addEventListener("click", () => {
+        localStorage.setItem('ud_resp', 'R'+ sw_version);
+        update_dialog.close();
+    });
+    // Test for software upgrades
+    const update_response = localStorage.getItem('ud_resp') as string;
+    const my_version = parseInt(update_response.substring(1));
+    if (sw_version > my_version){
+        update_dialog.showModal();
+    }
 }
+
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
     var newloc: string;
@@ -56,11 +84,13 @@ $('#membership').on('change', function() {
         case 'logout':
             if (member) {
                 var ans = confirm("Logging out will delete any saved " +
-                    "maps. Proceed?");
+                    "offline maps. Proceed?");
                 if (ans) {
-                    deleteNamedCache("offline");
+                    deleteNamedCache(CACHE_NAMES.code);
+                    deleteNamedCache(CACHE_NAMES.tiles);
                     clearObjectStore();
                     localStorage.removeItem('mapnames');
+                    localStorage.removeItem('ud_resp');
                 }
             }
             $.ajax({

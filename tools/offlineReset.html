@@ -3,80 +3,102 @@
 <head>
     <title>Reset Offline Storage</title>
     <meta charset="utf-8" />
-    <!-- if search engine keys are desired, 
-        use: <meta name="keywords" content="key1, key2, .." -->
     <meta name="description" content="Clear Cache/Worker" />
     <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://nmhikes.com/styles/bootstrap.min.css" ref="stylesheet" />
 </head>
 <body>
 
-<div>This page is a tool to clear cache, uninstall the service worker
-    and clear the indexedDB and localStorage on a mobile browser.<br />
-    Access via https://nmhikes.com/tools/offlineReset.html
+<div>This page is a tool to reset the map fetching code and allow users
+    to utilize software updates.
 </div>
+<dialog id="success">
+    The tool has successfully completed. Please clear your
+    browser's cache<br /><br />
+    <button id="ok">OK</button><br />
+</dialog>
+<dialog id="problems">
+    The script failed with the following messages:<br />
+    <p id="issues"></p>
+    <p>Your software will remain at the same version: the admin
+        will be notified when you click below [<a id="mailLink" href=""></a>]
+    </p>
+    <button id="done">Click to send</button><br />
+</dialog>
 
-<!-- Not on main site yet [adjust test site for scripts]-->
-<script src="../scripts/ktesaOfflineDB.js"></script>
+<script src="https://nmhikes.com/scripts/jquery.js"></script>
+<script src="https://nmhikes.com/scripts/ktesaOfflineDB.js"></script>
+<script src="https://nmhikes.com/scripts/bootstrap.min.js"></script>
 <script type="text/javascript">
-    var msg = '';
+    const CACHE_NAMES = {
+        tiles: 'map_tiles',
+        code: 'map_source' // any map tiles will not be deleted.
+    };
+    var errors = '';
+    // Reset completes successfully
+    const script_ok = document.getElementById('success');
+    const kill_ok   = document.getElementById('ok');
+    kill_ok.addEventListener("click", () => {
+        script_ok.close();
+        window.open("https://nmhikes.com", "_self");
+    });
+    // Errors encountered during reset
+    const failure   = document.getElementById('problems');
+    const kill_fail = document.getElementById('done');
+    const p_element = document.getElementById('issues');
+    const adminMail = document.getElementById('mailLink');
+    const mailUri = encodeURIComponent("Software update problem");
+    adminMail.href = `mailTo:admin@nmhikes.com?subject=${mailUri}`;
+    kill_fail.addEventListener("click", () => {
+        adminMail.click();
+        failure.close();
+        window.open("https://nmhikes.com", "_self");
+    });
+
     async function deleteNamedCache(cacheName) {
-        if ('caches' in window) {
+        if ('caches' in window) { 
             try {
                 const wasDeleted = await caches.delete(cacheName);
-                if (wasDeleted) {
-                    msg += `Cache "${cacheName}" successfully deleted.`
-                    console.log(`Cache "${cacheName}" successfully deleted.`);
-                } else {
-                    msg += `Cache "${cacheName}" not found.`
-                    console.log(`Cache "${cacheName}" not found.`);
+                if (!wasDeleted) {
+                    errors += `Cache "${cacheName}" not found.`;
+                    return false;
                 }
-                return wasDeleted;
             } catch (error) {
-                msg += `Error deleting cache "${cacheName}":` + error;
-                console.error(`Error deleting cache "${cacheName}":`, error);
+                errors += `Error deleting cache "${cacheName}":` + error;
                 throw error;
             }
         } else {
-            console.warn("Cache API not supported in this environment.");
+            errors += "Cache API not supported in this environment.";
             return false;
         }
     }
+    var proceed = $.Deferred();
     navigator.serviceWorker.getRegistrations()
     .then( async function(registrations) { 
-        var i = 0;
-        for(let registration of registrations) {
-            i++;
-            // This code won't execute when there are no registrations
-            if (i === 1) { // In case of multiple service_workers 
-                await registration.unregister();
-                if (typeof msg !== 'undefined') {
-                    msg += "Unregistered service worker\n";
-                }
-                await deleteNamedCache("offline");
-                var status = await clearObjectStore();
-                if (status === 'cleared') {
-                    msg += "\nIndexedDB data cleared";
-                } else {
-                    msg += "\nThere was an error clearing the indexed " 
-                        + "db: " + status;
+        if (registrations.length !== 0) {
+            var i = 0;
+            for(let registration of registrations) {
+                i++;
+                if (i === 1) { // In case of multiple service_workers 
+                    var unreg = await registration.unregister();
+                    if (!unreg) {
+                        errors += "Service worker not unregistered";
+                    }
                 }
             }
         }
-        var allmaps = localStorage.getItem('mapnames');
-        if (allmaps !== null) {
-            var maplist = allmaps.split(",");
-            if (maplist.length > 0 && maplist[0] !== "none") {
-                for (let k=0; k<maplist.length; k++) {
-                    localStorage.removeItem(maplist[k]);
-                    msg += "\nRemoved " + maplist[k];
-                }
-            }
-            localStorage.removeItem('mapnames');
-            msg += "\nMapnames removed";
+        proceed.resolve()
+    });
+    $.when(proceed).then( async () => {
+        await deleteNamedCache(CACHE_NAMES.code);
+        if (errors === '') {
+            script_ok.showModal();
+        } else {
+            p_element.textContent = errors;
+            failure.showModal();
         }
-        alert(msg);
     });
 </script>
 

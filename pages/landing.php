@@ -4,7 +4,7 @@
  * invocation of this script by the user will determine membership.
  * Internet connection is required up to this point. Members will
  * be pointed to member_landing.php which installs the service
- * worker and offline cache. After that installation, 'offline first'
+ * worker and offline caches. After that installation, 'offline first'
  * is in play, meaning cached assets will respond to the selected
  * fetches instead of fetching from the server. Non-members will
  * proceed without offline access. 

@@ -102,8 +102,6 @@ require "../php/global_boot.php";
 
 <!-- May be unnecessary... -->
 <script src="../uninstall_service_workers.js"></script>
-<script type="text/javascript">
-    deleteNamedCache("offline"); 
-</script>
+
 </body>
 </html>

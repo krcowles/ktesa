@@ -21,7 +21,10 @@ if (screen.orientation) {
     });
 }
 
-const MAIN_CACHE = "offline";
+const CACHE_NAMES = {
+    tiles: 'map_tiles',
+    code: 'map_source'
+};
 // hide some display options; default display is #imphike
 $('#impgpx').hide();
 $('#rect_btns').hide();
@@ -819,7 +822,7 @@ async function saveMapTiles(userMap) {
     } else {
         await storeMap(userMap, map_center, zoom_level, false);
     }
-    caches.open(MAIN_CACHE)
+    caches.open(CACHE_NAMES.tiles)
     .then ( (cache) => {
         for (let j=0; j<tilecnt; j++) {
             bar = (j+1) * incr;

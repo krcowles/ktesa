@@ -14,7 +14,10 @@
  * exist...
  */
 // Globals
-const MAIN_CACHE = 'offline';
+const CACHE_NAMES = {
+    tiles: 'map_tiles',
+    code: 'map_source'
+};
 var leaflet_map;
 var polydat = [];
 var track_poly;
@@ -196,7 +199,7 @@ $('body').on('click', '#delmap', function () {
         // baseSet should now contain only no overlapping urls
         urls2delete = Array.from(baseSet);
     }
-    caches.open(MAIN_CACHE)
+    caches.open(CACHE_NAMES.tiles)
         .then((cache) => {
         let cnt = 0;
         urls2delete.forEach((url) => {

@@ -1,14 +1,22 @@
-var save_tiles = false;
 /**
- * Pre-load cache with only the 'use offline' page resources
- * NOTE: use of console.log can be unreliable
+ * This service worker is installed in 'member_landing.html', hence
+ * all map source code assets are cached in the 'code' cache prior to
+ * saving or using an offline map. Later, when a map is being saved,
+ * the maptiles calculated in saveOffline.js are cached in the 'tiles'
+ * cache. When a map is used offline, both caches are utilized to
+ * respond to fetch requests.
  */
+const CACHE_NAMES = {
+    tiles: 'map_tiles',
+    code: 'map_source'
+};
+var save_tiles = false; // disable/enable 'puts' in the 'tiles' cache.
+
 self.addEventListener("install", (event) => {
     //self.skipWaiting();  // Useful during debug
-    console.log("ROOT worker install");
     event.waitUntil(
       caches
-      .open("offline")
+      .open(CACHE_NAMES.code)
         .then((cache) => {
             cache.addAll([  // TEST SITE DIR included here...
                 "https://nmhikes.com/pages/useOffline.html",
@@ -30,46 +38,47 @@ self.addEventListener("activate", () => {
     self.clients.claim();
 });
  
-// Cache loader - multiple handlers require
-const putInCache = async (request, response) => {
-    const cache = await caches.open("offline");
-    await cache.put(request, response);
-};
-
 /**
  * This event handler is only active upon first entering the
- * member_landing.html site, and then it is removed. It will allow
- * the cache preload to complete, and then the 'cache first' handler
- * will prevail.
+ * 'member_landing.html' site, and then it is removed. It will allow
+ * the cache preload to complete, and is then terminated. Thus, it
+ * will not store additional fetches to other nmhikes.com pages.
  */
-const preloadHandler = (event) => {
-    event.respondWith(preload(event.request));
+const putInPreload = async (request, response) => {
+    const cache = await caches.open(CACHE_NAMES.code);
+    await cache.put(request, response);
 };
 const preload = async (request) => {
     const networkResponse = await fetch(request);
     var resource_url = request.url;
     var url_string = resource_url.toString();
     if (request.method === "GET" && url_string.includes("nmhikes.com")) {
-        putInCache(request, networkResponse.clone());
+        putInPreload(request, networkResponse.clone());
     }
     return networkResponse;
 };
+const preloadHandler = (event) => {
+    event.respondWith(preload(event.request));
+};
 self.addEventListener('fetch', preloadHandler);
+// When done caching source code, remove the listener
 setTimeout(() => {
     self.removeEventListener('fetch', preloadHandler);
 }, 200);
 
 /**
- * This 'cache first' handler will ignore adds to the cache until 
- * a message is received during 'save maps' which will enable caching
- * of map tiles. When the 'save maps' routine is done, another message
- * is received to disable further caching.
+ * The 'tiles' cache will now be used to cache map tiles specified by
+ * the 'saveOffline.js' routine. This handler will ignore adds to the
+ * cache until a message is received during 'save maps' which will enable
+ * caching of map tiles. When the 'save maps' routine is done, another
+ * message is received to disable further caching. When not caching tiles,
+ * -all- caches will be searched for a match when an item is fetched.
  */
-const responseHandler = (event) => {
-    event.respondWith(cacheFirst(event.request));
+const putInCache = async (request, response) => {
+    const cache = await caches.open(CACHE_NAMES.tiles);
+    await cache.put(request, response);
 };
 const cacheFirst = async (request) => {
-    //console.log(request);
     const responseFromCache = await caches.match(request, {ignoreVary: true});
     if (responseFromCache) {
         return responseFromCache;
@@ -79,6 +88,9 @@ const cacheFirst = async (request) => {
         putInCache(request, responseFromNetwork.clone())
     }
     return responseFromNetwork;
+};
+const responseHandler = (event) => {
+    event.respondWith(cacheFirst(event.request));
 };
 self.addEventListener('fetch', responseHandler);
 
