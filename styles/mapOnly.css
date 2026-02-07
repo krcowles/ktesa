@@ -130,7 +130,6 @@ input[id^=q] {
 
 #map {
   box-sizing: border-box;
-  overflow: hidden;
   height: 100%;
   border: 1px solid #AAA;
   margin-left: 0px;

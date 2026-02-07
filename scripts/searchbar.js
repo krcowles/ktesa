@@ -48,6 +48,9 @@ function popupHikeName(hikename) {
                     break;
                 }
             }
+            if (found) {
+                break;
+            }
         }
     }
     if (!found) {
@@ -63,6 +66,35 @@ function popupHikeName(hikename) {
     if (!found) {
         alert("This hike cannot be located in the list of hikes");
         infoWin_zoom = false;
+    }
+    if (found) {
+        $.when (infoSet).then( () => {
+            const mapdiv = $('#map').detach();
+            // WHY IS BODY HEIGHT > WINDOW HEIGHT??
+            $('body').height(initialBodyHt);
+            $('#mapview').remove();
+            $('#nav').after(mapdiv);
+            const adjHt = initialBodyHt - navht;
+            $('#map').height(adjHt);
+            if (infoHeight > adjHt/2) {
+                const bounds = map.getBounds();
+                const north = bounds.getNorthEast().lat();
+                const east  = bounds.getNorthEast().lng();
+                const south = bounds.getSouthWest().lat();
+                const west  = bounds.getSouthWest().lng();
+                // define #px movement required:
+                const avail_lat = north - south;      // total map lat displayed
+                const latDegPerPx = avail_lat/adjHt;  // degrees per pixel
+                const latAdj = (latDegPerPx * infoHeight)/2;
+                const newNorth = north + latAdj;
+                const newSouth = south + latAdj;
+                panning = true;
+                const ne = new google.maps.LatLng(newNorth, east);
+                const sw = new google.maps.LatLng(newSouth, west);
+                var AdjBounds = new google.maps.LatLngBounds(sw, ne);
+                map.fitBounds(AdjBounds);
+            }
+        });
     }
 }
 /**

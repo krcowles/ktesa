@@ -19,9 +19,11 @@
  */
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
+ * For reasons not understood, the body height is > the window height!
  */
+const initialBodyHt = $('body').height();
 const mapview = window.innerHeight;
-const navht = $('#nav').height();
+const navht = $('#nav').outerHeight(true);
 const srch_div_ht = $('#imphike').height();
 const map_ht = mapview - navht - srch_div_ht - 12 + "px";
 $('#map').css('height', map_ht);
@@ -143,8 +145,6 @@ NM.forEach(function (hikeobj) {
     iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
     iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
     iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-    const nm_icon = document.createElement("IMG");
-    nm_icon.src = "../images/pins/greennm.png";
     var nm_title = hikeobj.name;
     var nm_marker = { position: mrkr_loc, iw_content: iwContent, title: nm_title };
     nm_marker_data.push(nm_marker);
@@ -200,6 +200,15 @@ function initMap() {
         content: "",
         disableAutoPan: true,
         maxWidth: 400
+    });
+    google.maps.event.addListener(infoWindow, 'domready', function() {
+        // Get the InfoWindow container element
+        const iwOuter = document.querySelector('.gm-style-iw-c');
+        if (iwOuter) {
+            infoHeight = iwOuter.offsetHeight;
+            infoSet.resolve();
+            //console.log('InfoWindow height:', infoHeight);
+        }
     });
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
     const nm_markers = nm_marker_data.map((mrkr_data) => {
