@@ -48,11 +48,12 @@
 <p id="cookie_state">OK</p>
 
 <dialog id="update">
-    <p>There has been a software upgrade for offline maps - do you wish to install it? If yes,
-        you will also have to clear your browser's cache - any saved maps are retained. If not,
-        no problem - keep on using offline maps as is.</p>
-    <button id="proceed" type="button" class="btn btn-sm btn-success">Update</button><br /><br />
-    <button id="keep" type="button" class="btn btn-sm btn-warning">Not Now</button><br />
+    <p>A software upgrade has successfully completed</p>
+    <button id="ok" type="button" class="btn btn-sm btn-success">OK</button><br /><br />
+</dialog> 
+<dialog id="noupdate">
+    <p>A software upgrade did not complete. The admin has been notified</p>
+    <button id="notok" type="button" class="btn btn-sm btn-success">OK</button><br /><br />
 </dialog> 
 
 <h2 id="welcome">The New Mexico Hiking Site</h2>
@@ -101,7 +102,142 @@
 <script src="../scripts/cacheDeleteFct.js"></script>
 <script src="../scripts/landing.js"></script>
 
-<script src="../install_service_worker.js"></script>
+<script type="text/javascript">
+    // only members will be on this page
+    const CACHE_NAMES = {
+        tiles: 'map_tiles',
+        code: 'map_source'
+    };
+    // dialog box operation
+    const update_success = document.getElementById('update');
+    const update_failure = document.getElementById('noupdate');
+    $('#ok').addEventListener("click", () => {
+        update_success.close();
+    });
+    $('#notok').addEventListener("click", () => {
+        update_failure.close();
+    });
+
+    // routines called during software update process
+    function sw_update() {
+        return new Promise((resolve) => { 
+            var errors = '';
+            var proceed = $.Deferred();
+
+            navigator.serviceWorker.getRegistrations()
+            .then( async function(registrations) { 
+                // the existence of registration was already verified
+                // in the calling routine
+                var i = 0;
+                for(let registration of registrations) {
+                    i++;
+                    if (i === 1) { // In case of multiple service_workers 
+                        var unreg = await registration.unregister();
+                        if (!unreg) {
+                            errors += "Service worker not unregistered";
+                        }
+                    }
+                }
+                proceed.resolve()
+            });
+            $.when(proceed).then( async () => {
+                var status = await deleteNamedCache(CACHE_NAMES.code);
+                errors += status;
+                resolve(errors);
+            });
+        },
+        (reject) => {
+            update_failure.showModal();
+        });
+    }
+    async function install_service_worker() {
+        try {
+            const registration = await navigator.serviceWorker
+            // for localhost, scope: "/"; server, scope "nmhikes.com/""
+            .register("/service_worker.js", {scope: "/"})
+            .then((reg) => {
+                if (reg.installing) {
+                    console.log("Service worker installing");
+                } else if (reg.waiting) {
+                    console.log("Service worker installed");
+                } else if (reg.active) {
+                    console.log("Service worker active");
+                }
+                reg.addEventListener('updatefound', () => {
+                    // An updated service worker while reg.installing
+                    const newWorker = reg.installing;
+                    switch (newWorker.state) {
+                    case "installed":
+                        console.log("Updated worker installed");
+                        break;
+                    case "activated":
+                        console.log("Updated worker active");
+                        break;
+                    case "redundant":
+                        console.log("Discarded: failed to install");
+                    }
+                    newWorker.addEventListener('statechange', () => {
+                        console.log("Updated with new service worker");
+                    });
+                });
+            });        
+        } catch (error) {
+                console.error(`Registration failed with ${error}`);
+                udate_failure.showModal();
+        }
+    }
+    /**
+     * Check to see if a service worker is already registered.
+     * If not registered, skip the upgrade and proceed to install
+     * the service worker, as in this case, the member has never
+     * visited the mobile site before now and the new code will
+     * load 'from scratch'. If registered, AND the stored version
+     * doesn't match the current stated html version, then perform
+     * the upgrade.
+     */
+    update = false;
+    var sw_version = $('#version').text(); // string
+    var memberMapnames = localStorage.getItem('mapnames');
+    /**
+     * Due to multiple previous code versions, the state of
+     * mapnames is uncertain. If it doesn't exist, set it.
+     * If it does exist, it will remain untouched.
+     */
+    if (memberMapnames === null) {
+        localStorage.setItem('mapnames', 'none');
+    }
+    var saved_ver = localStorage.getItem('saved_ver');
+    // Has a worker been registered?
+    navigator.serviceWorker.getRegistration()
+    .then(registration => {
+        if (registration) {
+            if (saved_ver === null) {
+                update = true;
+            } else {
+                if (saved_ver !== sw_version) {
+                    update = true;
+                }
+            } // otherwise, no update
+            if (update) {
+                sw_update()
+                .then( async (errs) => {
+                    if (errs = '') {
+                        await install_service_worker();
+                        localStorage.setItem('saved_ver', sw_version);
+                        update_success.showModal();
+                    } else {
+                        update_failure.showModal();
+                        // send admin email...
+                    }
+                });
+            }
+        }  else {
+            // not registered? no update, no update message
+            localStorage('saved_ver', sw_version);
+            install_service_worker();
+        }
+    });
+</script>
 
 </body>
 </html>

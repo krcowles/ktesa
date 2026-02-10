@@ -16,10 +16,6 @@ declare function deleteNamedCache(cache: string): void;
  */
 $(function() {
 
-const CACHE_NAMES = {
-    tiles: 'map_tiles',
-    code: 'map_source'
-};
 // Show benefits, depending on available space...
 const logo = document.getElementById('logo') as HTMLDivElement;
 const logo_ht = logo.clientHeight as number;
@@ -37,42 +33,6 @@ if (bene_alloc <= bene_space) {
 }
 
 const member = $('#cookie_state').text() === 'OK' ? true : false;
-
-if (member) {
-    const name_store = localStorage.getItem('mapnames');
-    const sw_version = parseInt($('#version').text());
-    const ud_state = 'A' + sw_version;
-    if (name_store === null) {
-        // this is the user's first entry to the mobile site...
-        localStorage.setItem('mapnames', 'none');
-        localStorage.setItem('ud_resp', ud_state);
-    }
-    // address users already using maps but have no 'ud_resp' yet
-    const ls_exists = localStorage.getItem('ud_resp') === null ? false : true;
-    if (!ls_exists) {
-        localStorage.setItem('ud_resp', ud_state);
-    }
-    const update_dialog = document.getElementById('update') as HTMLDialogElement;
-    const reload = document.getElementById('proceed') as HTMLButtonElement
-    const stay = document.getElementById('keep') as HTMLButtonElement;
-    // Accept update
-    reload.addEventListener("click", () => {
-        update_dialog.close();
-        localStorage.setItem('ud_resp', 'A'+ sw_version);
-        window.open("../tools/offlineReset.html", "_self");
-    });
-    // Reject update
-    stay.addEventListener("click", () => {
-        localStorage.setItem('ud_resp', 'R'+ sw_version);
-        update_dialog.close();
-    });
-    // Test for software upgrades
-    const update_response = localStorage.getItem('ud_resp') as string;
-    const my_version = parseInt(update_response.substring(1));
-    if (sw_version > my_version){
-        update_dialog.showModal();
-    }
-}
 
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
@@ -95,20 +55,38 @@ $('#membership').on('change', function() {
                     deleteNamedCache(CACHE_NAMES.tiles);
                     clearObjectStore();
                     localStorage.removeItem('mapnames');
-                    localStorage.removeItem('ud_resp');
+                    localStorage.removeItem('current_ver');
+                    var proceed = $.Deferred();
+                    navigator.serviceWorker.getRegistrations()
+                    .then( async function(registrations) { 
+                        if (registrations.length !== 0) {
+                            var i = 0;
+                            for(let registration of registrations) {
+                                i++;
+                                if (i === 1) { // In case of multiple service_workers 
+                                    var unreg = await registration.unregister();
+                                    if (!unreg) {
+                                        console.log("Not unregistered...");
+                                    }
+                                }
+                            }
+                        }
+                        proceed.resolve()
+                    });
+                    $.when(proceed).then( async () => {
+                        $.ajax({
+                            url: '../accounts/logout.php?expire=N',
+                            method: "get",
+                            success: function () {
+                                window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
+                            },
+                            error: function () {
+                                alert("Something went wrong!");
+                            }
+                        });    
+                    });
                 }
             }
-            $.ajax({
-                url: '../accounts/logout.php?expire=N',
-                method: "get",
-                success: function () {
-                    window.open("../index.html", "_self");
-                    // Service worker will be uninstalled...
-                },
-                error: function () {
-                    alert("Something went wrong!");
-                }
-            });
             break;
         default:
             alert("This should never happen!");

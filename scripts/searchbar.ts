@@ -2,6 +2,10 @@
 declare var infoWin_zoom: boolean;
 declare var hikeSources: JQueryUI.AutocompleteOptions;
 declare var locaters: MarkerIds;
+declare var infoHeight: number;  // mapOnly.php
+interface Window {
+    navht: number;  // mapOnly.js
+}
 interface AutoItem {
     value: string;
     label: string;
@@ -17,6 +21,7 @@ interface HiLite {
  * 
  * @version 3.0 Modified method for deploying Latin1 charset
  * @version 4.0 Changed to enable clearing searchbar
+ * @version 5.0 Addressed map layout issues
  */
 
 var hilite_obj: HiLite;
@@ -74,6 +79,38 @@ function popupHikeName(hikename: string) {
     if (!found) {
         alert("This hike cannot be located in the list of hikes");
         infoWin_zoom = false;
+    }
+    if (found) {
+        $.when (infoSet).then( () => {
+            const mapdiv = $('#map').detach();
+            $('body').height(mapview);
+            $('#mapview').remove();
+            $('#nav').after(mapdiv);
+            const adjHt = mapview - window.navht;
+            $('#map').height(adjHt);
+            var infoMargin = infoHeight + 40 // white space at top
+            if (infoMargin > adjHt/2) {
+                const bounds = map.getBounds() as google.maps.LatLngBounds;
+                const north = bounds.getNorthEast().lat();
+                const east  = bounds.getNorthEast().lng();
+                const south = bounds.getSouthWest().lat();
+                const west  = bounds.getSouthWest().lng();
+                // define #px movement required:
+                const avail_lat = north - south;      // total map lat displayed
+                const latDegPerPx = avail_lat/adjHt;  // degrees per pixel
+                const latAdj = (latDegPerPx * infoHeight)/2;
+                const newNorth = north + latAdj;
+                const newSouth = south + latAdj;
+                panning = true;
+                const ne = new google.maps.LatLng(newNorth, east);
+                const sw = new google.maps.LatLng(newSouth, west);
+                var AdjBounds = new google.maps.LatLngBounds(sw, ne);
+                map.fitBounds(AdjBounds);
+            }
+            // infoSet is defined once in mapOnly.php, and once resolved 
+            // needs to be re-defined:
+            infoSet = $.Deferred();
+        });
     }
 }
 /**

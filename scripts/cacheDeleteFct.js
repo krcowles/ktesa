@@ -1,19 +1,25 @@
 async function deleteNamedCache(cacheName) {
+    var msg = '';
     if ('caches' in window) {
         try {
             const wasDeleted = await caches.delete(cacheName);
             if (wasDeleted) {
-                console.log(`Cache "${cacheName}" successfully deleted.`);
+                msg = `Cache "${cacheName}" successfully deleted.`
+                console.log(msg);
+                return msg;
             } else {
-                console.log(`Cache "${cacheName}" not found.`);
+                msg = `Cache "${cacheName}" not found.`
+                console.error(msg);
+                return msg;
             }
-            return wasDeleted;
         } catch (error) {
-            console.error(`Error deleting cache "${cacheName}":`, error);
-            throw error;
+            msg = `Error deleting cache "${cacheName}":`
+            console.error(msg, error);
+            return msg;
         }
     } else {
-        console.warn("Cache API not supported in this environment.");
-        return false;
+        msg = "Cache API not supported in this environment."
+        console.error(msg);
+        return msg;
     }
 }

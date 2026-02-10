@@ -7,6 +7,7 @@
  *
  * @version 3.0 Modified method for deploying Latin1 charset
  * @version 4.0 Changed to enable clearing searchbar
+ * @version 5.0 Addressed map layout issues
  */
 var hilite_obj;
 // Clear searchbar contents when user clicks on the "X"
@@ -48,9 +49,6 @@ function popupHikeName(hikename) {
                     break;
                 }
             }
-            if (found) {
-                break;
-            }
         }
     }
     if (!found) {
@@ -68,24 +66,24 @@ function popupHikeName(hikename) {
         infoWin_zoom = false;
     }
     if (found) {
-        $.when (infoSet).then( () => {
+        $.when(infoSet).then(() => {
             const mapdiv = $('#map').detach();
-            // WHY IS BODY HEIGHT > WINDOW HEIGHT??
-            $('body').height(initialBodyHt);
+            $('body').height(mapview);
             $('#mapview').remove();
             $('#nav').after(mapdiv);
-            const adjHt = initialBodyHt - navht;
+            const adjHt = mapview - window.navht;
             $('#map').height(adjHt);
-            if (infoHeight > adjHt/2) {
+            var infoMargin = infoHeight + 40; // white space at top
+            if (infoMargin > adjHt / 2) {
                 const bounds = map.getBounds();
                 const north = bounds.getNorthEast().lat();
-                const east  = bounds.getNorthEast().lng();
+                const east = bounds.getNorthEast().lng();
                 const south = bounds.getSouthWest().lat();
-                const west  = bounds.getSouthWest().lng();
+                const west = bounds.getSouthWest().lng();
                 // define #px movement required:
-                const avail_lat = north - south;      // total map lat displayed
-                const latDegPerPx = avail_lat/adjHt;  // degrees per pixel
-                const latAdj = (latDegPerPx * infoHeight)/2;
+                const avail_lat = north - south; // total map lat displayed
+                const latDegPerPx = avail_lat / adjHt; // degrees per pixel
+                const latAdj = (latDegPerPx * infoHeight) / 2;
                 const newNorth = north + latAdj;
                 const newSouth = south + latAdj;
                 panning = true;
@@ -94,6 +92,9 @@ function popupHikeName(hikename) {
                 var AdjBounds = new google.maps.LatLngBounds(sw, ne);
                 map.fitBounds(AdjBounds);
             }
+            // infoSet is defined once in mapOnly.php, and once resolved 
+            // needs to be re-defined:
+            infoSet = $.Deferred();
         });
     }
 }

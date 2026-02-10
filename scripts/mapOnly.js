@@ -16,16 +16,16 @@
  * @version 2.0 Rework asynchronous map handlers per map.ts
  * @version 3.0 Support for New GoogleMap marker type (AdvancedMarkerElement)
  * @version 4.0 Eliminated logo, increased space for map
+ * @version 5.0 Addressed some layout issues for map pages
  */
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
- * For reasons not understood, the body height is > the window height!
  */
-const initialBodyHt = $('body').height();
 const mapview = window.innerHeight;
+$('body').height(mapview);
 const navht = $('#nav').outerHeight(true);
-const srch_div_ht = $('#imphike').height();
-const map_ht = mapview - navht - srch_div_ht - 12 + "px";
+const srch_div_ht = $('#imphike').outerHeight(true);
+const map_ht = mapview - navht - srch_div_ht + "px";
 $('#map').css('height', map_ht);
 const hike_mrkr_icon = "../images/blue_nobg.png";
 // <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
@@ -145,6 +145,8 @@ NM.forEach(function (hikeobj) {
     iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
     iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
     iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+    const nm_icon = document.createElement("IMG");
+    nm_icon.src = "../images/pins/greennm.png";
     var nm_title = hikeobj.name;
     var nm_marker = { position: mrkr_loc, iw_content: iwContent, title: nm_title };
     nm_marker_data.push(nm_marker);
@@ -201,7 +203,7 @@ function initMap() {
         disableAutoPan: true,
         maxWidth: 400
     });
-    google.maps.event.addListener(infoWindow, 'domready', function() {
+    google.maps.event.addListener(infoWindow, 'domready', function () {
         // Get the InfoWindow container element
         const iwOuter = document.querySelector('.gm-style-iw-c');
         if (iwOuter) {

@@ -1,4 +1,5 @@
 /// <reference path="./map.d.ts" />
+declare var infoSet: JQuery.Deferred<void>;  // mapOnly.php
 /**
  * @fileoverview This routine initializes the google map to view the state
  * of New Mexico, places markers on hike locations, and clusters the markers
@@ -15,15 +16,17 @@
  * @version 2.0 Rework asynchronous map handlers per map.ts
  * @version 3.0 Support for New GoogleMap marker type (AdvancedMarkerElement)
  * @version 4.0 Eliminated logo, increased space for map
+ * @version 5.0 Addressed some layout issues for map pages
  */
 
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
 const mapview = window.innerHeight;
-const navht = $('#nav').height() as number;
-const srch_div_ht = $('#imphike').height() as number;
-const map_ht = mapview - navht - srch_div_ht -12 + "px";
+$('body').height(mapview);
+const navht = $('#nav').outerHeight(true) as number;
+const srch_div_ht = $('#imphike').outerHeight(true) as number;
+const map_ht = mapview - navht - srch_div_ht + "px";
 $('#map').css('height', map_ht);
 const hike_mrkr_icon = "../images/blue_nobg.png";
 // <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
@@ -204,6 +207,15 @@ function initMap() {
 		content: "",
 		disableAutoPan: true,
 		maxWidth: 400
+	});
+	google.maps.event.addListener(infoWindow, 'domready', function() {
+		// Get the InfoWindow container element
+		const iwOuter = document.querySelector('.gm-style-iw-c') as HTMLElement;
+		if (iwOuter) {
+			infoHeight = iwOuter.offsetHeight;
+			infoSet.resolve();
+			//console.log('InfoWindow height:', infoHeight);
+		}
 	});
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	const nm_markers = nm_marker_data.map((mrkr_data: NM_Marker_Data) => { // create array of markers

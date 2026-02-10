@@ -7,23 +7,22 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 		<meta name="geo.position" content="35.5554998; -106.2029837" />
 		<meta name="ICBM" content="35.5554998, -106.2029837" />
-		<!-- in order to create deferred object to pass to iframe parent: -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 	<body style="margin:0px;">
+
 		<script type="text/javascript">
 			API = 'google'; // can be either 'leaflet' or 'google'
 			if (self.API && API.match(/^g/i)) {
 				google_api_key = 'API_KEY_HERE';
 				language_code = '';
-				document.writeln('<script src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'" type="text/javascript"><'+'/script>');
+				document.writeln('<script async src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'" type="text/javascript"><'+'/script>');
 			} else {
 				document.writeln('<link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet" />');
 				document.writeln('<script src="https://unpkg.com/leaflet/dist/leaflet.js" type="text/javascript"><'+'/script>');
         	}
 			thunderforest_api_key = ''; // To display OpenStreetMap tiles from ThunderForest, you need a key (http://www.thunderforest.com/docs/apikeys/)
-			// To display topo tiles from IGN.fr, you need a key (https://api.ign.fr/)
-			ign_api_key = '';
+			tracestrack_api_key = ''; // To display topo tiles from Tracestrack (https://console.tracestrack.com/explorer)
+			os_api_key = ''; // To display topo tiles from the UK Ordnance Survey (https://docs.os.uk/os-apis/core-concepts/getting-started-with-an-api-project)
 			var mapdone = new $.Deferred();  // asynchonous event for iframe-parent comms
 		</script>
 		

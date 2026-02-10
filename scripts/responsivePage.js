@@ -27,7 +27,7 @@ const setMobileView = () => {
     var canvasWidth;
     // Height calcs
     var vpHeight = window.innerHeight;
-    var consumed = $('#nav').height() + $('#logo').height();
+    var consumed = $('#nav').height();
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.64 * usable);
     var chartHt = Math.floor(0.35 * usable);

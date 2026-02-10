@@ -60,13 +60,31 @@ $('#logout').on('click', function() {
         deleteNamedCache(CACHE_NAMES.tiles);
         clearObjectStore();
         localStorage.removeItem('mapnames');
-        localStorage.removeItem('ud_resp');
+        localStorage.removeItem('current_ver');
         $.ajax({
             url: '../accounts/logout.php?expire=N',
             method: "get",
             success: function () {
-                window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
-                // Service worker will be uninstalled...
+                var proceed = $.Deferred();
+                navigator.serviceWorker.getRegistrations()
+                .then( async function(registrations) { 
+                    if (registrations.length !== 0) {
+                        var i = 0;
+                        for(let registration of registrations) {
+                            i++;
+                            if (i === 1) { // In case of multiple service_workers 
+                                var unreg = await registration.unregister();
+                                if (!unreg) {
+                                    console.log("Not unregistered...");
+                                }
+                            }
+                        }
+                    }
+                    proceed.resolve()
+                });
+                $.when(proceed).then( async () => {
+                    window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
+                });
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
                 if (appMode === 'development') {
