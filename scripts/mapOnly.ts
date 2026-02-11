@@ -149,8 +149,6 @@ NM.forEach(function(hikeobj) {
 		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
 		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
 		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-	const nm_icon = document.createElement("IMG") as HTMLImageElement;
-	nm_icon.src = "../images/pins/greennm.png";
 	var nm_title = hikeobj.name;
 	var nm_marker = {position: mrkr_loc, iw_content: iwContent, title: nm_title};
 	nm_marker_data.push(nm_marker)

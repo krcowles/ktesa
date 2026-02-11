@@ -17,7 +17,7 @@
 </head>
 
 <body>
-<!-- Admin: Sets new version value when it's time for an offlibe maps software update! -->
+<!-- Admin: Sets new version when it's time for a software update! -->
 <span id="version" style="display:none;">1</span>
 
 <div id="logo">
@@ -111,24 +111,26 @@
     // dialog box operation
     const update_success = document.getElementById('update');
     const update_failure = document.getElementById('noupdate');
-    $('#ok').addEventListener("click", () => {
+    $('#ok').on("click", () => {
         update_success.close();
     });
-    $('#notok').addEventListener("click", () => {
+    $('#notok').on("click", () => {
         update_failure.close();
     });
-
+    console.log("Begin checking for updates...");
+    
     // routines called during software update process
     function sw_update() {
         return new Promise((resolve) => { 
             var errors = '';
             var proceed = $.Deferred();
-
+            console.log("sw_update started");
             navigator.serviceWorker.getRegistrations()
             .then( async function(registrations) { 
                 // the existence of registration was already verified
                 // in the calling routine
                 var i = 0;
+                console.log("Start unregister loop");
                 for(let registration of registrations) {
                     i++;
                     if (i === 1) { // In case of multiple service_workers 
@@ -138,19 +140,23 @@
                         }
                     }
                 }
+                console.log("finished unregister");
                 proceed.resolve()
             });
             $.when(proceed).then( async () => {
                 var status = await deleteNamedCache(CACHE_NAMES.code);
                 errors += status;
+                console.log("cache deleted; errors: ", errors);
                 resolve(errors);
             });
         },
         (reject) => {
+            console.log("Promise in sw_update did not resolve");
             update_failure.showModal();
         });
     }
     async function install_service_worker() {
+        console.log("Start install");
         try {
             const registration = await navigator.serviceWorker
             // for localhost, scope: "/"; server, scope "nmhikes.com/""
@@ -165,6 +171,7 @@
                 }
                 reg.addEventListener('updatefound', () => {
                     // An updated service worker while reg.installing
+                    console.log("in 'reg.addEventListener'");
                     const newWorker = reg.installing;
                     switch (newWorker.state) {
                     case "installed":
@@ -176,9 +183,6 @@
                     case "redundant":
                         console.log("Discarded: failed to install");
                     }
-                    newWorker.addEventListener('statechange', () => {
-                        console.log("Updated with new service worker");
-                    });
                 });
             });        
         } catch (error) {
@@ -204,28 +208,42 @@
      * If it does exist, it will remain untouched.
      */
     if (memberMapnames === null) {
+        console.log("mapnames was not set");
         localStorage.setItem('mapnames', 'none');
+    } else {
+        console.log("mapnames: ", memberMapnames);
     }
     var saved_ver = localStorage.getItem('saved_ver');
+    if (saved_ver === null) {
+        console.log("saved_ver null");
+    } else {
+        console.log("saved_ver: ", saved_ver);
+    }
     // Has a worker been registered?
     navigator.serviceWorker.getRegistration()
     .then(registration => {
         if (registration) {
             if (saved_ver === null) {
                 update = true;
+                console.log("update forced by saved_ver null");
             } else {
                 if (saved_ver !== sw_version) {
                     update = true;
+                    console.log("update forced by mismatch ver");
                 }
             } // otherwise, no update
             if (update) {
+                console.log("update initiated");
                 sw_update()
                 .then( async (errs) => {
-                    if (errs = '') {
+                    console.log("errs: ", errs)
+                    if (errs === '') {
+                        console.log("no errors after update");
                         await install_service_worker();
                         localStorage.setItem('saved_ver', sw_version);
                         update_success.showModal();
                     } else {
+                        console.log("Errors: ", errs)
                         update_failure.showModal();
                         // send admin email...
                     }
@@ -233,7 +251,8 @@
             }
         }  else {
             // not registered? no update, no update message
-            localStorage('saved_ver', sw_version);
+            console.log("Not registered");
+            localStorage.setItem('saved_ver', sw_version);
             install_service_worker();
         }
     });

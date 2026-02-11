@@ -215,4 +215,4 @@ window.addEventListener('orientationchange', function () {
         buttonPos();
         favoritesPos();
     });
-*/ 
+*/
