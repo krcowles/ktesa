@@ -113,6 +113,7 @@ function off() {
   Hike Stats
 </button>
 
+<!-- Hike Info/Statistics Modal -->
 <div class="modal fade" id="hikeData" tabindex="-1" aria-labelledby="statlist"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -150,6 +151,35 @@ function off() {
                     target="_blank">GPX File</a></span><br />
                 <span>Download <a id="dwn" href="<?= $gpxfile;?>"
                         download>GPX File</a></span>
+
+
+                <span class="track">Download <a id="dwn" href="#">GPX File</a></span>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Gpx Files Download -->
+<div class="modal fade" id="multigpx" tabindex="-1"
+    aria-labelledby="Download Multiple GPX" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Download Multiple Gpx Fils</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>This hike was created by multiple gpx files.
+                    Click on any or all links to download:</h5>
+                <ul id="idfiles" style="list-style:none;">
+                </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -165,6 +195,7 @@ function off() {
     <?php if (isset($hike_file_list)) : ?>
     var hike_file_list = <?=$hike_file_list;?>;
     <?php endif; ?>
+    var gpx_file_list  = <?=$gpx_files;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>

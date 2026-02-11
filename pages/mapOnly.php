@@ -70,10 +70,12 @@ require "../pages/getFavorites.php";
     var hikeSources = <?=$jsItems;?>; // from autoComplHikes.php
     window.name = "homePage";
     window.newBounds = false;
+    var infoHeight = 0;
+    var infoSet = $.Deferred();
 </script>
 <script src="../scripts/markerclusterer.min.js"></script>
-<script src="../scripts/searchbar.js"></script>
 <script src="../scripts/mapOnly.js"></script>
+<script src="../scripts/searchbar.js"></script>
 <script async defer src="<?=GOOGLE_MAP;?>"></script>
 
 </body>

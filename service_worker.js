@@ -5,15 +5,28 @@
  * the maptiles calculated in saveOffline.js are cached in the 'tiles'
  * cache. When a map is used offline, both caches are utilized to
  * respond to fetch requests.
+ * -- NOTE: instead of allowing the service worker to initiate cache
+ *    fetches during the 'install' phase, an alternative is to load
+ *    the cache in the '.then' clause: [use then( async (cache) => ...]
+ *         const response = await fetch('cache_url');
+ *         await cache.put('cache_url', response);
+ * --
  */
 const CACHE_NAMES = {
     tiles: 'map_tiles',
     code: 'map_source'
 };
-var save_tiles = false; // disable/enable 'puts' in the 'tiles' cache.
+var preloadComplete = false; // stops caching 'code' cache when true
+var save_tiles = false; // disable/enable 'puts' in the 'tiles' cache
+/**
+ * When using a test site, items in the test directory with these
+ * substrings will also be loaded into the code cache
+ */
+var preloadItems = ['useOffline', 'leaflet', 'bootstrap',
+    'jquery', 'popper', 'ktesaOffline'];
 
 self.addEventListener("install", (event) => {
-    //self.skipWaiting();  // Useful during debug
+    self.skipWaiting();  // Useful during debug
     event.waitUntil(
       caches
       .open(CACHE_NAMES.code)
@@ -34,17 +47,20 @@ self.addEventListener("install", (event) => {
     );
 });
 
-self.addEventListener("activate", () => {
-    self.clients.claim();
+self.addEventListener("activate", (event) => {
+    event.waitUntil(clients.claim());
 });
  
 /**
  * This event handler is only active upon first entering the
- * 'member_landing.html' site, and then it is removed. It will allow
- * the cache preload to complete, and is then terminated. Thus, it
+ * 'member_landing.html' site, and then it is disabled. It will allow
+ * the cache preload to complete, and is then bypassed. Thus, it
  * will not store additional fetches to other nmhikes.com pages.
  */
 const putInPreload = async (request, response) => {
+    if (preloadComplete) {
+        return; // don't cache items after initial load
+    }
     const cache = await caches.open(CACHE_NAMES.code);
     await cache.put(request, response);
 };
@@ -52,19 +68,24 @@ const preload = async (request) => {
     const networkResponse = await fetch(request);
     var resource_url = request.url;
     var url_string = resource_url.toString();
-    if (request.method === "GET" && url_string.includes("nmhikes.com")) {
+    var preloadMember = preloadItems.some(item => url_string.includes(item));
+    
+    if (!preloadComplete && preloadMember && request.method === "GET" ) {
         putInPreload(request, networkResponse.clone());
     }
     return networkResponse;
 };
-const preloadHandler = (event) => {
-    event.respondWith(preload(event.request));
-};
-self.addEventListener('fetch', preloadHandler);
-// When done caching source code, remove the listener
+self.addEventListener('fetch', (event) => {
+    if (!preloadComplete) {
+        event.respondWith(preload(event.request));
+    }
+    // Otherwise, let the request pass through normally
+});
+
+// Stop preloading after timeout
 setTimeout(() => {
-    self.removeEventListener('fetch', preloadHandler);
-}, 200);
+    preloadComplete = true;
+}, 3000);
 
 /**
  * The 'tiles' cache will now be used to cache map tiles specified by

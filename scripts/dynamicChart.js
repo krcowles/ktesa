@@ -15,6 +15,7 @@
  * @version 4.2 Segregated #adnote for inclusion only in non-mobile case
  * @version 4.3 Fixed #advisory positioning when scrolling
  * @version 5.0 Added echart measurement between points
+ * @version 5.1 Modified $dnote for mobile compatibility
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames = [];
@@ -27,7 +28,7 @@ var coords; // x,y location of mouse in chart
 var indxOfPt;
 var prevCHairs = false;
 var imageData = new ImageData(10, 10);
-var $dnote;
+var $dnote = $("<div></div>");
 if (!mobile) { // new in 5.0 (see clearPoints line #384)
     var clearModal = document.getElementById('ediff');
     var clearPoints = new bootstrap.Modal(clearModal);
@@ -263,6 +264,9 @@ var chartNote = function () {
         });
         $('#chartline').append($dnote);
     }
+    else {
+        $('body').append($dnote); // empty div
+    }
 };
 /**
  * This function will draw the selected elevation profile in the canvas element
@@ -461,7 +465,9 @@ function findNeighbors(xDataPt, trackno) {
  */
 $(window).on('resize', function () {
     if (do_resize) {
-        $dnote.remove();
+        if (!mobile) {
+            $dnote.remove();
+        }
         prevCHairs = false;
         do_resize = false;
         setTimeout(function () {

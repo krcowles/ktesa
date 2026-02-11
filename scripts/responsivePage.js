@@ -27,7 +27,7 @@ const setMobileView = () => {
     var canvasWidth;
     // Height calcs
     var vpHeight = window.innerHeight;
-    var consumed = $('#nav').height() + $('#logo').height();
+    var consumed = $('#nav').height();
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.64 * usable);
     var chartHt = Math.floor(0.35 * usable);
@@ -130,6 +130,82 @@ $('#favs').on('click', function () {
         }
     });
 });
+var multiDwnld = new bootstrap.Modal(document.getElementById('multigpx'));
+/**
+ * The hike info modal has an option to download the hike's gpx file
+ * NOTE:
+ * couldn't get php headers to download via $.post, so created a local
+ * download file and then removed it after downloading via javascript.
+ */
+function downloadURI(gpxfile) {
+    var link = document.createElement("a");
+    link.download = gpxfile;
+    link.href = gpxfile;
+    link.click();
+    // without delay, the download doesn't complete for multiple gpx
+    setTimeout(function () {
+        $.post("deleteGpx.php", { gpx: gpxfile }, function () {
+            link.remove();
+        });
+    }, 250);
+}
+$('#dwn').on('click', function (ev) {
+    ev.preventDefault();
+    $('#idfiles').empty();
+    if (gpx_file_list.length > 1) {
+        // multiple gpx files...
+        var ajax_files;
+        for (var k = 0; k < gpx_file_list.length; k++) {
+            var dwnldItem = gpx_file_list[k];
+            var gpx_val = Object.keys(dwnldItem);
+            var gpx_filename = gpx_val[0];
+            var json_arr = dwnldItem[gpx_filename];
+            ajax_files = '';
+            json_arr.forEach(function (file, i) {
+                if (i === 0) {
+                    ajax_files = file;
+                }
+                else {
+                    ajax_files += ',' + file;
+                }
+            });
+            var list_el = '<li><a class="dwnldgpx" href="#">' +
+                gpx_filename + '</a><span style="display:none;">' +
+                ajax_files + '</span></li>';
+            $('#idfiles').append(list_el);
+        }
+        multiDwnld.show();
+    }
+    else {
+        // single gpx file: may be multiple json files...
+        var ajax_files = '';
+        var main = gpx_file_list[0];
+        var gpx_val = Object.keys(main);
+        var gpx_filename = gpx_val[0];
+        var json_arr = main[gpx_filename];
+        json_arr.forEach(function (file, i) {
+            if (i === 0) {
+                ajax_files = file;
+            }
+            else {
+                ajax_files += ',' + file;
+            }
+        });
+        // there is no error callback for $.post()
+        $.post("makeGpx.php", { id: hikeno, name: gpx_filename, json_files: ajax_files }, function () {
+            downloadURI(gpx_filename);
+        });
+    }
+});
+$('body').on('click', '.dwnldgpx', function (ev) {
+    ev.preventDefault();
+    var gpx = $(this).text();
+    var file_list = $(this).next().text();
+    $.post("makeGpx.php", { id: hikeno, name: gpx, json_files: file_list }, function () {
+        downloadURI(gpx);
+    });
+    return;
+});
 window.addEventListener('orientationchange', function () {
     location.reload();
 });
@@ -139,4 +215,4 @@ window.addEventListener('orientationchange', function () {
         buttonPos();
         favoritesPos();
     });
-*/ 
+*/
