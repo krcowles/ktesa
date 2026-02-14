@@ -40,21 +40,29 @@
         </div>
 
         <div id="rightside">
-            <span id="logo_right">w/Tom &amp; Ken</span>
             <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+            <span id="logo_right">w/Tom &amp; Ken</span>
         </div>
     </div>   
 </div>
 <p id="cookie_state">OK</p>
 
 <dialog id="update">
-    <p>A software upgrade has successfully completed</p>
+    <p>A software upgrade has successfully completed</p><br />
     <button id="ok" type="button" class="btn btn-sm btn-success">OK</button><br /><br />
 </dialog> 
 <dialog id="noupdate">
-    <p>A software upgrade did not complete. The admin has been notified</p>
-    <button id="notok" type="button" class="btn btn-sm btn-success">OK</button><br /><br />
+    <div id="errormail">A software upgrade did not complete.<br />
+        We apologize, but automated email cannot be guaranteed. Please email 
+        <span id="adminmail"></span> and attach the following
+        message, along with your username: we will work to resolve
+        this issue:<br />
+        <span id="adminmsg"></span><br /><br />Thank you!
+    </div><br />
+    <button id="notok" type="button" class="btn btn-sm btn-success">Close</button><br /><br />
 </dialog> 
+
+
 
 <h2 id="welcome">The New Mexico Hiking Site</h2>
 <div class="landing_content">
@@ -117,6 +125,12 @@
     $('#notok').on("click", () => {
         update_failure.close();
     });
+    // failure vars
+    const sendEmail = document.getElementById('adminmail');
+    const sendEmsg  = document.getElementById('adminmsg');
+    const encodedEmail = "a3Jjb3dsZXMyOUBnbWFpbC5jb20="; 
+    const adminEmail = atob(encodedEmail);
+    
     console.log("Begin checking for updates...");
     
     // routines called during software update process
@@ -171,7 +185,7 @@
                 }
                 reg.addEventListener('updatefound', () => {
                     // An updated service worker while reg.installing
-                    console.log("in 'reg.addEventListener'");
+                    console.log("registration in process");
                     const newWorker = reg.installing;
                     switch (newWorker.state) {
                     case "installed":
@@ -217,7 +231,7 @@
     if (saved_ver === null) {
         console.log("saved_ver null");
     } else {
-        console.log("saved_ver: ", saved_ver);
+        console.log("saved_ver on entry: ", saved_ver);
     }
     // Has a worker been registered?
     navigator.serviceWorker.getRegistration()
@@ -241,11 +255,14 @@
                         console.log("no errors after update");
                         await install_service_worker();
                         localStorage.setItem('saved_ver', sw_version);
+                        console.log("New saved_ver: ", sw_version);
                         update_success.showModal();
                     } else {
-                        console.log("Errors: ", errs)
+                        console.log("Errors: ", errs);
+                        sendEmail.textContent = adminEmail;
+                        sendEmsg.textContent = errs;
+                        console.log("New saved_ver not set");
                         update_failure.showModal();
-                        // send admin email...
                     }
                 });
             }

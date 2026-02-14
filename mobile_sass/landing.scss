@@ -1,4 +1,4 @@
-$page-bg: #fcf4e8;
+$page-bg: #eaeaea;
 $page-fontsize: 16px;
 $page-fonts: arial, verdana;
 $page-margin: 0;
@@ -11,7 +11,19 @@ body {
     }
     overflow: hidden;
 }
+/* navigation bar */
 
+.navbar {
+    background-color: darkslategray;
+  }
+  
+  .nav-link {
+    color: whitesmoke !important;
+  }
+  
+  ul.dropdown-menu {
+    background-color: whitesmoke !important;
+  }
 /* Logo and login bar */
 #logo {
     display: inline-block;
@@ -19,11 +31,12 @@ body {
     margin: 0px;
     padding: 0px;
     width: 100%;
-    height: 68px;
-    margin-bottom: 4px;
+    height: 52px;
+    margin-bottom: 6px;
     margin-right: 12px;
     background-color: #ffe866;
     z-index: 1;
+    text-align: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -36,7 +49,11 @@ body {
     background-attachment: scroll;
     margin-top: 2px;
     padding: 0px;
-    height: 24px;
+    height: 16px;
+}
+
+.logo_items {
+    display: inline-block;
 }
 
 #pgheader {
@@ -45,48 +62,86 @@ body {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
 }
 /* The 3 elements [leftside, center, rightside] in 'pgheader' have widths = contents */
-#hikers {
-    margin-left: 8px;
-    z-index: 5;
-}
-
-#logo_left {
-    position: relative;
-    top: 1px;
-}
-
-#center {
+#leftside {
     float: left;
-    margin-top: 3px;
+    margin-bottom: 0px;
+    width: fit-content;
 }
 
-#logo_right {
-    clear: left;
-    position: relative;
-    top:  3px;
-    z-index: 5;
+#ctr {
+    clear: both;
+    margin-top: 4px;
+    margin-bottom: 0px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#rightside {
+    float: right;
+    margin-bottom: 0px;
+    width: fit-content;
+}
+
+#hikers {
+    display: inline;
+    margin-top: 3px;
+    margin-left: 10px;
+    z-index: 100;
 }
 
 #tmap {
+    display: inline;
     margin-right: 8px;
     margin-top: 4px;
+    z-index: 100;
+}
+
+#logo_left {
+    float: left;
+    margin-left: 12px;
+    margin-top: 4px;
+    color: darkslategray;
     z-index: 5;
 }
 
+#logo_right {
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: darkslategray;
+    z-index: 5;
+}
+
+#trail {
+    clear: both;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* login elements */
 #cookie_state, #cookies_choice {
     display: none;
 }
 
-/* Main body section */
-#bg {
-    position: absolute;
-    top: 70px;
-    bottom: 0;
-    opacity: 0.4;
+/* modals */
+.modal-header, .modal-footer {
+    background-color: #dfe9e3;
+    color: black;
+}
+  
+.modal-body {
+    color: black;
+    text-align: left;
+}
+  
+input[id^=q] {
+    margin-bottom: 4px;
 }
 
+/* Main body section */
 #welcome {
     text-align: center;
     font-weight: bold;
@@ -127,31 +182,41 @@ p {
 .pair  {
     display: inline-block;
     font-size: 1rem;
+    margin-right: 20px;
 }
 .pair:hover {
     cursor: pointer;
+}
+
+#table, #map, #save, #use {
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkblue;
+}
+  
+#nosave, #nouse {
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkblue;
+    opacity: 0.3;
 }
 
 #home {
     margin-bottom: 4px;
 }
 
-#choice1, #choice3 {
-    margin-right: 20px;
-}
-
-#create, #utilize, #map {
+#map {
     border-style: solid;
     border-width: 2px;
     border-color: darkblue;
 }
-#map {
-    border-width: 1px;
-    border-color: dimgray;
-}
-#utilize {
-    border-color: darkgreen;
 
+.dbl {
+    padding-bottom: 1px;
+}
+  
+.icons {
+    position: relative;
 }
 
 @media screen and (max-width: 390px) and (min-width: 316px) {
@@ -197,4 +262,16 @@ p {
 
 #memlist {
     margin-bottom: 0px;
+}
+
+#adminmail, #adminmsg  {
+    font-style: italic;
+}
+
+#adminmsg {
+    color: brown;
+}
+
+#adminmail {
+    text-decoration: underline
 }

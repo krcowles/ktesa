@@ -17,21 +17,21 @@ const CACHE_NAMES = {
     code: 'map_source'
 };
 var preloadComplete = false; // stops caching 'code' cache when true
-var save_tiles = false; // disable/enable 'puts' in the 'tiles' cache
+var save_tiles = false; // disable/enable 'puts' in the 'tiles' cache.
 /**
  * When using a test site, items in the test directory with these
  * substrings will also be loaded into the code cache
  */
-var preloadItems = ['useOffline', 'leaflet', 'bootstrap',
+var preloadItems = ['member_landing', 'useOffline', 'leaflet', 'bootstrap',
     'jquery', 'popper', 'ktesaOffline'];
 
 self.addEventListener("install", (event) => {
-    self.skipWaiting();  // Useful during debug
     event.waitUntil(
       caches
       .open(CACHE_NAMES.code)
         .then((cache) => {
-            cache.addAll([  // TEST SITE DIR included here...
+            cache.addAll([
+                "https://nmhikes.com/pages/member_landing.html",
                 "https://nmhikes.com/pages/useOffline.html",
                 "https://nmhikes.com/styles/bootstrap.min.css",
                 "https://nmhikes.com/styles/leaflet.css",
@@ -44,6 +44,9 @@ self.addEventListener("install", (event) => {
                 "https://nmhikes.com/scripts/leaflet.js",
             ])
         })
+        .then( () => {
+            self.skipWaiting();
+        })
     );
 });
 
@@ -55,7 +58,8 @@ self.addEventListener("activate", (event) => {
  * This event handler is only active upon first entering the
  * 'member_landing.html' site, and then it is disabled. It will allow
  * the cache preload to complete, and is then bypassed. Thus, it
- * will not store additional fetches to other nmhikes.com pages.
+ * will not store additional fetches to other nmhikes.com pages
+ * in the code cache.
  */
 const putInPreload = async (request, response) => {
     if (preloadComplete) {
@@ -85,7 +89,7 @@ self.addEventListener('fetch', (event) => {
 // Stop preloading after timeout
 setTimeout(() => {
     preloadComplete = true;
-}, 3000);
+}, 5000);
 
 /**
  * The 'tiles' cache will now be used to cache map tiles specified by

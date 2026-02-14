@@ -144,18 +144,9 @@ function off() {
                 <?php if ($flickr) : ?>
                     More photos: <?=$flickr;?><br />
                 <?php endif; ?>
-                <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a>
-                <br />
+                <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a><br />
                 Hike track:
-                <span>View <a id="view" href="<?= $gpxfile;?>"
-                    target="_blank">GPX File</a></span><br />
-                <span>Download <a id="dwn" href="<?= $gpxfile;?>"
-                        download>GPX File</a></span>
-
-
                 <span class="track">Download <a id="dwn" href="#">GPX File</a></span>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"

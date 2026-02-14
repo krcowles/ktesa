@@ -1,21 +1,12 @@
-/* scss standard definitions */
 body {
   background-color: #eaeaea;
   margin: 0;
   font-family: arial, verdana;
   font-size: 16px;
-}
-@media only screen and (max-width: 600px) {
-  body {
-    width: 100%;
-  }
-}
-@media only screen and (min-width: 980px) {
-  body {
-    min-width: 960px;
-  }
+  overflow: hidden;
 }
 
+/* navigation bar */
 .navbar {
   background-color: darkslategray;
 }
@@ -28,7 +19,7 @@ ul.dropdown-menu {
   background-color: whitesmoke !important;
 }
 
-/* Logo */
+/* Logo and login bar */
 #logo {
   display: inline-block;
   vertical-align: top;
@@ -60,9 +51,20 @@ ul.dropdown-menu {
   display: inline-block;
 }
 
+#pgheader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+/* The 3 elements [leftside, center, rightside] in 'pgheader' have widths = contents */
 #leftside {
   float: left;
   margin-bottom: 0px;
+  width: fit-content;
 }
 
 #ctr {
@@ -76,17 +78,18 @@ ul.dropdown-menu {
 #rightside {
   float: right;
   margin-bottom: 0px;
+  width: fit-content;
 }
 
 #hikers {
-  float: left;
+  display: inline;
   margin-top: 3px;
   margin-left: 10px;
   z-index: 100;
 }
 
 #tmap {
-  float: right;
+  display: inline;
   margin-right: 8px;
   margin-top: 4px;
   z-index: 100;
@@ -114,77 +117,8 @@ ul.dropdown-menu {
   font-weight: bold;
 }
 
-/* Sub-menu for filter/sort */
-@media all and (min-width: 800px) {
-  .dropdown-menu li {
-    position: relative;
-  }
-  .nav-item .submenu {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: -7px;
-  }
-  .nav-item .submenu-left {
-    right: 100%;
-    left: auto;
-  }
-  .dropdown-menu > li:hover {
-    background-color: #f1f1f1;
-  }
-  .dropdown-menu > li:hover > .submenu {
-    display: block;
-  }
-}
-/* desktop view .end */
-/* small devices */
-@media (max-width: 799px) {
-  .dropdown-menu .dropdown-menu {
-    margin-left: 0.7rem;
-    margin-right: 0.7rem;
-    margin-bottom: 0.5rem;
-  }
-}
-/* New: Filtering on Home Page */
-#homepgfilt {
-  display: none;
-}
-
-#misfromh, #misfroml {
-  width: 36px;
-  padding-left: 4px;
-}
-
-.spinicons {
-  display: inline-block;
-  position: relative;
-  top: 9px;
-}
-
-.uparw {
-  cursor: pointer;
-  width: 0px;
-  height: 0px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 10px solid black;
-}
-
-.separator {
-  max-height: 4px;
-}
-
-.dwnarw {
-  cursor: pointer;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid black;
-}
-
 /* login elements */
-#cookie_state, #admin, #contrib, #admintools, #club_member {
+#cookie_state, #cookies_choice {
   display: none;
 }
 
@@ -204,10 +138,6 @@ input[id^=q] {
 }
 
 /* Main body section */
-#pgheader {
-  text-align: center;
-}
-
 #welcome {
   text-align: center;
   font-weight: bold;
@@ -252,6 +182,10 @@ p {
   margin-right: 20px;
 }
 
+.pair:hover {
+  cursor: pointer;
+}
+
 #table, #map, #save, #use {
   border-style: solid;
   border-width: 1px;
@@ -265,22 +199,14 @@ p {
   opacity: 0.3;
 }
 
-.pair:hover {
-  cursor: pointer;
-}
-
 #home {
   margin-bottom: 4px;
 }
 
 #map {
   border-style: solid;
-  border-width: 1px;
+  border-width: 2px;
   border-color: darkblue;
-}
-
-#utilize {
-  border-color: darkgreen;
 }
 
 .dbl {
@@ -291,36 +217,34 @@ p {
   position: relative;
 }
 
-@media screen and (max-width: 390px) and (min-width: 280px) {
+@media screen and (max-width: 390px) and (min-width: 316px) {
   .icons {
-    transform: scale(0.69);
-    top: -14px;
+    width: 110px;
   }
 }
-@media screen and (min-width: 391px) and (max-width: 599px) {
+@media screen and (min-width: 400px) {
   .icons {
-    transform: scale(0.9);
-    top: -6px;
+    width: 146px;
   }
 }
 @media screen and (min-width: 600px) {
   .icons {
-    transform: scale(1);
-    top: 4px;
+    width: 160px;
   }
 }
-@media screen and (max-width: 1000px) and (min-width: 601px) {
+@media screen and (max-width: 1000px) and (min-width: 475px) {
   .landing_content {
     width: 100%;
   }
   .flexitem {
     display: inline-block;
   }
-  .icons {
-    top: 8px;
+  #choice3 {
+    margin-left: 20px;
   }
 }
 #bennies {
+  display: none;
   width: max-content;
   font-size: 0.92rem;
   padding: 6px;
@@ -338,6 +262,16 @@ p {
   margin-bottom: 0px;
 }
 
+#adminmail, #adminmsg {
+  font-style: italic;
+}
 
+#adminmsg {
+  color: brown;
+}
+
+#adminmail {
+  text-decoration: underline;
+}
 
 /*# sourceMappingURL=landing.css.map */

@@ -100,8 +100,5 @@ require "../php/global_boot.php";
 <script src="../scripts/cacheDeleteFct.js"></script>
 <script src="../scripts/landing.js"></script>
 
-<!-- May be unnecessary... -->
-<script src="../uninstall_service_workers.js"></script>
-
 </body>
 </html>
