@@ -104,6 +104,12 @@ $whichSite = $testSite ? 'test site' : 'main site';
     </button>&nbsp;&nbsp;
     <button id="dont" type="button" class="btn btn-sm btn-danger">No</button>
 </dialog>
+<dialog id="del_arch_visdat">
+    <p>Delete Visitor Data from database?</p>
+    <button id="remove_vd" type="button" class="btn btn-sm btn-danger">Remove
+    </button>&nbsp;&nbsp;
+    <button id="keep_vd" type="button" class="btn btn-sm btn-secondary">Keep</button>
+</dialog>
 
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
     <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
@@ -218,6 +224,11 @@ $whichSite = $testSite ? 'test site' : 'main site';
         <button id="gpxClean" type="button" class="btn
             btn-secondary">Cleanup JSON Files</button>&nbsp;&nbsp;
             [removes gpx/json not specified in database]<br />
+        <button id="sw_versions" type="button" class="btn
+            btn-warning">Change SW Version</button>&nbsp;&nbsp;
+            [Mobile offline code]: 
+            Current Version: <span id="curr_sw"></span>&nbsp;&nbsp;
+            Set version to: <input id="new_sw" type="text"><br />
         <button id="rdlog" type="button" 
             class="btn btn-secondary">Read Error Log</button><br />
         <button id="pinfo" type="button" class="btn 
@@ -283,8 +294,7 @@ $whichSite = $testSite ? 'test site' : 'main site';
             Archive Year:&nbsp;&nbsp;
             <select id="archyr">
                 <?=$archopts;?>
-            </select>&nbsp;&nbsp;<span class="vdatnote">
-                NOTE: Data will be removed from database</span>
+            </select>
         </div>
     </fieldset><br />
 

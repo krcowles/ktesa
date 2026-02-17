@@ -6,10 +6,11 @@
  * @author Ken Cowles
  * @version 2.0 Typescripted
  * @version 3.0 Modified install code to accommodate new info from installChecks.php
+ * @version 4.0 Forced to use dialog boxes instead of alerts due to web changes
  */
 $(function () {
     // If any alerts were set by scripts
-    var admin_alert = $('#admin_alert').text();
+    let admin_alert = $('#admin_alert').text();
     if (admin_alert !== '') {
         alert(admin_alert);
     }
@@ -19,6 +20,10 @@ $(function () {
     var chksum_results = new bootstrap.Modal(document.getElementById('chksum_results'), {
         keyboard: false
     });
+    // Handle visitor data:
+    const cleanup = document.getElementById('del_arch_visdat');
+    var visitor_data_action;
+    var proceed;
     /**
      * Site Modes
      */
@@ -38,14 +43,14 @@ $(function () {
      */
     // uploading of git branch to server
     $('#upld').on('click', function () {
-        var branch = $('#ubranch').val() == '' ? 'master' : $('#ubranch').val();
-        var commit = $('#ucomm').val();
+        let branch = $('#ubranch').val() == '' ? 'master' : $('#ubranch').val();
+        let commit = $('#ucomm').val();
         if (commit == '') {
             alert("Please specify a commit number");
             return;
         }
-        var postdata = { branch: branch, commit: commit };
-        var ans = confirm("Proceed to upload '" + branch + "'?");
+        let postdata = { branch: branch, commit: commit };
+        let ans = confirm("Proceed to upload '" + branch + "'?");
         if (ans) {
             $('#loading').show();
             $.ajax({
@@ -84,9 +89,9 @@ $(function () {
             alert("There is no authorization to run this utility");
             return false;
         }
-        var deletions = [];
-        var deleters = $('#sites').val(); // sites to delete
-        var copyloc = $('#copyloc').val(); // test site to install
+        let deletions = [];
+        let deleters = $('#sites').val(); // sites to delete
+        let copyloc = $('#copyloc').val(); // test site to install
         if (copyloc == '') {
             alert("Please specify a location from which to install files");
             return false;
@@ -144,9 +149,9 @@ $(function () {
          * Now continue with install
          */
         $.when(stage1).then(function () {
-            var ajax = false;
+            let ajax = false;
             if (deleters == '') {
-                var ans = confirm("No test site files will be deleted. Proceed?");
+                let ans = confirm("No test site files will be deleted. Proceed?");
                 if (ans) {
                     ajax = true;
                     deletions = [];
@@ -156,16 +161,16 @@ $(function () {
                 }
             }
             else {
-                var userspec = deleters.split(",");
-                for (var i = 0; i < userspec.length; i++) {
-                    var item = userspec[i].trim();
+                let userspec = deleters.split(",");
+                for (let i = 0; i < userspec.length; i++) {
+                    let item = userspec[i].trim();
                     deletions.push(item);
                 }
                 ajax = true;
             }
             if (ajax) {
                 $('#loading').show();
-                var postdata = { install: copyloc, delete: deletions };
+                let postdata = { install: copyloc, delete: deletions };
                 $.ajax({
                     url: 'install.php',
                     method: "post",
@@ -260,10 +265,10 @@ $(function () {
             dataType: 'json',
             success: function (result) {
                 $('#last_load').empty();
-                var obs = result.obs;
-                var missing = result.missing;
-                var nomatch = result.nomatch;
-                var alerts = result.alerts;
+                let obs = result.obs;
+                let missing = result.missing;
+                let nomatch = result.nomatch;
+                let alerts = result.alerts;
                 if (!(obs[0] === 'none' && missing[0] === 'none' && nomatch[0] === 'none'
                     && alerts['newuser'] === 'no' && alerts['ehikes'] === 'no'
                     && alerts['usrehk'] === 'no')) {
@@ -291,21 +296,21 @@ $(function () {
             "last reload</em></h5>";
         if (obs[0] !== 'none') {
             cklist += '<h5>The Checksums table no longer contains</h5><ul>';
-            for (var i = 0; i < obs.length; i++) {
+            for (let i = 0; i < obs.length; i++) {
                 cklist += '<li>' + obs[i] + '</li>';
             }
             cklist += '</ul>';
         }
         if (missing[0] !== 'none') {
             cklist += '<h5>The following tables had no previous Checksums entry</h5><ul>';
-            for (var j = 0; j < missing.length; j++) {
+            for (let j = 0; j < missing.length; j++) {
                 cklist += '<li>' + missing[j] + '</li>';
             }
             cklist += '</ul>';
         }
         if (nomatch[0] !== 'none') {
             cklist += '<h5>The following table checksums have changed</h5><ul>';
-            for (var k = 0; k < nomatch.length; k++) {
+            for (let k = 0; k < nomatch.length; k++) {
                 cklist += '<li>' + nomatch[k] + '</li>';
             }
             cklist += '</ul>';
@@ -339,13 +344,13 @@ $(function () {
                 $('#next_load').empty();
                 var cklist = "<h5><em style='color:brown;'>The sql file used for " +
                     "reloading differs from the resident database</em></h5>";
-                var mismatch = results.mismatch;
-                var not_in_new = results.not_in_new;
-                var not_in_old = results.not_in_old;
-                var new_users = results.new_users;
-                var del_users = results.del_users;
-                var new_hikes = results.new_hikes;
-                var del_hikes = results.del_hikes;
+                let mismatch = results.mismatch;
+                let not_in_new = results.not_in_new;
+                let not_in_old = results.not_in_old;
+                let new_users = results.new_users;
+                let del_users = results.del_users;
+                let new_hikes = results.new_hikes;
+                let del_hikes = results.del_hikes;
                 if (mismatch[0] === 'none' && not_in_new[0] === 'none'
                     && not_in_old[0] === 'none' && new_users[0] === 'none'
                     && del_users[0] === 'none' && new_hikes[0] === 'none'
@@ -364,49 +369,49 @@ $(function () {
                 else {
                     if (mismatch[0] !== 'none') {
                         cklist += '<h5>Checksums for the following tables differ</h5><ul>';
-                        for (var i = 0; i < mismatch.length; i++) {
+                        for (let i = 0; i < mismatch.length; i++) {
                             cklist += '<li>' + mismatch[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (not_in_new[0] !== 'none') {
                         cklist += '<h5>The following tables will no longer exist</h5><ul>';
-                        for (var i = 0; i < not_in_new.length; i++) {
+                        for (let i = 0; i < not_in_new.length; i++) {
                             cklist += '<li>' + not_in_new[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (not_in_old[0] !== 'none') {
                         cklist += '<h5>The following tables will be added</h5><ul>';
-                        for (var i = 0; i < not_in_old.length; i++) {
+                        for (let i = 0; i < not_in_old.length; i++) {
                             cklist += '<li>' + not_in_old[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (new_users[0] !== 'none') {
                         cklist += '<h5>The following users will be added</h5><ul>';
-                        for (var i = 0; i < new_users.length; i++) {
+                        for (let i = 0; i < new_users.length; i++) {
                             cklist += '<li>' + new_users[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (del_users[0] !== 'none') {
                         cklist += '<h5>The following users will be deleted</h5><ul>';
-                        for (var i = 0; i < del_users.length; i++) {
+                        for (let i = 0; i < del_users.length; i++) {
                             cklist += '<li>' + del_users[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (new_hikes[0] !== 'none') {
                         cklist += '<h5>The following EHIKES will be added</h5><ul>';
-                        for (var i = 0; i < new_hikes.length; i++) {
+                        for (let i = 0; i < new_hikes.length; i++) {
                             cklist += '<li>' + new_hikes[i] + '</li>';
                         }
                         cklist += '</ul>';
                     }
                     if (del_hikes[0] !== 'none') {
                         cklist += '<h5>The following EHIKES will be deleted</h5><ul>';
-                        for (var i = 0; i < del_hikes.length; i++) {
+                        for (let i = 0; i < del_hikes.length; i++) {
                             cklist += '<li>' + del_hikes[i] + '</li>';
                         }
                         cklist += "</ul>";
@@ -435,12 +440,12 @@ $(function () {
     }
     // -------------- end reload functions ------------
     // ---------------- click on reload ---------------
-    var reload_modal = document.getElementById('new_reload');
-    var dialogClose = document.getElementById('dont');
-    dialogClose.addEventListener('click', function () {
+    const reload_modal = document.getElementById('new_reload');
+    const dialogClose = document.getElementById('dont');
+    dialogClose.addEventListener('click', () => {
         reload_modal.close();
     });
-    $('#doit').on('click', function () {
+    $('#doit').on('click', () => {
         reload_modal.close();
         window.open('./drop_all_tables.php', "_blank");
         // NOTE: Checksums are re-generated, and may no longer agree w/.sql file
@@ -452,13 +457,13 @@ $(function () {
         }
         else {
             // check for the existence of a Checksums table
-            var checksumsDef_1 = $.Deferred();
-            var newdbDef_1 = $.Deferred();
+            let checksumsDef = $.Deferred();
+            let newdbDef = $.Deferred();
             $.get("checksumTest.php", function (result) {
                 if (result === 'no') {
                     alert("No Checksum table currently exists");
-                    checksumsDef_1.reject();
-                    newdbDef_1.reject();
+                    checksumsDef.reject();
+                    newdbDef.reject();
                 }
                 /**
                  * Whether checksums have changed since the last time
@@ -470,19 +475,19 @@ $(function () {
                     checkChecksums(checksumsDef);
                 }
                 */
-                checksumsDef_1.resolve();
+                checksumsDef.resolve();
             });
             // after validating Checksums table exists (or not), check against new db (only if main)
-            $.when(checksumsDef_1).then(function () {
-                checkAgainstNewDB(newdbDef_1);
+            $.when(checksumsDef).then(function () {
+                checkAgainstNewDB(newdbDef);
             });
-            $.when(newdbDef_1).then(function () {
+            $.when(newdbDef).then(function () {
                 reload_modal.showModal();
             });
         }
     });
     $('#hard_reload').on('click', function () {
-        var ans = confirm("No checks performed: are you sure?");
+        let ans = confirm("No checks performed: are you sure?");
         if (ans) {
             window.open('./drop_all_tables.php', "_blank");
         }
@@ -511,10 +516,10 @@ $(function () {
     // Check for DB Changes
     $('#dbchanges').on('click', function () {
         $.get('manageChecksums.php', { action: 'cmp' }, function (result) {
-            var obs = result.obs;
-            var missing = result.missing;
-            var nomatch = result.nomatch;
-            var alerts = result.alerts;
+            let obs = result.obs;
+            let missing = result.missing;
+            let nomatch = result.nomatch;
+            let alerts = result.alerts;
             if (obs[0] !== 'none' || missing[0] !== 'none' || nomatch[0] !== 'none'
                 || alerts['newuser'] !== 'no' || alerts['ehikes'] !== 'no'
                 || alerts['usrehk'] !== 'no') {
@@ -590,6 +595,23 @@ $(function () {
     $('#gpxClean').on('click', function () {
         window.open('./cleanJSON.php', "_blank");
     });
+    // Read/set mobile offline code software version
+    $.post('./manageVersions.php', { action: 'get' }, (ver) => {
+        const ver_span = "&nbsp;&nbsp;" + ver + "&nbsp;&nbsp;";
+        $('#curr_sw').html(ver_span);
+    }, "text");
+    $('#sw_versions').on('click', function () {
+        const new_version = $('#new_sw').val();
+        $.post("./manageVersions.php", { action: 'set', version: new_version }, (result) => {
+            if (result === "OK") {
+                alert("Version set");
+                window.open("./admintools.php", "_self");
+            }
+            else {
+                alert("There was an error setting sw version");
+            }
+        }, "text");
+    });
     // Read the ktesa error log
     $('#rdlog').on('click', function () {
         window.open('./errlogRdr.html', "_blank");
@@ -634,40 +656,120 @@ $(function () {
      * Display of visitation data
      */
     $('#today').on('click', function () {
-        var link = "./visitor_data.php?time=today";
+        let link = "./visitor_data.php?time=today";
         window.open(link, "_blank");
     });
     $('#wk').on('click', function () {
-        var link = "./visitor_data.php?time=week";
+        let link = "./visitor_data.php?time=week";
         window.open(link, "_blank");
     });
     $('#dmo').on('click', function () {
-        var vsel = $('#vmonth').val(); // w/leading 0's as needed
-        var link = "./visitor_data.php?time=month&mo=" + vsel;
+        let vsel = $('#vmonth').val(); // w/leading 0's as needed
+        let link = "./visitor_data.php?time=month&mo=" + vsel;
         window.open(link, "_blank");
     });
     $('#range').on('click', function () {
-        var rge = $('#begin').val() + ":" + $('#end').val();
-        var link = "./visitor_data.php?time=range&rg=" + rge;
+        let rge = $('#begin').val() + ":" + $('#end').val();
+        let link = "./visitor_data.php?time=range&rg=" + rge;
         window.open(link, "_blank");
     });
+    /**
+     * In order to perform an action AFTER download, the function
+     * downloadWithStatus() extracts the visitor data first, then
+     * once the data is in the browser, it downloads it. After the
+     * data is in the browser, the database data can safely be
+     * deleted if the admin requested it.
+     */
     $('#arch').on('click', function () {
-        var ysel = $('#archyr').val();
-        var url = "./archiveVDAT.php?yr=" + ysel;
-        window.open(url, "_blank");
-        var ans = confirm("Delete the data from the database?");
-        if (ans) {
-            var delurl = "deleteVDAT.php?yr=" + ysel;
-            $.get(delurl, { yr: ysel }, function (result) {
-                if (result === 'ok') {
-                    alert("Data permanently deleted");
+        proceed = $.Deferred();
+        cleanup.showModal();
+        $.when(proceed).then(async () => {
+            // visitor_data_action is now set, so get the archive year
+            var ysel = $('#archyr').val();
+            await downloadWithStatus(ysel);
+        });
+        return;
+    });
+    $('#remove_vd').on('click', () => {
+        visitor_data_action = 'yes';
+        cleanup.close();
+        proceed.resolve();
+    });
+    $('#keep_vd').on('click', () => {
+        visitor_data_action = 'no';
+        cleanup.close();
+        proceed.resolve();
+    });
+    /**
+     * Downloads a file via Fetch to track progress and completion
+     * Any error thrown in fetchVisitorArchive() is captured in the
+     * try/catch in the functioin downloadWithStatus()
+     */
+    async function downloadWithStatus(arch_yr) {
+        try {
+            const vdat_url = './archiveVDAT.php?yr=' + arch_yr;
+            const response = await fetch(vdat_url);
+            const stream = response.body;
+            const reader = stream.getReader();
+            const contentLength = +(response.headers.get('Content-Length') ?? 0);
+            let receivedLength = 0;
+            const chunks = [];
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done)
+                    break;
+                chunks.push(value);
+                receivedLength += value.byteLength;
+                if (contentLength !== 0) {
+                    const percent = Math.round((receivedLength / contentLength) * 100);
+                    console.log(`Download progress: ${percent}%`);
                 }
                 else {
-                    alert(result);
+                    console.log(`Received ${receivedLength} bytes...`);
                 }
-            });
+            }
+            console.log("Download finished! Triggering browser save...");
+            /**
+             * The visitor data table is now free for deletions, as the
+             * fetched data is in the browser and that is what will
+             * be downloaded.
+             */
+            // Combine chunks into a single Blob
+            const blob = new Blob(chunks);
+            const downloadUrl = URL.createObjectURL(blob);
+            // Create a temporary anchor element to trigger the "Save As"
+            const fileName = "visitor_dat_" + arch_yr + ".sql";
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            // Cleanup
+            document.body.removeChild(link);
+            URL.revokeObjectURL(downloadUrl);
+            // for delete:
+            if (visitor_data_action === 'yes') {
+                $.get('./deleteVDAT.php', { yr: arch_yr }, (result) => {
+                    if (result === 'ok') {
+                        const msg = "Visitor data for " + arch_yr +
+                            " has been deleted from the database";
+                        alert(msg);
+                    }
+                    else {
+                        alert("Something went wrong: " + result);
+                    }
+                });
+            }
         }
-    });
+        catch (error) {
+            if (error instanceof Error) {
+                console.error("Critical Error:", error.message);
+            }
+            else {
+                console.error("An unknown error occurred:", error);
+            }
+        }
+    }
     /**
      * GPX File Management
      */

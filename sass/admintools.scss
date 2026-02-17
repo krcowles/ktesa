@@ -73,6 +73,17 @@ legend {
 #psel, #dsel {
     font-weight: bold;
 }
+#curr_sw {
+    width: 42px;
+    color: brown;
+    border: 2px solid darkblue;
+    padding: 4px 2px;
+}
+#new_sw {
+    width: 42px;
+    border: 2px solid darkblue;
+    background-color: blanchedalmond;
+}
 /* Visitor Data Fieldset */
 #vdata {
     display: flex;

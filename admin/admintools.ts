@@ -17,6 +17,7 @@ interface IFile {
  * @author Ken Cowles
  * @version 2.0 Typescripted
  * @version 3.0 Modified install code to accommodate new info from installChecks.php
+ * @version 4.0 Forced to use dialog boxes instead of alerts due to web changes
  */
 $( function() {  // doc ready
 
@@ -32,6 +33,11 @@ if (typeof(nopix) !== 'undefined') {
 var chksum_results = new bootstrap.Modal(<HTMLElement>document.getElementById('chksum_results'), {
     keyboard: false
 });
+// Handle visitor data:
+const cleanup = document.getElementById('del_arch_visdat') as HTMLDialogElement;
+var visitor_data_action: string;
+var proceed: JQueryDeferred<void>;
+
 /**
  * Site Modes
  */
@@ -612,6 +618,23 @@ $('#cleanPix').on('click', function() {
 $('#gpxClean').on('click', function() {
     window.open('./cleanJSON.php', "_blank");
 });
+// Read/set mobile offline code software version
+$.post('./manageVersions.php', {action: 'get'}, (ver) => {
+    const ver_span = "&nbsp;&nbsp;" + ver + "&nbsp;&nbsp;";
+    $('#curr_sw').html(ver_span);
+}, "text");
+$('#sw_versions').on('click', function() {
+    const new_version = $('#new_sw').val();
+    $.post("./manageVersions.php", {action: 'set', version: new_version},
+        (result) => {
+            if (result === "OK") {
+                alert("Version set");
+                window.open("./admintools.php", "_self");
+            } else {
+                alert("There was an error setting sw version")
+            }
+        }, "text");
+});
 // Read the ktesa error log
 $('#rdlog').on('click', function() {
     window.open('./errlogRdr.html', "_blank");
@@ -674,22 +697,101 @@ $('#range').on('click', function() {
     let link = "./visitor_data.php?time=range&rg=" + rge;
     window.open(link, "_blank");
 });
+/**
+ * In order to perform an action AFTER download, the function
+ * downloadWithStatus() extracts the visitor data first, then
+ * once the data is in the browser, it downloads it. After the
+ * data is in the browser, the database data can safely be 
+ * deleted if the admin requested it.
+ */
 $('#arch').on('click', function() {
-    let ysel = $('#archyr').val();
-    let url = "./archiveVDAT.php?yr=" + ysel;
-    window.open(url, "_blank");
-    let ans = confirm("Delete the data from the database?");
-    if (ans) {
-        let delurl = "deleteVDAT.php?yr=" + ysel;
-        $.get(delurl, {yr: ysel}, function(result) {
-            if (result === 'ok') {
-                alert("Data permanently deleted");
-            } else {
-                alert(result);
-            }
-        });
-    }
+    proceed = $.Deferred();
+    cleanup.showModal();
+    $.when( proceed ).then( async () => {
+        // visitor_data_action is now set, so get the archive year
+        var ysel = $('#archyr').val() as string;
+        await downloadWithStatus(ysel);
+    });
+    return;
 });
+$('#remove_vd').on('click', () => {
+    visitor_data_action = 'yes';
+    cleanup.close();
+    proceed.resolve();
+    
+});
+$('#keep_vd').on('click', () => {
+    visitor_data_action = 'no';
+    cleanup.close();
+    proceed.resolve();
+});
+/**
+ * Downloads a file via Fetch to track progress and completion
+ * Any error thrown in fetchVisitorArchive() is captured in the
+ * try/catch in the functioin downloadWithStatus() 
+ */
+async function downloadWithStatus(arch_yr: string): Promise<void> {
+    try {
+        const vdat_url = './archiveVDAT.php?yr=' + arch_yr;
+        const response = await fetch(vdat_url);
+        const stream   = response.body as ReadableStream<Uint8Array>;
+        const reader   = stream.getReader();
+        const contentLength = +(response.headers.get('Content-Length') ?? 0);
+        let receivedLength = 0; 
+        const chunks: Uint8Array[] = []; 
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            receivedLength += value.byteLength;
+    
+            if (contentLength !== 0) {
+                const percent = Math.round((receivedLength / contentLength) * 100);
+                console.log(`Download progress: ${percent}%`);
+            } else {
+                console.log(`Received ${receivedLength} bytes...`);
+            }
+        }
+        console.log("Download finished! Triggering browser save...");
+        /**
+         * The visitor data table is now free for deletions, as the 
+         * fetched data is in the browser and that is what will
+         * be downloaded.
+         */
+        // Combine chunks into a single Blob
+        const blob = new Blob(chunks);
+        const downloadUrl = URL.createObjectURL(blob);
+        
+        // Create a temporary anchor element to trigger the "Save As"
+        const fileName = "visitor_dat_" + arch_yr + ".sql";
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        // Cleanup
+        document.body.removeChild(link);
+        URL.revokeObjectURL(downloadUrl);
+        // for delete:
+        if (visitor_data_action === 'yes') {
+            $.get( './deleteVDAT.php', {yr: arch_yr}, (result) => {
+                if (result === 'ok') {
+                    const msg = "Visitor data for " + arch_yr +
+                        " has been deleted from the database";
+                    alert(msg);
+                } else {
+                    alert("Something went wrong: " + result);
+                }
+            });
+        }
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Critical Error:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+    }
+} 
 
 /**
  * GPX File Management

@@ -9,7 +9,7 @@ var pwidth = $('#progress').width();
 var $bar = $('#bar');
 var go = false;
 var barinc;
-var $getcnt = setInterval(function () {
+let $getcnt = setInterval(function () {
     if (typeof (totq) !== "undefined") {
         clearInterval($getcnt);
         totq = totq;
@@ -18,7 +18,7 @@ var $getcnt = setInterval(function () {
         go = true;
     }
 }, 5);
-var $statcheck = setInterval(function () {
+let $statcheck = setInterval(function () {
     if (go) {
         $bar.width(qcnt * barinc);
     }

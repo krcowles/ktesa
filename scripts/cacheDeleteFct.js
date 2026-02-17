@@ -4,9 +4,7 @@ async function deleteNamedCache(cacheName) {
         try {
             const wasDeleted = await caches.delete(cacheName);
             if (wasDeleted) {
-                msg = `Cache "${cacheName}" successfully deleted.`
-                console.log(msg);
-                return msg;
+                return msg; // empty to prevent interpreting as error
             } else {
                 msg = `Cache "${cacheName}" not found.`
                 console.error(msg);

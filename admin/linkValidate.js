@@ -22,7 +22,7 @@ var row;
  * @param {number} remaining How many subsets remain to be processed
  * @param {number} first     The next starting point
  */
-var subsetScan = function (remaining, first, size) {
+const subsetScan = (remaining, first, size) => {
     var ajaxdata = { first: first, size: size };
     $.ajax({
         url: 'getBadLinks.php',

@@ -28,8 +28,8 @@ $(function () {
         }
     });
     $tbl.each(function (indx) {
-        var newlink = linkbase + enos[indx];
-        var lnk = $(this).find('td').eq(hikeCol).children().attr('href');
+        let newlink = linkbase + enos[indx];
+        let lnk = $(this).find('td').eq(hikeCol).children().attr('href');
         if (lnk.indexOf('clus=y') !== -1) {
             // this is a cluster page
             newlink += "&clus=y";
