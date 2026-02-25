@@ -32,29 +32,29 @@ $(function () {
         $(selbox).val(rtype); // pre-populate reference type drop-down
         boxid = 'sel' + i;
         if (rtype === 'Book:' || rtype === 'Photo Essay:') {
-            var indx = parseInt(rit1) - 1;
-            var bkname = '#bkname' + i; // input box id for book name                
+            let indx = parseInt(rit1) - 1;
+            let bkname = '#bkname' + i; // input box id for book name                
             $(bkname).val(rit1);
-            var auth = '#auth' + i;
+            let auth = '#auth' + i;
             $(auth).attr('value', authors[indx]); // get the name from the array
             box = document.getElementById(boxid);
             // disable non-book entries
-            for (var u = 2; u < box.options.length; u++) {
+            for (let u = 2; u < box.options.length; u++) {
                 box.options[u].disabled = true;
             }
         }
         else if (rtype === 'Text:') {
-            var url = '#txt' + i;
+            let url = '#txt' + i;
             $(url).val('');
             $(url).attr('placeholder', 'THIS BOX IGNORED');
             // disable book type entries
-            var boxopts = document.getElementById(boxid);
+            let boxopts = document.getElementById(boxid);
             boxopts.options[0].disabled = true;
             boxopts.options[1].disabled = true;
         }
         else {
             // disable book type entries
-            var selboxes = document.getElementById(boxid);
+            let selboxes = document.getElementById(boxid);
             selboxes.options[0].disabled = true;
             selboxes.options[1].disabled = true;
         }
@@ -63,13 +63,13 @@ $(function () {
     var $bksels = $('select[id^=bkname]');
     // jQuery quirk: id is required above, not name or type etc.
     $bksels.each(function () {
-        var ino = this.id;
-        var bksel = '#' + ino + ' option:selected';
-        var inpid = '#auth' + ino.substr(6);
+        let ino = this.id;
+        let bksel = '#' + ino + ' option:selected';
+        let inpid = '#auth' + ino.substr(6);
         $(this).on('change', function () {
-            var selected = $(bksel).val();
-            var newbk = parseInt(selected) - 1;
-            var newauth = authors[newbk];
+            let selected = $(bksel).val();
+            let newbk = parseInt(selected) - 1;
+            let newauth = authors[newbk];
             $(inpid).attr('value', newauth);
         });
     });
@@ -79,7 +79,7 @@ $(function () {
      * book/photo essay and displays a different set of boxes with appropriate
      * placeholder text.
      */
-    var $reftags = $('select[id^="href"]');
+    let $reftags = $('select[id^="href"]');
     $reftags.each(function () {
         $(this).on('change', function () {
             var refno = this.id;
@@ -133,7 +133,7 @@ $(function () {
     // validate length of URL's and click-on text
     $('input[id^=nr1]').each(function () {
         $(this).on('change', function () {
-            var nritem = $(this).val();
+            let nritem = $(this).val();
             if (nritem.length > 1024) {
                 alert("This URL exceeds the max length of 1024 characters");
                 $(this).val("");
@@ -142,7 +142,7 @@ $(function () {
     });
     $('input[id^=nr2]').each(function () {
         $(this).on('change', function () {
-            var nr2item = $(this).val();
+            let nr2item = $(this).val();
             if (nr2item.length > 512) {
                 alert("The maximum no of characters allowed in this field is 512");
                 $(this).val("");
@@ -157,7 +157,7 @@ $(function () {
             bkid = bkid.substr(bkid.length - 1, 1);
             var authid = '#bkauth' + bkid;
             var authitem = $(this).val();
-            var authindx = parseInt(authitem) - 1;
+            let authindx = parseInt(authitem) - 1;
             $(authid).val(authors[authindx]);
         });
     });

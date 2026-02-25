@@ -57,7 +57,8 @@
             data-multiple-caption="&nbsp;&nbsp;{count} files selected" multiple />
         <label for="file">
             <span>&nbsp;&nbsp;Choose one or more photos&hellip;</span>
-        </label>
+        </label><br /><span id="types" style="position:relative;">
+            [jpeg, jpg, or webp photos: use our converter for heic]</span>
     </span>
     <br />
     <div id="preload">

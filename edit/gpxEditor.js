@@ -1,22 +1,13 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 /**
  * @fileoverview Create an editable polyline for the track of interest
  * @author Ken Cowles
  * @version 1.0 First release
  */
-var DECIMALS = 7;
-var SIDEBAR_WIDTH = 260;
-var $DOT = $("<div class='dot'/>");
-var NOMINAL_CLICK_TIME = 250;
+const DECIMALS = 7;
+const SIDEBAR_WIDTH = 260;
+const $DOT = $("<div class='dot'/>");
+const NOMINAL_CLICK_TIME = 250;
 // Global vars
 var map;
 var gpxtrack;
@@ -166,7 +157,7 @@ function Previews(action) {
     }
 }
 function initMap() {
-    var mapEl = document.getElementById("map");
+    const mapEl = document.getElementById("map");
     map = new google.maps.Map(mapEl, {
         center: mapCtr,
         zoom: 15,
@@ -281,7 +272,6 @@ function setNewTrack() {
     gpxtrack.setMap(map);
 }
 $('#del').on('click', function () {
-    var _a;
     var deletions = document.getSelection();
     if (deletions.rangeCount === 0) {
         alert("Nothing has been selected");
@@ -298,7 +288,7 @@ $('#del').on('click', function () {
         return false;
     }
     Previews('delete');
-    (_a = document.getElementById('udel')) === null || _a === void 0 ? void 0 : _a.removeAttribute('disabled');
+    document.getElementById('udel')?.removeAttribute('disabled');
     $('#udel').removeClass('udel_off');
     $('#udel').addClass('udel_on');
     gpxtrack.setMap(null);
@@ -306,7 +296,6 @@ $('#del').on('click', function () {
     return;
 });
 $('#udel').on('click', function () {
-    var _a;
     // LIFO stack: undo in reverse order...
     var uitem = undos.pop();
     var insertPt = uitem.starts;
@@ -316,13 +305,13 @@ $('#udel').on('click', function () {
         var ritem = { lat: uitem.deletes[k].lat, lng: uitem.deletes[k].lng };
         restores.push(ritem);
     }
-    trk_json.splice.apply(trk_json, __spreadArray([insertPt, 0], restores, false));
+    trk_json.splice(insertPt, 0, ...restores);
     var serial_undos = JSON.stringify(restores);
     var ajaxdata = { type: 'undo', trk: trackno, start: insertPt, undos: serial_undos };
     // no error callback for $.post()
     $.post("updateGPX.php", ajaxdata);
     if (undos.length === 0) {
-        (_a = document.getElementById('udel')) === null || _a === void 0 ? void 0 : _a.setAttribute('disabled', 'disabled');
+        document.getElementById('udel')?.setAttribute('disabled', 'disabled');
         $('#udel').removeClass('udel_on');
         $('#udel').addClass('udel_off');
     }

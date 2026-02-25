@@ -31,13 +31,13 @@ $(function () {
     $('#line').width(linewidth);
     // globals
     var tabstr;
-    var tips_db_size = 4096;
-    var info_db_size = 65536;
+    const tips_db_size = 4096;
+    const info_db_size = 65536;
     // the subs array holds the 'Apply' buttons for each tab, placed by positionApply()
     var subs = [];
-    for (var j = 1; j <= 4; j++) {
-        var btn = '<input id="ap' + j + '" class="btn btn-dark" type="submit" value="Apply" />';
-        var jqbtn = $(btn);
+    for (let j = 1; j <= 4; j++) {
+        let btn = '<input id="ap' + j + '" class="btn btn-dark" type="submit" value="Apply" />';
+        let jqbtn = $(btn);
         subs[j] = jqbtn;
     }
     /**
@@ -48,16 +48,16 @@ $(function () {
      * Remember that these fields use 'wysiwyg' and includes hidden html styling
      * elements which consume some space.
      */
-    var byteSize = function (txt) {
-        var bsize = new Blob([txt]).size;
+    const byteSize = (txt) => {
+        const bsize = new Blob([txt]).size;
         return bsize;
     };
-    var checkTextAreaSizes = function () {
+    const checkTextAreaSizes = () => {
         var return_val = { tips: 0, info: 0 };
-        var tips_text = $('#ttxt').val();
-        var tips_size = byteSize(tips_text);
-        var info_text = $('#info').val();
-        var info_size = byteSize(info_text);
+        const tips_text = $('#ttxt').val();
+        const tips_size = byteSize(tips_text);
+        const info_text = $('#info').val();
+        const info_size = byteSize(info_text);
         return_val.tips = tips_size;
         return_val.info = info_size;
         return return_val;
@@ -65,7 +65,7 @@ $(function () {
     $('form').on('submit', function (ev) {
         if (tabstr == '3') {
             var fix = false;
-            var sizeResult = checkTextAreaSizes();
+            const sizeResult = checkTextAreaSizes();
             if (sizeResult.tips > tips_db_size) {
                 var overage = sizeResult.tips - tips_db_size;
                 fix = true;
@@ -85,10 +85,10 @@ $(function () {
     });
     // initial button placed in order to establish global width
     $('#f1').prepend(subs[1]);
-    var apwd = subs[1].width();
+    const apwd = subs[1].width();
     // text string below which the apply button is placed
-    var awd = $('#atxt').width();
-    var aht = $('#atxt').height();
+    const awd = $('#atxt').width();
+    const aht = $('#atxt').height();
     // initial settings on page load
     var btop = 0;
     var blft = 0;
@@ -101,13 +101,13 @@ $(function () {
      * This will place the tab's 'Apply' (submit) button appropriately
      */
     function positionApply(tab) {
-        var atxt = $('#atxt').offset();
-        var centerMarg = (awd - apwd) / 2 - 4; // 4: allow for right margin
-        var postype = "fixed";
+        let atxt = $('#atxt').offset();
+        let centerMarg = (awd - apwd) / 2 - 4; // 4: allow for right margin
+        let postype = "fixed";
         btop = atxt.top + aht + 6; // 6 for spacing
         blft = atxt.left + centerMarg;
         if (tab === 3) {
-            var apos = $('#atxt').offset();
+            let apos = $('#atxt').offset();
             btop = apos.top + 32;
             blft = apos.left;
             postype = "absolute";
@@ -117,7 +117,7 @@ $(function () {
             top: btop,
             left: blft
         });
-        var form = "#f" + tab;
+        let form = "#f" + tab;
         $(form).prepend(subs[tab]);
         return;
     }
@@ -128,12 +128,12 @@ $(function () {
     function prepareSubmit(elementId) {
         $(elementId).off('click').on('click', function (evt) {
             if (issues.length > 0) {
-                var msg_1 = "There is one or more issues outstanding to resolve:\n";
+                let msg = "There is one or more issues outstanding to resolve:\n";
                 issues.forEach(function (issue) {
-                    var okey = Object.keys(issue); // returns array
-                    msg_1 += issue[okey[0]] + "\n";
+                    let okey = Object.keys(issue); // returns array
+                    msg += issue[okey[0]] + "\n";
                 });
-                alert(msg_1);
+                alert(msg);
                 evt.preventDefault();
                 return;
             }
@@ -157,11 +157,21 @@ $(function () {
         tabint = parseFloat(tid.substring(1, 2));
         var newtid = '#tab' + tabint;
         $(newtid).css('display', 'block');
-        var currbtn = "#ap" + lastA;
+        if (tabint == 2) {
+            // Text below 'Choose one or more photos' on tab2
+            let file_select_pos = $('#file').offset();
+            let select_left = file_select_pos.left;
+            let types_left = select_left - 76;
+            $('#types').css({
+                left: types_left,
+                color: 'brown'
+            });
+        }
+        let currbtn = "#ap" + lastA;
         $(currbtn).remove();
         // change lastA to current tab no.
         lastA = tabint;
-        var newid = '#ap' + lastA;
+        let newid = '#ap' + lastA;
         positionApply(lastA); // position the apply button for this tab
         prepareSubmit(newid);
     });
@@ -183,15 +193,15 @@ $(function () {
         $.get('resetAlerts.php');
     }
     // set max additional gpx files at 3
-    var listItems = $("#addlist").children();
-    var count = listItems.length;
+    let listItems = $("#addlist").children();
+    let count = listItems.length;
     if (count > 0 && count < 3) {
-        var addno = 3 - count;
+        let addno = 3 - count;
         $('#addno').text(addno);
         listItems.each(function () {
-            var indx = this.id;
-            var fileno = indx.substring(5, 6);
-            var li_id = "#li" + fileno;
+            let indx = this.id;
+            let fileno = indx.substring(5, 6);
+            let li_id = "#li" + fileno;
             $(li_id).hide();
         });
     }
@@ -210,7 +220,7 @@ $(function () {
      */
     $('input[name=dgpx]').on('change', function () {
         if ($(this).is(':checked')) {
-            var gpxfile_selected = $('#gpxfile1').get(0);
+            let gpxfile_selected = $('#gpxfile1').get(0);
             if (gpxfile_selected.files.length === 0) {
                 if (count > 0) {
                     alert("NOTE: If you don't specify a new main file,\n'Additional files'" +
@@ -222,8 +232,8 @@ $(function () {
     // only allow additional file specs if there is a main
     $('input[name^=addgpx]').each(function () {
         $(this).on('change', function () {
-            var inputel = document.getElementById("gpxfile1");
-            var filedata = inputel.files[0];
+            let inputel = document.getElementById("gpxfile1");
+            let filedata = inputel.files[0];
             if (typeof filedata === 'undefined') {
                 if ($('input[name=dgpx]').is(':checked') || $('#mgpx').text() === '') {
                     alert("You must first specify a main gpx file\n or have one" +
@@ -251,30 +261,30 @@ $(function () {
      */
     var blinkerItems = [];
     function tab1Url(uri) {
-        var trial = /^(ftp|http|https):\/\//.test(uri);
+        let trial = /^(ftp|http|https):\/\//.test(uri);
         if (!trial && uri !== '') {
             activateBlink('murl', tabstr);
         }
     }
     $('#murl').on('change', function () {
-        var murltxt = this;
-        var testtxt = murltxt.value;
+        let murltxt = this;
+        let testtxt = murltxt.value;
         // without a slight delay, the focus gets lost
         setTimeout(function () {
             tab1Url(testtxt);
         }, 200);
     });
     if (tabstr == '1') {
-        var urltxt = $('#murl').val();
+        let urltxt = $('#murl').val();
         if (urltxt !== '') {
             tab1Url(urltxt);
         }
     }
     if (tabstr == '4') {
         $('.urlbox').each(function () {
-            var urlitem = $(this).val();
+            let urlitem = $(this).val();
             if (urlitem.trim() == '--- INVALID URL DETECTED ---') {
-                var urlid = $(this).attr('id');
+                let urlid = $(this).attr('id');
                 activateBlink(urlid, tabstr);
             }
         });
@@ -283,7 +293,7 @@ $(function () {
      * This function cause an element to 'blink'
      */
     function activateBlink(elemId, tabstr) {
-        var blink_el = document.getElementById(elemId);
+        let blink_el = document.getElementById(elemId);
         blink_el.focus({ preventScroll: false });
         if (tabstr == '1') {
             window.scrollTo(0, document.body.scrollHeight);
@@ -299,7 +309,7 @@ $(function () {
             }
         }, 500);
         blinkerItems.push(blinkerObject);
-        var ptr = blinkerItems.length - 1;
+        let ptr = blinkerItems.length - 1;
         $elem.on('mouseover', function () {
             clearInterval(blinkerItems[ptr]);
             $elem.css('visibility', 'visible');
@@ -314,7 +324,7 @@ $(function () {
     });
     // Pressing 'Return' while in textarea only adds newline chars, therefore:
     window.onkeydown = function (event) {
-        var retval = true;
+        let retval = true;
         if (event.key == 'Enter') {
             if (event.preventDefault)
                 event.preventDefault();
@@ -329,7 +339,7 @@ $(function () {
         $('#file_exists').css('color', 'black');
     }
     // this detects when a sorted item has completed its move (args not currently used)
-    var refreshCapts = function () {
+    const refreshCapts = () => {
         forcedReset();
     };
     // photo reordering:
@@ -350,8 +360,8 @@ $(function () {
     });
     $("#gethike").on("autocompleteselect", function (event, ui) {
         event.preventDefault();
-        var hike = ui.item.value;
-        var ajaxdata = { hike: hike, ehike: ehikeno };
+        let hike = ui.item.value;
+        let ajaxdata = { hike: hike, ehike: ehikeno };
         if (confirm("Do you wish to import photos from: " + hike)) {
             $.ajax({
                 url: "getHikePhotos.php",
@@ -368,7 +378,7 @@ $(function () {
                     }
                 },
                 error: function (_jqXHR, _textStatus, _errorThrown) {
-                    var msg = "editDB.js: attempting to retrieve " +
+                    let msg = "editDB.js: attempting to retrieve " +
                         "getHikePhotos.php";
                     ajaxError(appMode, _jqXHR, _textStatus, msg);
                 }
@@ -454,12 +464,12 @@ $(function () {
      * unpublished groups is 'no display' (see editDB.css)
      * The 'var newgrps' is established via php in tab1display.php
      */
-    var showClusCoords = function () {
-        var match = false;
-        var nglat = 0;
-        var nglng = 0;
+    const showClusCoords = () => {
+        let match = false;
+        let nglat = 0;
+        let nglng = 0;
         if (newgrps.length > 0) {
-            for (var k = 0; k < newgrps.length; k++) {
+            for (let k = 0; k < newgrps.length; k++) {
                 if (newgrps[k].group == clusnme) {
                     nglat = newgrps[k].loc.lat;
                     nglng = newgrps[k].loc.lng;
@@ -485,7 +495,7 @@ $(function () {
     showClusCoords();
     // Change Cluster selection:
     $('#clusters').on('change', function () {
-        var clusinput = this;
+        let clusinput = this;
         if (clusinput.value !== clusnme) {
             if (clusnme == '') {
                 clusnme = "None assigned";
@@ -493,7 +503,7 @@ $(function () {
                 $('#showdel').css('display', 'block');
             }
             // let user know the existing cluster group assignment will change
-            var msg = "Cluster type will be changed from:\n" + "Original setting: "
+            let msg = "Cluster type will be changed from:\n" + "Original setting: "
                 + clusnme;
             msg += "\nTo: " + $(this).val();
             alert(msg);
@@ -503,7 +513,7 @@ $(function () {
     });
     // Remove an existing cluster assignment:
     $('#deassign').on('change', function () {
-        var cboxitem = this;
+        let cboxitem = this;
         if (cboxitem.checked) {
             $('#clusters').val('');
             $('#showdel').css('display', 'none');
@@ -519,7 +529,7 @@ $(function () {
         linewidth = $('#main').width() - listwidth;
         $('#line').width(linewidth);
         positionApply(tabint);
-        var btn = "#ap" + tabint;
+        let btn = "#ap" + tabint;
         prepareSubmit(btn);
     });
 });

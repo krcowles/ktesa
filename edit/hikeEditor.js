@@ -1,5 +1,4 @@
 "use strict";
-var _a, _b, _c, _d;
 /**
  * @fileoverview For each link in the table of hikes, parse for the href
  * attribute, then replace with an attribute which points to the correct
@@ -26,12 +25,12 @@ if (columns.length !== 8) {
     alert("Unexpected table in editor!");
 }
 // reduce table width to allow for buttons
-(_a = columns[7].parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(columns[7]);
-(_b = columns[6].parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(columns[6]);
-(_c = headers[7].parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(headers[7]);
-(_d = headers[6].parentNode) === null || _d === void 0 ? void 0 : _d.removeChild(headers[6]);
+columns[7].parentNode?.removeChild(columns[7]);
+columns[6].parentNode?.removeChild(columns[6]);
+headers[7].parentNode?.removeChild(headers[7]);
+headers[6].parentNode?.removeChild(headers[6]);
 $rows.each(function () {
-    var colspec = columns[0];
+    let colspec = columns[0];
     colspec.style.width = '160px';
     this.removeChild(this.children[7]);
     this.removeChild(this.children[6]);
@@ -52,19 +51,19 @@ if (include_search === 'EditPub') {
         event.preventDefault();
         var entry = ui.item.value;
         $(this).val(entry);
-        scrollToHike_1(entry);
+        scrollToHike(entry);
     });
     $('#clear').on('click', function () {
         $('#search').val("");
         var searchbox = document.getElementById('search');
         searchbox.focus();
     });
-    var scrollToHike_1 = function (hikename) {
+    const scrollToHike = (hikename) => {
         var $tbl = $('#editTbl');
         var $rows = $tbl.find('tr');
         var $scroll_row = $rows.eq(0);
         $rows.each(function () {
-            var hikeTitle = $(this).children().eq(0).children().eq(0).text();
+            let hikeTitle = $(this).children().eq(0).children().eq(0).text();
             if (hikeTitle == hikename) {
                 $scroll_row = $(this);
                 return false;
@@ -101,23 +100,23 @@ function assignPreviews() {
     $('#user_btns').empty();
     $sorted_rows = $('table.sortable tbody').find('tr');
     $sorted_rows.each(function (indx) {
-        var trow_ht = $(this).height();
-        var trow_pos = $(this).offset();
-        var prev_pos = { top: trow_pos.top, left: trow_pos.left - 72 };
-        var del_pos = { top: trow_pos.top };
+        let trow_ht = $(this).height();
+        let trow_pos = $(this).offset();
+        let prev_pos = { top: trow_pos.top, left: trow_pos.left - 72 };
+        let del_pos = { top: trow_pos.top };
         // get link from 1st cell => editor with tab1 and hikeIndx
-        var $alink = $(this).find('td').eq(0).children().eq(0);
-        var href = $alink.attr('href');
+        let $alink = $(this).find('td').eq(0).children().eq(0);
+        let href = $alink.attr('href');
         // strip off queries relating to clusters...
-        var ampersand = href.indexOf("&clus");
+        let ampersand = href.indexOf("&clus");
         if (ampersand !== -1) {
             href = href.substring(0, ampersand);
         }
-        var hike_no_pos = href.indexOf('hikeNo') + 7;
-        var hike_no = href.substring(hike_no_pos);
-        var btn_link = btnId + indx + '" style="height:' + trow_ht + '" ' +
+        let hike_no_pos = href.indexOf('hikeNo') + 7;
+        let hike_no = href.substring(hike_no_pos);
+        let btn_link = btnId + indx + '" style="height:' + trow_ht + '" ' +
             btnHtml + hike_no + '">Preview</a>';
-        var del_link = delId + hike_no + '" ' + delHtml;
+        let del_link = delId + hike_no + '" ' + delHtml;
         $('#user_btns').append(del_link);
         $('#user_btns').append(btn_link);
         $('#prev' + indx).offset(prev_pos);
@@ -125,12 +124,12 @@ function assignPreviews() {
     });
     // set up click events for delete buttons
     $('.udels').each(function () {
-        var hindx = $(this).attr('id');
+        let hindx = $(this).attr('id');
         // get hike no from string; "hike_" = 5 chars
-        var hike = hindx.substring(5);
-        var delscript = '../php/delete.php?hno=' + hike;
+        let hike = hindx.substring(5);
+        let delscript = '../php/delete.php?hno=' + hike;
         $(this).on('click', function () {
-            var ans = confirm("All hike data will be lost:\nDo you really " +
+            let ans = confirm("All hike data will be lost:\nDo you really " +
                 "want to delete this hike?");
             if (ans) {
                 window.open(delscript, "_self");
@@ -183,17 +182,17 @@ $(function () {
                 dataType: 'text',
                 success: function (result) {
                     if (result === 'OK') {
-                        var page = '../edit/publishRequest.php?mail=yes&hikeNo=' +
+                        let page = '../edit/publishRequest.php?mail=yes&hikeNo=' +
                             hno + '&name=' + name;
                         window.open(page, "_blank");
                     }
                     else {
-                        var query = '../edit/publishRequest.php?name=' + name + '&result=' + result;
+                        let query = '../edit/publishRequest.php?name=' + name + '&result=' + result;
                         window.open(query, "_blank");
                     }
                 },
                 error: function (_jqXHR, _textStatus, _errorThrown) {
-                    var msg = "hikeEditor.js: attempting to validate request " +
+                    let msg = "hikeEditor.js: attempting to validate request " +
                         "via validatePubRequest.php";
                     ajaxError(appMode, _jqXHR, _textStatus, msg);
                 }
@@ -248,10 +247,10 @@ $(function () {
                 $anchor.on('click', function (ev) {
                     ev.preventDefault();
                 });
-                var $pubrow = $anchor.parent().parent();
+                let $pubrow = $anchor.parent().parent();
                 $pubrow.on('mouseover', function () {
                     $(this).css('cursor', 'pointer');
-                    var affected = $(this).offset();
+                    let affected = $(this).offset();
                     $('#ineditModal').css({
                         top: affected.top + 25,
                         left: affected.left - 28,

@@ -62,7 +62,7 @@ $(function () {
                     }
                 },
                 error: function (_jqXHR, _textStatus, _errorThrown) {
-                    var msg = "correctableFaults.js: attempting to replace " +
+                    let msg = "correctableFaults.js: attempting to replace " +
                         "bad symbol via replaceBadSyms.php";
                     ajaxError(appMode, _jqXHR, _textStatus, msg);
                 }

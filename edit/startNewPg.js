@@ -18,18 +18,18 @@ $(function () {
         alert("Error encountered: " + error);
     }
     // Map the valid Latin1 charrs
-    var charmap = [192, 193, 194, 195, 196, 197, 199, 200,
+    const charmap = [192, 193, 194, 195, 196, 197, 199, 200,
         201, 202, 203, 204, 205, 206, 207, 209, 210, 211, 212,
         213, 214, 217, 218, 219, 220, 224, 225, 226, 227, 228,
         229, 231, 232, 233, 234, 235, 236, 237, 238, 239, 241,
         242, 243, 244, 245, 246, 249, 250, 251, 252];
-    var entitymap = ['Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'Ccedil',
+    const entitymap = ['Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'Ccedil',
         'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'Ntilde',
         'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml',
         'agrave', 'aacute', 'acirc', 'atilde', 'auml', 'aring', 'ccedil', 'egrave', 'eacute',
         'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'ntilde', 'ograve', 'oacute',
         'ocirc', 'otilde', 'ouml', 'ugrave', 'uacute', 'ucirc', 'uuml'];
-    var not_allowed = "Unacceptable character in the name supplied\n" +
+    const not_allowed = "Unacceptable character in the name supplied\n" +
         "The string will be truncated at that point";
     var appMode = $('#appMode').text();
     // load lists of 'pgTitle's & 'clusters' for data validation 
@@ -42,7 +42,7 @@ $(function () {
      * @param {string} entry
      * @returns {string}
      */
-    var latin_check = function (entry) {
+    const latin_check = (entry) => {
         var ret_string = entry;
         for (var i = 0; i < entry.length; i++) {
             var cp = entry.codePointAt(i);
@@ -61,28 +61,28 @@ $(function () {
      * If the user has entered a special character as an HTML entity,
      * convert it to UTF-8 encoding
      */
-    var entity_check = function (entry) {
+    const entity_check = (entry) => {
         var ret_string = entry;
         if (entry.includes("&")) {
             // may be entity or entity number:
             if (entry.includes("#")) {
-                var pos = entry.indexOf("#") + 1;
-                var substr = entry.substring(pos);
-                var end = substr.indexOf(";");
-                var code = parseInt(substr.substring(0, end));
-                var iso = "&#" + code + ";";
-                var char_code = String.fromCharCode(code);
+                let pos = entry.indexOf("#") + 1;
+                let substr = entry.substring(pos);
+                let end = substr.indexOf(";");
+                let code = parseInt(substr.substring(0, end));
+                let iso = "&#" + code + ";";
+                let char_code = String.fromCharCode(code);
                 ret_string = entry.replace(iso, char_code);
             }
             else {
-                var pos = entry.indexOf("&") + 1;
-                var substr = entry.substring(pos);
-                var end = substr.indexOf(";");
-                var code = substr.substring(0, end);
-                var iso = "&" + code + ";";
-                var map_pos = entitymap.indexOf(code);
+                let pos = entry.indexOf("&") + 1;
+                let substr = entry.substring(pos);
+                let end = substr.indexOf(";");
+                let code = substr.substring(0, end);
+                let iso = "&" + code + ";";
+                let map_pos = entitymap.indexOf(code);
                 if (map_pos !== -1) {
-                    var char_code = String.fromCharCode(charmap[map_pos]);
+                    let char_code = String.fromCharCode(charmap[map_pos]);
                     ret_string = entry.replace(iso, char_code);
                 }
             }
@@ -97,7 +97,7 @@ $(function () {
             titleList = titles;
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = "startNewPg.js: trying to load getTitles.php";
+            let msg = "startNewPg.js: trying to load getTitles.php";
             ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
     });
@@ -105,7 +105,7 @@ $(function () {
      * The following function collects the names of cluster groups
      */
     var groups;
-    var getClusters = function (def) {
+    const getClusters = (def) => {
         $.ajax({
             url: 'getGroups.php',
             method: 'get',
@@ -115,7 +115,7 @@ $(function () {
                 def.resolve();
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                var msg = "Tring to access getGroups.php from getClusters()";
+                let msg = "Tring to access getGroups.php from getClusters()";
                 ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
@@ -128,7 +128,7 @@ $(function () {
     $('#normal').prop('checked', true);
     // Prevent submitting form when user hits 'Enter' key in input field
     $('form').find('#hikename').on('keydown', function (ev) {
-        var retval = true;
+        let retval = true;
         if (ev.key == 'Enter') {
             retval = false;
         }
@@ -177,8 +177,8 @@ $(function () {
     });
     // validate user's choice for new group name
     $('#newgroup').on('change', function () {
-        var new_group = $(this).val();
-        for (var j = 0; j < groups.length; j++) {
+        let new_group = $(this).val();
+        for (let j = 0; j < groups.length; j++) {
             if (new_group == groups[j]) {
                 alert("This name already exists; Please try another");
                 $(this).val('');
@@ -190,8 +190,8 @@ $(function () {
         $(this).val(estr);
     });
     $('#newclusgrp').on('change', function () {
-        var new_group = $(this).val();
-        for (var j = 0; j < groups.length; j++) {
+        let new_group = $(this).val();
+        for (let j = 0; j < groups.length; j++) {
             if (new_group == groups[j]) {
                 alert("This name already exists; Please try another");
                 $(this).val('');
@@ -205,7 +205,7 @@ $(function () {
     /**
      * Instantiate the Cluster Page Editor instead of the Hike Page Editor:
      */
-    var submittable = function (group) {
+    const submittable = (group) => {
         if (groups.indexOf(group) !== -1) {
             alert("This cluster group already has a page assigned\n" +
                 "Please select a new group");
@@ -223,7 +223,7 @@ $(function () {
     // validate user's choice for new group name
     var dup = false;
     $('#newclusgrp').on('change', function () {
-        var newgrp = $(this).val();
+        let newgrp = $(this).val();
         if (groups.indexOf(newgrp) !== -1) {
             dup = true;
         }
@@ -232,18 +232,18 @@ $(function () {
         }
     });
     $('#createcpg').on('click', function () {
-        var returnbool = true;
-        var grpinput = $('#newclusgrp').val();
-        var newgrp = grpinput.trim();
+        let returnbool = true;
+        let grpinput = $('#newclusgrp').val();
+        let newgrp = grpinput.trim();
         if (newgrp == '') {
-            var clusDef = $.Deferred();
+            let clusDef = $.Deferred();
             getClusters(clusDef); // prevent user from creating dup if returning to this page
             $.when(clusDef).then(function () {
-                var retval = true;
+                let retval = true;
                 if (submittable(selectVal)) {
-                    var item = selectVal;
-                    var choice = item.replace(/ /g, '+');
-                    var newpg = "submitClusterPg.php?choice=" + choice;
+                    let item = selectVal;
+                    let choice = item.replace(/ /g, '+');
+                    let newpg = "submitClusterPg.php?choice=" + choice;
                     window.open(newpg, "_blank");
                 }
                 else {
@@ -258,8 +258,8 @@ $(function () {
                 returnbool = false;
             }
             else {
-                var choice = newgrp.replace(/ /g, '+');
-                var newpg = "submitClusterPg.php?new=y&choice=" + choice;
+                let choice = newgrp.replace(/ /g, '+');
+                let newpg = "submitClusterPg.php?new=y&choice=" + choice;
                 window.open(newpg, "_blank");
             }
         }

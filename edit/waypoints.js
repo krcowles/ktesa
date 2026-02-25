@@ -9,23 +9,23 @@
  */
 $(function () {
     // Display user-selected waypoint format
-    var showFractionalDegrees = function () {
+    const showFractionalDegrees = () => {
         $('.show_deg').show();
         $('.show_dm').hide();
         $('.show_dms').hide();
     };
-    var showFractionalMinutes = function () {
+    const showFractionalMinutes = () => {
         $('.show_deg').hide();
         $('.show_dm').show();
         $('.show_dms').hide();
     };
-    var showFractionalSeconds = function () {
+    const showFractionalSeconds = () => {
         $('.show_deg').hide();
         $('.show_dm').hide();
         $('.show_dms').show();
     };
     // Integrity check
-    var checkForFractionalEntry = function (entry) {
+    const checkForFractionalEntry = (entry) => {
         var result = false;
         if ((entry % 1) > 0) {
             alert("Only whole numbers are allowed in this field;\n"
@@ -41,8 +41,8 @@ $(function () {
      * the various formats: degrees, degrees/decimal minutes, and
      * degrees/minutes/decimal seconds.
      */
-    var getDegreeData = function ($span, // the changed <span>
-    format) {
+    const getDegreeData = ($span, // the changed <span>
+    format) => {
         var $kids = $span.children(); // either 2 or 3 <textarea> children
         var degs = $kids.eq(0).val() === '' ? 0 : parseFloat($kids.eq(0).val());
         var mins = $kids.eq(1).val() === '' ? 0 : parseFloat($kids.eq(1).val());
@@ -57,19 +57,19 @@ $(function () {
         }
         return degs < 0 ? -1 * val : val;
     };
-    var updatePostInput = function (
+    const updatePostInput = (
     // use hidden input to store posted value
-    $inp, val) {
+    $inp, val) => {
         $inp.val(val.toFixed(7));
         return;
     };
-    var updateDegrees = function ($d, val) {
+    const updateDegrees = ($d, val) => {
         // use span holding class 'deg'
         $d.children().eq(0).val(val.toFixed(7));
         return;
     };
-    var updateDM = function ($dm_span, // span holding class 'dm'
-    degrees) {
+    const updateDM = ($dm_span, // span holding class 'dm'
+    degrees) => {
         var act = Math.abs(degrees);
         degrees = Math.trunc(degrees); // retains negative sign if present
         var mant = act - Math.abs(degrees);
@@ -80,9 +80,9 @@ $(function () {
         $els.eq(1).val(tmin);
         return Number(tmin); // due to rounding/math, mins can be marginally 'off'
     };
-    var updateDMS = function (
+    const updateDMS = (
     // use span holding class 'dms'
-    $dms_span, degrees, minutes) {
+    $dms_span, degrees, minutes) => {
         var dmin = Math.floor(minutes);
         var mant = minutes - dmin;
         var secs = mant * 60;
@@ -93,9 +93,9 @@ $(function () {
         $els.eq(2).val(tsec);
         return;
     };
-    var recalculateFormats = function (format, // 'deg', 'dm', or 'dms'
+    const recalculateFormats = (format, // 'deg', 'dm', or 'dms'
     target // the <textarea> that changed
-    ) {
+    ) => {
         var new_degrees = 0.00;
         var minutes = 0.00;
         switch (format) {
@@ -178,7 +178,7 @@ $(function () {
     /**
      * MAIN ROUTINE
      */
-    var non_num_entry = /[^\-\+0-9\.]/;
+    const non_num_entry = /[^\-\+0-9\.]/;
     // Display waypoint format:
     var wpt_format = $('#wpt_format').val();
     if (wpt_format == "") {
@@ -237,7 +237,7 @@ $(function () {
         var $gicons = $('[id^="gicn"]');
         var $gbox = $('[id^="gselicon"]');
         $gbox.each(function (indx) {
-            var gpx_icon = $gicons[indx].innerText;
+            let gpx_icon = $gicons[indx].innerText;
             if (wpt_icons.includes(gpx_icon)) {
                 $(this).val(gpx_icon);
             }
@@ -277,7 +277,7 @@ $(function () {
         var $wicons = $('[id^="dicn"]');
         var $wbox = $('[id^="dselicon"]');
         $wbox.each(function (indx) {
-            var db_icon = $wicons[indx].innerText;
+            let db_icon = $wicons[indx].innerText;
             if (wpt_icons.includes(db_icon)) {
                 $(this).val(db_icon);
             }

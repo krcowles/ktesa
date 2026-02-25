@@ -15,7 +15,7 @@ $(function () {
     $('select#area').val(locale);
     // prevent enter key from submitting form:
     $('form').find('.ta').on('keydown', function (ev) {
-        var retval = true;
+        let retval = true;
         if (ev.key == "Enter") {
             retval = false;
         }
@@ -25,11 +25,11 @@ $(function () {
      * This function will loosely validate the data in the lat/lng boxes;
      * An empty box constitutes valid data.
      */
-    var validateLatLng = function () {
-        var pglat = $('input[name=lat]').val();
-        var pglng = $('input[name=lng]').val();
+    const validateLatLng = () => {
+        let pglat = $('input[name=lat]').val();
+        let pglng = $('input[name=lng]').val();
         // check for non-numerics
-        var decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+        let decimal = /^[-+]?[0-9]+\.[0-9]+$/;
         if (!decimal.test(pglat)) {
             alert("You must enter a decimal number for latitude");
             return false;
@@ -38,8 +38,8 @@ $(function () {
             alert("You must enter a decimal number for longitude");
             return false;
         }
-        var lat = parseFloat(pglat);
-        var lng = parseFloat(pglng);
+        let lat = parseFloat(pglat);
+        let lng = parseFloat(pglng);
         // valid number?
         if (isNaN(lat)) {
             alert("The latitude entry is not a valid number");
@@ -74,7 +74,7 @@ $(function () {
     // Buttons:
     $('#preview').on('click', function (ev) {
         ev.preventDefault();
-        var cpviewer = '../pages/hikePageTemplate.php?age=new' +
+        let cpviewer = '../pages/hikePageTemplate.php?age=new' +
             '&clus=y&hikeIndx=' + indxNo;
         window.open(cpviewer, "_blank");
     });
@@ -84,7 +84,7 @@ $(function () {
         }
         return;
     });
-    var dirtxt = $('#dirs').val();
+    let dirtxt = $('#dirs').val();
     if (dirtxt.indexOf("INVALID") !== -1) {
         $('#dirs').css('color', 'brown');
         $('#dirs').on('focus', function () {
