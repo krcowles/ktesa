@@ -21,9 +21,26 @@ require_once "../accounts/getLogin.php";
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
 //header("Expires: 0");
+
 if ($_SESSION['cookie_state'] === "OK") {
-    $redirect = "../pages/member_landing.html";
+    // The user is a member:
+    $current_version = "1.0"; // set by admin in admintools
+    $user = $_SESSION['userid'];
+    $versionReq = "SELECT `sw_ver` FROM `USERS` WHERE `userid`='{$user}' LIMIT 1;";
+    $version = $pdo->query($versionReq)->fetchColumn(0);
+    if ($version !== $current_version) {
+        /**
+         * Note: all users will get the 'update' at first,
+         * as the database has initialized all sw_ver's to '0.0'
+         */
+        $updater = "./update.php?ver={$current_version}&usr={$_SESSION['userid']}";
+        header("Location:{$updater}", true);
+    } else {
+        $member = "../pages/member_landing.html"; 
+        header("Location:{$member}", true);
+    }
 } else {
-    $redirect = "../pages/nonmember_landing.php";
+    // User is not a member
+    $nonmember = "../pages/nonmember_landing.php";
+    header("Location:{$nonmember}", true);
 }
-header("Location:{$redirect}", true);

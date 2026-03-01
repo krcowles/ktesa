@@ -11,23 +11,32 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$version_page = "../pages/member_landing.html";
+$version_page = "../pages/landing.php";
 $action      = filter_input(INPUT_POST, 'action');
 $new_version = filter_input(INPUT_POST, 'version'); // can be null
 
 $curr_code = file($version_page);
-$version_code = $curr_code[20];
-$needle = 'id="version"';
-$ver_start = strpos($version_code, $needle) + 13;
-$ver_end   = strpos($version_code, "</");
-$ver_lgth  = $ver_end - $ver_start;
-$curr_vers = substr($version_code, $ver_start, $ver_lgth);
+$ver_start = 0;
+$ver_end   = 0;
+$curr_version = '';
+$line_index = 0;
+for ($j=0; $j<count($curr_code); $j++) {
+    if (strpos($curr_code[$j], "current_version") !== false) {
+        $line_index = $j;
+        $line = $curr_code[$j];
+        $ver_start = strpos($line, '"') + 1;
+        $ver_end   = strrpos($line, '"');
+        $curr_version = substr($line, $ver_start, $ver_end - $ver_start);
+        break;
+    }
+}
 if ($action === 'get') {
-    echo $curr_vers;
+    echo $curr_version;
     exit;
 } elseif ($action === 'set') {
-    $modified = str_replace($curr_vers, $new_version, $version_code);
-    $curr_code[20] = $modified;
+    $curr_code[$line_index] = str_replace(
+        $curr_version, $new_version, $curr_code[$line_index]
+    );
     file_put_contents($version_page, $curr_code);
     echo "OK";
 }

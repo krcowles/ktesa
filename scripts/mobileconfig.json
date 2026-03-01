@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
       "moduleResolution": "Node",
-      "target": "es2020",
-      "module": "none",
-      "lib": ["es2020", "DOM"],
+      "target": "ESNext",
+      "module": "ESNext",
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
       "skipLibCheck": true,
       "strict": true,
       "noImplicitAny": true,
@@ -19,18 +19,20 @@
     "**/*.js"
   ],
   "files": [
+    "cacheDeleteFct.ts",
+    "ktesaOfflineDB.ts",
     "landing.ts",
     "loginState.ts",
     "logo.ts",
-    "viewMgr.ts",
     "mapOnly.ts",
     "navMenu.ts",
     "responsiveCaptions.ts",
+    "responsivePage.ts",
     "responsivePics.ts",
     "responsiveTable.ts",
-    "responsivePage.ts",
     "searchbar.ts",
-    "ktesaOfflineDB.ts",
-    "useOffline.ts"
+    "update.ts",
+    "useOffline.ts",
+    "viewMgr.ts"
   ]
 }

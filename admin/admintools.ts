@@ -624,8 +624,8 @@ $.post('./manageVersions.php', {action: 'get'}, (ver) => {
     $('#curr_sw').html(ver_span);
 }, "text");
 $('#sw_versions').on('click', function() {
-    const new_version = $('#new_sw').val();
-    $.post("./manageVersions.php", {action: 'set', version: new_version},
+    let send_ver = $('#new_sw').val() as string;
+    $.post("./manageVersions.php", {action: 'set', version: send_ver},
         (result) => {
             if (result === "OK") {
                 alert("Version set");
