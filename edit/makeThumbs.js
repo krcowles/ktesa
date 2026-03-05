@@ -9,16 +9,16 @@
  * @version 1.0 First pass
  */
 var $sizeblock = $('#sizeblock').detach();
-var cboxht = 500; // upload area for cropbox 'repl' (height & width)
-var cropWd = 300; // crop box frame width
-var cropHt = 225; // crop box frame height
-var sboxht = 225; // presized image height
-var xOrg = 20; // default starting coords for crop box frame
-var yOrg = 20;
-var thWd = 83; // thumbnail dimensions
-var thHt = 62;
-var blockSize = 10; // size of crop frame 'grabber' in uppper-left corner
-var epsilon = 5; // nominal tolerance for presized image upload
+const cboxht = 500; // upload area for cropbox 'repl' (height & width)
+const cropWd = 300; // crop box frame width
+const cropHt = 225; // crop box frame height
+const sboxht = 225; // presized image height
+const xOrg = 20; // default starting coords for crop box frame
+const yOrg = 20;
+const thWd = 83; // thumbnail dimensions
+const thHt = 62;
+const blockSize = 10; // size of crop frame 'grabber' in uppper-left corner
+const epsilon = 5; // nominal tolerance for presized image upload
 // globals
 var appMode = $('#appMode').text();
 var width; // image width
@@ -131,12 +131,12 @@ function loadPreview(img) {
     reader.onload = function (e) {
         $sizeblock.css('display', 'block');
         $('#presize').replaceWith($sizeblock);
-        var image = document.getElementById('ps');
+        let image = document.getElementById('ps');
         image.onload = function () {
-            var imgitem = this;
-            var loaded = imgitem;
-            var xdim = loaded.naturalWidth;
-            var ydim = loaded.naturalHeight;
+            let imgitem = this;
+            let loaded = imgitem;
+            let xdim = loaded.naturalWidth;
+            let ydim = loaded.naturalHeight;
             if (xdim > (cropWd + epsilon) || xdim < (cropWd - epsilon) ||
                 ydim > (cropHt + epsilon) || ydim < (cropHt - epsilon)) {
                 alert("This image is not properly sized to 300 x 225 pixels\n" +
@@ -144,7 +144,7 @@ function loadPreview(img) {
                     "if the image fits the bounds, use 'as is' shown");
             }
         };
-        var event = e.target;
+        let event = e.target;
         image.src = event.result;
         image.height = sboxht;
         // remove Crop Box and replace with Restart button and text
@@ -164,7 +164,7 @@ function loadImage(img) {
     $.when(filechecks(img)).then(function () {
         $.when(ldImgs(validated)).then(function () {
             inputImage.src = FR_Images[0]['data']; // FileReader data
-            inputImage.onload = function () {
+            inputImage.onload = () => {
                 // create a canvas that will present the output image
                 var outputImage = document.createElement("canvas");
                 var MAX_HEIGHT = cboxht;
@@ -213,8 +213,8 @@ function loadImage(img) {
                 //const canvas_image = ctx.getImageData(0, 0, width, height);
                 moveCropper(ctx, xOrg, yOrg);
                 outputImage.onmousedown = function (e) {
-                    var xpos = e.pageX - xCanvas;
-                    var ypos = e.pageY - yCanvas;
+                    let xpos = e.pageX - xCanvas;
+                    let ypos = e.pageY - yCanvas;
                     if (xpos >= xStart && xpos <= (xStart + blockSize)
                         && ypos >= yStart && ypos <= (yStart + blockSize)) {
                         mouseIsDown = true;
@@ -223,8 +223,8 @@ function loadImage(img) {
                 outputImage.onmousemove = function (e) {
                     if (mouseIsDown) {
                         ctx.drawImage(inputImage, 0, 0, width, height);
-                        var xpos = e.pageX - xCanvas;
-                        var ypos = e.pageY - yCanvas;
+                        let xpos = e.pageX - xCanvas;
+                        let ypos = e.pageY - yCanvas;
                         moveCropper(ctx, xpos, ypos);
                     }
                     else
@@ -269,11 +269,11 @@ if ($('#redo_thumb').length) {
  */
 $('#redo_thumb').on('click', function (ev) {
     ev.preventDefault();
-    var original = $('#orgthumb').text();
-    var img_src = $('#current_preview').attr('src');
-    var img2delete = img_src.split('/').pop();
+    let original = $('#orgthumb').text();
+    let img_src = $('#current_preview').attr('src');
+    let img2delete = img_src.split('/').pop();
     // don't delete the pubished thumb if present... (fonly => field only)
-    var post_data;
+    let post_data;
     if (original == '' || (original !== '' && original !== img2delete)) {
         post_data = { fonly: 'n', indxNo: indxNo, img: img2delete };
     }
@@ -296,34 +296,34 @@ $(document).off('click', '#ap2').on('click', '#ap2', function (ev) {
     ev.preventDefault();
     var urlCreator = window.URL || window.webkitURL;
     // first part of file name is used for preview/thumb
-    var prefix = $('#htitle').text(); // on main editDB.php page
+    let prefix = $('#htitle').text(); // on main editDB.php page
     prefix = prefix.substring(0, 4);
     // which image has user selected?
-    var uccrop = $('#uccrop').text();
-    var ucprev = $('#ucprev').text();
+    let uccrop = $('#uccrop').text();
+    let ucprev = $('#ucprev').text();
     if (uccrop === '1') { // cropped version
         // redraw the canvas without the crop box
         ctx.putImageData(window.saved_ctxt, 0, 0);
         // get the cropped image and write it to a canvas element
-        var cropData = ctx.getImageData(xCropOrg, yCropOrg, cropWd, cropHt);
-        var saveCanvas = document.createElement("canvas");
+        let cropData = ctx.getImageData(xCropOrg, yCropOrg, cropWd, cropHt);
+        let saveCanvas = document.createElement("canvas");
         saveCanvas.width = cropWd;
         saveCanvas.height = cropHt;
-        var ctx1 = saveCanvas.getContext("2d");
+        let ctx1 = saveCanvas.getContext("2d");
         ctx1.putImageData(cropData, 0, 0);
         // prepare this for uploading and for forming thumb.jpg
         var dataurl = saveCanvas.toDataURL('image/jpeg', 0.7);
         var blob1 = canvasDataURItoBlob(dataurl); // this will be uploaded
         var imageSrc = urlCreator.createObjectURL(blob1);
         // create the smaller thumb image
-        var thumbimg = document.createElement("img");
+        let thumbimg = document.createElement("img");
         thumbimg.onload = function () {
-            var timg = this;
-            var loadedThmb = timg;
-            var tcanvas = document.createElement("canvas");
+            let timg = this;
+            let loadedThmb = timg;
+            let tcanvas = document.createElement("canvas");
             tcanvas.width = thWd;
             tcanvas.height = thHt;
-            var tctx = tcanvas.getContext('2d');
+            let tctx = tcanvas.getContext('2d');
             tctx.drawImage(loadedThmb, 0, 0, thWd, thHt);
             var tdataurl = tcanvas.toDataURL('image/jpg', .7);
             var blob2 = canvasDataURItoBlob(tdataurl);
@@ -340,14 +340,14 @@ $(document).off('click', '#ap2').on('click', '#ap2', function (ev) {
         var base64img = $('#ps').attr('src');
         var blob1 = b64toBlob(base64img);
         // create the thumb
-        var thumbimg = document.createElement("img");
+        let thumbimg = document.createElement("img");
         thumbimg.onload = function () {
-            var timg = this;
-            var loadedThmb = timg;
-            var tcanvas = document.createElement("canvas");
+            let timg = this;
+            let loadedThmb = timg;
+            let tcanvas = document.createElement("canvas");
             tcanvas.width = thWd;
             tcanvas.height = thHt;
-            var tctx = tcanvas.getContext('2d');
+            let tctx = tcanvas.getContext('2d');
             tctx.drawImage(loadedThmb, 0, 0, thWd, thHt);
             var tdataurl = tcanvas.toDataURL('image/jpg', .7);
             var blob2 = canvasDataURItoBlob(tdataurl);
@@ -398,7 +398,7 @@ function saveOrder(sortdata) {
             $('#f2').trigger('submit');
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = "makeThumbs.js: attempting to save photo order " +
+            let msg = "makeThumbs.js: attempting to save photo order " +
                 "via saveOrder.php";
             ajaxError(appMode, _jqXHR, _textStatus, msg);
         }
@@ -430,7 +430,7 @@ function saveImages(ajaxdata) {
             }
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = "makeThumbs.js: attempting to save preview " +
+            let msg = "makeThumbs.js: attempting to save preview " +
                 "via savePreview.php";
             ajaxError(appMode, _jqXHR, _textStatus, msg);
         }

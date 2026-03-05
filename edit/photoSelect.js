@@ -32,7 +32,7 @@ $(function () {
             });
         }
     });
-    var saveGPS = function (cbid) {
+    const saveGPS = (cbid) => {
         // to prevent retriggering of click:  (!!)
         $('#setloc').off('click').on('click', function () {
             var lat_entry = $('#piclat').val();
@@ -77,7 +77,7 @@ $(function () {
                     }
                 },
                 error: function (_jqXHR, _textStatus, _errorThrown) {
-                    var msg = "photoSelect.js: trying to set photo location " +
+                    let msg = "photoSelect.js: trying to set photo location " +
                         "in saveGPS() [setLocations.php]";
                     ajaxError(appMode, _jqXHR, _textStatus, msg);
                 }

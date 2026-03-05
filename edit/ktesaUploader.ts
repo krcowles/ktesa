@@ -1,14 +1,15 @@
-declare var EXIF : EXIFStatic;
+declare type ExpandedTags = import('./exif-reader').ExpandedTags;
+declare type NumberFileTag = import('./exif-reader').NumberFileTag;
+declare type StringArrayTag = {
+    value: string[];
+    description: string;
+};
 interface Window {
+    exifData: ExpandedTags;
+    numberTag: NumberFileTag;
+    stringArrayTag: StringArrayTag;
     loaded_imgs: number;
     exifdat: ExifData;
-}
-interface EXIFStatic {
-    getData(url: string | GlobalEventHandlers, callback: any): any;
-    getTag(img: any, tag: any): any;
-    getAllTags(img: any): any;
-    pretty(img: any): string;
-    readFromBinaryFile(file: any): any;
 }
 interface Magic {
     filename: string;
@@ -22,6 +23,16 @@ interface ImageObject {
     size: number;
     data: any;
 }
+interface ExifReaderObject {
+    imgNo: number;
+    lat: string;
+    lng: string;
+    mappable: string;
+    dtime: any;
+    usable: boolean;
+    oht: string;
+    owd: string;
+}
 interface ExifData {
     ehike: string;
     fname: string;
@@ -31,6 +42,7 @@ interface ExifData {
     mappable?: string;  // EXIF data exists for lat/lng? heic converter
     ino?: number;       // heic converter's assigned (unique) image number
 }
+
 /**
  * @fileoverview This is a standalone utility that will preview selected
  * images (input select or drag-and-drop) on the page, having stored a
@@ -39,13 +51,12 @@ interface ExifData {
  * @author Ken Cowles
  * @version 2.0 Typescripted
  * @version 2.1 Updated per heic_convert.ts
+ * @version 3.0 Added upload for webp photos and deployed new exif reader
  */
 
 // admin and server defined constants
 const MAX_UPLOAD_SIZE = 20000000; // no longer required
 const Z_WIDTH = 640;
-const Z_HEIGHT = 480; // ref only
-const DISPLAY_HEIGHT = 220; // ref only
 // globals
 var appMode = $('#appMode').text() as string;
 var ehikeIndxNo = $('#ehno').text(); // get the associated hike no
@@ -53,8 +64,7 @@ var droppedFiles: boolean | FileList = false;
 var validated: File[] = [];
 var FR_Images: ImageObject[] = []; // FileReader objects
 var imgNo = 0;      // unique id for each validated image
-var org_height: any = {};
-var org_width: any  = {};
+var meta: ExifReaderObject[] = [];
 window.loaded_imgs = 0;
 window.exifdat = {ehike: '0', fname: '', lat: '', lng: '', date: ''};
 
@@ -85,6 +95,7 @@ if (isAdvancedUpload) {
     .on('drop', function(e: JQuery.DropEvent) {
         $('#ldg').css('display', 'inline');
         $('#preload').css('display', 'inline-block');
+        meta = []; // needs to be reset after each upload
         let dfs = <DragEvent>e.originalEvent;
         let dxfr = <DataTransfer>dfs.dataTransfer;
         droppedFiles = dxfr.files;
@@ -115,6 +126,7 @@ $('#file').on('change', function() {
 const previewImgs = (flist: FileList) => {
     $('#ldg').css('display', 'inline');
     $('#preload').css('display', 'inline-block');
+    meta = []; // needs to be reset after each upload
     $.when( filechecks(flist) ).then(function() {
         $.when( ldImgs(validated) ).then(function() {
             $.when( ldNodes(FR_Images) ).then(function() {
@@ -130,13 +142,8 @@ const previewImgs = (flist: FileList) => {
  * It is called by the filechecks() function.
  */
 const render = (magic: Magic) => {
-    if (magic.binaryFileType !== 'image/jpeg') {
+    if (magic.binaryFileType !== 'image/jpeg' && magic.binaryFileType !== 'image/webp') {
         return false;
-        /*
-        alert(magic.filename + "\nFiletype from file object: " + magic.filetype +
-            "\nFiletype from binary: " + magic.binaryFileType + "\nHex: " +
-            magic.hex);
-        */
     } else {
         return true;
     }
@@ -158,6 +165,8 @@ const getMimetype = (signature: string) => {
             return 'image/jpeg'
         case '504B0304':
             return 'application/zip'
+        case '52494646':
+            return 'image/webp';
         default:
             return 'Unknown filetype'
     }
@@ -165,7 +174,7 @@ const getMimetype = (signature: string) => {
 /**
  * This function validates features about the input file:
  *    1. Filename length < 1024 bytes
- *    2. File extension is jpg or jpeg
+ *    2. File extension is jpg, jpeg, or webp
  *    3. File size is less than current acceptable upload limit (no longer needed)
  *    4. File magic numbers agree on file mime type
  * All files passing the above test are pushed in to the 'validated' array of files
@@ -188,7 +197,8 @@ const filechecks = (candidates: FileList) => { // rely on implicit typing of ret
         var lastdot = fname.lastIndexOf('.');
         if (lastdot !== -1) {
             var ext = fname.slice(lastdot+1);
-            if (ext.toLowerCase() === 'heic') {
+            var lc_ext = ext.toLowerCase();
+            if (lc_ext === 'heic') {
                 /**
                  * Need to convert to jpg, extract heic metadata
                  * and then import metadata to jpg
@@ -197,17 +207,20 @@ const filechecks = (candidates: FileList) => { // rely on implicit typing of ret
                     "Use converter button on this page for those files");
                 continue;
             }
-            if (ext.toLowerCase() !== 'jpg' && ext.toLowerCase() !== 'jpeg') {
+            if (lc_ext !== 'jpg' && lc_ext !== 'jpeg' && lc_ext !== 'webp') {
                 alert('Type ".' + ext + '" (' + fname +')' +
                     " is not supported at this time");
                 continue;
             }
+        } else {
+            alert("Photo has malformed name (no extension)");
+            continue;
         }
         if (file.size >= MAX_UPLOAD_SIZE) {
             alert("This file is too large for upload - please resize it to less than 20Mbytes");
             continue;
         }
-        // check the internal magic numbers for type jpeg
+        // check the internal magic numbers for type jpeg: IIFE
         (function(def, candidate) {
             filereader.onloadend = function(evt: ProgressEvent<FileReader>) {
                 let event = <FileReader>evt.target;
@@ -242,6 +255,45 @@ const filechecks = (candidates: FileList) => { // rely on implicit typing of ret
 }
 
 /**
+ * New approach with ExifReader: read any exifdata during ldImgs(), and store it
+ * (along with image number) in an array for use in ldNodes()
+ */
+const extractMetaData = (tagData: ExpandedTags, ino: number): void =>  {
+    var use = true;
+    var plat: string;
+    var plng: string;
+    var mappable = "1";
+    var pdate: string;
+    const gps_lat = tagData.gps?.Latitude;
+    if (typeof gps_lat === 'undefined') {
+        plat = '0';
+        mappable = '0';
+    } else {
+        const tlat = tagData.gps?.Latitude as number;
+        plat = tlat.toString();
+    }
+    const gps_lng = tagData.gps?.Longitude;
+    if (typeof gps_lng === 'undefined') {
+        plng = '0';
+        mappable = '0';
+    } else {
+        const tlng = tagData.gps?.Longitude as number;
+        plng = tlng.toString();
+    }
+    const dtime = tagData.exif?.DateTimeOriginal;
+    if (typeof dtime === 'undefined') {
+        pdate = '0';
+    } else {
+        const tdate = tagData.exif?.DateTimeOriginal as StringArrayTag;
+        pdate = tdate.value[0];
+
+    }
+    const metaObj = {imgNo: ino, lat: plat, lng: plng, dtime: pdate,
+        usable: use, mappable: mappable} as ExifReaderObject;
+    meta.push(metaObj);
+    return;
+}
+/**
  * This function takes the 'validated' array of files and loads them into
  * FileReader objects. FileReader objects are pushed onto the FR_Images array
  * 
@@ -254,7 +306,7 @@ const ldImgs = (imgs: File[]) => {
         var deferred = $.Deferred();
         promises.push(deferred);
         (function(d, ifile) {
-            reader.onload = function (evt: ProgressEvent<FileReader> ) {
+            reader.onload = async function (evt: ProgressEvent<FileReader> ) {
                 /**
                  * There's no way to predict the order the files will be loaded
                  */
@@ -263,14 +315,13 @@ const ldImgs = (imgs: File[]) => {
                 // Some imgs have no usable image height/width EXIF tags, so:
                 const newImg = document.createElement("img");
                 newImg.src = result;
-                var picNo = imgNo;
-                newImg.onload = function() {
-                    org_height[picNo] = newImg.height;
-                    org_width[picNo]  = newImg.width;
-                }
+                var thisImg = imgNo; // before incrementing imgNo
                 var imgObj = <ImageObject>{indx: imgNo++, fname: ifile.name,
                     size: ifile.size, data: result};
-                FR_Images.push(imgObj);  // used for loading DOM, then rese
+                FR_Images.push(imgObj);  // used for loading DOM, then reset
+                var tags = await ExifReader.load(ifile,
+                    {expanded:true, includeUnknown: true});
+                extractMetaData(tags, thisImg);
                 d.resolve();
             }
             reader.onerror = function() {
@@ -283,18 +334,6 @@ const ldImgs = (imgs: File[]) => {
         reader.readAsDataURL(imgs[i]);
     }
     return $.when.apply($, promises); // return a variable set of promises
-}
-
-/**
- * This function will convert the EXIF array lat/lng into single values;
- * Invoked by the ldNodes() function: exif.js is a 3rd party lib, so using 'any[]'
- */
-const extractLatLng = (exifArray: any[]) => {
-    if (exifArray.length !== 3) {
-        return null;
-    }
-    let coord = exifArray[0] + (exifArray[1] + exifArray[2]/60)/60;
-    return coord;
 }
 /**
  * This function converts a dataURI from a canvas element to a Blob, 
@@ -339,61 +378,13 @@ const ldNodes = (fr_objs: ImageObject[]) => {
 
         (function(def, imgname, imgindx, data){
             imgs[j].onload = function() {
-                var item_indx =imgindx;
-                var item = this;
                 window.loaded_imgs++;
-                var usable = true;
-                var mappable = '1';
-                EXIF.getData(item, function() {
-                    /**
-                     * Exif data is extracted in order to supply information
-                     * to the database. If no lat/lng, user is notified, but
-                     * image is uploaded. If no height or width data, user is
-                     * notified that image is not usable and can not be uploaded.
-                     * 
-                     * NOTE: If you try to pass a null via ajax, it will be seen
-                     * as a STRING "null"! Hence, no lat/lng/date's = 0;
-                     */
-                    let exifht = typeof EXIF.getTag(item, 'PixelYDimension');
-                    if (exifht === 'undefined') {
-                        exifht = org_height[item_indx];
-                        //usable = false;
+                const pic_data = meta[imgindx];
+                if (pic_data.usable) {
+                    window.exifdat = {
+                        ehike: ehikeIndxNo, fname: imgname, lat: pic_data.lat,
+                        lng: pic_data.lng, date: pic_data.dtime
                     }
-                    let exifwd = typeof EXIF.getTag(item, 'PixelXDimension');
-                    if (exifwd === 'undefined') {
-                        exifwd = org_width[item_indx];
-                        //usable = false;
-                    }
-                    var plat: string;
-                    var plng: string;
-                    var pdate: string;               
-                    if (typeof EXIF.getTag(item, "GPSLatitude") !== 'undefined') {
-                        plat = extractLatLng(EXIF.getTag(item, "GPSLatitude"));
-                    } else {
-                        plat = '0';
-                        mappable = '0';
-                    }
-                    if (typeof EXIF.getTag(item, "GPSLongitude") !== 'undefined') {
-                        let exiflng = extractLatLng(EXIF.getTag(item, "GPSLongitude"));
-                        if (exiflng > 0) exiflng = -1 * exiflng;
-                        plng = exiflng.toString();
-                    } else {
-                        plng = '0';
-                        mappable = '0';
-                    }
-                     if (typeof EXIF.getTag(item, "DateTimeOriginal") !== 'undefined') {
-                        pdate = EXIF.getTag(item, "DateTimeOriginal");
-                    } else {
-                        pdate = '0';
-                    }
-                    if (usable) {
-                        let ajxlat = plat.toString();
-                        let ajxlng = plng.toString();
-                        window.exifdat = {ehike: ehikeIndxNo, fname: imgname, 
-                            lat: ajxlat, lng: ajxlng, date: pdate};
-                    }
-                });
-                if (usable) {
                     // create a DOM element in which to place the image
                     var img = document.createElement("img");
                     img.src = data;
@@ -427,7 +418,7 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                     formDat.append("lat", window.exifdat.lat);
                     formDat.append("lng", window.exifdat.lng);
                     formDat.append("date", window.exifdat.date);
-                    formDat.append("mappable", mappable)
+                    formDat.append("mappable", pic_data.mappable)
                     $.ajax({
                         url: 'saveImage.php',
                         method: 'post',

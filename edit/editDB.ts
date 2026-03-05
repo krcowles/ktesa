@@ -198,6 +198,16 @@ $('button[id^=t]').on('click', function(ev) {
     tabint = parseFloat(tid.substring(1, 2));
     var newtid = '#tab' + tabint;
     $(newtid).css('display','block');
+    if (tabint == 2) {
+        // Text below 'Choose one or more photos' on tab2
+        let file_select_pos = $('#file').offset() as JQueryCoordinates;
+        let select_left = file_select_pos.left;
+        let types_left = select_left - 76;
+        $('#types').css({
+            left: types_left,
+            color: 'brown'
+        });
+    }
     let currbtn = "#ap" + lastA;
     $(currbtn).remove();
     // change lastA to current tab no.

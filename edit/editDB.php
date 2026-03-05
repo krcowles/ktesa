@@ -37,6 +37,7 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
     <script src="<?=$tinymce;?>" referrerpolicy="origin"></script>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.min.js"></script>
+    <script src="exif-reader.js"></script>
 </head>
 
 <body> 
@@ -100,7 +101,7 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
 </script>
 <script src="editDB.js"></script>
 <script src="ktesaUploader.js"></script>
-<script src="exifReader.js"></script>
+<script src="exif-reader.js"></script>
 
 </body>
 </html>
