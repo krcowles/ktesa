@@ -1,5 +1,4 @@
 "use strict";
-//declare function deleteNamedCache(cache:string): string;
 /**
  * @fileoverview This script applies updates to the offline map
  *               code by 'restarting' the service worker &
@@ -7,7 +6,7 @@
  * @author: Ken Cowles
  * @version 1.0 1st release of new update process
  */
-const CACHE_NAMES = {
+var CACHES = {
     tiles: 'map_tiles',
     code: 'map_source'
 };
@@ -91,7 +90,7 @@ navigator.serviceWorker.getRegistration()
         // uninstall current worker
         registration.unregister().then(async (success) => {
             if (success) {
-                const deleteStatus = await deleteNamedCache(CACHE_NAMES.code);
+                const deleteStatus = await deleteNamedCache(CACHES.code);
                 update_status += deleteStatus;
                 if (update_status == '') {
                     // good so far...

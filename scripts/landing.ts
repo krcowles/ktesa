@@ -1,5 +1,4 @@
 /// <reference types="jquery" />
-declare function deleteNamedCache(cache: string): void;
 /**
  * @fileoverview This script performs basic menu operations and page setup
  * for the landing site. Due to the fact that there is no mobileNavbar.php

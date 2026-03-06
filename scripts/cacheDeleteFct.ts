@@ -1,4 +1,4 @@
-async function deleteNamedCache(cacheName: string) {
+async function deleteNamedCache(cacheName: string): Promise<string> {
     var msg = '';
     if ('caches' in window) {
         try {
