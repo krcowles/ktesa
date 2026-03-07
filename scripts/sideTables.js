@@ -1,40 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 /// <reference path='./map.d.ts' />
 /**
  * @file This file creates and places the html for the side table, as well as providing
@@ -48,6 +12,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
  *      Added 'clear' method for searchbar.
  * @version 9.0 Major mods to improve side table formation when multiple map events
  *      occur
+ * @version 9.1 Added break in CL popupHikeName() loop for efficiency
  *\
 
 /**
@@ -96,14 +61,14 @@ var sort_dist = false;
 function popupHikeName(hikename) {
     var found = false;
     if (pgnames.includes(hikename)) { // These are 'Cluster Pages', not hikes
-        var indx_1 = pgnames.indexOf(hikename);
-        hiliteObj = { obj: CL[indx_1].hikes, type: 'cl' };
-        infoWin(CL[indx_1].group, CL[indx_1].loc);
+        let indx = pgnames.indexOf(hikename);
+        hiliteObj = { obj: CL[indx].hikes, type: 'cl' };
+        infoWin(CL[indx].group, CL[indx].loc);
         found = true;
     }
     else {
-        for (var i = 0; i < CL.length; i++) {
-            for (var j = 0; j < CL[i].hikes.length; j++) {
+        for (let i = 0; i < CL.length; i++) {
+            for (let j = 0; j < CL[i].hikes.length; j++) {
                 if (CL[i].hikes[j].name == hikename) {
                     hiliteObj = { obj: CL[i].hikes[j], type: 'nm' };
                     infoWin(CL[i].group, CL[i].loc);
@@ -111,10 +76,13 @@ function popupHikeName(hikename) {
                     break;
                 }
             }
+            if (found) {
+                break;
+            }
         }
     }
     if (!found) {
-        for (var k = 0; k < NM.length; k++) {
+        for (let k = 0; k < NM.length; k++) {
             if (NM[k].name == hikename) {
                 hiliteObj = { obj: NM[k], type: 'nm' };
                 infoWin(NM[k].name, NM[k].loc);
@@ -133,14 +101,14 @@ function popupHikeName(hikename) {
  * Note the use of 'setCenter': if the marker has already been clicked,
  * setCenter() simply restores it to the center of the map.
  */
-var infoWin = function (hike, loc) {
+const infoWin = (hike, loc) => {
     // highlight track for either searchbar or zoom-to icon:
     applyHighlighting = true;
     // clicking marker sets zoom
-    for (var k = 0; k < locaters.length; k++) {
+    for (let k = 0; k < locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
             if (locaters[k].clicked === false) {
-                var custom_mrkr = locaters[k].pin;
+                let custom_mrkr = locaters[k].pin;
                 google.maps.event.trigger(custom_mrkr, 'click');
             }
             else {
@@ -161,12 +129,12 @@ var infoWin = function (hike, loc) {
 function highlightTracks() {
     if (!$.isEmptyObject(hiliteObj)) {
         if (hiliteObj.type === 'cl') { // object is an array of objects
-            var cluster = hiliteObj.obj;
+            let cluster = hiliteObj.obj;
             cluster.forEach(function (track) {
-                var polyno = track.indx;
-                for (var k = 0; k < drawnTracks.length; k++) {
+                let polyno = track.indx;
+                for (let k = 0; k < drawnTracks.length; k++) {
                     if (drawnTracks[k].hike == polyno) {
-                        var polyline = drawnTracks[k].track;
+                        let polyline = drawnTracks[k].track;
                         polyline.setOptions({
                             strokeWeight: 4,
                             strokeColor: '#FFFF00',
@@ -180,11 +148,11 @@ function highlightTracks() {
             });
         }
         else { // mrkr === 'nm'; object is a single object
-            var nmobj = hiliteObj.obj;
-            var polyno = nmobj.indx;
-            for (var k = 0; k < drawnTracks.length; k++) {
+            let nmobj = hiliteObj.obj;
+            let polyno = nmobj.indx;
+            for (let k = 0; k < drawnTracks.length; k++) {
                 if (drawnTracks[k].hike == polyno) {
-                    var polyline = drawnTracks[k].track;
+                    let polyline = drawnTracks[k].track;
                     polyline.setOptions({
                         strokeWeight: 4,
                         strokeColor: '#FFFF00',
@@ -204,7 +172,7 @@ function highlightTracks() {
  * Restore stroke weight and reduce opacity for tracks no longer being chosen for highlighting
  */
 function restoreTracks() {
-    for (var n = 0; n < hilited.length; n++) {
+    for (let n = 0; n < hilited.length; n++) {
         hilited[n].setOptions({
             strokeOpacity: 0.60,
             strokeWeight: 3,
@@ -222,8 +190,8 @@ function restoreTracks() {
  * the object type of the hike (CL, or NM) and its index in that array.
  */
 // constants and variables used when creating a subset of side table items periodically
-var subsize = 10;
-var waitTime = 80; // msec
+const subsize = 10;
+const waitTime = 80; // msec
 var done = false;
 /**
  * The html 'wrapper' for each item included in the side table
@@ -244,84 +212,74 @@ tblItemHtml += '<div class="content">';
  * first with no wait. Due to the possibility of multiple conflicting map events
  * (pan, center_change, zoom), the routine is invoked from the map.ts/js handlers.
  */
-var sleep = function (ms) { return new Promise(function (resolve) { return setTimeout(resolve, ms); }); };
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // NOTE: async function returns a Promise to the caller (map.ts/js)
-function formTbl(indxArray) {
-    return __awaiter(this, void 0, void 0, function () {
-        var nohikes, size, stItems, sliceStart, end, last, indx, done, i;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    $('#sideTable').empty();
-                    sortableHikes = indxArray;
-                    if (indxArray.length === 0) {
-                        nohikes = '<p style="padding-left:12px;font-size:18px;">' +
-                            'There are no hikes in the viewing area</p>';
-                        $('#sideTable').html(nohikes);
-                        return [2 /*return*/];
-                    }
-                    size = indxArray.length;
-                    if (!(size <= subsize)) return [3 /*break*/, 1];
-                    appendSegment(indxArray);
-                    if (kill_table) {
-                        $('#sideTable').empty();
-                    }
-                    return [3 /*break*/, 6];
-                case 1:
-                    stItems = [];
-                    stItems[0] = indxArray.slice(0, subsize);
-                    sliceStart = subsize;
-                    end = sliceStart + subsize;
-                    last = false;
-                    if (end >= size) {
-                        end = size;
-                        last = true;
-                    }
-                    indx = 1;
-                    done = false;
-                    while (!done) {
-                        stItems[indx++] = indxArray.slice(sliceStart, end);
-                        if (last) {
-                            done = true;
-                        }
-                        else {
-                            sliceStart += subsize;
-                            end = sliceStart + subsize;
-                            if (end >= size) {
-                                end = size;
-                                last = true;
-                            }
-                        }
-                    }
-                    // this one gets written regardless, when size > subsize
-                    appendSegment(stItems[0]);
-                    i = 1;
-                    _a.label = 2;
-                case 2:
-                    if (!(i < indx)) return [3 /*break*/, 6];
-                    if (!kill_table) return [3 /*break*/, 3];
-                    console.log("loop: " + i);
-                    $('#sideTable').empty();
-                    return [3 /*break*/, 6];
-                case 3: return [4 /*yield*/, sleep(waitTime)];
-                case 4:
-                    _a.sent();
-                    if (kill_table) {
-                        console.log("during loop " + i);
-                        $('#sideTable').empty();
-                        return [3 /*break*/, 6];
-                    }
-                    else {
-                        appendSegment(stItems[i]);
-                    }
-                    _a.label = 5;
-                case 5:
-                    i++;
-                    return [3 /*break*/, 2];
-                case 6: return [2 /*return*/];
+async function formTbl(indxArray) {
+    $('#sideTable').empty();
+    sortableHikes = indxArray;
+    if (indxArray.length === 0) {
+        let nohikes = '<p style="padding-left:12px;font-size:18px;">' +
+            'There are no hikes in the viewing area</p>';
+        $('#sideTable').html(nohikes);
+        return;
+    }
+    var size = indxArray.length;
+    if (size <= subsize) {
+        appendSegment(indxArray);
+        if (kill_table) {
+            $('#sideTable').empty();
+        }
+    }
+    else {
+        // there are more than 'subsize' no. of elements
+        var stItems = [];
+        stItems[0] = indxArray.slice(0, subsize);
+        var sliceStart = subsize;
+        var end = sliceStart + subsize;
+        var last = false;
+        if (end >= size) {
+            end = size;
+            last = true;
+        }
+        var indx = 1;
+        var done = false;
+        while (!done) {
+            stItems[indx++] = indxArray.slice(sliceStart, end);
+            if (last) {
+                done = true;
             }
-        });
-    });
+            else {
+                sliceStart += subsize;
+                end = sliceStart + subsize;
+                if (end >= size) {
+                    end = size;
+                    last = true;
+                }
+            }
+        }
+        // this one gets written regardless, when size > subsize
+        appendSegment(stItems[0]);
+        // start repeating load, if no new map events are queueing up
+        for (let i = 1; i < indx; i++) {
+            if (kill_table) {
+                console.log("loop: " + i);
+                $('#sideTable').empty();
+                break;
+            }
+            else {
+                await sleep(waitTime);
+                if (kill_table) {
+                    console.log("during loop " + i);
+                    $('#sideTable').empty();
+                    break;
+                }
+                else {
+                    appendSegment(stItems[i]);
+                }
+            }
+        }
+    }
+    return;
 }
 /**
  * The DOM elements for the side table are created and attached in this function;
@@ -331,10 +289,10 @@ function formTbl(indxArray) {
  * and can be invoked potentially multiple times by the formTbl async routine.
  */
 function appendSegment(subset) {
-    var jqSubset = [];
-    for (var m = 0; m < subset.length; m++) {
-        var obj = subset[m];
-        var hno = obj.indx;
+    let jqSubset = [];
+    for (let m = 0; m < subset.length; m++) {
+        let obj = subset[m];
+        let hno = obj.indx;
         //let hike_no = hno.toString()
         var tbl;
         if (favlist.includes(hno)) {
@@ -343,7 +301,7 @@ function appendSegment(subset) {
         else {
             tbl = tblItemHtml;
         }
-        var lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx +
+        let lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx +
             '" class="stlinks" target="_blank">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
@@ -355,7 +313,7 @@ function appendSegment(subset) {
         tbl += '<div class="thumbs"><img src="' + thumb +
             obj.prev + '" alt="preview image" class="thmbpic" /></div>';
         tbl += '</div>';
-        var $tbl = $(tbl);
+        let $tbl = $(tbl);
         $('#sideTable').append($tbl);
         // Note: $tbl must be appended before adding to array!!
         jqSubset.push($tbl);
@@ -369,18 +327,18 @@ function appendSegment(subset) {
  * This function allows the user an enlarged view of the thumb when moused over
  */
 function enlargePreview(items) {
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
         // setup mouse behavior on thumb
-        var idiv = items[i].find('.thumbs');
-        var $image = idiv.children().eq(0);
+        let idiv = items[i].find('.thumbs');
+        let $image = idiv.children().eq(0);
         $image.on('mouseover', function () {
-            var ipos = $(this).offset();
-            var left = (ipos.left - 280) + 'px';
-            var top = (ipos.top - 60) + 'px';
-            var isrc = $(this).attr('src');
+            let ipos = $(this).offset();
+            let left = (ipos.left - 280) + 'px';
+            let top = (ipos.top - 60) + 'px';
+            let isrc = $(this).attr('src');
             isrc = isrc.replace("thumbs", "previews");
-            var expand = '<img class="bigger" src="' + isrc + '" />';
-            var $img = $(expand);
+            let expand = '<img class="bigger" src="' + isrc + '" />';
+            let $img = $(expand);
             $img.css({
                 top: top,
                 left: left,
@@ -392,8 +350,8 @@ function enlargePreview(items) {
             $('.bigger').remove();
         });
         // position tooltip
-        var $ttdiv = items[i].children().eq(0); // div holding tooltip
-        var $icndiv = $ttdiv.next().children().eq(0); // <img holding 'Like' symbol
+        let $ttdiv = items[i].children().eq(0); // div holding tooltip
+        let $icndiv = $ttdiv.next().children().eq(0); // <img holding 'Like' symbol
         positionFavToolTip($ttdiv, $icndiv);
     }
     return;
@@ -403,14 +361,14 @@ function enlargePreview(items) {
  * resizing
  */
 function positionFavToolTip(tipdiv, icon) {
-    var likeSym = icon.attr('src');
+    let likeSym = icon.attr('src');
     if (likeSym.indexOf('Yellow') === -1) {
         tipdiv[0].innerHTML = 'Unmark Favorite';
     }
     icon.on('mouseover', function () {
-        var pos = $(this).offset();
-        var left = pos.left - 128 + 'px'; // width of tip is 120px
-        var top = pos.top + 'px';
+        let pos = $(this).offset();
+        let left = pos.left - 128 + 'px'; // width of tip is 120px
+        let top = pos.top + 'px';
         tipdiv[0].style.top = top;
         tipdiv[0].style.left = left;
         tipdiv[0].style.display = 'block';
@@ -425,20 +383,20 @@ function positionFavToolTip(tipdiv, icon) {
  * Note: update any 'favorites' [default from ]
  */
 function enableFavorites(items) {
-    var _loop_1 = function (k) {
-        var $icndiv = items[k].children().eq(1); // icons div
-        var $favicn = $icndiv.children().eq(0); // 'like' <img> element
+    for (let k = 0; k < items.length; k++) {
+        let $icndiv = items[k].children().eq(1); // icons div
+        let $favicn = $icndiv.children().eq(0); // 'like' <img> element
         // retrieve hike no from content div
-        var hikelink = $icndiv.next().children().eq(0).attr('href');
-        var digitpos = hikelink.indexOf('=') + 1;
-        var hno = hikelink.substring(digitpos); // this is the string version of hike no
-        var hikeno = parseInt(hno); // this is the integer version of hike no
+        let hikelink = $icndiv.next().children().eq(0).attr('href');
+        let digitpos = hikelink.indexOf('=') + 1;
+        let hno = hikelink.substring(digitpos); // this is the string version of hike no
+        let hikeno = parseInt(hno); // this is the integer version of hike no
         $favicn.off('click').on('click', function () {
-            var ajaxdata = { no: hikeno };
-            var isrc = $(this).attr('src');
-            var newsrc;
-            var $tooltip = $(this).parent().prev();
-            var $that = $(this);
+            let ajaxdata = { no: hikeno };
+            let isrc = $(this).attr('src');
+            let newsrc;
+            let $tooltip = $(this).parent().prev();
+            let $that = $(this);
             if (isrc.indexOf('Yellow') !== -1) { // currently a not favorite
                 ajaxdata.action = 'add';
                 $.ajax({
@@ -459,7 +417,7 @@ function enableFavorites(items) {
                         }
                     },
                     error: function (_jqXHR, _textStatus, _errorThrown) {
-                        var msg = "sideTables.js: attempting to mark user " +
+                        let msg = "sideTables.js: attempting to mark user " +
                             "favorite (markFavorites.php)";
                         ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
@@ -474,7 +432,7 @@ function enableFavorites(items) {
                     dataType: "text",
                     success: function (results) {
                         if (results === 'OK') {
-                            var key = favlist.indexOf(hikeno);
+                            let key = favlist.indexOf(hikeno);
                             favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');
@@ -486,16 +444,13 @@ function enableFavorites(items) {
                         }
                     },
                     error: function (_jqXHR, _textStatus, _errorThrown) {
-                        var msg = "sideTracks.js: attempting to unmark " +
+                        let msg = "sideTracks.js: attempting to unmark " +
                             "a user favorite (markFavorites.php)";
                         ajaxError(appMode, _jqXHR, _textStatus, msg);
                     }
                 });
             }
         });
-    };
-    for (var k = 0; k < items.length; k++) {
-        _loop_1(k);
     }
     return;
 }
@@ -505,16 +460,16 @@ function enableFavorites(items) {
  * hike, and popup its infoWin and highlight it. It also displays a tooltip on mouseover.
  */
 function enableZoom(items) {
-    for (var j = 0; j < items.length; j++) {
-        var $mag = items[j].find('.zoomers');
+    for (let j = 0; j < items.length; j++) {
+        let $mag = items[j].find('.zoomers');
         $mag.on('click', function () {
-            var hikename = $(this).parent().next().children().eq(0).text();
+            let hikename = $(this).parent().next().children().eq(0).text();
             popupHikeName(hikename);
         });
         $mag.on('mouseover', function () {
-            var zpos = $(this).offset();
-            var hpos = zpos.left - 108;
-            var vpos = zpos.top;
+            let zpos = $(this).offset();
+            let hpos = zpos.left - 108;
+            let vpos = zpos.top;
             $(this).next().css('left', hpos);
             $(this).next().css('top', vpos);
             $(this).next().css('display', 'block');
@@ -534,9 +489,9 @@ function enableZoom(items) {
  */
 function idHike(indx, obj) {
     if (obj.type === 'cl') {
-        var clobj = CL[obj.group];
-        var clhikes = clobj.hikes;
-        for (var m = 0; m < clhikes.length; m++) {
+        let clobj = CL[obj.group];
+        let clhikes = clobj.hikes;
+        for (let m = 0; m < clhikes.length; m++) {
             if (clhikes[m].indx === indx) {
                 return clhikes[m];
             }
@@ -575,13 +530,13 @@ function compareObj(a, b) {
     var hikeb = b.name;
     var cp;
     // render Latin1 chars as if no diacriticals...
-    for (var j = 0; j < hikea.length; j++) {
+    for (let j = 0; j < hikea.length; j++) {
         cp = hikea.codePointAt(j);
         if (cp > 127) {
             hikea = normalize(hikea);
         }
     }
-    for (var k = 0; k < hikeb.length; k++) {
+    for (let k = 0; k < hikeb.length; k++) {
         cp = hikeb.codePointAt(k);
         if (cp > 127) {
             hikeb = normalize(hikeb);
@@ -613,15 +568,15 @@ function compareObj(a, b) {
  * making tracks when the map zoom >= 13. Clusters are 'segregated' so that the
  * entire set of hikes in the cluster can be drawn, each with a unique color.
  */
-var IncludedHike = function (hike, zoom, north, south, east, west) {
+const IncludedHike = (hike, zoom, north, south, east, west) => {
     var isInBounds = false;
     if (zoom >= zoomThresh) {
         // test if displayed track's corner is in bounds
-        var map_box = hike.bounds;
-        var nw_corner = { lat: map_box[0], lng: map_box[3] };
-        var ne_corner = { lat: map_box[0], lng: map_box[2] };
-        var sw_corner = { lat: map_box[1], lng: map_box[3] };
-        var se_corner = { lat: map_box[1], lng: map_box[2] };
+        let map_box = hike.bounds;
+        let nw_corner = { lat: map_box[0], lng: map_box[3] };
+        let ne_corner = { lat: map_box[0], lng: map_box[2] };
+        let sw_corner = { lat: map_box[1], lng: map_box[3] };
+        let se_corner = { lat: map_box[1], lng: map_box[2] };
         if (nw_corner.lat <= north && nw_corner.lat >= south &&
             nw_corner.lng <= east && nw_corner.lng >= west ||
             ne_corner.lat <= north && ne_corner.lat >= south &&
@@ -635,22 +590,22 @@ var IncludedHike = function (hike, zoom, north, south, east, west) {
     }
     else {
         // tracks not displayed
-        var lat = hike.loc.lat;
-        var lng = hike.loc.lng;
+        let lat = hike.loc.lat;
+        let lng = hike.loc.lng;
         if (lng <= east && lng >= west && lat <= north && lat >= south) {
             isInBounds = true;
         }
     }
     return isInBounds;
 };
-var addHikeToTable = function (zoom, hike, type) {
-    var hikeindx = allHikes.indexOf(hike.indx);
-    var hikeobj = locations[hikeindx];
-    var data = idHike(allHikes[hikeindx], hikeobj);
+const addHikeToTable = (zoom, hike, type) => {
+    let hikeindx = allHikes.indexOf(hike.indx);
+    let hikeobj = locations[hikeindx];
+    let data = idHike(allHikes[hikeindx], hikeobj);
     hikearr.push(data);
-    var iw = type === 'CL' ? '<div id="iwCH">' : '<div id="iwNH">';
+    let iw = type === 'CL' ? '<div id="iwCH">' : '<div id="iwNH">';
     if (zoom) {
-        var iw_data = iw + '<a href="../pages/hikePageTemplate.php?hikeIndx=' +
+        let iw_data = iw + '<a href="../pages/hikePageTemplate.php?hikeIndx=' +
             hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
             hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
             '<br />Difficulty: ' + hike.diff + '</div>';
@@ -658,7 +613,7 @@ var addHikeToTable = function (zoom, hike, type) {
         hikeInfoWins.push(iw_data);
     }
 };
-var IdTableElements = function (boundsStr, zoom, zoom_level) {
+const IdTableElements = (boundsStr, zoom, zoom_level) => {
     // initialize globals for each invocation
     hikearr = [];
     singles = [];
@@ -727,13 +682,13 @@ function changeWidth(ev) {
  */
 function widthSizer(evt) {
     document.addEventListener('mouseup', stopMoving, false);
-    var viewport = window.innerWidth;
-    var sideWidth = viewport - evt.clientX - 3;
+    let viewport = window.innerWidth;
+    let sideWidth = viewport - evt.clientX - 3;
     $('#map').width(evt.clientX);
     $('#sideTable').width(sideWidth);
     $('.like').each(function () {
-        var $icon = $(this);
-        var $tooldiv = $icon.parent().prev();
+        let $icon = $(this);
+        let $tooldiv = $icon.parent().prev();
         positionFavToolTip($tooldiv, $icon);
     });
     locateGeoSym();

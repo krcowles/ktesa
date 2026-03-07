@@ -21,6 +21,7 @@ interface AutoItem {
  *      Added 'clear' method for searchbar.
  * @version 9.0 Major mods to improve side table formation when multiple map events
  *      occur
+ * @version 9.1 Added break in CL popupHikeName() loop for efficiency
  *\
 
 /**
@@ -85,6 +86,9 @@ function popupHikeName(hikename: string) {
                     found = true;
                     break;
                 }
+            }
+            if (found) {
+                break;
             }
         }
     }
