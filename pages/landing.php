@@ -33,7 +33,7 @@ if ($_SESSION['cookie_state'] === "OK") {
          * Note: all users will get the 'update' at first,
          * as the database has initialized all sw_ver's to '0.0'
          */
-        $updater = "./update.php?ver={$current_version}&usr={$_SESSION['userid']}";
+        $updater = "./update.php?ver={$current_version}&usr={$user}";
         header("Location:{$updater}", true);
     } else {
         $member = "../pages/member_landing.html"; 

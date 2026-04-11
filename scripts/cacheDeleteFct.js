@@ -8,8 +8,8 @@ async function deleteNamedCache(cacheName) {
                 return msg; // return empty to prevent interpreting as error
             }
             else {
-                msg = `Cache "${cacheName}" not found.`;
-                console.error(msg);
+                //msg = `Cache "${cacheName}" not found.`
+                //console.error(msg);
                 return msg;
             }
         }
