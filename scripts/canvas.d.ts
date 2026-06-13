@@ -45,7 +45,6 @@ interface MapWindow extends Window {
     mrkrSet: boolean;
     chartMrkr: any;
     drawMarker: Function;
-    mapdone: JQueryDeferred<void>;
 }
 interface TicValues {
     XaxisPx: number;

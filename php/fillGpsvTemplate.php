@@ -110,20 +110,41 @@ $maphtml .= PHP_EOL . "                // Add any waypoints" . PHP_EOL;
 for ($n=0; $n<$noOfWaypts; $n++) {
     $maphtml .= '                ' . $waypoints[$n] . PHP_EOL;
 }
+// --- still inside GV_Map() ---
 if (!$tblOnly) {
     $maphtml .= PHP_EOL . "                // Create photo markers\n";
     for ($z=0; $z<count($plnks); $z++) {
         $maphtml .= '                ' . $plnks[$z] . PHP_EOL;
     }
 }
+
+// dynamicMarker idle listener - inside GV_Map(), before GV_Finish_Map()
+if ($map_opts['dynamicMarker'] === 'true') {
+    $maphtml .= PHP_EOL . "                // detect map done loading" . PHP_EOL;
+    $maphtml .= "                google.maps.event.addListenerOnce(gmap, 'idle', " .
+        "function(){" . PHP_EOL .
+        "                    parent.iframeWindow = window;" . PHP_EOL .
+        "                    mapdone.resolve();" . PHP_EOL .
+        "                });" . PHP_EOL;
+}
+
+// fitBounds - inside GV_Map(), before GV_Finish_Map()
+$maphtml .= PHP_EOL . "                let bounds = {north: {$north}, south: {$south}, " .
+    "east: {$east}, west: {$west}};" . PHP_EOL;
+$maphtml .= "                gmap.fitBounds(bounds);" . PHP_EOL;
+
+// Close GV_Map()
 $maphtml .= PHP_EOL . '                GV_Finish_Map();' . PHP_EOL;
 $maphtml .= '            }' . PHP_EOL;
-$maphtml .= PHP_EOL . '            GV_Map(); // execute the above code' . PHP_EOL;
 $maphtml .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1' .
     '&form=google&google_api_key=yourkey' .
     '&google_street_view=1&google_trk_mouseover=1&tickmark_interval=' .
     '.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto' .
-    PHP_EOL;    //$maphtml .= $line . PHP_EOL;
+    PHP_EOL;
+
+// --- now outside GV_Map(), still inside <script> ---
+
+// drawMarker etc. outside GV_Map() so parent frame can access via mapFrameWin
 if ($map_opts['dynamicMarker'] === 'true') {
     $maphtml .= PHP_EOL . "            var mrkrSet = false;" . PHP_EOL .
         "            var chartMrkr;" . PHP_EOL;
@@ -132,29 +153,16 @@ if ($map_opts['dynamicMarker'] === 'true') {
         '                    position: mrkrLoc,' . PHP_EOL .
         '                    map: gmap' . PHP_EOL .
         '                });' . PHP_EOL .
-        '                mrkrSet = true;' . PHP_EOL . 
+        '                mrkrSet = true;' . PHP_EOL .
         '            }' . PHP_EOL;
-    $maphtml .= "            // detect map is done loading to advise " .
-        "parent of iframe" . PHP_EOL . 
-        "            google.maps.event.addListenerOnce(gmap, 'idle', " .
-        "function(){" . PHP_EOL .
-        "                parent.iframeWindow = window;" . PHP_EOL .
-        "                mapdone.resolve();" . PHP_EOL .
-        "            });" . PHP_EOL;
 }
-// use fitbounds to autosize
-$maphtml .= "let bounds = {north: {$north}, south: {$south}, east: {$east}, " .
-    "west: {$west}};" . PHP_EOL;
-$maphtml .= "gmap.fitBounds(bounds);";
 
-/**
- * This is the new js to delete the map as soon as it's loaded
- */
+// tmpMap deletion - outside GV_Map(), inside <script>
 if (isset($tmpMap)) {
     $mapfile = basename($tmpMap);
     $basemap = strlen($mapfile) - 4;
     $getfile = substr($mapfile, 0, $basemap);
-    $maphtml .= '(function() {' . PHP_EOL;  // doc ready - pure js, no jQuery
+    $maphtml .= '(function() {' . PHP_EOL;
     $maphtml .= 'var xhr = new XMLHttpRequest();' . PHP_EOL;
     $maphtml .= 'xhr.onreadystatechange = function() {' . PHP_EOL;
     $maphtml .= '  if (this.readyState == 4 && this.status == 200) {' . PHP_EOL;
@@ -164,14 +172,14 @@ if (isset($tmpMap)) {
     $maphtml .= "    newDoc.write(xhr.responseText);" . PHP_EOL;
     $maphtml .= "    newDoc.close();" . PHP_EOL;
     $maphtml .= " }" . PHP_EOL;
-
     $maphtml .= '};' . PHP_EOL;
-    $maphtml .= 'xhr.open("get", "../../php/tmpMapDelete.php?file=' . 
+    $maphtml .= 'xhr.open("get", "../../php/tmpMapDelete.php?file=' .
         $getfile . '");' . PHP_EOL;
     $maphtml .= 'xhr.send();' . PHP_EOL;
-
     $maphtml .= '})();' . PHP_EOL;
 }
+
+// Close the <script> tag, then </body></html>
 $maphtml .= '</script>' . PHP_EOL;
 $maphtml .= '</body>' . PHP_EOL;
-$maphtml .= '</html>' . PHP_EOL;  
+$maphtml .= '</html>' . PHP_EOL;
