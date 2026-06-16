@@ -64,8 +64,8 @@ function initializePopupCaptions() {
  * Function to capture -- current -- image widths
  */
 function captureWidths() {
-    for (var k = 0; k < noOfPix; k++) {
-        var item = $photos[k];
+    for (let k = 0; k < noOfPix; k++) {
+        let item = $photos[k];
         capWidth[k] = $(item).width() + 'px';
     }
     return;
@@ -74,8 +74,8 @@ function captureWidths() {
  * Function to save the top/left positioning of each photo
  */
 function calculatePositions() {
-    for (var m = 0; m < noOfPix; m++) {
-        var item = $photos[m];
+    for (let m = 0; m < noOfPix; m++) {
+        let item = $photos[m];
         picPos = $(item).offset();
         capTop[m] = Math.round(picPos.top) + 'px';
         capLeft[m] = Math.round(picPos.left) + 'px';
@@ -87,8 +87,8 @@ function calculatePositions() {
  */
 function associateCaptions() {
     // for edit mode, the popup consists of the image name, not the caption
-    for (var q = 0; q < noOfPix; q++) {
-        var img = $photos[q];
+    for (let q = 0; q < noOfPix; q++) {
+        let img = $photos[q];
         captions.push(img.alt);
     }
     return;
@@ -111,8 +111,8 @@ function initActions() {
         $('.popupCap > p').remove();
         $('.popupCap').css('display', 'none');
     });
-    for (var t = 0; t < noOfPix; t++) {
-        var item = $photos[t];
+    for (let t = 0; t < noOfPix; t++) {
+        let item = $photos[t];
         $(item).on('click', function () {
             /**
              * To avoid annoying behavior in editor when trying to move a photo:

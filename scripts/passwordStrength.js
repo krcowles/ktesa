@@ -19,8 +19,8 @@ var total = 0;
 var current_password = '';
 var latest_password = '';
 $('.signup').val('');
-var addKey = function (type, key) {
-    var cnt = 0;
+const addKey = (type, key) => {
+    let cnt = 0;
     switch (type) {
         case 'lc':
             lc++;
@@ -38,7 +38,7 @@ var addKey = function (type, key) {
             sp++;
             cnt = sp;
     }
-    var id = "#" + type;
+    let id = "#" + type;
     $(id).text(cnt);
     $(id).css('color', 'darkgreen');
     total++;
@@ -52,7 +52,7 @@ var addKey = function (type, key) {
         $('#showdet').css('display', 'none');
     }
 };
-var deleteKey = function (keychar) {
+const deleteKey = (keychar) => {
     $('#total').text(total);
     if (total < 10) {
         $('#total').css('color', 'maroon');
@@ -91,14 +91,14 @@ var deleteKey = function (keychar) {
         $('#showdet').show();
     }
 };
-var keyChecker = function (ev) {
-    var thiskey = ev.key;
+const keyChecker = (ev) => {
+    let thiskey = ev.key;
     if (thiskey !== "Shift") {
         /**
          * When the user clicks on a backspace, track the changes!
          */
         if (thiskey === "Backspace") {
-            var lastchar = latest_password.slice(-1);
+            let lastchar = latest_password.slice(-1);
             total -= 1;
             deleteKey(lastchar);
             current_password = current_password.slice(0, -1);
@@ -125,13 +125,13 @@ var keyChecker = function (ev) {
  * When a range of text is selected and deleted, this function will adjust
  * the counts. Note: document.getSelection() does not apply to input text
  */
-var rangeCheck = function (ev) {
-    var thiskey = ev.key;
+const rangeCheck = (ev) => {
+    let thiskey = ev.key;
     if (thiskey === 'Backspace') {
-        var newword = $('#password').val();
+        let newword = $('#password').val();
         if (newword !== current_password) {
-            var lgth = newword.length;
-            var deleted = current_password.substring(lgth);
+            let lgth = newword.length;
+            let deleted = current_password.substring(lgth);
             total -= deleted.length;
             for (var j = 0; j < deleted.length; j++) {
                 deleteKey(deleted[j]);
@@ -147,9 +147,9 @@ var rangeCheck = function (ev) {
  * the case where someone uses autosuggest, then deletes or changes it...
  * In the case of autosuggest, the strength indicator is set to 'strong'
  */
-var passInput = document.getElementById('password');
+const passInput = document.getElementById('password');
 var userTyped = false;
-passInput.addEventListener('animationstart', function (ev) {
+passInput.addEventListener('animationstart', (ev) => {
     if (ev.animationName === 'onAutoFillStart') {
         total = 12;
         $('#wk').hide();

@@ -42,9 +42,9 @@ var $panel;
 var $mapEl;
 var $chartEl;
 // Nominal settings for drawing picture rows
-var pageMargin = 36;
-var maxRowHt = 260;
-var rowWidth = 940;
+const pageMargin = 36;
+const maxRowHt = 260;
+const rowWidth = 940;
 $(function () {
     // after page load, initialize globals defined above...
     $panel = $('#sidePanel'); // always present on page load
@@ -94,7 +94,7 @@ function drawRows(useWidth) {
          */
         var widthAtMax = [];
         for (var j = 0; j < itemcnt; j++) {
-            var item_aspect = parseFloat(aspects[j]);
+            let item_aspect = parseFloat(aspects[j]);
             widthAtMax[j] = Math.floor(maxRowHt * item_aspect);
         }
         var rowNo = 0;
@@ -219,7 +219,7 @@ $('#dwn').on('click', function (ev) {
     if (gpx_file_list.length > 1) {
         // multiple gpx files...
         var ajax_files;
-        for (var k = 0; k < gpx_file_list.length; k++) {
+        for (let k = 0; k < gpx_file_list.length; k++) {
             var dwnldItem = gpx_file_list[k];
             var gpx_val = Object.keys(dwnldItem);
             var gpx_filename = gpx_val[0];
@@ -287,12 +287,12 @@ if ($('.gpsdwnld').length) {
 if ($('.mapfile').length) {
     $('.mapfile').each(function () {
         $(this).on('click', function (ev) {
-            var path = $(this).attr('href');
-            var filename = path.substring(7);
-            var file_ext = filename.replace(/^.*\./, '');
+            let path = $(this).attr('href');
+            let filename = path.substring(7);
+            let file_ext = filename.replace(/^.*\./, '');
             if (file_ext === 'kml') {
                 ev.preventDefault();
-                var kmlfile = '../maps/displayKml.php?kml=' + filename;
+                let kmlfile = '../maps/displayKml.php?kml=' + filename;
                 window.open(kmlfile, "_blank");
             }
         });

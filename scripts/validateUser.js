@@ -30,8 +30,8 @@ $('#force_reset').on('click', function () {
 });
 $('#send').on('click', function (ev) {
     ev.preventDefault();
-    var email = $('#rstmail').val();
-    var data = { form: 'chg', email: email };
+    let email = $('#rstmail').val();
+    let data = { form: 'chg', email: email };
     $.ajax({
         url: '../accounts/resetMail.php',
         data: data,
@@ -81,12 +81,12 @@ $('#send').on('click', function (ev) {
         }
     });
 });
-var requiredAnswers = 3;
+const requiredAnswers = 3;
 /**
  * This function counts the number of security questions and returns
  * true is correct, false (with user alers) if not
  */
-var countAns = function () {
+const countAns = () => {
     var acnt = 0;
     $('input[id^=q]').each(function () {
         if ($(this).val() !== '') {
@@ -117,26 +117,26 @@ $('#closesec').on('click', function () {
         $('input[id^=q]').each(function () {
             var answer = $(this).val();
             if (answer !== '') {
-                var qid = this.id;
+                let qid = this.id;
                 qid = qid.substring(1);
                 modq.push(qid);
                 answer = answer.toLowerCase();
                 moda.push(answer);
             }
         });
-        var ques = modq.join();
-        var ajaxdata = { questions: ques, an1: moda[0], an2: moda[1],
+        let ques = modq.join();
+        let ajaxdata = { questions: ques, an1: moda[0], an2: moda[1],
             an3: moda[2], ix: tbl_indx };
         // there is no error callback for $.post()
         $.post('../accounts/updateQandA.php', ajaxdata, function (result) {
             if (result === 'ok') {
                 if (sec0) { // more temporary security updates...
-                    var logdata = { ix: tbl_indx };
-                    var msg_1 = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ?
+                    let logdata = { ix: tbl_indx };
+                    let msg = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ?
                         'Admin logged in' : 'You are logged in';
                     $.post('../accounts/login.php', logdata, function (status) {
                         if (status === 'OK') {
-                            alert(msg_1);
+                            alert(msg);
                             window.open("../index.html", "_self");
                         }
                         else {
@@ -159,9 +159,9 @@ $('#closesec').on('click', function () {
 });
 // To complete login, the user must answer a randomly chosen pre-registered question
 $('#submit_answer').on('click', function () {
-    var usubmitted = $('#the_answer').val();
+    let usubmitted = $('#the_answer').val();
     usubmitted = usubmitted.toLowerCase();
-    var postdata = { ix: tbl_indx, rx: random };
+    let postdata = { ix: tbl_indx, rx: random };
     // there is no error callback for $.post
     $.post('../accounts/retrieveAnswer.php', postdata, function (ans) {
         var msg = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ? "Admin logged in" :
@@ -191,7 +191,7 @@ $('#submit_answer').on('click', function () {
  * If the user chooses not to renew, he/she will be logged out and
  * the user's information will be deleted from the USERS table.
  */
-var renewPassword = function () {
+const renewPassword = () => {
     var renew = confirm("You must renew your account to continue\n" +
         "Do you wish to renew? You will be asked to change your password");
     if (renew) { // send email to reset password
@@ -224,8 +224,8 @@ var renewPassword = function () {
  * database.
  */
 function validateUser(user, password) {
-    var ajaxdata = { usr_name: user, usr_pass: password };
-    var validator = "../accounts/authenticate.php";
+    let ajaxdata = { usr_name: user, usr_pass: password };
+    let validator = "../accounts/authenticate.php";
     $.ajax({
         url: validator,
         method: "post",
@@ -258,7 +258,7 @@ function validateUser(user, password) {
                 }, 'json');
             }
             else if (json.status === "Blank field") {
-                var ans = confirm("Your registration is not complete: Re-register?\n"
+                let ans = confirm("Your registration is not complete: Re-register?\n"
                     + "[Your currrent username and password will be deleted]");
                 if (ans) {
                     $.get("../accounts/logout.php", { redo: 'Y', user: user }, function () {

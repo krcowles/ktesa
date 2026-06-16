@@ -34,7 +34,7 @@ var compare = {
         }
         else {
             noPart1 = 1000 * parseInt(a);
-            var thou = a.substring(indx + 1, indx + 4);
+            let thou = a.substring(indx + 1, indx + 4);
             noPart2 = parseInt(thou);
             aout = noPart1 + noPart2;
         }
@@ -44,7 +44,7 @@ var compare = {
         }
         else {
             noPart1 = 1000 * parseInt(b);
-            var thou = b.substring(indx + 1, indx + 4);
+            let thou = b.substring(indx + 1, indx + 4);
             noPart2 = parseInt(thou);
             bout = noPart1 + noPart2;
         }
@@ -68,7 +68,7 @@ var compare = {
  * This function translates an exposure icon (<img> src) into sortable text
  */
 function iconText(imgsrc) {
-    var type;
+    let type;
     if (imgsrc.indexOf("fullSun") !== -1) {
         type = "fullsun";
     }
@@ -87,9 +87,9 @@ function iconText(imgsrc) {
  * Apply this function to a table to provide sortable headers (table columns)
  */
 function tableSort(tableid) {
-    var $table = $(tableid);
-    var $tbody = $table.find('tbody');
-    var $controls = $table.find('th');
+    let $table = $(tableid);
+    let $tbody = $table.find('tbody');
+    let $controls = $table.find('th');
     if (tableid === '#ftable') {
         /**
          * for Table Only page:
@@ -107,13 +107,13 @@ function tableSort(tableid) {
             $(this).addClass('ascending');
         }
     });
-    var $grows = $tbody.find('tr').toArray();
+    let $grows = $tbody.find('tr').toArray();
     /**
      * Table's click behavior after loading table...
      */
     $controls.each(function () {
         $(this).off('click').on('click', function () {
-            var success = true;
+            let success = true;
             var $header = $(this);
             var order = $header.data('sort');
             if (order === 'no') {
@@ -137,10 +137,10 @@ function tableSort(tableid) {
                     if (compare.hasOwnProperty(order)) { // compare object needs method for var order
                         column = $controls.index(this);
                         $grows.sort(function (a, b) {
-                            var acell;
-                            var bcell;
-                            var icn;
-                            var ael = $(a).find('td').eq(column);
+                            let acell;
+                            let bcell;
+                            let icn;
+                            let ael = $(a).find('td').eq(column);
                             if (order === 'icn') {
                                 icn = ael.children().eq(0).attr('src');
                                 acell = iconText(icn);
@@ -148,7 +148,7 @@ function tableSort(tableid) {
                             else {
                                 acell = ael.text();
                             }
-                            var bel = $(b).find('td').eq(column);
+                            let bel = $(b).find('td').eq(column);
                             if (order === 'icn') {
                                 icn = bel.children().eq(0).attr('src');
                                 bcell = iconText(icn);
@@ -156,7 +156,7 @@ function tableSort(tableid) {
                             else {
                                 bcell = bel.text();
                             }
-                            var retval = 0;
+                            let retval = 0;
                             if (compare.hasOwnProperty(order)) {
                                 retval = compare[order](acell, bcell);
                             }
@@ -192,8 +192,8 @@ function scrollCheck(table_id) {
     if ($('#active').text() === 'Table') {
         if (table_id === '#maintbl') {
             if ($('#tblfilter').css('display') === 'none') {
-                var $headers = $('#maintbl').find('th');
-                var title = $headers.get(0);
+                let $headers = $('#maintbl').find('th');
+                let title = $headers.get(0);
                 if ($(title).hasClass('ascending')) {
                     toggleScrollSelect(true);
                 }
@@ -221,8 +221,8 @@ function toggleScrollSelect(state) {
     }
     else {
         if (!$('#gray').length) {
-            var cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
-            var selpos = $('#scroller').offset();
+            let cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
+            let selpos = $('#scroller').offset();
             $('#opt4').append(cover);
             $('#gray').offset({ top: selpos.top, left: selpos.left });
             $('#gray').css('z-index', '1000');

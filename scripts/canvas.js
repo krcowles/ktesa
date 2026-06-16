@@ -33,7 +33,7 @@ var maxYValue = 0;
 var maxXValue = 0;
 var tipPt; // when to shift infobox from left side to right side of crosshairs
 var vertTip; // when to shift infobox from over to under crosshairs
-var vertConst = 0.62; // % of displayed altitude for above
+const vertConst = 0.62; // % of displayed altitude for above
 // renderLinesAndLabels(), renderData():
 var ratio;
 var rgMax;
@@ -41,15 +41,15 @@ var chart_ranges = [50, 100, 200, 600, 1000, 2000, 3000, 4000, 6000];
 // getXInc()
 var pxPerMile;
 // Values set for InfoBox()
-var xwidth = 72;
-var ywidth = 40;
-var xshift = 12;
-var yshift = 16;
+const xwidth = 72;
+const ywidth = 40;
+const xshift = 12;
+const yshift = 16;
 /**
  * Immediately Executed Function defining margin and render type, and returning
  * an object with renderType specified along with the main 'render' function.
  */
-var ChartObj = function () {
+const ChartObj = function () {
     return {
         renderType: renderType,
         render: function (canvasId, dataObj) {
@@ -58,17 +58,17 @@ var ChartObj = function () {
             median = data.minY + deltaY / 2;
             vertTip = data.minY + vertConst * deltaY;
             maxYValue = data.maxY;
-            var lastEl = data.dataPoints.length - 1;
+            let lastEl = data.dataPoints.length - 1;
             maxXValue = data.dataPoints[lastEl].x;
             tipPt = Math.round(maxXValue / 2);
-            var canvas = document.getElementById(canvasId);
+            let canvas = document.getElementById(canvasId);
             chartHeight = canvas.height;
             chartWidth = canvas.width;
             xMax = chartWidth - (margin.left + margin.right);
             yMax = chartHeight - (margin.top + margin.bottom);
             context = canvas.getContext("2d");
             context.clearRect(0, 0, canvas.width, canvas.height);
-            var chartTitle = "Track: " + data.title;
+            let chartTitle = "Track: " + data.title;
             renderChart(chartTitle);
         }
     };
@@ -76,7 +76,7 @@ var ChartObj = function () {
 /**
  * This is the main driver for calling the various rendering functions
  */
-var renderChart = function (title) {
+const renderChart = function (title) {
     renderBackground();
     renderText(title);
     renderLinesAndLabels();
@@ -129,7 +129,7 @@ var getXInc = function () {
 /**
  * Fill the elevation chart's background with white
  */
-var renderBackground = function () {
+const renderBackground = function () {
     context.fillStyle = "White";
     context.fillRect(margin.left, margin.top, xMax, yMax);
 };
@@ -138,7 +138,7 @@ var renderBackground = function () {
  * the global object 'data' properties 'labelFont', 'xLabel', and 'yLabel'
  * It then situates the labels in the canvas context
  */
-var renderText = function renderText(title) {
+const renderText = function renderText(title) {
     var labelFont = (data.labelFont != null) ? data.labelFont : '10pt Arial';
     context.font = labelFont;
     context.textAlign = "left";
@@ -168,40 +168,40 @@ var renderText = function renderText(title) {
  * This function creates the chart 'grid' lines, tick marks and
  * corresponding tick mart text.
  */
-var renderLinesAndLabels = function renderLinesAndLabels() {
+const renderLinesAndLabels = function renderLinesAndLabels() {
     // Vertical scale: horizontal guide lines (arbitrary assignment of noOfGrids)
-    var noOfGrids = 4;
+    let noOfGrids = 4;
     // find chart range to use for this range of y values:
-    var chartNo = 0;
-    for (var k = 0; k < chart_ranges.length; k++) {
+    let chartNo = 0;
+    for (let k = 0; k < chart_ranges.length; k++) {
         if (deltaY <= 0.85 * chart_ranges[k]) {
             chartNo = k;
             break;
         }
     }
     ratio = yMax / chart_ranges[chartNo];
-    var gridCtr = chart_ranges[chartNo] / 2; // feet for center of grid space
-    var gridSpacing = chart_ranges[chartNo] / noOfGrids; // feet between grids
-    var spaceCtr = gridSpacing / 2;
-    var dfactor = (chart_ranges[chartNo] < 500) ? 10 : 100;
-    var adder = (median % dfactor === 0) ? 0 : spaceCtr;
-    var midpt = Math.floor(median / dfactor) * dfactor + adder;
-    var rgOffset = midpt - gridCtr; // grids assumed to otherwise start at 0
+    let gridCtr = chart_ranges[chartNo] / 2; // feet for center of grid space
+    let gridSpacing = chart_ranges[chartNo] / noOfGrids; // feet between grids
+    let spaceCtr = gridSpacing / 2;
+    let dfactor = (chart_ranges[chartNo] < 500) ? 10 : 100;
+    let adder = (median % dfactor === 0) ? 0 : spaceCtr;
+    let midpt = Math.floor(median / dfactor) * dfactor + adder;
+    let rgOffset = midpt - gridCtr; // grids assumed to otherwise start at 0
     rgMax = rgOffset + chart_ranges[chartNo];
-    var yInc = yMax / noOfGrids; // no of pixels per grid
-    var yPos = 0; // in pixels also
-    var yVal; // data value, NOT in pixels
-    var str_yVal; // string version of above
-    var tx;
+    let yInc = yMax / noOfGrids; // no of pixels per grid
+    let yPos = 0; // in pixels also
+    let yVal; // data value, NOT in pixels
+    let str_yVal; // string version of above
+    let tx;
     context.font = (data.dataPointFont != null) ? data.dataPointFont : '10pt Calibri';
     context.fillStyle = 'Blue';
     // Y AXIS
-    var lgx = margin.left;
-    var txtSize;
-    for (var i = 0; i < noOfGrids; i++) {
+    let lgx = margin.left;
+    let txtSize;
+    for (let i = 0; i < noOfGrids; i++) {
         yPos += (i === 0) ? margin.top : yInc;
         // gradient applied to y grid points
-        var grad = context.createLinearGradient(lgx, yPos, lgx, yPos + yInc);
+        let grad = context.createLinearGradient(lgx, yPos, lgx, yPos + yInc);
         grad.addColorStop(0, "#dfecdf");
         grad.addColorStop(1, "White");
         context.fillStyle = grad;
@@ -228,24 +228,24 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
      *  reasonable grid spacing and x-value readout. Those calculations are
      *  performed in 'getXInc()'
      */
-    var xAxisData = getXInc();
-    var xPos = margin.left; // "0" origin for x axis, in pixels
+    let xAxisData = getXInc();
+    let xPos = margin.left; // "0" origin for x axis, in pixels
     context.fillStyle = 'Blue';
     // incremental "tick" miles on X-axis (.1, .5 or 1.0)
-    var xInc = xAxisData.XaxisVal;
+    let xInc = xAxisData.XaxisVal;
     // place x-axis labels just below x-axis horizontal line, ie.
     // from the chart top: top y margin + max y val allowed + 16px further down
-    var ty = margin.top + yMax + 16;
-    var txt = 0; // the x-axis tick label
-    var remaining = 0; // distance remaining to plot after the last x-axis tick mark
-    var hang; // leftover track after last regular incremental tick
-    var lastTickTxtSize; // px of last regular tick mark label
-    var lastPxTaken; // last regular tick pos + 1/2 label width
-    var lastSize;
-    var str_txt = '';
+    let ty = margin.top + yMax + 16;
+    let txt = 0; // the x-axis tick label
+    let remaining = 0; // distance remaining to plot after the last x-axis tick mark
+    let hang; // leftover track after last regular incremental tick
+    let lastTickTxtSize; // px of last regular tick mark label
+    let lastPxTaken; // last regular tick pos + 1/2 label width
+    let lastSize;
+    let str_txt = '';
     context.textAlign = "center";
     // print out regularly spaced x-axis ticks
-    for (var j = 0; j < xAxisData.MaxXIncs; j++) { // j=0 prints out origin
+    for (let j = 0; j < xAxisData.MaxXIncs; j++) { // j=0 prints out origin
         txt = j * xInc; // next tick mile
         remaining = xAxisData.LastXVal - txt; // subtract before string conversion!
         str_txt = txt.toFixed(1); // yields string value (needed outside loop)
@@ -261,10 +261,10 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     if (hang >= 0.25) {
         // print an "end" label (not at the regular interval of xInc) if room exists
         // check the space left at 70% of remaining
-        var nomLoc = 0.7 * remaining;
+        let nomLoc = 0.7 * remaining;
         nomLoc = parseFloat(nomLoc.toFixed(2)); // rd to 100th's
-        var endLabel = parseFloat(str_txt) + nomLoc;
-        var str_endLabel = xInc > 0.11 ? endLabel.toFixed(1) : endLabel.toFixed(2); /*
+        let endLabel = parseFloat(str_txt) + nomLoc;
+        let str_endLabel = xInc > 0.11 ? endLabel.toFixed(1) : endLabel.toFixed(2); /*
          * see if there is enough room after last regular tick text:
          *   the last tick is at xPos;
          *   half the text width extends beyond this limit, as text is centered;
@@ -274,8 +274,8 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
         lastPxTaken = xPos + lastTickTxtSize / 2 + 6;
         lastSize = context.measureText(str_endLabel).width;
         // position of endLabel:
-        var endLoc = parseFloat(str_endLabel) - parseFloat(str_txt);
-        var str_endLoc = xPos + (endLoc / xInc) * xAxisData.XaxisPx - lastSize / 2;
+        let endLoc = parseFloat(str_endLabel) - parseFloat(str_txt);
+        let str_endLoc = xPos + (endLoc / xInc) * xAxisData.XaxisPx - lastSize / 2;
         if (endLoc - lastPxTaken > 2) {
             endLoc += lastSize / 2;
             context.fillText(str_endLabel, str_endLoc, ty);
@@ -286,7 +286,7 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     //Horizontal Line
     drawLine(margin.left, margin.top + yMax, margin.left + xMax, margin.top + yMax, 'black', 2);
 };
-var drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWidth) {
+const drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWidth) {
     if (strokeStyle != null)
         context.strokeStyle = strokeStyle;
     if (lineWidth != null)
@@ -297,7 +297,7 @@ var drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWi
     context.stroke();
     context.closePath();
 };
-var drawDot = function drawDot(ctxt, x, y) {
+const drawDot = function drawDot(ctxt, x, y) {
     ctxt.strokeStyle = 'DarkSlateGray';
     ctxt.beginPath();
     ctxt.arc(x, y, 3, 0, 2 * Math.PI);
@@ -308,20 +308,20 @@ var drawDot = function drawDot(ctxt, x, y) {
  * box is drawn on the canvas and displays the x & y coordinate values in miles/feet.
  * It is invoked in dynamicChart.js
  */
-var infoBox = function infoBox(xloc, yloc, xval, yval, mapLink) {
+const infoBox = function infoBox(xloc, yloc, xval, yval, mapLink) {
     // NOTE: iframeWindow is a global established on the hikePageTemplate
-    var mapFrame = document.getElementById('mapline');
-    var mapFrameWin = mapFrame.contentWindow;
+    let mapFrame = document.getElementById('mapline');
+    let mapFrameWin = mapFrame.contentWindow;
     if (mapFrameWin.mrkrSet) {
         mapFrameWin.chartMrkr.setMap(null);
     }
     mapFrameWin.drawMarker(mapLink);
-    var miles = xval + ' miles';
-    var yvalno = parseFloat(yval);
-    var hflip = yvalno > vertTip ? true : false;
-    var str_yval = Thousands(yvalno);
-    var feet = str_yval + ' ft';
-    var xvalno = parseFloat(xval);
+    let miles = xval + ' miles';
+    let yvalno = parseFloat(yval);
+    let hflip = yvalno > vertTip ? true : false;
+    let str_yval = Thousands(yvalno);
+    let feet = str_yval + ' ft';
+    let xvalno = parseFloat(xval);
     if (xvalno > tipPt) {
         xloc -= (xwidth + xshift);
     }
@@ -339,8 +339,8 @@ var infoBox = function infoBox(xloc, yloc, xval, yval, mapLink) {
     context.strokeStyle = 'DarkGray';
     context.lineWidth = 3;
     context.strokeRect(xloc, yloc, xwidth, ywidth);
-    var txtx = xloc + 6;
-    var txty = yloc + 16;
+    let txtx = xloc + 6;
+    let txty = yloc + 16;
     context.font = data.dataPointFont;
     context.textAlign = "left";
     context.fillStyle = 'DarkGreen';
@@ -353,17 +353,17 @@ var infoBox = function infoBox(xloc, yloc, xval, yval, mapLink) {
  * This is the function that places lines between coordinates on the canvas.
  */
 var renderData = function renderData(type) {
-    var prevX = 0;
-    var prevY = 0;
-    var ptY;
-    for (var i = 0; i < data.dataPoints.length; i++) {
-        var pt = data.dataPoints[i];
+    let prevX = 0;
+    let prevY = 0;
+    let ptY;
+    for (let i = 0; i < data.dataPoints.length; i++) {
+        let pt = data.dataPoints[i];
         ptY = margin.top + (rgMax - pt.y) * ratio;
         // don't let bad points over-extend:
         if (ptY < margin.top) {
             ptY = margin.top;
         }
-        var ptX = margin.left + pxPerMile * data.dataPoints[i].x;
+        let ptX = margin.left + pxPerMile * data.dataPoints[i].x;
         if (i > 0 && type == renderType.lines) {
             var line_color = data.dataPoints[i].g === 0 ? 'DarkGreen' : 'Red';
             //Draw connecting lines
@@ -394,12 +394,12 @@ var renderData = function renderData(type) {
  * This simple function takes an integer, and if > 999 inserts commas as needed
  */
 function Thousands(value) {
-    var x = value;
-    var newval = x.toFixed();
-    var str_yRem;
+    let x = value;
+    let newval = x.toFixed();
+    let str_yRem;
     if (value > 999) { // add coma
-        var yTh = Math.floor(value / 1000); // truncated to thousands
-        var yRem = value - 1000 * yTh;
+        let yTh = Math.floor(value / 1000); // truncated to thousands
+        let yRem = value - 1000 * yTh;
         str_yRem = yRem.toFixed();
         if (yRem === 0) {
             str_yRem = '000';

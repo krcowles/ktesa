@@ -22,8 +22,8 @@ var level2rows = []; // accumulated array of level2 sorted $rows
  * 'compareType' to "std" if the header is for "Exposure", which has no data-sort type
  */
 function getHeaderColumn(jqHeaders, key) {
-    var colno = -1;
-    for (var i = 0; i < jqHeaders.length; i++) {
+    let colno = -1;
+    for (let i = 0; i < jqHeaders.length; i++) {
         if ($(jqHeaders[i]).text() === key) {
             colno = i;
             compareType = $(jqHeaders[i]).data('sort');
@@ -61,7 +61,7 @@ function iconType(imgsrc) {
  */
 function l2sort(l2array, tdno) {
     l2array.sort(function (a, b) {
-        var retval = 0;
+        let retval = 0;
         if (key2 === 'Exposure') {
             var imga = $(a).find('td').eq(tdno).children();
             var srca = $(imga[0]).attr('src');
@@ -127,7 +127,7 @@ $('#sort').on('click', function () {
     }
     // level 1 sort:
     $rows.sort(function (a, b) {
-        var retval = 0;
+        let retval = 0;
         if (icon) {
             var imga = $(a).find('td').eq(indx).children();
             var srca = $(imga[0]).attr('src');

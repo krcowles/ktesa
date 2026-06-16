@@ -4,9 +4,9 @@ $(function () {
     var appMode = $('#appMode').text();
     $('form').on('submit', function (ev) {
         ev.preventDefault();
-        var sender = $('#sender').val();
-        var msg = $('#message').val();
-        var ajaxdata = { form: 'own', email: sender, message: msg };
+        let sender = $('#sender').val();
+        let msg = $('#message').val();
+        let ajaxdata = { form: 'own', email: sender, message: msg };
         $.ajax({
             url: "../accounts/resetMail.php",
             method: "post",
@@ -21,7 +21,7 @@ $(function () {
                 }
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                var msg = "ownership.js: attempting to send admin mail via " +
+                let msg = "ownership.js: attempting to send admin mail via " +
                     "resetMail.php";
                 ajaxError(appMode, _jqXHR, _textStatus, msg);
             }

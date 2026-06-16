@@ -60,7 +60,7 @@ else { // NOT MEMBER
 // check to see if cookies are enabled for the browser
 if (cookies_allowed) { // exception messages only: auto login may still occur
     if (user_cookie_state === 'NONE' || user_cookie_state === 'MULTIPLE') {
-        var msg = "User registration not located\nRe-register using 'Members->" +
+        let msg = "User registration not located\nRe-register using 'Members->" +
             "Become a member";
         alert(msg);
     }
@@ -76,7 +76,7 @@ if (cookies_allowed) { // exception messages only: auto login may still occur
     }
 }
 else { // cookies disabled
-    var msg = "Cookies are disabled on this browser:" +
+    let msg = "Cookies are disabled on this browser:" +
         "You will not be able to register, login, or edit" +
         " pages as a member until cookies are enabled";
     alert(msg);

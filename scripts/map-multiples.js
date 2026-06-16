@@ -11,7 +11,7 @@
 dragElement(document.getElementById("usermodal"));
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    var header = document.getElementById("modalhdr");
+    let header = document.getElementById("modalhdr");
     header.onmousedown = dragMouseDown;
     /**
      * When mouse clicks down on header
@@ -56,16 +56,16 @@ var orgHt = $('#usermodal').height();
  * Add a hike to the 'Selected' list
  */
 function addToList(hike) {
-    for (var k = 0; k < eng_units.length; k++) {
+    for (let k = 0; k < eng_units.length; k++) {
         if (eng_units[k].trail === hike) {
-            var htracks = eng_units[k].tracks.split(",");
+            let htracks = eng_units[k].tracks.split(",");
             selectedHikes = selectedHikes.concat(htracks);
             break;
         }
     }
     $('#hlist').css('color', 'black');
-    var item = '<li class="selectlist">' + hike + '</li>';
-    var modalheight = $('#usermodal').height() + 18;
+    let item = '<li class="selectlist">' + hike + '</li>';
+    let modalheight = $('#usermodal').height() + 18;
     $('#selections').append(item);
     $('#usermodal').height(modalheight);
     $('#hike2map').val('');
@@ -116,8 +116,8 @@ $('#hikeclr').on('click', function () {
 });
 // draw the map
 $('#mapem').on('click', function () {
-    var query = '';
-    for (var k = 0; k < selectedHikes.length; k++) {
+    let query = '';
+    for (let k = 0; k < selectedHikes.length; k++) {
         query += "m[]=" + selectedHikes[k] + "&";
     }
     query = query.substring(0, query.length - 1);

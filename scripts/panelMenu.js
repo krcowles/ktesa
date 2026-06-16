@@ -21,8 +21,8 @@ $(function () {
         $('#ctr').append(pgtitle);
     }
     logo_title();
-    var editmode = $('#editMode').text();
-    var requiredAnswers = 3; // number of security questions to be answered
+    const editmode = $('#editMode').text();
+    const requiredAnswers = 3; // number of security questions to be answered
     // Modal handles for panel items:
     var resetPassModal = new bootstrap.Modal(document.getElementById('cpw'));
     var questions = new bootstrap.Modal(document.getElementById('security'));
@@ -31,8 +31,8 @@ $(function () {
     var gpxedit = new bootstrap.Modal(document.getElementById('ged'));
     var newpgs = new bootstrap.Modal(document.getElementById('newpgs'));
     var appgpx = new bootstrap.Modal(document.getElementById('appfiles'));
-    var membens = new bootstrap.Modal(document.getElementById('membennies'));
-    var $benmo = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
+    const membens = new bootstrap.Modal(document.getElementById('membennies'));
+    const $benmo = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
         "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
         "color:darkslategray;'>Free Membership<br />Click for Benefits</div>");
     var lockout = new bootstrap.Modal(document.getElementById('lockout'));
@@ -41,7 +41,7 @@ $(function () {
      * panelMenu.js script, hence it was deemed appropriate for inclusion here instead of
      * adding it as a separate module
      */
-    var activity_timeout = 40 * 60 * 1000; // 2=40 minutes of inactivity
+    const activity_timeout = 40 * 60 * 1000; // 2=40 minutes of inactivity
     var activity = setTimeout(function () {
         $.get('../accounts/logout.php?sess_only=Y');
         window.open('../accounts/session_expired.php', '_self');
@@ -66,7 +66,7 @@ $(function () {
      */
     $('#createpg, #conteditpg, #editpubpg').on('click', function (ev) {
         if (editmode == 'no') {
-            var msg = "The admin is updating the site and editing is not currently " +
+            let msg = "The admin is updating the site and editing is not currently " +
                 "available. Please try again in about 30 minutes";
             alert(msg);
             ev.preventDefault();
@@ -78,7 +78,7 @@ $(function () {
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not
      */
-    var countAns = function () {
+    const countAns = () => {
         var acnt = 0;
         $('input[id^=q]').each(function () {
             if ($(this).val() !== '') {
@@ -178,20 +178,20 @@ $(function () {
     });
     $('#apply_miles').on('click', function () {
         ascending = true;
-        var hike = $('#startfromh').val();
+        let hike = $('#startfromh').val();
         if (hike === '') {
             alert("You have not selected a hike");
             return false;
         }
-        var hmis = parseInt($('#misfromh').val());
+        let hmis = parseInt($('#misfromh').val());
         miles_from_hike(hike, hmis);
         bymiles.hide();
         return;
     });
     $('#apply_loc').on('click', function () {
         ascending = true;
-        var poi = $('#area').val();
-        var lmis = parseInt($('#misfroml').val());
+        let poi = $('#area').val();
+        let lmis = parseInt($('#misfroml').val());
         miles_from_locale(poi, lmis);
         byloc.hide();
         return;
@@ -227,7 +227,7 @@ $(function () {
      * Functions which simulate the jquery ui 'spinner' widget
      */
     $('.uparw').on('click', function () {
-        var spinner = $('#pseudospin');
+        let spinner = $('#pseudospin');
         if (activeItem === 'Home') {
             if ($('#byloc').css('display') !== 'none') {
                 spinner = $('#misfroml');
@@ -236,12 +236,12 @@ $(function () {
                 spinner = $('#misfromh');
             }
         }
-        var current = parseInt(spinner.val());
-        var spinup = current >= 50 ? 50 : current + 1;
+        let current = parseInt(spinner.val());
+        let spinup = current >= 50 ? 50 : current + 1;
         spinner.val(spinup);
     });
     $('.dwnarw').on('click', function () {
-        var spinner = $('#pseudospin');
+        let spinner = $('#pseudospin');
         if (activeItem === 'Home') {
             if ($('#byloc').css('display') !== 'none') {
                 spinner = $('#misfroml');
@@ -250,8 +250,8 @@ $(function () {
                 spinner = $('#misfromh');
             }
         }
-        var current = parseInt(spinner.val());
-        var spindwn = current > 1 ? current - 1 : 1;
+        let current = parseInt(spinner.val());
+        let spindwn = current > 1 ? current - 1 : 1;
         spinner.val(spindwn);
     });
     /**
@@ -293,8 +293,8 @@ $(function () {
     });
     $('#send').on('click', function (ev) {
         ev.preventDefault();
-        var email = $('#rstmail').val();
-        var data = { form: 'chg', email: email };
+        let email = $('#rstmail').val();
+        let data = { form: 'chg', email: email };
         $.ajax({
             url: '../accounts/resetMail.php',
             data: data,
@@ -319,7 +319,7 @@ $(function () {
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
                 $('#email').css('color', 'red');
-                var msg = "panelMenu.js: Trying to send a reset mail " +
+                let msg = "panelMenu.js: Trying to send a reset mail " +
                     "for " + email + " via resetMail.php";
                 ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
@@ -334,7 +334,7 @@ $(function () {
                 window.open('../index.html', '_self');
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                var msg = "panelMenu.js:failure to logout (logout.php)";
+                let msg = "panelMenu.js:failure to logout (logout.php)";
                 ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
         });
@@ -365,15 +365,15 @@ $(function () {
             $('input[id^=q]').each(function () {
                 var answer = $(this).val();
                 if (answer !== '') {
-                    var qid = this.id;
+                    let qid = this.id;
                     qid = qid.substring(1);
                     modq.push(qid);
                     answer = answer.toLowerCase();
                     moda.push(answer);
                 }
             });
-            var ques = modq.join();
-            var ajaxdata = { questions: ques, an1: moda[0], an2: moda[1], an3: moda[2] };
+            let ques = modq.join();
+            let ajaxdata = { questions: ques, an1: moda[0], an2: moda[1], an3: moda[2] };
             // no error callback for $.post()
             $.post('../accounts/updateQandA.php', ajaxdata, function (result) {
                 if (result === 'ok') {
@@ -402,7 +402,7 @@ $(function () {
                 newpgs.show();
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
-                var msg = "panelMenu.js: attempting to access latest " +
+                let msg = "panelMenu.js: attempting to access latest " +
                     "hikes via newHikes.php";
                 ajaxError(appMode, _jqXHR, _textStatus, msg);
             }
@@ -423,31 +423,27 @@ $(function () {
         var selection = document.getElementById('gpx-upload');
         var txt = '<div id="sel_list"><span id="ufiles"><strong>Selected files:</strong></span>';
         if ('files' in selection) {
-            var allfiles = selection.files;
-            var _loop_1 = function () {
-                var file = allfiles[i];
+            const allfiles = selection.files;
+            for (var i = 0; i < allfiles.length; i++) {
+                const file = allfiles[i];
                 if ('name' in file) {
                     txt += "<br />" + file.name;
                 }
                 if ('size' in file) {
-                    kb = file.size / 1000;
-                    size = kb.toFixed(1);
+                    var kb = file.size / 1000;
+                    var size = kb.toFixed(1);
                     txt += " (" + size + " kb)";
                 }
-                reader = new FileReader();
-                reader.onload = function (evt) {
-                    var event = evt.target;
-                    var result = event.result;
+                var reader = new FileReader();
+                reader.onload = (evt) => {
+                    const event = evt.target;
+                    const result = event.result;
                     //const parser = new DOMParser();
                     //const xmlDomDoc = parser.parseFromString(result, "text/xml");
-                    var ajaxdata = { name: file.name, data: result };
+                    const ajaxdata = { name: file.name, data: result };
                     uploads.push(ajaxdata);
                 };
                 reader.readAsText(file);
-            };
-            var kb, size, reader;
-            for (var i = 0; i < allfiles.length; i++) {
-                _loop_1();
             }
         }
         txt += "</div>";
@@ -486,7 +482,7 @@ $(function () {
     });
     function size_it() {
         $('#gpxlist').css('width', '100%');
-        var start_width = $('#available_gpx').width();
+        const start_width = $('#available_gpx').width();
         $('#gpxlist').width(start_width + 20);
     }
     function refreshChkboxList() {
@@ -496,16 +492,16 @@ $(function () {
             $chkboxes.each(function () {
                 $(this).on('click', function () {
                     if ($(this).is(':checked')) {
-                        var delete_file = $(this).parent().siblings().eq(0).text();
-                        var item = { fname: delete_file };
-                        var delete_row_1 = $(this).parent().parent();
+                        const delete_file = $(this).parent().siblings().eq(0).text();
+                        const item = { fname: delete_file };
+                        const delete_row = $(this).parent().parent();
                         $.post("../php/deleteAppFile.php", item, function () {
-                            delete_row_1.remove();
+                            delete_row.remove();
                             var remainder = $('#gpxlist').find('tr').length;
                             if (remainder === 1) {
                                 $('#gpxlist').empty();
                                 $('#gpxlist').css('width', '60%');
-                                var nofiles_msg = '<span id="nofiles">There are no files available at this time</span>';
+                                const nofiles_msg = '<span id="nofiles">There are no files available at this time</span>';
                                 $('#gpxlist').prepend(nofiles_msg);
                             }
                             else {

@@ -7,14 +7,14 @@
  */
 // ----- GLOBALS -----
 // margin on map bounds in px;
-var mapMarg = 200;
+const mapMarg = 200;
 // values for sorting by difficulty
-var diffs = ['Easy', 'Easy-Moderate', 'Moderate', 'Med-Difficult', 'Difficult'];
-var diff_val = [1, 10, 100, 1000, 10000];
+const diffs = ['Easy', 'Easy-Moderate', 'Moderate', 'Med-Difficult', 'Difficult'];
+const diff_val = [1, 10, 100, 1000, 10000];
 // Filter by distance from hike
-var miles_from_hike = function (hike, epsilon) {
+const miles_from_hike = (hike, epsilon) => {
     // get coordinates of hike & container object type
-    var hikeloc = getHikeGPS(hike);
+    let hikeloc = getHikeGPS(hike);
     if (Object.keys(hikeloc).length === 0) {
         alert("This is not a single hike");
         return;
@@ -33,10 +33,10 @@ function getHikeGPS(hike) {
         found = true; // coords will be empty
     }
     else {
-        for (var i = 0; i < CL.length; i++) {
-            for (var j = 0; j < CL[i].hikes.length; j++) {
+        for (let i = 0; i < CL.length; i++) {
+            for (let j = 0; j < CL[i].hikes.length; j++) {
                 if (CL[i].hikes[j].name == hike) {
-                    var clus = CL[i].hikes[j];
+                    let clus = CL[i].hikes[j];
                     coords = clus.loc;
                     found = true;
                     break;
@@ -45,7 +45,7 @@ function getHikeGPS(hike) {
         }
     }
     if (!found) {
-        for (var k = 0; k < NM.length; k++) {
+        for (let k = 0; k < NM.length; k++) {
             if (NM[k].name == hike) {
                 coords = NM[k].loc;
                 found = true;
@@ -85,7 +85,7 @@ function miles_from_locale(locale, miles) {
             return;
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = "homepg_filter.js: trying to retrieve areas.json";
+            let msg = "homepg_filter.js: trying to retrieve areas.json";
             ajaxError(appMode, _jqXHR, _textStatus, msg);
             return false;
         }
@@ -97,24 +97,24 @@ function miles_from_locale(locale, miles) {
  */
 function filterByMiles(radius, gps_coords) {
     var starray = [];
-    var ctrlat = gps_coords.lat;
-    var ctrlng = gps_coords.lng;
+    let ctrlat = gps_coords.lat;
+    let ctrlng = gps_coords.lng;
     CL.forEach(function (clobj) {
-        var clhikes = clobj.hikes;
+        let clhikes = clobj.hikes;
         clhikes.forEach(function (hobj) {
-            var hlat = hobj.loc.lat;
-            var hlng = hobj.loc.lng;
-            var distance = distFromCtr(hlat, hlng, ctrlat, ctrlng, 'M');
+            let hlat = hobj.loc.lat;
+            let hlng = hobj.loc.lng;
+            let distance = distFromCtr(hlat, hlng, ctrlat, ctrlng, 'M');
             if (distance <= radius) {
                 starray.push(hobj);
             }
         });
     });
     NM.forEach(function (nmobj) {
-        var hikeset = nmobj.loc;
-        var hikelat = hikeset.lat;
-        var hikelng = hikeset.lng;
-        var distance = distFromCtr(hikelat, hikelng, ctrlat, ctrlng, 'M');
+        let hikeset = nmobj.loc;
+        let hikelat = hikeset.lat;
+        let hikelng = hikeset.lng;
+        let distance = distFromCtr(hikelat, hikelng, ctrlat, ctrlng, 'M');
         if (distance <= radius) {
             starray.push(nmobj);
         }
@@ -122,7 +122,7 @@ function filterByMiles(radius, gps_coords) {
     if (starray.length > 0) {
         starray.sort(compareObj);
         formTbl(starray);
-        var map_bounds = arrayBounds(starray);
+        let map_bounds = arrayBounds(starray);
         map.fitBounds(map_bounds, mapMarg);
     }
     else {
@@ -157,19 +157,19 @@ function distFromCtr(lat1, lon1, lat2, lon2, unit) {
  * map bounds for the set
  */
 function arrayBounds(array) {
-    var lats = [];
-    var lngs = [];
+    let lats = [];
+    let lngs = [];
     array.forEach(function (hobj) {
         lats.push(hobj.loc.lat);
         lngs.push(hobj.loc.lng);
     });
-    var north = Math.max.apply(Math, lats);
-    var south = Math.min.apply(Math, lats);
-    var east = Math.max.apply(Math, lngs);
-    var west = Math.min.apply(Math, lngs);
-    var sw = { lat: south, lng: west };
-    var ne = { lat: north, lng: east };
-    var bounds = new google.maps.LatLngBounds(sw, ne);
+    let north = Math.max(...lats);
+    let south = Math.min(...lats);
+    let east = Math.max(...lngs);
+    let west = Math.min(...lngs);
+    let sw = { lat: south, lng: west };
+    let ne = { lat: north, lng: east };
+    let bounds = new google.maps.LatLngBounds(sw, ne);
     return bounds;
 }
 /**

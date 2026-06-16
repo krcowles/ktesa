@@ -17,7 +17,7 @@ var ftbl_init = false;
 var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
 var bkup_button_set = false;
-var scrolltoAlph = 'aceglnpst';
+const scrolltoAlph = 'aceglnpst';
 /**
  * This function will set up the converter to use the originally loaded values
  * for units (English) when recalculating from metric back to English. This
@@ -31,23 +31,23 @@ function setupConverter(tblid, org) {
     if (org) {
         // save original English units from main table on the first pass
         $erows.each(function () {
-            var $trail = $(this).find('td').eq(hike_hdr);
-            var trail = $trail.text();
-            var hike = $(this).data('indx');
-            var $disttd = $(this).find('td').eq(lgth_hdr);
-            var orgdist = $disttd.text();
-            var $elevtd = $(this).find('td').eq(elev_hdr);
-            var orgelev = $elevtd.text();
-            var orgtrks = $(this).data('trk');
-            var orgdata = { trail: trail, hikeno: hike, dist: orgdist,
+            let $trail = $(this).find('td').eq(hike_hdr);
+            let trail = $trail.text();
+            let hike = $(this).data('indx');
+            let $disttd = $(this).find('td').eq(lgth_hdr);
+            let orgdist = $disttd.text();
+            let $elevtd = $(this).find('td').eq(elev_hdr);
+            let orgelev = $elevtd.text();
+            let orgtrks = $(this).data('trk');
+            let orgdata = { trail: trail, hikeno: hike, dist: orgdist,
                 elev: orgelev, tracks: orgtrks };
             eng_units.push(orgdata);
         });
     }
     $('#units').off('click').on('click', function () {
-        var goto = $(this).text();
-        var newunits = '';
-        var newbtn = '';
+        let goto = $(this).text();
+        let newunits = '';
+        let newbtn = '';
         if (goto.indexOf('Metric') !== -1) { // "Show Metric..."
             newunits = 'Metric';
             newbtn = engtxt;
@@ -100,30 +100,30 @@ function convert(tblid, jqTable, to_units) {
     var $erows = jqTable.find('tr');
     if (to_units === 'Metric') {
         $erows.each(function () {
-            var $disttd = $(this).find('td').eq(lgth_hdr);
-            var dist_txt = $disttd.text();
-            var dconv = parseFloat(dist_txt);
-            var newdist = dconv * dist;
+            let $disttd = $(this).find('td').eq(lgth_hdr);
+            let dist_txt = $disttd.text();
+            let dconv = parseFloat(dist_txt);
+            let newdist = dconv * dist;
             newDist = newdist.toFixed(2) + ' kms';
             $disttd.text(newDist);
-            var $elevtd = $(this).find('td').eq(elev_hdr);
-            var elev_txt = $elevtd.text();
-            var econv = parseFloat(elev_txt);
-            var newelev = econv * elev;
+            let $elevtd = $(this).find('td').eq(elev_hdr);
+            let elev_txt = $elevtd.text();
+            let econv = parseFloat(elev_txt);
+            let newelev = econv * elev;
             newElev = newelev.toFixed() + ' m';
             $elevtd.text(newElev);
         });
     }
     else {
         $erows.each(function () {
-            var hike = $(this).data('indx');
-            var $disttd = $(this).find('td').eq(lgth_hdr);
-            var $elevtd = $(this).find('td').eq(elev_hdr);
+            let hike = $(this).data('indx');
+            let $disttd = $(this).find('td').eq(lgth_hdr);
+            let $elevtd = $(this).find('td').eq(elev_hdr);
             eng_units.forEach(function (obj) {
                 if (obj.hikeno === hike) {
-                    var newdist = obj.dist;
+                    let newdist = obj.dist;
                     $disttd.text(newdist);
-                    var newelev = obj.elev;
+                    let newelev = obj.elev;
                     $elevtd.text(newelev);
                     return;
                 }
@@ -141,7 +141,7 @@ function convert(tblid, jqTable, to_units) {
 function setNodatAlerts() {
     $('.nodats').each(function () {
         $(this).on('mouseover', function () {
-            var iconpos = $(this).offset();
+            let iconpos = $(this).offset();
             $('#nodata').show();
             $('#nodata').css({
                 top: iconpos.top,
@@ -169,16 +169,16 @@ function setNodatAlerts() {
  */
 function positionReturnDiv(scrolltop) {
     if (!bkup_button_set) {
-        var half_div_wid = Math.floor(0.50 * $('#backup').width());
-        var half_div_ht = Math.floor(0.50 * $('#backup').height());
-        var div_marg = 10;
-        var shift = half_div_wid + half_div_ht + div_marg;
-        var tablepos = $('#maintbl').offset();
-        var shift_left = (tablepos.left - shift) + 'px';
+        let half_div_wid = Math.floor(0.50 * $('#backup').width());
+        let half_div_ht = Math.floor(0.50 * $('#backup').height());
+        let div_marg = 10;
+        let shift = half_div_wid + half_div_ht + div_marg;
+        let tablepos = $('#maintbl').offset();
+        let shift_left = (tablepos.left - shift) + 'px';
         $('#backup').css('left', shift_left);
         if (scrolltop !== 0) {
-            var starttop = $('#backup').css('top');
-            var down = (parseInt(starttop) - 120) + 'px';
+            let starttop = $('#backup').css('top');
+            let down = (parseInt(starttop) - 120) + 'px';
             $('#backup').css('top', down);
         }
         bkup_button_set = true;
@@ -193,15 +193,15 @@ $(function () {
     tableSort('#maintbl');
     $('#maintbl').css('margin-bottom', '26px');
     $(window).on('scroll', function () {
-        var s = $(window).scrollTop();
+        let s = $(window).scrollTop();
         if (s < 200) {
             $('#backup').hide();
             $('#scroller').val("none");
         }
     });
     // Initialize the results table html by adding column headers from main table
-    var tblHdrs = $('#maintbl').html();
-    var bdystrt = tblHdrs.indexOf('<tbody>');
+    let tblHdrs = $('#maintbl').html();
+    let bdystrt = tblHdrs.indexOf('<tbody>');
     tblHdrs = tblHdrs.substr(0, bdystrt);
     $('#ftable').prepend(tblHdrs);
     // get column nos. for 'Hike/Trail Name', 'Length' and 'Elev' data
@@ -224,7 +224,7 @@ $(function () {
     curr_ftbl_state = mettxt;
     setupConverter('#maintbl', true);
     $('#showfilter').on('click', function () {
-        var current_id;
+        let current_id;
         if (!ftbl_init) {
             // there is no ftable yet, so don't alter converter setup, just toggle displays
             if ($('#tblfilter').css('display') === 'none') {
@@ -264,40 +264,40 @@ $(function () {
         $('#usermodal').show();
     });
     // "Scroll to" drop-down setup
-    var hikelist = [];
-    var $alph = $('#maintbl').find('tbody tr');
+    let hikelist = [];
+    let $alph = $('#maintbl').find('tbody tr');
     $alph.each(function () {
-        var $link = $(this).children().eq(0).children().eq(0);
-        var hikename = $link.text().toLowerCase();
+        let $link = $(this).children().eq(0).children().eq(0);
+        let hikename = $link.text().toLowerCase();
         hikelist.push(hikename[0]);
     });
     var scroll = [];
-    for (var k = 0; k < scrolltoAlph.length; k++) {
-        var char = scrolltoAlph[k];
+    for (let k = 0; k < scrolltoAlph.length; k++) {
+        let char = scrolltoAlph[k];
         // rowpos: back up one row from desired starting row for adequate spacing
-        var rowpos = k === 0 ? 0 : hikelist.indexOf(char) - 1;
-        var $elemnt = $alph.eq(rowpos); // get node for row no.
-        var coords_1 = $elemnt.offset();
-        scroll[k] = coords_1.top; // find coord for top of this row
+        let rowpos = k === 0 ? 0 : hikelist.indexOf(char) - 1;
+        let $elemnt = $alph.eq(rowpos); // get node for row no.
+        let coords = $elemnt.offset();
+        scroll[k] = coords.top; // find coord for top of this row
     }
     $('#scroller').on('change', function () {
-        var selected = $(this).val();
+        let selected = $(this).val();
         if (selected === 'none') {
             // this is the 'label' of the select; equivalent to selecting 'Top'
             $(window).scrollTop(0);
             $('#backup').hide();
         }
         else {
-            var position_1 = parseInt(selected);
-            if (position_1 === 0) { // "Top"
+            let position = parseInt(selected);
+            if (position === 0) { // "Top"
                 $(window).scrollTop(0);
                 $('#backup').hide();
             }
             else {
-                $(window).scrollTop(scroll[position_1]);
+                $(window).scrollTop(scroll[position]);
                 setTimeout(function () {
                     $('#backup').show();
-                    positionReturnDiv(scroll[position_1]);
+                    positionReturnDiv(scroll[position]);
                 }, 600);
             }
         }

@@ -22,9 +22,9 @@ function positionMain() {
     var table_pos = $('#refTbl').offset();
     $('#divopts').css('left', table_pos.left);
     // Filter options and note
-    var winwidth = $(window).innerWidth();
-    var tblwidth = $('.sortable').width();
-    var margs = Math.floor((winwidth - tblwidth) / 2) + "px";
+    let winwidth = $(window).innerWidth();
+    let tblwidth = $('.sortable').width();
+    let margs = Math.floor((winwidth - tblwidth) / 2) + "px";
     $('#tblfilter').css('margin-left', margs);
     $('#tblfilter').css('margin-right', margs);
     $('#filtnote').css('margin-left', margs);
@@ -58,7 +58,7 @@ $('#filtpoi').on('click', function () {
             toggleScrollSelect(false);
         },
         error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = "filter.js: attempting to retrieve areas.json";
+            let msg = "filter.js: attempting to retrieve areas.json";
             ajaxError(appMode, _jqXHR, _textStatus, msg);
             return false;
         }
@@ -87,7 +87,7 @@ function getHikeCoords(hike) {
     var $tblrows = $('.sortable tbody tr');
     var coords = {};
     $tblrows.each(function () {
-        var hikeLinkText = $(this).find('td').eq(hike_hdr).children().eq(0).text();
+        let hikeLinkText = $(this).find('td').eq(hike_hdr).children().eq(0).text();
         if (hikeLinkText === hike) {
             var hlat = $(this).data('lat');
             var hlon = $(this).data('lon');
@@ -107,8 +107,8 @@ function getHikeCoords(hike) {
  */
 function filterList(radius, geo) {
     $('#ftable tbody').empty();
-    var ctrlat = geo.lat;
-    var ctrlng = geo.lng;
+    let ctrlat = geo.lat;
+    let ctrlng = geo.lng;
     $('#maintbl tbody tr').each(function () {
         var hikelat = $(this).data('lat');
         var hikelng = $(this).data('lon');
@@ -123,11 +123,11 @@ function filterList(radius, geo) {
     tableSort('#ftable');
     // data retrieved is always from the current state of #maintbl
     if (ftbl_init) {
-        var ftbl_units = $('#units').text();
+        let ftbl_units = $('#units').text();
         if (ftbl_units.indexOf('English') !== -1) {
             curr_ftbl_state = engtxt;
             // currently, table units are Metric: this table must be converted
-            var $fbody = $('#ftable').find('tbody');
+            let $fbody = $('#ftable').find('tbody');
             convert('#ftable', $fbody, 'Metric');
         }
     }

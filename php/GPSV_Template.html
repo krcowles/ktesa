@@ -11,6 +11,7 @@
 	<body style="margin:0px;">
 
 		<script type="text/javascript">
+			console.log('first script block running');
 			API = 'google';
 			google_api_key = 'API_KEY_HERE';
 			language_code = '';
@@ -28,14 +29,101 @@
 			})();
 
 			function loadGVFunctions() {
+				console.log('loadGVFunctions called');
 				var script_file = (self.API && API == 'google')
 					? 'google_maps/functions3.js'
 					: 'leaflet/functions.js';
 				var gvScript = document.createElement('script');
 				gvScript.type = 'text/javascript';
 				gvScript.src = 'https://www.gpsvisualizer.com/' + script_file;
+				console.log('loading:', gvScript.src);
 				gvScript.onload = function() {
-					GV_Map();
+					console.log('gvScript loaded');
+					
+					try {
+						GV_Map();
+						console.log('GV_Map completed successfully');
+					} catch(e) {
+						console.error('GV_Map error:', e.message, e.stack);
+					}
+					
+					google.maps.event.addListenerOnce(gmap, 'idle', function() {
+						var observer = new MutationObserver(function(mutations, obs) {
+							var zce = document.querySelector('[id^="gv_zoom_control_elements"]');
+							if (zce && zce.getBoundingClientRect().width === 0) {
+								obs.disconnect();
+								
+								// Fix container dimensions
+								var gmStyle = document.querySelector('.gm-style');
+								var zcWrapper = document.querySelector('#gv_zoom_control');
+								if (gmStyle) gmStyle.style.zIndex = '1';
+								if (zcWrapper) {
+									zcWrapper.style.zIndex = '999';
+									zcWrapper.style.position = 'absolute';
+								}
+								zce.style.width = '25px';
+								zce.style.height = '214px';
+								zce.style.position = 'absolute';
+								zce.style.overflow = 'visible';
+								zce.style.display = 'block';
+								zce.style.zIndex = '999';
+								
+								// Fix gm-style direct child stacking context
+								var el = zcWrapper;
+								while (el && el !== document.body) {
+									if (el.parentElement && el.parentElement.className === 'gm-style') {
+										el.style.zIndex = '5';
+										el.style.position = 'relative';
+										break;
+									}
+									el = el.parentElement;
+								}
+								
+								// Fix child dimensions - let GPSVisualizer stylesheet handle
+								// bar colors/sizing, we just need display:block on containers
+								Array.from(zce.children).forEach(function(child) {
+									if (child.className.indexOf('gv_zoom_button') !== -1) {
+										child.style.height = '25px';
+										child.style.overflow = 'visible';
+									} else if (child.className.indexOf('gv_zoom_bar_container') !== -1) {
+										if (child.style.display !== 'none') {
+											child.style.cssText = 'display:block; margin:0px; padding:1px 0px;';
+											Array.from(child.children).forEach(function(grandchild) {
+												var isOverzoom = grandchild.className.indexOf('gv_zoom_bar_overzoom') !== -1;
+												var isSelected = grandchild.className.indexOf('gv_zoom_bar_selected') !== -1;
+												var bgColor = isSelected ? 'rgb(51, 85, 51)' : 
+															isOverzoom ? 'rgb(187, 187, 187)' : 
+															'rgb(119, 136, 153)';
+												grandchild.style.cssText = 'height:4px; width:21px; margin:0px 2px; ' +
+													'padding:0px; border-radius:2px; display:block; ' +
+													'background-color:' + bgColor + ';';
+											});
+										}
+									}
+								});
+
+								google.maps.event.addListener(gmap, 'zoom_changed', function() {
+									document.querySelectorAll('.gv_zoom_bar').forEach(function(bar) {
+										var isOverzoom = bar.className.indexOf('gv_zoom_bar_overzoom') !== -1;
+										var isSelected = bar.className.indexOf('gv_zoom_bar_selected') !== -1;
+										var bgColor = isSelected ? 'rgb(51, 85, 51)' :
+													isOverzoom ? 'rgb(187, 187, 187)' :
+													'rgb(119, 136, 153)';
+										bar.style.backgroundColor = bgColor;
+									});
+								});
+							}
+						});
+						
+						observer.observe(document.body, {
+							childList: true,
+							subtree: true,
+							attributes: true
+						});
+					});
+				};
+				gvScript.onerror = function() {
+					console.error('gvScript failed to load');
 				};
 				document.head.appendChild(gvScript);
 			}
@@ -47,6 +135,7 @@
 					(self.language_code ? self.language_code : '') +
 					'&key=' + (self.google_api_key ? self.google_api_key : '');
 				gmScript.onload = function() {
+					console.log('Google Maps API loaded')
 					loadGVFunctions();
 				};
 				document.head.appendChild(gmScript);
@@ -61,17 +150,6 @@
 			thunderforest_api_key = ''; // To display OpenStreetMap tiles from ThunderForest, you need a key (http://www.thunderforest.com/docs/apikeys/)
 			tracestrack_api_key = ''; // To display topo tiles from Tracestrack (https://console.tracestrack.com/explorer)
 			os_api_key = ''; // To display topo tiles from the UK Ordnance Survey (https://docs.os.uk/os-apis/core-concepts/getting-started-with-an-api-project)
-			
-			/*var mapdone = (function() {
-				var d = { promise: null, resolve: null, reject: null };
-				d.promise = new Promise(function(resolve, reject) {
-					d.resolve = resolve;
-					d.reject  = reject;
-				});
-    			return d;
-			})();
-			*/
-			//var mapdone = new $.Deferred();  // asynchonous event for iframe-parent comms
 		</script>
 		
 		<!--

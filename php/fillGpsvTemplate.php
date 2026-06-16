@@ -158,6 +158,7 @@ if ($map_opts['dynamicMarker'] === 'true') {
 }
 
 // tmpMap deletion - outside GV_Map(), inside <script>
+/*
 if (isset($tmpMap)) {
     $mapfile = basename($tmpMap);
     $basemap = strlen($mapfile) - 4;
@@ -178,6 +179,7 @@ if (isset($tmpMap)) {
     $maphtml .= 'xhr.send();' . PHP_EOL;
     $maphtml .= '})();' . PHP_EOL;
 }
+*/
 
 // Close the <script> tag, then </body></html>
 $maphtml .= '</script>' . PHP_EOL;

@@ -103,8 +103,8 @@ function clearChart() {
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
  */
-var displayTrackSidePanel = function (trkname) {
-    var data = panelData[trkname];
+const displayTrackSidePanel = (trkname) => {
+    let data = panelData[trkname];
     $('#ascent').text(data["ascent"]);
     $('#descent').text(data["descent"]);
     $('#hdiff').text(data["diff"]);
@@ -119,8 +119,8 @@ var displayTrackSidePanel = function (trkname) {
  * This function turns on the topmost checked tracklist box. If all boxes
  * are unchecked, the last box checked remains displayed in elevation chart.
  */
-var plotTopMost = function () {
-    for (var n = 0; n < box_states.length; n++) {
+const plotTopMost = () => {
+    for (let n = 0; n < box_states.length; n++) {
         if (box_states[n] === 1) {
             lastTrack = n;
             break;
@@ -135,27 +135,27 @@ var plotTopMost = function () {
 var mapdiv = document.getElementById('mapline');
 mapdiv.onload = function () {
     setTimeout(function () {
-        var tracklist_class = 'gv_tracklist_item';
+        let tracklist_class = 'gv_tracklist_item';
         // get HTMLCollection of tracks in tracklist]
-        var gpsvIframeDoc = mapdiv.contentWindow;
-        var gvTracks = gpsvIframeDoc.document.getElementsByClassName(tracklist_class);
-        for (var j = 0; j < gvTracks.length; j++) {
-            var classEl = gvTracks[j];
-            var classChild = classEl.firstChild; // this is a table
-            var $tbl = $(classChild);
-            var $tblrow = $tbl.find('tr'); // should only be one row;
-            var $items = $tblrow.find('td');
+        let gpsvIframeDoc = mapdiv.contentWindow;
+        let gvTracks = gpsvIframeDoc.document.getElementsByClassName(tracklist_class);
+        for (let j = 0; j < gvTracks.length; j++) {
+            let classEl = gvTracks[j];
+            let classChild = classEl.firstChild; // this is a table
+            let $tbl = $(classChild);
+            let $tblrow = $tbl.find('tr'); // should only be one row;
+            let $items = $tblrow.find('td');
             // $items[0] is the checkbox; $items[1] contains the track name
-            var item1 = $items[1];
-            var trackItem = item1.firstChild;
-            var trackName = trackItem.innerHTML;
+            let item1 = $items[1];
+            let trackItem = item1.firstChild;
+            let trackName = trackItem.innerHTML;
             trackNames.push(trackName);
-            var checkbox = $items[0].firstChild;
-            var $checkbox = $(checkbox);
+            let checkbox = $items[0].firstChild;
+            let $checkbox = $(checkbox);
             checkboxes.push($checkbox);
             // initialize box_states array (tracks 'checkbox checked' T/F)
             if (cluspage) {
-                for (var k = 0; k < checkboxes.length; k++) {
+                for (let k = 0; k < checkboxes.length; k++) {
                     box_states[k] = 1;
                 }
             }
@@ -175,7 +175,7 @@ mapdiv.onload = function () {
             box.on('click', function () {
                 // validate checkbox states
                 if (box.is(":checked")) {
-                    for (var k = 0; k < box_states.length; k++) {
+                    for (let k = 0; k < box_states.length; k++) {
                         if (k === indx) {
                             box_states[k] = 1;
                             break;
@@ -251,9 +251,9 @@ function setChartDims() {
     $('iframe').width(chartWidth);
     return;
 }
-var chartNote = function () {
+const chartNote = () => {
     if (!mobile) {
-        var cloc = canvasEl.getBoundingClientRect();
+        const cloc = canvasEl.getBoundingClientRect();
         $dnote.css({
             top: cloc.top,
             left: cloc.left + 74,
@@ -275,7 +275,7 @@ var chartNote = function () {
  * Therefore, use the name of the track from gpsvTracks.
  */
 function drawChart(trackNo) {
-    var chartData = defineData(trackNo);
+    const chartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
@@ -333,13 +333,15 @@ function crossHairs(trackno) {
     canvasEl.onmouseout = function () {
         context.putImageData(imageData, 0, 0);
         prevCHairs = false;
-        var mapFrame = document.getElementById('mapline');
-        var mapFrameWin = mapFrame.contentWindow;
-        mapFrameWin.chartMrkr.setMap(null);
+        let mapFrame = document.getElementById('mapline');
+        let mapFrameWin = mapFrame.contentWindow;
+        if (typeof mapFrameWin.chartMrkr !== 'undefined') {
+            mapFrameWin.chartMrkr.setMap(null);
+        }
     };
     canvasEl.onmousedown = function (e) {
         if (!mobile) {
-            var ctxt = canvasEl.getContext("2d");
+            const ctxt = canvasEl.getContext("2d");
             var loc = window2canvas(canvasEl, e.clientX, e.clientY);
             var mark = dataReadout(loc, trackno);
             if (mark.x !== -1) {
@@ -355,10 +357,10 @@ function crossHairs(trackno) {
                     pointB.miles = mark.x;
                     pointB.elev = mark.y;
                     drawDot(ctxt, mark.px, mark.py);
-                    var mdiff = (pointB.miles - pointA.miles).toFixed(2);
-                    var melev = (pointB.elev - pointA.elev).toFixed(1);
-                    var modal_miles = document.getElementById('emiles');
-                    var modal_elev = document.getElementById('eelev');
+                    const mdiff = (pointB.miles - pointA.miles).toFixed(2);
+                    const melev = (pointB.elev - pointA.elev).toFixed(1);
+                    const modal_miles = document.getElementById('emiles');
+                    const modal_elev = document.getElementById('eelev');
                     modal_miles.textContent = mdiff;
                     modal_elev.textContent = melev;
                     imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height);
@@ -438,8 +440,8 @@ function dataReadout(mousePos, trackno) {
  * Get upper/lower locs of point
  */
 function findNeighbors(xDataPt, trackno) {
-    var upper = 0;
-    var lower = 0;
+    let upper = 0;
+    let lower = 0;
     for (var k = 0; k < trkRows[trackno].length; k++) {
         if (trkRows[trackno][k].x === xDataPt) {
             upper = k;

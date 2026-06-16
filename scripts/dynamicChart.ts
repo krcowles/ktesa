@@ -367,7 +367,9 @@ function crossHairs(trackno: number) {
         prevCHairs = false;
         let mapFrame = <HTMLIFrameElement>document.getElementById('mapline');
         let mapFrameWin = <MapWindow>mapFrame.contentWindow;
-        mapFrameWin.chartMrkr.setMap(null);
+        if (typeof mapFrameWin.chartMrkr !== 'undefined') {
+            mapFrameWin.chartMrkr.setMap(null);
+        }
     }
     canvasEl.onmousedown = function (e) {
         if (!mobile) {
