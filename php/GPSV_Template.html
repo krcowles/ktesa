@@ -131,13 +131,19 @@
 			if (self.API && API.match(/^g/i)) {
 				var gmScript = document.createElement('script');
 				gmScript.type = 'text/javascript';
-				gmScript.src = 'https://maps.googleapis.com/maps/api/js?v=3&libraries=geometry&language=' +
-					(self.language_code ? self.language_code : '') +
-					'&key=' + (self.google_api_key ? self.google_api_key : '');
+				gmScript.src = 'https://maps.googleapis.com/maps/api/js?libraries=geometry&language=' +
+                    (self.language_code ? self.language_code : '') +
+                    '&key=' + (self.google_api_key ? self.google_api_key : '');
 				gmScript.onload = function() {
-					console.log('Google Maps API loaded')
-					loadGVFunctions();
-				};
+                    console.log('Google Maps API loaded');
+                    if (document.readyState === 'complete') {
+                        loadGVFunctions();
+                    } else {
+                        window.addEventListener('load', function() {
+                            loadGVFunctions();
+                        });
+                    }
+                };
 				document.head.appendChild(gmScript);
 			} else {
 				var leafletCSS = document.createElement('link');
