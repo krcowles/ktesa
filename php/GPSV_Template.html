@@ -29,103 +29,102 @@
 			})();
 
 			function loadGVFunctions() {
-				console.log('loadGVFunctions called');
 				var script_file = (self.API && API == 'google')
 					? 'google_maps/functions3.js'
 					: 'leaflet/functions.js';
 				var gvScript = document.createElement('script');
 				gvScript.type = 'text/javascript';
 				gvScript.src = 'https://www.gpsvisualizer.com/' + script_file;
-				console.log('loading:', gvScript.src);
 				gvScript.onload = function() {
-					console.log('gvScript loaded');
-					
-					try {
-						GV_Map();
-						console.log('GV_Map completed successfully');
-					} catch(e) {
-						console.error('GV_Map error:', e.message, e.stack);
+					if (document.readyState === 'complete') {
+						initMap();
+					} else {
+						window.addEventListener('load', initMap);
 					}
-					
-					google.maps.event.addListenerOnce(gmap, 'idle', function() {
-						var observer = new MutationObserver(function(mutations, obs) {
-							var zce = document.querySelector('[id^="gv_zoom_control_elements"]');
-							if (zce && zce.getBoundingClientRect().width === 0) {
-								obs.disconnect();
-								
-								// Fix container dimensions
-								var gmStyle = document.querySelector('.gm-style');
-								var zcWrapper = document.querySelector('#gv_zoom_control');
-								if (gmStyle) gmStyle.style.zIndex = '1';
-								if (zcWrapper) {
-									zcWrapper.style.zIndex = '999';
-									zcWrapper.style.position = 'absolute';
-								}
-								zce.style.width = '25px';
-								zce.style.height = '214px';
-								zce.style.position = 'absolute';
-								zce.style.overflow = 'visible';
-								zce.style.display = 'block';
-								zce.style.zIndex = '999';
-								
-								// Fix gm-style direct child stacking context
-								var el = zcWrapper;
-								while (el && el !== document.body) {
-									if (el.parentElement && el.parentElement.className === 'gm-style') {
-										el.style.zIndex = '5';
-										el.style.position = 'relative';
-										break;
-									}
-									el = el.parentElement;
-								}
-								
-								// Fix child dimensions - let GPSVisualizer stylesheet handle
-								// bar colors/sizing, we just need display:block on containers
-								Array.from(zce.children).forEach(function(child) {
-									if (child.className.indexOf('gv_zoom_button') !== -1) {
-										child.style.height = '25px';
-										child.style.overflow = 'visible';
-									} else if (child.className.indexOf('gv_zoom_bar_container') !== -1) {
-										if (child.style.display !== 'none') {
-											child.style.cssText = 'display:block; margin:0px; padding:1px 0px;';
-											Array.from(child.children).forEach(function(grandchild) {
-												var isOverzoom = grandchild.className.indexOf('gv_zoom_bar_overzoom') !== -1;
-												var isSelected = grandchild.className.indexOf('gv_zoom_bar_selected') !== -1;
-												var bgColor = isSelected ? 'rgb(51, 85, 51)' : 
-															isOverzoom ? 'rgb(187, 187, 187)' : 
-															'rgb(119, 136, 153)';
-												grandchild.style.cssText = 'height:4px; width:21px; margin:0px 2px; ' +
-													'padding:0px; border-radius:2px; display:block; ' +
-													'background-color:' + bgColor + ';';
-											});
-										}
-									}
-								});
-
-								google.maps.event.addListener(gmap, 'zoom_changed', function() {
-									document.querySelectorAll('.gv_zoom_bar').forEach(function(bar) {
-										var isOverzoom = bar.className.indexOf('gv_zoom_bar_overzoom') !== -1;
-										var isSelected = bar.className.indexOf('gv_zoom_bar_selected') !== -1;
-										var bgColor = isSelected ? 'rgb(51, 85, 51)' :
-													isOverzoom ? 'rgb(187, 187, 187)' :
-													'rgb(119, 136, 153)';
-										bar.style.backgroundColor = bgColor;
-									});
-								});
-							}
-						});
-						
-						observer.observe(document.body, {
-							childList: true,
-							subtree: true,
-							attributes: true
-						});
-					});
 				};
 				gvScript.onerror = function() {
 					console.error('gvScript failed to load');
 				};
 				document.head.appendChild(gvScript);
+			}
+
+			function initMap() {
+				try {
+					GV_Map();
+				} catch(e) {
+					console.error('GV_Map error:', e.message, e.stack);
+				}
+				
+				google.maps.event.addListenerOnce(gmap, 'idle', function() {
+					var observer = new MutationObserver(function(mutations, obs) {
+						var zce = document.querySelector('[id^="gv_zoom_control_elements"]');
+						if (zce && zce.getBoundingClientRect().width === 0) {
+							obs.disconnect();
+							
+							var gmStyle = document.querySelector('.gm-style');
+							var zcWrapper = document.querySelector('#gv_zoom_control');
+							if (gmStyle) gmStyle.style.zIndex = '1';
+							if (zcWrapper) {
+								zcWrapper.style.zIndex = '999';
+								zcWrapper.style.position = 'absolute';
+							}
+							zce.style.width = '25px';
+							zce.style.height = '214px';
+							zce.style.position = 'absolute';
+							zce.style.overflow = 'visible';
+							zce.style.display = 'block';
+							zce.style.zIndex = '999';
+							
+							var el = zcWrapper;
+							while (el && el !== document.body) {
+								if (el.parentElement && el.parentElement.className === 'gm-style') {
+									el.style.zIndex = '5';
+									el.style.position = 'relative';
+									break;
+								}
+								el = el.parentElement;
+							}
+							
+							Array.from(zce.children).forEach(function(child) {
+								if (child.className.indexOf('gv_zoom_button') !== -1) {
+									child.style.height = '25px';
+									child.style.overflow = 'visible';
+								} else if (child.className.indexOf('gv_zoom_bar_container') !== -1) {
+									if (child.style.display !== 'none') {
+										child.style.cssText = 'display:block; margin:0px; padding:1px 0px;';
+										Array.from(child.children).forEach(function(grandchild) {
+											var isOverzoom = grandchild.className.indexOf('gv_zoom_bar_overzoom') !== -1;
+											var isSelected = grandchild.className.indexOf('gv_zoom_bar_selected') !== -1;
+											var bgColor = isSelected ? 'rgb(51, 85, 51)' :
+														isOverzoom ? 'rgb(187, 187, 187)' :
+														'rgb(119, 136, 153)';
+											grandchild.style.cssText = 'height:4px; width:21px; margin:0px 2px; ' +
+												'padding:0px; border-radius:2px; display:block; ' +
+												'background-color:' + bgColor + ';';
+										});
+									}
+								}
+							});
+							
+							google.maps.event.addListener(gmap, 'zoom_changed', function() {
+								document.querySelectorAll('.gv_zoom_bar').forEach(function(bar) {
+									var isOverzoom = bar.className.indexOf('gv_zoom_bar_overzoom') !== -1;
+									var isSelected = bar.className.indexOf('gv_zoom_bar_selected') !== -1;
+									var bgColor = isSelected ? 'rgb(51, 85, 51)' :
+												isOverzoom ? 'rgb(187, 187, 187)' :
+												'rgb(119, 136, 153)';
+									bar.style.backgroundColor = bgColor;
+								});
+							});
+						}
+					});
+					
+					observer.observe(document.body, {
+						childList: true,
+						subtree: true,
+						attributes: true
+					});
+				});
 			}
 
 			if (self.API && API.match(/^g/i)) {
@@ -337,6 +336,96 @@
 				display:inline-block; border:solid 1px black; width:9px;
 				height:9px; margin:0px 2px 0px 0px;
 			}
+		</style>
+		<style type="text/css">
+			/* GPSVisualizer styles - injected statically to replace document.writeln */
+			#gmap_div .gv_marker_info_window { font-family: Verdana; font-size: 11px; min-width: 150px; min-height: 24px; }
+			#gmap_div .gv_marker_info_window a { font: inherit; }
+			#gmap_div .gv_marker_info_window_name { font-size: 110%; font-weight: bold; margin-bottom: 6px; line-height: 1.15; }
+			#gmap_div .gv_marker_info_window_desc { padding-top: 0px; margin-bottom: 4px; line-height: 1.15; }
+			#gmap_div .gv_marker_info_window_desc div { font: inherit; }
+			#gmap_div .gv_marker_info_window img.gv_marker_thumbnail { margin: 6px 0px; }
+			#gmap_div .gv_marker_info_window a[href] img.gv_marker_thumbnail { border-width: 1px; border-style: solid; }
+			#gmap_div .gv_marker_info_window img.gv_marker_photo { margin: 8px 0px; }
+			#gmap_div .gv_driving_directions { background-color: rgb(238,238,238); border-radius: 4px; padding: 4px; margin-top: 12px; font-size: 92%; }
+			#gmap_div .gv_driving_directions_heading { color: rgb(102,102,102); font-weight: bold; }
+			#gmap_div .gv_click_window { font-family: Verdana; font-size: 11px; min-width: 50px; min-height: 20px; }
+			#gv_center_coordinates { background-color: rgb(255,255,255); border: 1px solid rgb(102,102,102); padding: 1px; font: 10px/11px Arial; }
+			#gv_center_coordinate_pair { font: inherit; }
+			#gv_mouse_coordinates { background-color: rgb(255,255,255); border: 1px solid rgb(102,102,102); padding: 1px; font: 10px/11px Arial; }
+			#gv_mouse_coordinate_pair { font: inherit; }
+			#gv_map_copyright { font: 10px Arial; }
+			#gv_map_copyright a { font: inherit; }
+			#gv_credit { font: bold 10px Verdana, sans-serif; }
+			#gv_credit a[href] { color: rgb(0,102,0); }
+			#gv_copyright_container a[href] { color: rgb(0,102,0); }
+			.gv_label { background-color: rgb(51,51,51); border: 1px solid black; padding: 1px; text-align: left; white-space: nowrap; font: 9px Verdana; color: white; }
+			.gv_label img { display: none; }
+			.gv_tooltip { background-color: rgb(255,255,255); border: 1px solid rgb(102,102,102); padding: 2px; text-align: left; font: 10px Verdana, sans-serif; color: black; white-space: nowrap; opacity: 1; }
+			.gv_tooltip img.gv_marker_thumbnail { display: block; padding-top: 3px; }
+			.gv_tooltip img.gv_marker_photo { display: none; }
+			.gv_tooltip_desc { padding-top: 6px; }
+			.gv_tooltip.gv_track_tooltip { border: medium; opacity: 0.9; }
+			.gv_marker_tooltip { padding: 2px; }
+			.gv_zoom_control_contents { width: 25px; overflow: hidden; opacity: 0.9; }
+			.gv_zoom_control_contents_mobile { width: 23px; }
+			.gv_zoom_bar_container { margin: 0px; padding-top: 1px; padding-bottom: 1px; background: none; cursor: pointer; }
+			.gv_zoom_bar_container_mobile { padding-top: 1px; padding-bottom: 1px; }
+			.gv_zoom_bar { height: 4px; margin: 0px 2px; padding: 0px; border-radius: 2px; background-color: rgb(119,136,119); }
+			.gv_zoom_bar_mobile { height: 4px; }
+			.gv_zoom_bar_overzoom { background-color: rgb(187,187,187); }
+			.gv_zoom_bar:hover, .gv_zoom_bar_overzoom:hover { background-color: rgb(187,221,187); }
+			.gv_zoom_bar_selected { padding: 0px 1px; margin: 0px 1px; background-color: rgb(51,85,51); }
+			.gv_zoom_bar_selected:hover { background-color: rgb(68,102,68); }
+			.gv_zoom_button { position: relative; width: 23px; height: 23px; border: 1px solid rgb(204,204,204); border-radius: 3px; background-color: rgb(242,244,242); cursor: pointer; }
+			.gv_zoom_button_mobile { width: 21px; height: 21px; }
+			.gv_zoom_button:hover { background-color: rgb(255,255,255); }
+			.gv_geolocation_button { width: 21px; height: 21px; margin: 12px 2px 0px; background-color: rgb(255,255,255); border-radius: 3px; cursor: pointer; }
+			.gv_geolocation_button_mobile { width: 23px; height: 23px; margin: 9px 0px 0px; }
+			.gv_profile_button { width: 21px; height: 17px; background: rgba(255,255,255,0.7); cursor: pointer; }
+			img.gv_marker_thumbnail { display: block; text-decoration: none; margin: 0px; }
+			img.gv_marker_photo { display: block; text-decoration: none; margin: 0px; }
+			.gv_legend_item { padding-bottom: 0px; line-height: 1.1; font-weight: bold; }
+			.gv_tracklist { font: 11px/12px Arial, sans-serif; background-color: rgb(255,255,255); text-align: left; }
+			.gv_tracklist_header { font-weight: bold; padding-bottom: 3px; }
+			.gv_tracklist_footer { padding-top: 2px; }
+			.gv_tracklist_item { padding-top: 1px; padding-bottom: 4px; }
+			.gv_tracklist_item_name { font-weight: bold; font-size: 11px; cursor: pointer; }
+			.gv_tracklist_item_desc { font-weight: normal; font-size: 11px; padding-top: 2px; }
+			.gv_goto_link { display: inline-block; vertical-align: top; width: 9px; height: 9px; margin-left: 3px; cursor: zoom-in; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5cHgiIGhlaWdodD0iOXB4IiB2aWV3Qm94PSIwIDAgOSA5Ij48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzMzMzMzMyIgY3g9IjQuNSIgY3k9IjQuNSIgcj0iMyIvPjxsaW5lIHN0cm9rZT0iIzMzMzMzMyIgeDE9IjQuNSIgeTE9IjUiIHgyPSI0LjUiIHkyPSI5Ii8+PGxpbmUgc3Ryb2tlPSIjMzMzMzMzIiB4MT0iNSIgeTE9IjQuNSIgeDI9IjkiIHkyPSI0LjUiLz48bGluZSBzdHJva2U9IiMzMzMzMzMiIHgxPSI0LjUiIHkxPSI0IiB4Mj0iNC41IiB5Mj0iMCIvPjxsaW5lIHN0cm9rZT0iIzMzMzMzMyIgeDE9IjQiIHkxPSI0LjUiIHgyPSIwIiB5Mj0iNC41Ii8+PC9zdmc+DQo="); background-repeat: no-repeat; background-position: center center; }
+			.gv_marker_list_folder_name .gv_goto_link { vertical-align: middle; }
+			.gv_marker_list { font: 10px Verdana, sans-serif; background-color: rgb(255,255,255); text-align: left; }
+			.gv_marker_list_header { font: 11px Verdana, sans-serif; padding-bottom: 4px; }
+			.gv_marker_list_header:empty { padding-bottom: 0px; }
+			.gv_marker_list_item { font-family: Verdana, sans-serif; font-size: 10px; line-height: 1.2; padding: 3px 0px; }
+			.gv_marker_list_item_icon { cursor: pointer; float: left; margin-right: 4px; margin-bottom: 1px; }
+			.gv_marker_list_item_name { cursor: pointer; font-weight: bold; }
+			.gv_marker_list_item_desc { padding-top: 2px; font-size: 90%; }
+			.gv_marker_list_border_top { border-top: 1px solid rgb(204,204,204); }
+			.gv_marker_list_border_bottom { border-bottom: 1px solid rgb(204,204,204); }
+			.gv_marker_list_thumbnail { padding-top: 3px; border-width: 1px; display: none; }
+			.gv_marker_list_folder { font-family: Verdana, sans-serif; font-size: 10px; padding-bottom: 4px; }
+			.gv_marker_list_folder_header { font-size: 11px; line-height: 1.2; font-weight: bold; padding-bottom: 2px; background-color: rgb(228,228,228); }
+			.gv_marker_list_folder_name { background: none; }
+			.gv_marker_list_folder_icon { vertical-align: bottom; margin: 0px 2px; }
+			.gv_marker_list_folder_item_count { font-weight: normal; font-size: 10px; }
+			.gv_marker_list_folder_checkbox { width: 12px; height: 12px; padding: 0px; margin: 3px 2px 0px 0px; }
+			.gv_marker_list_folder_contents { padding-left: 15px; background-color: rgb(255,255,255); }
+			.gv_infobox { font: 11px Arial, sans-serif; background-color: rgb(255,255,255); text-align: left; border: 1px solid rgb(102,102,102); padding: 4px; }
+			.gv_searchbox { font: 11px Arial, sans-serif; background-color: rgb(255,255,255); text-align: left; border: 1px solid rgb(102,102,102); padding: 4px; }
+			.gv_maptypelink { background-color: rgb(221,221,221); color: rgb(0,0,0); text-align: center; white-space: nowrap; border-width: 1px; border-style: solid; border-color: rgb(153,153,153) rgb(34,34,34) rgb(34,34,34) rgb(153,153,153); padding: 1px 2px; margin-bottom: 3px; font: 9px Verdana, sans-serif; text-decoration: none; cursor: pointer; }
+			.gv_maptypelink_selected { background-color: rgb(255,255,255); }
+			.gv_floating_box { border: medium; opacity: 0.95; }
+			.gv_windowshade_handle { height: 6px; font-size: 8px; color: rgb(119,119,119); overflow: hidden; background-color: rgb(204,204,204); border-left: 1px solid rgb(153,153,153); border-top: 1px solid rgb(238,238,238); border-right: 1px solid rgb(153,153,153); padding: 0px; text-align: center; cursor: move; }
+			.gv_windowshade_handle_mobile { height: 12px; font-size: 8px; color: rgb(119,119,119); overflow: hidden; background-color: rgb(204,204,204); border-left: 1px solid rgb(153,153,153); border-top: 1px solid rgb(238,238,238); border-right: 1px solid rgb(153,153,153); padding: 0px; text-align: center; cursor: move; }
+			.gv_utilities_menu_header { background-color: rgb(204,238,204); font-size: 8pt; color: rgb(102,153,102); padding: 4px; border-top: 1px solid rgb(204,204,204); }
+			.gv_utilities_menu_item { font-size: 9pt; color: rgb(0,102,0); padding: 6px 4px; border-top: 1px solid rgb(204,204,204); }
+			.gv_utilities_menu_item a { color: rgb(0,102,0); text-decoration: none; cursor: pointer; }
+			.gv_utilities_menu_item a:hover { text-decoration: underline; }
+			.gv_utilities_menu_item img { padding-right: 6px; vertical-align: middle; }
+			.gv_opacity_screen { background-color: rgb(255,255,255); }
+			.gv_profile { font: 11px Arial, sans-serif; background: white; padding: 0px; overflow: hidden; box-shadow: rgb(102,102,102) 2px 2px 4px; }
+			.gv_modal_content { min-width: 200px; min-height: 100px; padding: 12px; overflow: auto; background-color: white; border: 1px solid rgb(0,102,0); box-shadow: rgb(102,102,102) 6px 6px 10px; text-align: left; font-size: 13px; font-family: Verdana, sans-serif; }
 		</style>
 		
 		<!-- end GPSV setup script and styles; begin map-drawing script (they must be separate) -->
