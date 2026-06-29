@@ -49,6 +49,9 @@ if (isAdvancedUpload) {
         $('#ldg').css('display', 'inline');
         $('#preload').css('display', 'inline-block');
         meta = []; // needs to be reset after each upload
+        validated = [];
+        FR_Images = [];
+        imgNo = 0;
         let dfs = e.originalEvent;
         let dxfr = dfs.dataTransfer;
         droppedFiles = dxfr.files;
@@ -79,6 +82,9 @@ const previewImgs = (flist) => {
     $('#ldg').css('display', 'inline');
     $('#preload').css('display', 'inline-block');
     meta = []; // needs to be reset after each upload
+    validated = [];
+    FR_Images = [];
+    imgNo = 0;
     $.when(filechecks(flist)).then(function () {
         $.when(ldImgs(validated)).then(function () {
             $.when(ldNodes(FR_Images)).then(function () {
@@ -245,7 +251,7 @@ const extractMetaData = (tagData, ino) => {
     }
     const metaObj = { imgNo: ino, lat: plat, lng: plng, dtime: pdate,
         usable: use, mappable: mappable };
-    meta.push(metaObj);
+    meta[ino] = metaObj;
     return;
 };
 /**

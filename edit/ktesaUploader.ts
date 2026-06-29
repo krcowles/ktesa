@@ -96,6 +96,9 @@ if (isAdvancedUpload) {
         $('#ldg').css('display', 'inline');
         $('#preload').css('display', 'inline-block');
         meta = []; // needs to be reset after each upload
+        validated = [];
+        FR_Images = [];
+        imgNo = 0;
         let dfs = <DragEvent>e.originalEvent;
         let dxfr = <DataTransfer>dfs.dataTransfer;
         droppedFiles = dxfr.files;
@@ -127,6 +130,9 @@ const previewImgs = (flist: FileList) => {
     $('#ldg').css('display', 'inline');
     $('#preload').css('display', 'inline-block');
     meta = []; // needs to be reset after each upload
+    validated = [];
+    FR_Images = [];
+    imgNo = 0;
     $.when( filechecks(flist) ).then(function() {
         $.when( ldImgs(validated) ).then(function() {
             $.when( ldNodes(FR_Images) ).then(function() {
@@ -290,7 +296,7 @@ const extractMetaData = (tagData: ExpandedTags, ino: number): void =>  {
     }
     const metaObj = {imgNo: ino, lat: plat, lng: plng, dtime: pdate,
         usable: use, mappable: mappable} as ExifReaderObject;
-    meta.push(metaObj);
+    meta[ino] = metaObj;
     return;
 }
 /**
