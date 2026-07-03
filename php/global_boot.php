@@ -73,6 +73,6 @@ $options = array(
     PDO::MYSQL_ATTR_INIT_COMMAND => $mode_str,
 );
 $dsn = sprintf(
-    'mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $DATABASE, $CHARSET
+    'mysql:host=%s;port=%s;dbname=%s;charset=%s', $HOSTNAME, $PORT, $DATABASE, $CHARSET
 );
 $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);

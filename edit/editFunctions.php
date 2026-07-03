@@ -339,7 +339,7 @@ function resetSymfault($input_file)
  * gpx and kml files, this function is called from uploadKtesaFile(), and
  * for html files, it is called directly from saveTab4.php.
  * 
- * @param string  $ifn       Input file name attribute
+ * @param string  $ifn       Input file name attribute ['newgpx', 'add1', 'newgps', etc.]
  * @param string  $filename  User's uploaded file name
  * @param string  $type      Server identified file type 
  * @param string  $alert_pos Index into $_SESSION['alerts'] for alert msg
@@ -631,8 +631,10 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false)
     $org_name    = []; // name of gpx file & associated tracks
     $trkcnt = $gpxdat->trk->count();
     for ($j=0; $j<$trkcnt; $j++) {
-        $trkname= $gpxdat->trk[$j]->name->__toString();
+        $trkname = $gpxdat->trk[$j]->name->__toString();
         $track_name = empty($trkname) ? "No Track Name" : $trkname;
+        // single quotes can cause havoc with GPSV_Template:
+        $track_name = str_replace("'", "", $track_name);
         array_push($track_names, $track_name);
     }
     /**
