@@ -12,6 +12,7 @@
 session_start();
 require "../php/global_boot.php";
 date_default_timezone_set('America/Denver');
+$hostIs = empty($_SERVER['HTTPS']) ? 'LOCALHOST' : 'HOST SERVER';
 
 /**
  * Visitor data settings
@@ -24,21 +25,26 @@ for ($i=0; $i<12; $i++) {
     $opts .= "<option value='{$moval}'>{$months[$i]}</option>" . PHP_EOL;
 }
 
-// Archival of Visitor Data:
-$rangeRequest = "SELECT MIN(vdatetime) AS MinDate, MAX(vdatetime) AS MaxDate " .
-    "FROM `VISITORS`;";
-$getRange = $pdo->query($rangeRequest)->fetch(PDO::FETCH_ASSOC);
-$mindate = $getRange['MinDate'];
-$maxdate = $getRange['MaxDate'];
-$minyr = intval(substr($mindate, 0, 4));
-$maxyr = intval(substr($maxdate, 0, 4));
-$archyears = [];
-for ($k=$minyr; $k<=$maxyr; $k++) {
-    array_push($archyears, $k);
-}
+/**
+ * Archival of Visitor Data:
+ * Valid only on HOST: Localhost has no VISITORS table (it is not exported)
+ */
 $archopts = '';
-foreach ($archyears as $yr) {
-    $archopts .= "<option value='{$yr}'>{$yr}</option>" . PHP_EOL;
+if ($hostIs === "HOST SERVER") {
+    $rangeRequest = "SELECT MIN(vdatetime) AS MinDate, MAX(vdatetime) AS MaxDate " .
+        "FROM `VISITORS`;";
+    $getRange = $pdo->query($rangeRequest)->fetch(PDO::FETCH_ASSOC);
+    $mindate = $getRange['MinDate'];
+    $maxdate = $getRange['MaxDate'];
+    $minyr = intval(substr($mindate, 0, 4));
+    $maxyr = intval(substr($maxdate, 0, 4));
+    $archyears = [];
+    for ($k=$minyr; $k<=$maxyr; $k++) {
+        array_push($archyears, $k);
+    }
+    foreach ($archyears as $yr) {
+        $archopts .= "<option value='{$yr}'>{$yr}</option>" . PHP_EOL;
+    }
 }
 
 // if any alerts were encountered via admin page accesses:
@@ -47,15 +53,6 @@ if (isset($_SESSION['alerts'][0])) {
     $admin_alert = $_SESSION['alerts'][0];
     unset($_SESSION['alerts']);
 }
-/**
- * Browsers keep changing! $_SERVER['SERVER_NAME'] used to return 'localhost' 
- * for the workstation's locally installed server (e.g. Apache or Nginx); 
- * It now returns an empty string, so adjustments had to be made:
- */
-$host = $_SERVER['SERVER_NAME'] ?: 'localhost';
-$server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
-    'test' : 'main';
-$whichSite = $testSite ? 'test site' : 'main site';
 
 ?>
 <!DOCTYPE html>
@@ -83,8 +80,7 @@ $whichSite = $testSite ? 'test site' : 'main site';
                 }
             });
         });
-        var hostIs = "<?=$host;?>";
-        var server_loc = "<?=$server_loc;?>";
+        var hostIs = "<?=$hostIs;?>";
         var dbState = "<?=$dbState;?>";
         var auth;
     </script>
@@ -96,7 +92,6 @@ $whichSite = $testSite ? 'test site' : 'main site';
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Site Administration Tools</p>
 <p id="active" style="display:none">Admin</p>
-<p id="siteType" style="display:none;"><?=$whichSite;?></p>
 
 <dialog id="new_reload">
     <p>Do you really want to drop all tables<br />and reload them?</p>

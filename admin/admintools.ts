@@ -1,6 +1,5 @@
 /// <reference types="jqueryui" />
 declare var hostIs: string;
-declare var server_loc: string;
 declare var dbState: string;
 declare var auth: string;
 declare var nopix: string;
@@ -95,8 +94,11 @@ $('#upld').on('click', function() {
 });
 // main site installation
 $('#install').on('click', function() {
-    if (hostIs !== 'nmhikes.com' || server_loc !== 'main') {
+    if (hostIs === 'LOCALHOST') {
         alert("This tool only works on the server docroot");
+        return false;
+    } if (dbState === 'test') {
+        alert("The current database is 'test'");
         return false;
     }
     if (typeof auth !== 'undefined') {
@@ -472,6 +474,10 @@ $('#doit').on('click', () => {
     // NOTE: Checksums are re-generated, and may no longer agree w/.sql file
 });
 $('#reload').on('click', function() {
+    const admin_msg = "Reload on " + hostIs + "?";
+    if (!confirm(admin_msg)) {
+        return false;
+    }
     if (dbState === 'test') {
         // When reloading the test db, it is not necessary to perform db checking
         window.open('./drop_all_tables.php', "_blank");
@@ -505,6 +511,7 @@ $('#reload').on('click', function() {
             reload_modal.showModal();
         });
     }
+    return;
 });
 
 $('#hard_reload').on('click', function() {
