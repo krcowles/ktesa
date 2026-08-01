@@ -3,7 +3,7 @@
  * This script sends the user a link to reset his/her password, or, if
  * a new user, set the password.
  * PHP Version 8.3.9
- * 
+ *
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
@@ -57,8 +57,13 @@ if ($type === 'own') { // someone is requesting ownership :-)
         echo "Your email '{$email}' was not located in our database";
         exit;
     }
-    $from = "noreply@mail.com";
-    $from_note = "Do not hit reply";
+    // NOTE: 'From' address MUST match the SMTP-authenticated account (ADMIN)
+    // for SPF/DKIM/DMARC alignment. A non-matching domain (e.g. noreply@mail.com)
+    // is silently dropped or spam-boxed by many providers (Gmail, Outlook/MSN,
+    // iCloud) with no bounce and no error - this was the root cause of
+    // registration emails never arriving for some users.
+    $from = ADMIN;
+    $from_note = "NM Hikes - Do not reply";
     $to = $email;
     $name = $status['username'];
     $replyTo = $from;
@@ -71,7 +76,7 @@ if ($type === 'own') { // someone is requesting ownership :-)
     $savecode = $pdo->prepare($savecodeReq);
     $savecode->execute([$hash, $name]);
     $subject = $subj;
-    $message = $usermsg . $tmp_pass . "<br />Your username is " 
+    $message = $usermsg . $tmp_pass . "<br />Your username is "
         . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
         '">CLICK HERE</a> to complete your registration</h4>';
 }
@@ -81,5 +86,13 @@ $mail->addReplyTo($replyTo, $replyName);
 $mail->isHTML(true);
 $mail->Subject = $subject;
 $mail->Body = $message;
-@$mail->send();
-echo "OK";
+
+if ($mail->send()) {
+    echo "OK";
+} else {
+    error_log(
+        "resetMail.php: send() failed for {$to} (type={$type}): " .
+        $mail->ErrorInfo
+    );
+    echo "MAILFAIL: " . $mail->ErrorInfo;
+}
