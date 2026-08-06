@@ -31,5 +31,8 @@ $mail->addAddress(ADMIN, 'Admin');
 $mail->Subject = $subject;
 $mail->Body = $message;
 if (!$mail->send()) {
-    error_log("ajaxError.php: failed to send admin notification: " . $mail->ErrorInfo);
+    error_log(
+        "ajaxError.php: failed to send admin notification: " . 
+        $mail->ErrorInfo
+    );
 }

@@ -1,10 +1,10 @@
 <?php
 /** 
- * This script will export all tables automatically and download
- * them to the client machine's browser. Refer to comments in the
- * adminFunctions.php module: the export utilizes both $pdo for
- * accessing the current db, and mysqli for formulating the .sql
- * file's string contents. 
+ * This script will export all tables automatically  *** EXCEPT
+ * VISITORS (!) *** and download them to the client machine's browser.
+ * Refer to comments in the adminFunctions.php module: the export
+ * utilizes both $pdo for accessing the current db, and mysqli for
+ * formulating the .sql file's string contents. 
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -38,7 +38,7 @@ if ($download === 'V') {
 }
 
 // mysqli prep:
-$link =  mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);
+$link =  mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE, $PORT);
 if (!$link) {
     throw new Exception(
         "Could not connect to the database using mysqli: File " .

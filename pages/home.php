@@ -6,7 +6,7 @@
  * links, info, and a thumbnail for each hike in the side table.
  * NOTE: Due to googles ever-changing API, check 'Settings.php' to ensure the
  * appropriate script tag.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowle29@gmail.com>
@@ -30,7 +30,25 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
-chdir($startDir);  
+chdir($startDir);
+
+$startup = "not_member";
+// If visitor is a member, check to see if the userid is in MEMBER_PREFS:
+// insert defaults if not; then read value of 'app' field
+if (isset($_SESSION['userid'])) {
+    $member = $_SESSION['userid'];
+    $appExists = "INSERT IGNORE INTO `MEMBER_PREFS` (userid, wpt_format) " .
+    "VALUES (?,?)";
+    $existsQuery = $pdo->prepare($appExists);
+    $existsQuery->execute([$member, 'deg']);
+    // retrieve the current value of 'app': may be NULL
+    $appRequest = "SELECT `app` FROM `MEMBER_PREFS` WHERE `userid`=?";
+    $appQuery = $pdo->prepare($appRequest);
+    $appQuery->execute([$member]);
+    $appField = $appQuery->fetch(PDO::FETCH_ASSOC);
+    // if not NULL, will be 'noshow', 'ios', or 'android'
+    $startup = $appField['app'] ?? 'show';
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,8 +75,9 @@ chdir($startDir);
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Find Your Hike!</p>
-<p id="active" style="display:none">Home</p>
-<p id="appMode" style="display:none"><?=$appMode;?></p>
+<p id="active" style="display:none;">Home</p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
+<p id="startup_modal" style="display:none;"><?=$startup;?></p>
 
 <div id="map"></div>
 

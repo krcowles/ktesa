@@ -178,26 +178,29 @@ if (!$admin) {
             }
         }
     }
-    $browser = getBrowserType(); // can be null!
-    if (!isset($browser)) {
-        $browser['name'] = "no name";
-        $browser['patform'] = "no platform";
+    // either ipv4 or ipv6...
+    if ($user_ip !== '127.0.0.1' && $user_ip !== '::1') { 
+        $browser = getBrowserType(); // can be null!
+        if (!isset($browser)) {
+            $browser['name'] = "no name";
+            $browser['patform'] = "no platform";
+        }
+        date_default_timezone_set('America/Denver');
+        $visit_time = date('Y-m-d h:i:s');
+        $vpage = selfURL(); // can be null
+        $vpage = $vpage ?? "no page";
+        $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
+            "`vplatform`,`vdatetime`,`vpage`) VALUES (?,?,?,?,?,?);";
+        $visitor_data = $pdo->prepare($visitor_data_req);
+        $visitor_data->execute(
+            [
+                $user_ip,
+                $memid,
+                $browser['name'],
+                $browser['platform'],
+                $visit_time,
+                $vpage
+            ]
+        );
     }
-    date_default_timezone_set('America/Denver');
-    $visit_time = date('Y-m-d h:i:s');
-    $vpage = selfURL(); // can be null
-    $vpage = $vpage ?? "no page";
-    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
-        "`vplatform`,`vdatetime`,`vpage`) VALUES (?,?,?,?,?,?);";
-    $visitor_data = $pdo->prepare($visitor_data_req);
-    $visitor_data->execute(
-        [
-            $user_ip,
-            $memid,
-            $browser['name'],
-            $browser['platform'],
-            $visit_time,
-            $vpage
-        ]
-    );
 }

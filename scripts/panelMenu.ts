@@ -20,6 +20,7 @@ interface FileUploadObject {
  */
 $(function() {  // document ready function
 
+const appMode = $('#appMode').text() as string; // #appMode in ktesaPanel
 // establish the page title in the logo's 'ctr' div
 function logo_title() {
     var pgtitle = $('#trail').detach();
@@ -29,18 +30,171 @@ logo_title();
 const editmode = $('#editMode').text() as string;
 const requiredAnswers = 3; // number of security questions to be answered
 // Modal handles for panel items:
-var resetPassModal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'));
-var questions = new bootstrap.Modal(<HTMLElement>document.getElementById('security'));
-var bymiles   = new bootstrap.Modal(<HTMLElement>document.getElementById('bymiles'));
-var byloc     = new bootstrap.Modal(<HTMLElement>document.getElementById('byloc'));
-var gpxedit   = new bootstrap.Modal(<HTMLElement>document.getElementById('ged'));
-var newpgs    = new bootstrap.Modal(<HTMLElement>document.getElementById('newpgs'));
-var appgpx    = new bootstrap.Modal(<HTMLElement>document.getElementById('appfiles'));
+const resetPassModal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'));
+const questions = new bootstrap.Modal(<HTMLElement>document.getElementById('security'));
+const bymiles   = new bootstrap.Modal(<HTMLElement>document.getElementById('bymiles'));
+const byloc     = new bootstrap.Modal(<HTMLElement>document.getElementById('byloc'));
+const gpxedit   = new bootstrap.Modal(<HTMLElement>document.getElementById('ged'));
+const newpgs    = new bootstrap.Modal(<HTMLElement>document.getElementById('newpgs'));
+const appgpx    = new bootstrap.Modal(<HTMLElement>document.getElementById('appfiles'));
 const membens = new bootstrap.Modal(<HTMLElement>document.getElementById('membennies'));
 const $benmo  = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
     "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
     "color:darkslategray;'>Free Membership<br />Click for Benefits</div>");
-var lockout   = new bootstrap.Modal(<HTMLElement>document.getElementById('lockout'));
+const lockout   = new bootstrap.Modal(<HTMLElement>document.getElementById('lockout'));
+const announce = new bootstrap.Modal(<HTMLElement>document.getElementById('announce'));
+const offline_app = new bootstrap.Modal(<HTMLElement>document.getElementById('offline'));
+const installer = new bootstrap.Modal(<HTMLElement>document.getElementById('install_instructions'));
+
+/**
+ * With the release of the new mobile app for members, a modal will popup on the home page only
+ * announcing the app availability. A member can "Don't show again", proceed to the app 
+ * acquisition modal, or simply ignore the modal in which case it will appear again next visit.
+ * The value of #startup_modal is only on home.php
+ */
+if ($('#active').text() === 'Home' && $('#startup_modal').text() === 'show') {
+    announce.show();
+}
+$('#no_show').on('click', () => {
+    $.ajax({
+        url: '../php/setAppField.php',
+        method: 'post',
+        data: {value: 'noshow'},
+        success: function() {
+            // 'app' field is set to 'noshow'
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                    "field of MEMBER_PREFS\n" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+    });
+    announce.hide();
+});
+$('#yes_get').on('click', () => {
+    announce.hide();
+    offline_app.show();
+});
+$('#get_app').on('click', () => {
+    let ios = document.getElementById('ios') as HTMLInputElement;
+    let android = document.getElementById('android') as HTMLInputElement;
+    let type = "unspecified";
+    if (ios.checked) {
+        type = "ios";
+    }
+    if (android.checked) {
+        type = "android";
+    }
+    if (type === 'unspecified') {
+        alert("No phone type specified");
+        return false;
+    }
+    $('#installTo').text(type);
+    if (type === 'ios') {
+        $('ios_phone').css('display', 'block');
+        $('#android_phone').css('display', 'none');
+    } else {
+        $('#ios_phone').css('display', 'none');
+        $('#android_phone').css('display', 'block');
+    }
+    offline_app.hide();
+    $('#os').text(type);
+    installer.show();
+    return;
+});
+let submitBtn = document.getElementById('submit_req') as HTMLButtonElement;
+submitBtn.addEventListener('click', () => {
+    let overlay = document.getElementById('gifOverlay') as HTMLDivElement;
+    overlay.classList.remove('d-none');
+    let dist_email;
+    let os = $('#os').text();
+    if (os === 'ios') {
+        let email_addr = document.getElementById('email') as HTMLInputElement;
+        if (!email_addr.validity.valid) {
+            alert("Not a valid email address");
+            return false;
+        }
+        if (email_addr.value === '') {
+            alert("No email address was entered");
+            return false;
+        }
+        dist_email = email_addr.value;
+    } else {
+        dist_email = 'none';
+    }
+    let ajaxdata = {email: dist_email, phone: os};
+    $.ajax({
+        url: '../php/appDistribution.php',
+        method: 'post',
+        data: ajaxdata,
+        success: function() {
+            installer.hide();
+            overlay.classList.add('d-none');
+            alert("Admin will process your request");
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to send admin mail re app" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+
+    });
+    $.ajax({
+        url: '../php/setAppField.php',
+        method: 'post',
+        data: {value: os},
+        success: function() {
+            // 'app' field is set to the phone type: ios or android
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                    "field of MEMBER_PREFS\n" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+    });
+    return;
+});
 
 /**
  * Check for user activity: all user pages (except for login/registration) use this
@@ -102,9 +256,6 @@ $('#createpg, #conteditpg, #editpubpg').on('click', function(ev) {
         return true;
     }
 }
-
-// NOTE: Here, appMode is a LOCAL variable for the panel
-var appMode = $('#appMode').text() as string;
 // when page is called, clear any menu items that are/were active
 $('.dropdown-item a').removeClass('active');
 var activeItem = $('#active').text();
@@ -347,6 +498,9 @@ $('#chg').on('click', function() {
     return;
 });
 
+$('#offline_app').on('click', function() {
+    offline_app.show();
+});
 $('#updte_sec').on('click', function() {
     // there is  no error callback for $.post()
     $.post('../accounts/usersQandA.php', function(data) {

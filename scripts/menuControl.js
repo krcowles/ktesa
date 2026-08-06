@@ -56,6 +56,7 @@ else { // NOT MEMBER
     $('#updte_sec').addClass('disabled');
     $('#favpg').addClass('disabled');
     $('#hiking_club').hide();
+    $('#offline_app').addClass('disabled');
 }
 // check to see if cookies are enabled for the browser
 if (cookies_allowed) { // exception messages only: auto login may still occur

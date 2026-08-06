@@ -260,6 +260,9 @@ if (isset($_SESSION['userid'])) {
                         <li><a id="chg" class="dropdown-item"
                             href="#">Change Password</a>
                         </li>
+                        <li><a id="offline_app" class="dropdown-item"
+                            href="#">Get Offline/GPS App</a>
+                        </li>
                         <li><a id="bam" class="dropdown-item"
                             href="../accounts/unifiedLogin.php?form=join"
                             target="_self">Become a Member</a>
