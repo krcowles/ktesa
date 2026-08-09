@@ -89,25 +89,21 @@ $(function () {
         let type = "unspecified";
         if (ios.checked) {
             type = "ios";
+            $('ios_phone').css('display', 'block');
+            $('#android_phone').css('display', 'none');
         }
         if (android.checked) {
             type = "android";
+            $('#ios_phone').css('display', 'none');
+            $('#android_phone').css('display', 'block');
         }
         if (type === 'unspecified') {
             alert("No phone type specified");
             return false;
         }
         $('#installTo').text(type);
-        if (type === 'ios') {
-            $('ios_phone').css('display', 'block');
-            $('#android_phone').css('display', 'none');
-        }
-        else {
-            $('#ios_phone').css('display', 'none');
-            $('#android_phone').css('display', 'block');
-        }
-        offline_app.hide();
         $('#os').text(type);
+        offline_app.hide();
         installer.show();
         return;
     });
@@ -496,7 +492,8 @@ $(function () {
         resetPassModal.show();
         return;
     });
-    $('#offline_app').on('click', function () {
+    $('#offline_app').on('click', function (ev) {
+        ev.preventDefault();
         offline_app.show();
     });
     $('#updte_sec').on('click', function () {
