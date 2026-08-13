@@ -233,7 +233,6 @@ if (isset($_SESSION['userid'])) {
                         href="#">Edit GPX File
                     </a>
                 </li>
-                </li>
                 <li id="memspace" class="nav-item">
                     &nbsp;&nbsp;&nbsp;
                 </li>
@@ -331,7 +330,10 @@ if (isset($_SESSION['userid'])) {
 <p id="admin">admin</p>
 <?php endif; ?>
 
-<?php require "../pages/panelModals.php"; // all modals required by ktesaPanel ?>
+<?php
+require "../pages/panelModals.php"; // all modals required by ktesaPanel
+require "../pages/mobileAppModals.html"; // to acquire new mobile app
+?>
 
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>

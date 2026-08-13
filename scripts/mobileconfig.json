@@ -22,6 +22,7 @@
     "cacheDeleteFct.ts",
     "ktesaOfflineDB.ts",
     "landing.ts",
+    "legacy.ts",
     "loginState.ts",
     "logo.ts",
     "mapOnly.ts",
@@ -31,8 +32,6 @@
     "responsivePics.ts",
     "responsiveTable.ts",
     "searchbar.ts",
-    "update.ts",
-    "useOffline.ts",
     "viewMgr.ts"
   ]
 }

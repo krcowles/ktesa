@@ -9,8 +9,7 @@ async function deleteNamedCache(cacheName) {
             }
             else {
                 //msg = `Cache "${cacheName}" not found.`
-                //console.error(msg);
-                return msg;
+                return msg; // return empty to prevent interpreting as error
             }
         }
         catch (error) {

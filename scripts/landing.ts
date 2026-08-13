@@ -1,4 +1,8 @@
 /// <reference types="jquery" />
+interface indexedDBCaches {
+    code: string;
+    tiles: string;
+}
 /**
  * @fileoverview This script performs basic menu operations and page setup
  * for the landing site. Due to the fact that there is no mobileNavbar.php
@@ -13,25 +17,173 @@
  * @version 2.0 Rescripted due to changes in bootstrap causing menu issues
  * @version 3.0 Rescripted for offline maps presentation
  */
+const CACHE = {
+    code: 'map_source',
+    tiles: 'map_tiles'
+} as indexedDBCaches
+
 $(function() {
 
-// Show benefits, depending on available space...
-const logo = document.getElementById('logo') as HTMLDivElement;
-const logo_ht = logo.clientHeight as number;
-const welcome = document.getElementById('welcome') as HTMLHeadElement;
-const welcome_ht = welcome.clientHeight;
-const opts = document.getElementById('opts') as HTMLParagraphElement;
-const opts_ht = opts.clientHeight;
-const user_ht = $('.usr_choices').height() as number;
-const consumed_space = logo_ht + welcome_ht + opts_ht + user_ht;
-var view_space = window.innerHeight;
-var bene_space = $('#bennies').height() as number;
-var bene_alloc = view_space - consumed_space;
-if (bene_alloc <= bene_space) {
-    $('#bennies').hide();
-}
+const appMode = $('#appMode').text();
 
-const member = $('#cookie_state').text() === 'OK' ? true : false;
+/**
+ * With the release of the new mobile app for members, a modal will popup on the home page only
+ * announcing the app availability. A member can "Don't show again", proceed to the app 
+ * acquisition modal, or simply ignore the modal in which case it will appear again next visit.
+ * The value of #startup_modal is only on home.php
+ */
+const announce = new bootstrap.Modal(<HTMLElement>document.getElementById('announce'));
+const offline_app = new bootstrap.Modal(<HTMLElement>document.getElementById('offline'));
+const installer = new bootstrap.Modal(<HTMLElement>document.getElementById('install_instructions'));
+
+
+if($('#active').text() === 'Landing' && $('#startup_modal').text() === 'show') {
+    $('#mobile_men').show();
+    $('#panel_menu').hide();
+    announce.show();
+}
+$('#offline_app').on('click', function(ev) {
+    ev.preventDefault();
+    offline_app.show();
+});
+// Modal buttons
+$('#no_show').on('click', () => {
+    $.ajax({
+        url: '../php/setAppField.php',
+        method: 'post',
+        data: {value: 'noshow'},
+        success: function() {
+            // 'app' field is set to 'noshow'
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                    "field of MEMBER_PREFS\n" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+    });
+    announce.hide();
+});
+$('#yes_get').on('click', () => {
+    announce.hide();
+    offline_app.show();
+});
+$('#get_app').on('click', () => {
+    let ios = document.getElementById('ios') as HTMLInputElement;
+    let android = document.getElementById('android') as HTMLInputElement;
+    let type = "unspecified";
+    if (ios.checked) {
+        type = "ios";
+        $('ios_phone').css('display', 'block');
+        $('#android_phone').css('display', 'none');
+    }
+    if (android.checked) {
+        type = "android";
+        $('#ios_phone').css('display', 'none');
+        $('#android_phone').css('display', 'block');
+    }
+    if (type === 'unspecified') {
+        alert("No phone type specified");
+        return false;
+    }
+    $('#installTo').text(type);
+    $('#os').text(type);
+    offline_app.hide();
+    installer.show();
+    return;
+});
+let submitBtn = document.getElementById('submit_req') as HTMLButtonElement;
+submitBtn.addEventListener('click', () => {
+    let overlay = document.getElementById('gifOverlay') as HTMLDivElement;
+    overlay.classList.remove('d-none');
+    let dist_email;
+    let os = $('#os').text();
+    if (os === 'ios') {
+        let email_addr = document.getElementById('email') as HTMLInputElement;
+        if (!email_addr.validity.valid) {
+            alert("Not a valid email address");
+            return false;
+        }
+        if (email_addr.value === '') {
+            alert("No email address was entered");
+            return false;
+        }
+        dist_email = email_addr.value;
+    } else {
+        dist_email = 'none';
+    }
+    let ajaxdata = {email: dist_email, phone: os};
+    $.ajax({
+        url: '../php/appDistribution.php',
+        method: 'post',
+        data: ajaxdata,
+        success: function() {
+            installer.hide();
+            overlay.classList.add('d-none');
+            alert("Admin will process your request");
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to send admin mail re app" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+
+    });
+    $.ajax({
+        url: '../php/setAppField.php',
+        method: 'post',
+        data: {value: os},
+        success: function() {
+            // 'app' field is set to the phone type: ios or android
+        },
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                    "field of MEMBER_PREFS\n" +
+                    "Error text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
+        }
+    });
+    return;
+});
 
 $('#membership').on('change', function() {
     var id = $(this).find("option:selected").attr("id");
@@ -46,49 +198,16 @@ $('#membership').on('change', function() {
             window.open(newloc, "_self");
             break;
         case 'logout':
-            if (member) {
-                var ans = confirm("Logging out will delete any saved " +
-                    "offline maps. Proceed?");
-                if (ans) {
-                    deleteNamedCache(CACHE_NAMES.code);
-                    deleteNamedCache(CACHE_NAMES.tiles);
-                    clearObjectStore();
-                    localStorage.removeItem('mapnames');
-                    localStorage.removeItem('current_ver');
-                    var proceed = $.Deferred();
-                    navigator.serviceWorker.getRegistrations()
-                    .then( async function(registrations) { 
-                        if (registrations.length !== 0) {
-                            var i = 0;
-                            for(let registration of registrations) {
-                                i++;
-                                if (i === 1) { // In case of multiple service_workers 
-                                    var unreg = await registration.unregister();
-                                    if (!unreg) {
-                                        console.log("Not unregistered...");
-                                    }
-                                }
-                            }
-                        }
-                        proceed.resolve()
-                    });
-                    $.when(proceed).then( async () => {
-                        $.ajax({
-                            url: '../accounts/logout.php?expire=N',
-                            method: "get",
-                            success: function () {
-                                window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
-                            },
-                            error: function () {
-                                alert("Something went wrong!");
-                            }
-                        });    
-                    });
-                }
+            $.ajax({
+                url: '../accounts/logout.php?expire=N',
+                method: "get",
+            success: function () {
+                alert("You are logged out...");
+            },
+            error: function () {
+                alert("Something went wrong!");
             }
-            break;
-        default:
-            alert("This should never happen!");
+        });    
     }
 });
 $(window).on('resize', function () {
@@ -102,15 +221,6 @@ $('#choice1').on('click', function () {
 });
 $('#choice2').on('click', function () {
     window.open("../pages/mapOnly.php", "_self");
-});
-$('#choice3').on('click', function() {
-    window.open("../pages/saveOffline.php?logo=no", "_self");
-});
-$('#choice4').on('click', function() {
-    window.open("../pages/useOffline.html", "_self");
-});
-$('.blocks').on('click', function() {
-    alert("Members only: sign up for a free membership!");
 });
 
 });

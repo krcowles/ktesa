@@ -52,17 +52,20 @@ else { // cookies disabled
 
 /**
  * Turn on menu items for registered members
+ * NOTE: All select drop-down options are enabled on site entry
  */
 function loggedInItems() {
     if (page_type.indexOf('landing') !== -1) {
         $("#membership option[value='login']").attr("disabled", "disabled");
-        $("#membership option[value='bam']").attr("disabled", "disabled");
         $("#membership option[value=logout]").removeAttr("disabled");
+        $('#membership option[value=mob_app').removeAttr("disabled");
+        $("#membership option[value='bam']").attr("disabled", "disabled");
     } else {
         $('#login').addClass('disabled');
-        $('#bam').addClass('disabled');
         $('#logout').removeClass('disabled');
+        $('#mob_app').removeClass('disabled');
         $('#chg').removeClass('disabled');
+        $('#bam').addClass('disabled');
     }
     return;
 }
@@ -70,12 +73,14 @@ function loggedInItems() {
 function notLoggedInItems() {
     if (page_type.indexOf('landing') !== -1) {
         $("#membership option[value='login']").removeAttr("disabled");
-        $("#membership option[value='bam']").removeAttr("disabled");
         $("#membership option[value='logout']").attr("disabled", "disabled");
-    } else {
+        $("#membership option[value='mob_app']").attr("disabled", "disabled");
+        $("#membership option[value='bam']").removeAttr("disabled");
         $('#login').removeClass('disabled');
-        $('#bam').removeClass('disabled');
         $('#logout').addClass('disabled');
+        $('#mob_app').addClass('disabled');
         $('#chg').addClass('disabled');
+        $('#bam').removeClass('disabled');
+
     }
 }

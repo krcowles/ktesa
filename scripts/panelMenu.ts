@@ -53,6 +53,8 @@ const installer = new bootstrap.Modal(<HTMLElement>document.getElementById('inst
  * The value of #startup_modal is only on home.php
  */
 if ($('#active').text() === 'Home' && $('#startup_modal').text() === 'show') {
+    $('#panel_menu').show();
+    $('#mobile_menu').hide();
     announce.show();
 }
 $('#no_show').on('click', () => {

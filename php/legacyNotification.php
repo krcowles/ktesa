@@ -1,7 +1,8 @@
 <?php
 /**
- * This script notifies the admin to add a member to the app
- * distribution list.
+ * This script notifies the admin concerning issues
+ * encountered during legacy.js execution on mobile
+ * platform.
  * PHP Version 8.3.9
  *
  * @package Ktesa
@@ -13,31 +14,17 @@ require "../php/global_boot.php";
 require "../accounts/gmail.php";
 verifyAccess('ajax');
 
-$member_email = filter_input(INPUT_POST, 'email'); // "none" if android
-$phone_os     = filter_input(INPUT_POST, 'phone');
-
-$userDataReq
-    = "SELECT `first_name`,`last_name`,`email` FROM `USERS` WHERE `userid`=?;";
-$userData = $pdo->prepare($userDataReq);
-$userData->execute([$_SESSION['userid']]);
-$userSubset = $userData->fetch(PDO::FETCH_ASSOC);
-$first = $userSubset['first_name'];
-$last  = $userSubset['last_name'];
-if ($member_email === 'none') {
-    $member_email = $userSubset['email'];
-} 
-
+$member = filter_input(INPUT_POST, 'member');
+$issue  = filter_input(INPUT_POST, 'issue');
 $msg = <<<EOM
-<div>Add the following member to the $phone_os app distribution list: 
-<ul>
-<li>$first</li>
-<li>$last</li>
-<li>$member_email</li>
-</ul>
+<div>
+Userid $member encountered an issue on
+mobile device when executing legacy.js:
+$issue
 </div>
 EOM;
 $message = $msg;
-$subject = "App Request";
+$subject = "Member Issue";
 $mail->isHTML(true);
 // 'From' must match the SMTP-authenticated account (ADMIN) for alignment -
 // same class of bug as resetMail.php. Since this script IS the safety net

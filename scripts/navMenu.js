@@ -1,31 +1,164 @@
 "use strict";
 /// <reference types="bootstrap" />
 /**
- * @fileoverview Navbar menu actions where href="#"
+ * @fileoverview Mobile Navbar menu actions where href="#"
  *
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
  * @version 1.1 Typescripted
  * @version 1.2 Updated logout menu to reflect state of 'mobile' var
  * @version 1.3 Updated ajax error handling
+ * @version 2.0 Eliminate old offline maps method, add new 'Get Mobile App' method
  */
 $(function () {
     /**
      * Menu setup
      */
-    const CACHE_NAMES = {
-        tiles: 'map_tiles',
-        code: 'map_source'
-    };
-    var appMode = $('#appMode').text(); // LOCAL navbar var
-    var chg_modal = new bootstrap.Modal(document.getElementById('cpw'), {
-        keyboard: false
-    });
+    var appMode = $('#appMode').text();
+    // Modals
+    var chg_modal = new bootstrap.Modal(document.getElementById('cpw'));
     var lockout = new bootstrap.Modal(document.getElementById('lockout'));
     var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'));
-    // Setup modal as a user presentation for any ajax errors.
-    var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'), {
-        keyboard: false
+    const offline_app = new bootstrap.Modal(document.getElementById('offline'));
+    const installer = new bootstrap.Modal(document.getElementById('install_instructions'));
+    $('#offline_app').on('click', function (ev) {
+        ev.preventDefault();
+        offline_app.show();
+    });
+    $('#no_show').on('click', () => {
+        $.ajax({
+            url: '../php/setAppField.php',
+            method: 'post',
+            data: { value: 'noshow' },
+            success: function () {
+                // 'app' field is set to 'noshow'
+            },
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                        "field of MEMBER_PREFS\n" +
+                        "Error text: " + _textStatus + "; Error: " +
+                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
+            }
+        });
+    });
+    $('#yes_get').on('click', () => {
+        offline_app.show();
+    });
+    $('#get_app').on('click', () => {
+        let ios = document.getElementById('ios');
+        let android = document.getElementById('android');
+        let type = "unspecified";
+        if (ios.checked) {
+            type = "ios";
+            $('ios_phone').css('display', 'block');
+            $('#android_phone').css('display', 'none');
+        }
+        if (android.checked) {
+            type = "android";
+            $('#ios_phone').css('display', 'none');
+            $('#android_phone').css('display', 'block');
+        }
+        if (type === 'unspecified') {
+            alert("No phone type specified");
+            return false;
+        }
+        $('#installTo').text(type);
+        $('#os').text(type);
+        offline_app.hide();
+        installer.show();
+        return;
+    });
+    let submitBtn = document.getElementById('submit_req');
+    submitBtn.addEventListener('click', () => {
+        let overlay = document.getElementById('gifOverlay');
+        overlay.classList.remove('d-none');
+        let dist_email;
+        let os = $('#os').text();
+        if (os === 'ios') {
+            let email_addr = document.getElementById('email');
+            if (!email_addr.validity.valid) {
+                alert("Not a valid email address");
+                return false;
+            }
+            if (email_addr.value === '') {
+                alert("No email address was entered");
+                return false;
+            }
+            dist_email = email_addr.value;
+        }
+        else {
+            dist_email = 'none';
+        }
+        let ajaxdata = { email: dist_email, phone: os };
+        $.ajax({
+            url: '../php/appDistribution.php',
+            method: 'post',
+            data: ajaxdata,
+            success: function () {
+                installer.hide();
+                overlay.classList.add('d-none');
+                alert("Admin will process your request");
+            },
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "panelMenujs: Trying to send admin mail re app" +
+                        "Error text: " + _textStatus + "; Error: " +
+                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
+            }
+        });
+        $.ajax({
+            url: '../php/setAppField.php',
+            method: 'post',
+            data: { value: os },
+            success: function () {
+                // 'app' field is set to the phone type: ios or android
+            },
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "panelMenujs: Trying to set 'noshow' in 'app' " +
+                        "field of MEMBER_PREFS\n" +
+                        "Error text: " + _textStatus + "; Error: " +
+                        _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
+            }
+        });
+        return;
     });
     /**
      * Menu operation
@@ -47,59 +180,24 @@ $(function () {
         chg_modal.show();
         return;
     });
-    $('#logout').on('click', function () {
-        var ans = confirm("Logging out will delete any saved offline" +
-            "maps. Proceed?");
-        if (ans) {
-            deleteNamedCache(CACHE_NAMES.code);
-            deleteNamedCache(CACHE_NAMES.tiles);
-            clearObjectStore();
-            localStorage.removeItem('mapnames');
-            localStorage.removeItem('current_ver');
-            $.ajax({
-                url: '../accounts/logout.php?expire=N',
-                method: "get",
-                success: function () {
-                    var proceed = $.Deferred();
-                    navigator.serviceWorker.getRegistrations()
-                        .then(async function (registrations) {
-                        if (registrations.length !== 0) {
-                            var i = 0;
-                            for (let registration of registrations) {
-                                i++;
-                                if (i === 1) { // In case of multiple service_workers 
-                                    var unreg = await registration.unregister();
-                                    if (!unreg) {
-                                        console.log("Not unregistered...");
-                                    }
-                                }
-                            }
-                        }
-                        proceed.resolve();
-                    });
-                    $.when(proceed).then(async () => {
-                        window.open("https://nmhikes.com/pages/nonmember_landing.html", "_self");
-                    });
-                },
-                error: function (_jqXHR, _textStatus, _errorThrown) {
-                    if (appMode === 'development') {
-                        var newDoc = document.open();
-                        newDoc.write(_jqXHR.responseText);
-                        newDoc.close();
-                    }
-                    else { // production
-                        var ajaxerr = "Trying to access mobile logout;\nError text: " +
-                            _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
-                            _jqXHR.responseText;
-                        var errobj = { err: ajaxerr };
-                        $.post('../php/ajaxError.php', errobj);
-                        ajaxerror.show();
-                    }
-                }
-            });
-        }
+    $('#logout').on('click', (ev) => {
+        ev.preventDefault();
+        $.ajax({
+            url: '../accounts/logout.php?expire=N',
+            method: "get",
+            success: function () {
+                alert("You have been successfully logged out");
+                window.open('../index.html', '_self');
+            },
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                alert("Logout unsuccessful: Admin notified");
+                let msg = "panelMenu.js:failure to logout (logout.php)";
+                $.post('../php/ajaxError.php', msg);
+            }
+        });
     });
-    $('#chg').on('click', function () {
+    $('#chg').on('click', (ev) => {
+        ev.preventDefault();
         chg_modal.show();
     });
     $('#send').on('click', function (ev) {

@@ -28,7 +28,10 @@ require "../php/global_boot.php";
     
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "mobileNavbar.php"; ?>
+<?php
+    require "mobileNavbar.php";
+    require "mobileAppModals.html";
+?>
 
 <div id="content">
     <div id="authors">

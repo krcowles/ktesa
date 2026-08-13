@@ -118,9 +118,9 @@ require "getFavorites.php";
                 the authors (just two of us) cannot and are not competing with
                 AllTrails, there are a few pluses to using this site:
                 <ol id="nmhikes">
-                    <li>The site contains more than a dozen New Mexico hikes not
+                    <li>The site contains multiplw New Mexico hikes not
                         listed on AllTrails</li>
-                    <li>Many of the hike pages offer alternative hikes:
+                    <li>Many of our hike pages offer alternative hikes:
                         longer, shorter, or unique extensions or shortcuts to
                         existing hikes
                     </li>
@@ -149,9 +149,12 @@ require "getFavorites.php";
                     <li>Hike pages also list references - books, websites, blogs,
                         apps, magazine articles, on-line maps, etc.
                     </li>
+                    <li>Members can obtain a free mobile app that offers
+                        offline maps and allows background GPS tracking
+                    </li>
                 </ol>
-                These are features not found on AllTrails. The author still uses
-                AllTrails often for hikes not yet documented on nmhikes, and it is a
+                These are features not found on AllTrails. The author may still use
+                AllTrails for hikes not yet documented on nmhikes, and it is a
                 great app, for sure. It contains useful information not provided by
                 this site. Sometimes both sites can be useful when taken together.
                 <p>This website was a retirement project for two engineers who like

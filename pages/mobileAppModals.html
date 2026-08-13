@@ -1,0 +1,198 @@
+<style type="text/css">
+#newness {
+   color: darkred;
+   font-size: 22px;
+   text-decoration: underline;
+}
+.menu_access {
+    font-weight: bold;
+    font-style: italic;
+}
+.phone_type {
+    border: 2px solid darkblue !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+}
+legend {
+    font-size: 20px;
+    margin-bottom: 0;
+}
+.radio_text {
+    font-size: 20px;
+    color: darkblue;
+}
+input[type="radio"] {
+    transform: scale(1.2);
+    margin: 8px;
+}
+#dist_note {
+    font-style: italic;
+}
+#only_apple, #apple_email {
+    font-style: italic;
+    font-weight: bold;
+}
+#email {
+    border: 1px solid darkred;
+    padding: 4px;
+}
+</style>
+<!-- Announcement for New Mobile App -->
+<div id="announce" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Now Available!</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="newness">New!</span> Members now have access to a free
+                    Offline Maps And GPS Tracking app for their phones. Click
+                    here if you wish to take advantage of this offer: <br />
+                    <button id="yes_get" class="btn btn-sm btn-primary">
+                        Get App
+                    </button><br /><br />
+                    <button id="no_show" class="btn btn-sm btn-danger">
+                    Don't Show Again
+                    </button><br /> 
+                    <span id="mobile_menu">
+                        The app is always available on this page via:
+                        <span class="menu_access">"Member Options->Get Mobile App"</span>
+                        or on the various page menus: <span class="menu_access">
+                            "Members->Get Offline/GPS App"</span>
+                    </span>
+                    <span id="panel_menu">
+                        The app is always available in the menu: 
+                        <span class="menu_access">"Members->Get Offline/GPS App"
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- New Offline Map & GPS Tracking Mobile App -->
+<div id="offline" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Mobile App</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="phone_type">
+                    <legend>Select Phone Type:</legend>
+                    <div>
+                        <label class="phone_label">
+                            <input id="ios" type="radio" />
+                            <span class="radio_text">ios</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="phone_label">
+                            <input id="android" type="radio" />
+                            <span class="radio_text">android</span>
+                        </label>
+                    </div>
+                </div><br />
+                <p id="dist_note">NOTE: The app is not available on Apple
+                    Store or Google Play due to it's limited distribution.
+                    Submit your phone type to receive instructions
+                    on how to download the app for your phone type. Note that
+                    the app is vetted by the phone supplier and is secure.
+                </p>
+                <button id="get_app" class="btn btn-sm btn-primary">
+                    Get App</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Phone Specific App Installation Instructions -->
+<div id="install_instructions" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">App Installation</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body position-relative">
+                <p id="os" style="display:none;"></p>
+                <p>Use the following instructions to install the mobile app
+                    for Offline Maps and GPS Tracking:<br />
+                    <span id="user_phone">Your phone type is 
+                        <span id="installTo"></span></span>.
+                </p>
+                <div id="ios_phone">
+                    <ol>
+                        <li>Install Apple's free "Test Flight" app on your phone
+                        </li>
+                        <li>Enter below the email address associated with your
+                            Apple ID
+                        </li>
+                        <li>The admin will be notified, and you will receive an email
+                            invitation to be on the distribution list [this may take
+                            a day or two]
+                        </li>
+                        <li><span id="only_apple">Respond only on your laptop/desktop
+                            </span>: Responding via your phone will nullify the
+                            process
+                        </li>
+                        <li>Allow a day or two to be added to the distribution list
+                        </li>
+                        <li>You will receive a notification on Test Flight
+                            to install the app
+                        </li>
+                    </ol>
+                    Your <span id="apple_email">AppleID email</span> address: 
+                    <input id="email" type="email" /><br /><br />
+                </div>
+                <div id="android_phone">
+                    The system used for android phones is Google's "Firebase";
+                    Use your mobile device for the following process:
+                    <ol>
+                        <li>In a day or two you will recieve an invitation from
+                            Google Firebase
+                        </li>
+                        <li>Open the invitation and select 'Get Started'
+                        </li>
+                        <li>You will be directed to a Firebase App distribution
+                            page in your mobile browser. 
+                        </li>
+                        <li>Sign in with ANY of your Google accounts
+                        </li>
+                        <li>Select "Accept Invitation"
+                        </li>
+                        <li>Tap 'Download'; You will see a prompt to 'allow
+                            installs from this source'. This will not happen on
+                            any future upgrades to the app.
+                        </li>
+                    </ol>
+                </div>
+                <button id="submit_req" class="btn btn-sm btn-success">
+                Submit</button>
+                <div id="gifOverlay" class="d-none position-absolute top-0 start-0
+                w-100 h-100 d-flex align-items-center justify-content-center
+                background: rgba(255,255,255,0.8)">
+                    <img id="activity" src="../images/loader-64x/Preloader_1.gif"
+                        alt="Waiting to complete"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Ignore</button>
+            </div>
+        </div>
+    </div>
+</div>

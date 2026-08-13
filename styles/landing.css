@@ -6,19 +6,6 @@ body {
   overflow: hidden;
 }
 
-/* navigation bar */
-.navbar {
-  background-color: darkslategray;
-}
-
-.nav-link {
-  color: whitesmoke !important;
-}
-
-ul.dropdown-menu {
-  background-color: whitesmoke !important;
-}
-
 /* Logo and login bar */
 #logo {
   display: inline-block;
@@ -118,7 +105,7 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-#cookie_state, #cookies_choice {
+#cookie_state, #cookies_choice, #member, #appMode, #active {
   display: none;
 }
 
@@ -243,11 +230,15 @@ p {
     margin-left: 20px;
   }
 }
+#mem_intro {
+  text-decoration: underline;
+  font-weight: bold;
+  color: darkblue;
+}
+
 #bennies {
-  display: none;
   width: max-content;
-  font-size: 0.92rem;
-  padding: 6px;
+  padding: 8px;
   line-height: 1.3rem;
   text-align: left;
   margin-top: 0.8rem;
@@ -255,23 +246,11 @@ p {
   margin-right: auto;
   border-style: solid;
   border-color: darkblue;
-  border-width: 1px;
+  border-width: 2px;
 }
 
 #memlist {
   margin-bottom: 0px;
-}
-
-#adminmail, #adminmsg {
-  font-style: italic;
-}
-
-#adminmsg {
-  color: brown;
-}
-
-#adminmail {
-  text-decoration: underline;
 }
 
 /*# sourceMappingURL=landing.css.map */

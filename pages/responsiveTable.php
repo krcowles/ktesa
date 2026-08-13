@@ -35,7 +35,10 @@ require "respTableData.php";
 
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
-<?php require "mobileNavbar.php";?>
+<?php
+    require "mobileNavbar.php";
+    require "mobileAppModals.html";
+?>
 
 <div id="floater">
     <div id="opts" class="dropdown">

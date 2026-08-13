@@ -63,29 +63,15 @@ $policy = urlencode("PrivacyPolicy.pdf");
                         <li><a id="logout" class="dropdown-item"
                             href="#">Logout</a>
                         </li>
+                        <li><a id="offline_app" class="dropdown-item"
+                            href="#">Get Offline/GPS App</a>
+                        </li>
                         <li><a id="chg" class="dropdown-item"
                             href="#">Change Password</a>
                         </li>
                         <li><a id="bam" class="dropdown-item"
                             href="../accounts/unifiedLogin.php?form=reg"
                             target="_self">Become a Member</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Tools
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item"
-                            href="../pages/saveOffline.php?logo=no"
-                            target="_blank">Save Offline Map</a>
-                        </li>
-                        <li><a class="dropdown-item"
-                            href="../pages/useOffline.html"
-                            target="_blank">Use Offline Map</a>
                         </li>
                     </ul>
                 </li>
@@ -186,8 +172,6 @@ $policy = urlencode("PrivacyPolicy.pdf");
     </div>
 </div>
 
-<script src="../scripts/ktesaOfflineDB.js"></script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/loginState.js"></script>
-<script src="../scripts/cacheDeleteFct.js"></script>
 <script src="../scripts/navMenu.js"></script>
