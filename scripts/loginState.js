@@ -59,15 +59,15 @@ else { // cookies disabled
  */
 function loggedInItems() {
     if (page_type.indexOf('landing') !== -1) {
-        $("#membership option[value='login']").attr("disabled", "disabled");
+        $("#membership option[value=login]").attr("disabled", "disabled");
         $("#membership option[value=logout]").removeAttr("disabled");
-        $('#membership option[value=mob_app').removeAttr("disabled");
-        $("#membership option[value='bam']").attr("disabled", "disabled");
+        $("#membership option[value=offline_app]").removeAttr("disabled");
+        $("#membership option[value=bam]").attr("disabled", "disabled");
     }
     else {
         $('#login').addClass('disabled');
         $('#logout').removeClass('disabled');
-        $('#mob_app').removeClass('disabled');
+        $('#offline_app').removeClass('disabled');
         $('#chg').removeClass('disabled');
         $('#bam').addClass('disabled');
     }
@@ -76,13 +76,13 @@ function loggedInItems() {
 // Non-members or not logged in
 function notLoggedInItems() {
     if (page_type.indexOf('landing') !== -1) {
-        $("#membership option[value='login']").removeAttr("disabled");
-        $("#membership option[value='logout']").attr("disabled", "disabled");
-        $("#membership option[value='mob_app']").attr("disabled", "disabled");
-        $("#membership option[value='bam']").removeAttr("disabled");
+        $("#membership option[value=login]").removeAttr("disabled");
+        $("#membership option[value=logout]").attr("disabled", "disabled");
+        $("#membership option[value=offline_app]").attr("disabled", "disabled");
+        $("#membership option[value=bam]").removeAttr("disabled");
         $('#login').removeClass('disabled');
         $('#logout').addClass('disabled');
-        $('#mob_app').addClass('disabled');
+        $('#offline_app').addClass('disabled');
         $('#chg').addClass('disabled');
         $('#bam').removeClass('disabled');
     }

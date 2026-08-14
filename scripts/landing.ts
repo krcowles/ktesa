@@ -202,6 +202,7 @@ $('#membership').on('change', function() {
                 url: '../accounts/logout.php?expire=N',
                 method: "get",
             success: function () {
+                window.location.reload();
                 alert("You are logged out...");
             },
             error: function () {

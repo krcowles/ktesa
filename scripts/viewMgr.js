@@ -48,7 +48,12 @@ function benniesDisplay() {
         $('#bennies').hide();
     }
     else {
-        $('#bennies').show();
+        if ($('#member').text() !== '0') { // logged in member
+            $('#bennies').hide();
+        }
+        else { // not logged in
+            $('#bennies').show();
+        }
     }
     wwd = window.innerWidth;
     logoMgr();
