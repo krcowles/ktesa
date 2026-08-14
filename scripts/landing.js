@@ -14,10 +14,6 @@
  * @version 2.0 Rescripted due to changes in bootstrap causing menu issues
  * @version 3.0 Rescripted for offline maps presentation
  */
-const CACHE = {
-    code: 'map_source',
-    tiles: 'map_tiles'
-};
 $(function () {
     const appMode = $('#appMode').text();
     /**

@@ -1,8 +1,4 @@
 /// <reference types="jquery" />
-interface indexedDBCaches {
-    code: string;
-    tiles: string;
-}
 /**
  * @fileoverview This script performs basic menu operations and page setup
  * for the landing site. Due to the fact that there is no mobileNavbar.php
@@ -17,11 +13,6 @@ interface indexedDBCaches {
  * @version 2.0 Rescripted due to changes in bootstrap causing menu issues
  * @version 3.0 Rescripted for offline maps presentation
  */
-const CACHE = {
-    code: 'map_source',
-    tiles: 'map_tiles'
-} as indexedDBCaches
-
 $(function() {
 
 const appMode = $('#appMode').text();
