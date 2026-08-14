@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `last_hiked` date DEFAULT NULL,
   `pubreq` char(1) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EHIKES VALUES
@@ -482,25 +482,25 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2026-08-01 16:42:07'),
-('2','CLUB_ASSETS','3922877042','2026-08-01 16:42:07'),
-('3','CLUSHIKES','2398293445','2026-08-01 16:42:07'),
-('4','CLUSTERS','2685739131','2026-08-01 16:42:07'),
-('5','EGPSDAT','0','2026-08-01 16:42:07'),
-('6','EHIKES','265844630','2026-08-01 16:42:07'),
-('7','EREFS','412318052','2026-08-01 16:42:07'),
-('8','ETSV','4100166543','2026-08-01 16:42:07'),
-('9','EWAYPTS','0','2026-08-01 16:42:07'),
-('10','FAVORITES','3651041965','2026-08-01 16:42:07'),
-('11','GPSDAT','286446949','2026-08-01 16:42:07'),
-('12','HIKES','814477568','2026-08-01 16:42:07'),
-('13','LOCKS','1511673494','2026-08-01 16:42:07'),
-('14','MEMBER_PREFS','1217730531','2026-08-01 16:42:07'),
-('15','POLYLINES','0','2026-08-01 16:42:07'),
-('16','REFS','2750263823','2026-08-01 16:42:07'),
-('17','TSV','2509613701','2026-08-01 16:42:07'),
-('18','USERS','2180544237','2026-08-01 16:42:07'),
-('19','WAYPTS','1742853041','2026-08-01 16:42:07');
+('1','BOOKS','381683775','2026-08-14 16:52:02'),
+('2','CLUB_ASSETS','3922877042','2026-08-14 16:52:02'),
+('3','CLUSHIKES','2398293445','2026-08-14 16:52:02'),
+('4','CLUSTERS','2685739131','2026-08-14 16:52:02'),
+('5','EGPSDAT','0','2026-08-14 16:52:02'),
+('6','EHIKES','265844630','2026-08-14 16:52:02'),
+('7','EREFS','412318052','2026-08-14 16:52:02'),
+('8','ETSV','4100166543','2026-08-14 16:52:02'),
+('9','EWAYPTS','0','2026-08-14 16:52:02'),
+('10','FAVORITES','3651041965','2026-08-14 16:52:02'),
+('11','GPSDAT','286446949','2026-08-14 16:52:02'),
+('12','HIKES','2328551867','2026-08-14 16:52:02'),
+('13','LOCKS','1511673494','2026-08-14 16:52:02'),
+('14','MEMBER_PREFS','778889539','2026-08-14 16:52:02'),
+('15','POLYLINES','0','2026-08-14 16:52:02'),
+('16','REFS','641924956','2026-08-14 16:52:02'),
+('17','TSV','3640104179','2026-08-14 16:52:02'),
+('18','USERS','2180544237','2026-08-14 16:52:02'),
+('19','WAYPTS','1742853041','2026-08-14 16:52:02');
 
 
 
@@ -530,7 +530,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=424 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=427 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EREFS VALUES
@@ -560,7 +560,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2707 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2724 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO ETSV VALUES
@@ -702,7 +702,7 @@ CREATE TABLE `HIKES` (
   `info` text DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=412 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO HIKES VALUES
@@ -1107,7 +1107,8 @@ INSERT INTO HIKES VALUES
 ('408','Romero Road Bosque Trails','2','Corrales','Out-and-back','4.26','8','Easy','None','Rio Grande and Bosque Views','Any','Mixed sun/shade','{\"main\":{\"BosqueSouth.gpx\":[\"pmn408_1.json\"]},\"add1\":{\"RomeroNorth.GPX\":[\"pa1408_1.json\"]},\"add2\":[],\"add3\":[]}','1:0/0','352560272','-1065958168','35.25617,35.23163,-106.58868,-106.59582','Romeca1f8b.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.25603,-106.59641/@35.25603,-106.5970551,226m/data=!3m1!1e3!4m6!1m5!3m4!2zMzXCsDE1JzIxLjciTiAxMDbCsDM1JzQ3LjEiVw!8m2!3d35.25603!4d-106.59641!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D',NULL,'<p>For an easy getaway in quiet surrounds, ride over to the Romero Road parking area for a walk into the Bosque, just east of the levee. You can turn either north for a variety of Rio Grande views (check the \'RomeroBosqueNorth\' track in the upper right corner of the map to see the trail), or south for a longer trek amongst the cottonwoods. Either way you will likely have very few encounters and some enjoyable views. There is always a \'side trail\' to the river to explore, and you can go as far as you wish southbound. Going north has a limit as you approach Rio Rancho.</p>','2026-06-02'),
 ('409','Twin Cabins','2','Tierra Amarilla','Out-and-back','3.55','333','Easy-Moderate','None','Forest and streams','Not Winter','Full sun','{\"main\":{\"TwinCabins.gpx\":[\"pmn409_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:482/469','359906045','-1066368747','35.99993,35.98848,-106.63624,-106.64707','Twin1e0b9c.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B059\'26.2%22N+106%C2%B038\'12.8%22W/@35.9731975,-106.655811,13.63z/data=!4m4!3m3!8m2!3d35.9906046!4d-106.6368747?entry=ttu&g_ep=EgoyMDI2MDcxNC4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"color: #34495e;\"><em>T<span style=\"color: #236fa1;\">win Cabins Hike</span></em></span> begins along the gravelly <em>FR378 </em>and quickly descends to the <em>Rio Cebolla</em>. From there it is a matter of easily strolling alongside the perennial stream. This hike takes a tour south, then north to the <em>Rio Cebolla</em> headwaters. Along the way are lovely views of the <em>Twin Cabins Canyon</em>, intertwined with glimpses of the stream. On the north end are the headwaters of the <em>Rio Cebolla</em>, which get overrun with vegetation near the opening where cascades flow downriver. The hike is essentially an extension of the Rio Cebolla Hike [<a title=\"Rio Cebolla\" href=\"../pages/hikePageTemplate.php?hikeIndx=385\">Rio Cebolla</a>] <span style=\"color: #34495e;\">which begins near the Fish Hatchery off NM 126. It is highly unlikely you will find other hikers in this area, so solitude is a positive aspect of this hike.</span></p>','2026-06-24'),
 ('410','SF Ski Valley to Tesuque Peak','2','Santa Fe','Out-and-back','5.61','1744','Med-Difficult','Ski Valley','Mountain Views and Wildflowers','Not Winter','Full sun','{\"main\":{\"tesuque_peak.gpx\":[\"pmn410_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','357957930','-1058026260','35.79749,35.78595,-105.7785,-105.80263','SF S0debc8.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B047\'44.9%22N+105%C2%B048\'09.5%22W/@35.7864597,-105.8043403,15.01z/data=!4m4!3m3!8m2!3d35.795793!4d-105.802626?entry=ttu&g_ep=EgoyMDI2MDcxNC4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>This is an exhilarating hike which follows the ski slope up to <em><span style=\"color: #236fa1;\">Tesuque Peak</span></em>. From the <em>Santa Fe Ski Basin</em> parking lot, proceed uphill to the end of the road where the trail begins. At this point the trail gets quite steep at points, but travels through open meadows of wildflowers, and is lined with healthy Aspen and Spuce. Along the way are excellent views of the mountains surrounding the area, and the valley below. This route, while not officially found online, is probably the best route to <em><span style=\"color: #236fa1;\">Tesuque Peak</span></em>, and from there to <em>Deception and Lake Peaks</em>. It intersects the <em>Raven\'s Ridge</em> trail higher up.</p>\r\n<p>The trail runs adjacent to the upper <em>Rio En Medio</em>, which appears to be spring-fed higher up, yet disappears below ground at points. This hike is also an excellent escape from summer heat, and can be pleasantly cool, especially when breezes are present. As it is not an actual maintained or designated trail, only a few hikers are likely to be seen en route.</p>','2026-07-01'),
-('411','Grasshopper Canyon','2','Santa Fe','Out-and-back','3.20','236','Easy','None','Streamside trail and formations','Not Winter','Good shade','{\"main\":{\"GrasshopperCanyon.gpx\":[\"pmn411_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','355607169','-1058104594','35.57756,35.56072,-105.81024,-105.81534','Gras3b80e6.jpg',NULL,NULL,'https://www.google.com/maps/place/Grasshopper+Canyon+Parking/@35.5595878,-105.8255276,14.21z/data=!4m6!3m5!1s0x871855002b7c133b:0x80f875d18082b9ac!8m2!3d35.5606098!4d-105.810846!16s%2Fg%2F11yjcpx1wf!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <em><span style=\"color: #236fa1;\">Grasshopper Canyon Trail </span></em>is very well shaded and makes for a pleasant hike even in summer months. Although it begins literally adjacent to I-25, the freeway sounds are quickly dampened as you begin to hike down the trail. For a somewhat short trail, there is a variety of scenery from streambeds to canyon walls, and pines to blue sky above. It appears that the hike proceeds further than what was explored on this venture, making it ripe for a re-visit!&nbsp;</p>','2026-07-18');
+('411','Grasshopper Canyon','2','Santa Fe','Out-and-back','3.20','236','Easy','None','Streamside trail and formations','Not Winter','Good shade','{\"main\":{\"GrasshopperCanyon.gpx\":[\"pmn411_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','355607169','-1058104594','35.57756,35.56072,-105.81024,-105.81534','Gras3b80e6.jpg',NULL,NULL,'https://www.google.com/maps/place/Grasshopper+Canyon+Parking/@35.5595878,-105.8255276,14.21z/data=!4m6!3m5!1s0x871855002b7c133b:0x80f875d18082b9ac!8m2!3d35.5606098!4d-105.810846!16s%2Fg%2F11yjcpx1wf!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <em><span style=\"color: #236fa1;\">Grasshopper Canyon Trail </span></em>is very well shaded and makes for a pleasant hike even in summer months. Although it begins literally adjacent to I-25, the freeway sounds are quickly dampened as you begin to hike down the trail. For a somewhat short trail, there is a variety of scenery from streambeds to canyon walls, and pines to blue sky above. It appears that the hike proceeds further than what was explored on this venture, making it ripe for a re-visit!&nbsp;</p>','2026-07-18'),
+('412','HIdden Valley','2','Valles Caldera','Out-and-back','6.26','191','Moderate','None','Perrenial waters in a spruce-lined valley','Not Winter','Full sun','{\"main\":{\"HIdden_Valley.gpx\":[\"pmn412_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:778/752','358385908','-1064918872','35.83918,35.81569,-106.49184,-106.52475','HIddcb46f6.jpg',NULL,NULL,'https://www.google.com/maps/place/Jemez+River+Trailhead/@35.83886,-106.4933392,811m/data=!3m2!1e3!4b1!4m6!3m5!1s0x87180b006a942e21:0x30ea355d1763117a!8m2!3d35.8388576!4d-106.491923!16s%2Fg%2F11nhb87jdb?entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D','<p>&nbsp;Note that some hiking websites include only the portion of the trail that stays within the boundary of the Valles Caldera, whereas this hike continues to NM 4 at the Las Conchas Day Use Area.</p>','<p>This gorgeous riverside hike begins in the <em>Valles Caldera</em> at a site now marked by the sign: <em>Jemez River Trailhead</em>. The site was originally labelled <span style=\"color: #236fa1;\"><em>Hidden Valley </em></span>due to the fact that the cabin there, where some filming had occurred, was not visible from the entrance road. Regardless, it is an almost magical hike along the <em>E Fork of the Jemez River</em>, travelling to the&nbsp;<em>Las Conchas Day Use</em> area on NM 4, just east of the <em>Las Conchas Trailhead <a href=\"../pages/hikePageTemplate.php?hikeIndx=54\">(Las Conchas Hike)</a></em>. While mostly easy, there are periodic hills and over a dozen river crossings to navigate - some with stones, some with trees, some with cut logs, and even one with a man-made footbridge.&nbsp;</p>\r\n<p>In addition to the fabulous views of the river, volcanic crags and monoliths appear along the way - and in the summer, some lovely wildflowers can be seen, as well as the occasional mushroom. The hike is reminiscent of the&nbsp;<em>Las Conchas</em> trail, but more rugged, and with fewer hikers, making for a rewarding outing.</p>','2026-08-11');
 
 
 
@@ -1138,17 +1139,18 @@ INSERT INTO LOCKS VALUES
 CREATE TABLE `MEMBER_PREFS` (
   `userid` smallint(5) NOT NULL,
   `wpt_format` varchar(3) NOT NULL,
+  `app` varchar(7) DEFAULT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO MEMBER_PREFS VALUES
-('2','deg'),
-('14','deg'),
-('30','deg'),
-('31','deg'),
-('47','deg'),
-('56','deg');
+('2','deg',NULL),
+('14','deg',NULL),
+('30','deg',NULL),
+('31','deg',NULL),
+('47','deg',NULL),
+('56','deg',NULL);
 
 
 
@@ -2324,7 +2326,9 @@ INSERT INTO REFS VALUES
 ('3716','19','Book: ','1',NULL),
 ('3717','19','Book: ','6',NULL),
 ('3718','19','App: ','http://www.alltrails.com/trail/us/new-mexico/tesuque-creek','AllTrails'),
-('3719','19','Blog: ','http://www.prajnazendo.org/news/off-the-path/2-uncategorised/60-august-2014-north-fork-of-tesuque-creek','Prajna Zendo Blog');
+('3719','19','Blog: ','http://www.prajnazendo.org/news/off-the-path/2-uncategorised/60-august-2014-north-fork-of-tesuque-creek','Prajna Zendo Blog'),
+('3720','412','Website:','https://www.nps.gov/thingstodo/hike-the-jemez-river-trail.htm','National Park Service - Jemez River Trail'),
+('3721','412','App:','https://www.alltrails.com/trail/us/new-mexico/hidden-valley-trail--2','Alltrails.com');
 
 
 
@@ -2348,7 +2352,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=14448 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14462 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO TSV VALUES
@@ -7555,7 +7559,22 @@ INSERT INTO TSV VALUES
 ('14443','19',NULL,'IMG_4111','Y','N','See \"Alamo Vista\" for this route up','357788556','-1058009028','5530',NULL,'2026-07-28 10:08:44','IMG_4111','640','480',NULL,'8'),
 ('14444','19',NULL,'IMG_4109','Y','Y','Summer aspens','357772722','-1058025667','5531',NULL,'2026-07-28 09:58:48','IMG_4109','640','480',NULL,'6'),
 ('14445','19',NULL,'IMG_4104','Y','Y','Near the campground','357701056','-1058089528','5532',NULL,'2026-07-28 09:35:40','IMG_4104','640','480',NULL,'0'),
-('14446','19',NULL,'IMG_4106','Y','Y','A short steep start','357712528','-1058074111','5533',NULL,'2026-07-28 09:40:56','IMG_4106','640','480',NULL,'2');
+('14446','19',NULL,'IMG_4106','Y','Y','A short steep start','357712528','-1058074111','5533',NULL,'2026-07-28 09:40:56','IMG_4106','640','480',NULL,'2'),
+('14447','412',NULL,'IMG_3790 Copy Copy','Y','N','One of many varieties of beautiful wildflowers','358369333','-1065011444','5534',NULL,'2026-08-02 12:57:54','IMG_3790 Copy Copy','640','531',NULL,'14'),
+('14448','412',NULL,'IMG_4137','Y','Y','First encounter of the river','358365972','-1065016028','5535',NULL,'2026-08-11 10:51:13','IMG_4137','640','480',NULL,'1'),
+('14449','412',NULL,'IMG_4128','Y','Y','The Hidden Cabin at the beginning','358387694','-1064926139','5536',NULL,'2026-08-11 10:33:05','IMG_4128','480','640',NULL,'0'),
+('14450','412',NULL,'IMG_4141','Y','Y','The valley opens temporarily','358349278','-1065044556','5537',NULL,'2026-08-11 10:58:28','IMG_4141','480','640',NULL,'4'),
+('14451','412',NULL,'IMG_4139','Y','Y','Approaching volcanic crags','358361778','-1065033028','5538',NULL,'2026-08-11 10:54:54','IMG_4139','640','480',NULL,'3'),
+('14452','412',NULL,'IMG_4138','Y','N','The river begins its winding path thru rock','358363944','-1065020444','5540',NULL,'2026-08-11 10:52:09','IMG_4138','640','480',NULL,'2'),
+('14453','412',NULL,'IMG_4144','Y','Y','A wide pool at the south bend','358319667','-1065096444','5541',NULL,'2026-08-11 11:09:41','IMG_4144','480','640',NULL,'5'),
+('14454','412',NULL,'IMG_4149','Y','N','A still waters and crags','358238722','-1065128111','5542',NULL,'2026-08-11 11:32:50','IMG_4149','640','480',NULL,'7'),
+('14455','412',NULL,'IMG_4154','Y','N','A flower-filled valley','358200000','-1065175028','5543',NULL,'2026-08-11 11:48:49','IMG_4154','640','480',NULL,'10'),
+('14456','412',NULL,'IMG_4153','Y','Y','Double-crossing: stones then logs','358201194','-1065172194','5544',NULL,'2026-08-11 11:47:49','IMG_4153','640','480',NULL,'9'),
+('14457','412',NULL,'IMG_4164','Y','Y','One of many stony crossings','358242944','-1065124056','5545',NULL,'2026-08-11 14:01:29','IMG_4164','480','640',NULL,'6'),
+('14458','412',NULL,'IMG_4159','Y','Y','View at the day-use area','358162417','-1065245750','5547',NULL,'2026-08-11 12:22:03','IMG_4159','640','480',NULL,'13'),
+('14459','412',NULL,'IMG_4157','Y','N','The only foot-bridge','358181722','-1065212639','5548',NULL,'2026-08-11 12:01:51','IMG_4157','640','480',NULL,'12'),
+('14460','412',NULL,'IMG_4150','Y','Y','A low overpass route','358222639','-1065149306','5549',NULL,'2026-08-11 11:40:50','IMG_4150','640','480',NULL,'8'),
+('14461','412',NULL,'IMG_4163','Y','Y','Beyond this point, the trail gets more challenging','358197750','-1065185028','5550',NULL,'2026-08-11 13:40:03','IMG_4163','640','480',NULL,'11');
 
 
 
