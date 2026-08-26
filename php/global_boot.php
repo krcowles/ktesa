@@ -14,7 +14,7 @@
  * @license No license to date
  */
 define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
-$mobileTesting = true;
+$mobileTesting = false;
 // For local machine only (file not in git) to identify consts used in settings.php
 if (file_exists('../VSCodeConsts.php')) {
     //include "../VSCodeConsts.php";
