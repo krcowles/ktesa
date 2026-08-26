@@ -192,14 +192,26 @@ $('#membership').on('change', function() {
             $.ajax({
                 url: '../accounts/logout.php?expire=N',
                 method: "get",
-            success: function () {
-                window.location.reload();
-                alert("You are logged out...");
-            },
-            error: function () {
-                alert("Something went wrong!");
-            }
-        });    
+                success: function () {
+                    window.location.reload();
+                    alert("You are logged out...");
+                },
+                error: function () {
+                    alert("Something went wrong!");
+                }
+            }); 
+            break;
+        case 'offline_app':
+            offline_app.show();
+            break;
+        case 'app_guide':
+            let app_link = document.createElement('A') as HTMLAnchorElement;
+            app_link.href = "../php/pdf_downloader.php?file=App_guide.pdf"
+            app_link.download = "App User Guide.pdf";
+            app_link.style.display = "none";
+            document.body.appendChild(app_link);
+            app_link.click();
+            app_link.remove();
     }
 });
 $(window).on('resize', function () {

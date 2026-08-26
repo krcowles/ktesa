@@ -62,11 +62,12 @@ if ($member_id > 0) {
         <!-- minimal functionality "navbar" (all enabled by default) -->
         <div id="ctr">
             <select id="membership">
-                <option id="sao"     value="sao">Member Options:</option>
-                <option id="login"   value="login">Login</option>
-                <option id="logout"  value="logout">Logout</option>
+                <option id="sao"         value="sao">Member Options:</option>
+                <option id="login"       value="login">Login</option>
+                <option id="logout"      value="logout">Logout</option>
                 <option id="offline_app" value="offline_app">Get Mobile App</option> 
-                <option id="bam"     value="bam">Become a member</option>    
+                <option id="app_guide"   value="app_guide">Get App User Guide</option>
+                <option id="bam"         value="bam">Become a member</option>
             </select>
         </div>
 

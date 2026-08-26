@@ -88,6 +88,7 @@ $('#get_app').on('click', () => {
     installer.show();
     return;
 });
+
 let submitBtn = document.getElementById('submit_req') as HTMLButtonElement;
 submitBtn.addEventListener('click', () => {
     let overlay = document.getElementById('gifOverlay') as HTMLDivElement;
@@ -238,6 +239,18 @@ $('#send').on('click', function(ev) { // button in chg_modal
             $.post('../php/ajaxError.php', err);
         }
     });
+});
+$('#offline_app').on('click', () => {
+    offline_app.show();
+});
+$('#app_guide').on('click', () => {
+    let app_link = document.createElement('A') as HTMLAnchorElement;
+    app_link.href = "../php/pdf_downloader.php?file=App_guide.pdf"
+    app_link.download = "App User Guide.pdf";
+    app_link.style.display = "none";
+    document.body.appendChild(app_link);
+    app_link.click();
+    app_link.remove();
 });
 
 });

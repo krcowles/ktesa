@@ -55,15 +55,17 @@ else { // cookies disabled
  * NOTE: All select drop-down options are enabled on site entry
  */
 function loggedInItems() {
-    if (page_type.indexOf('landing') !== -1) {
+    if (page_type.indexOf('landing') !== -1) { // landing site page
         $("#membership option[value=login]").attr("disabled", "disabled");
         $("#membership option[value=logout]").removeAttr("disabled");
         $("#membership option[value=offline_app]").removeAttr("disabled");
+        $("#membership option[value=app_guide]").removeAttr("disabled");
         $("#membership option[value=bam]").attr("disabled", "disabled");
-    } else {
+    } else { // mobile navbar
         $('#login').addClass('disabled');
         $('#logout').removeClass('disabled');
         $('#offline_app').removeClass('disabled');
+        $('#app_guide').removeClass('disabled');
         $('#chg').removeClass('disabled');
         $('#bam').addClass('disabled');
     }
@@ -71,14 +73,17 @@ function loggedInItems() {
 }
 // Non-members or not logged in
 function notLoggedInItems() {
-    if (page_type.indexOf('landing') !== -1) {
+    if (page_type.indexOf('landing') !== -1) { // landing site page
         $("#membership option[value=login]").removeAttr("disabled");
         $("#membership option[value=logout]").attr("disabled", "disabled");
         $("#membership option[value=offline_app]").attr("disabled", "disabled");
+        $("#membership option[value=app_guide]").attr("disabled", "disabled");
         $("#membership option[value=bam]").removeAttr("disabled");
+    } else { // mobile navbar
         $('#login').removeClass('disabled');
         $('#logout').addClass('disabled');
         $('#offline_app').addClass('disabled');
+        $('#app_guide').addClass('disabled');
         $('#chg').addClass('disabled');
         $('#bam').removeClass('disabled');
     }

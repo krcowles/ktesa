@@ -53,6 +53,7 @@ if (active_member) {
     $('#favpg').addClass('disabled');
     $('#hiking_club').hide();
     $('#offline_app').addClass('disabled');
+    $('#app_guide').addClass('disabled');
 }
 
 // check to see if cookies are enabled for the browser

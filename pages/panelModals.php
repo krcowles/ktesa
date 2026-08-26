@@ -55,6 +55,16 @@ input[type="radio"] {
     border: 1px solid darkred;
     padding: 4px;
 }
+#bene_modal {
+    margin-top: 8px;
+    margin-left: 24px;
+}
+#freemem {
+    margin-bottom: 0;
+}
+#ap {
+    margin: 0px 0px;
+}
 </style>
 <!-- Filter Hikes Modals (2) -->
 <div id="bymiles" class="modal" tabindex="-1">
@@ -176,18 +186,25 @@ input[type="radio"] {
                 <button type="button" class="btn-close"
                     data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div id="ap" class="modal-body">
-            <p>Membership is <em>free</em>. And as a member, you can create
-                your own hike page, or edit an existing one. All you
-                need is a gpx track file(s), photos taken during the
-                hike, a good description, and external references, if
-                any (books, weblinks, blogs, etc).</p>
-            <p>Another benefit is that you can save 'favorites' and map
-                them on a separate page (Explore->Show Favorites). Other
-                member benefits are being added, such as auto-saving certain
-                preferences, (e.g. preferred GPS formats), etc.
-            </p>
-            <p>Join now and start creating!</p>
+            <div id="bene_modal">
+                <p id="freemem">Membership is free!</p>
+                <ul id="ap" class="modal-body">
+                <li>You can create your own hike page, or edit
+                    an existing one. All you need is a gpx file, photos taken
+                    during the hike, and a brief description.
+                </li>
+                <li>A free 'Offline Maps and GPS Tracking' app is made available
+                    to members - any phone type.
+                    [<em>Members->Get Offline/GPS App</em>]
+                <li>You can save 'favorites' and map them on a separate page
+                    [<em>Explore->Show Favorites</em>].
+                </li>
+                <li>Certain preferences are auto-saved (e.g. preferred GPS
+                    format), with more to be added. 
+                </li>
+                </ul>
+                <p>Join now and start creating!</p>
+                </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"

@@ -262,6 +262,9 @@ if (isset($_SESSION['userid'])) {
                         <li><a id="offline_app" class="dropdown-item"
                             href="#">Get Offline/GPS App</a>
                         </li>
+                        <li><a id="app_guide" class="dropdown-item"
+                            href="#">Download App Guide</a>
+                        </li>
                         <li><a id="bam" class="dropdown-item"
                             href="../accounts/unifiedLogin.php?form=join"
                             target="_self">Become a Member</a>

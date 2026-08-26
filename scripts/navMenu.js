@@ -233,4 +233,16 @@ $(function () {
             }
         });
     });
+    $('#offline_app').on('click', () => {
+        offline_app.show();
+    });
+    $('#app_guide').on('click', () => {
+        let app_link = document.createElement('A');
+        app_link.href = "../php/pdf_downloader.php?file=App_guide.pdf";
+        app_link.download = "App User Guide.pdf";
+        app_link.style.display = "none";
+        document.body.appendChild(app_link);
+        app_link.click();
+        app_link.remove();
+    });
 });

@@ -66,6 +66,9 @@ $policy = urlencode("PrivacyPolicy.pdf");
                         <li><a id="offline_app" class="dropdown-item"
                             href="#">Get Offline/GPS App</a>
                         </li>
+                        <li><a id="app_guide" class="dropdown-item"
+                            href="#">Download App Guide</a>
+                        </li>
                         <li><a id="chg" class="dropdown-item"
                             href="#">Change Password</a>
                         </li>
