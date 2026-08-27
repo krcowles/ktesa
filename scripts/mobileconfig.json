@@ -19,10 +19,7 @@
     "**/*.js"
   ],
   "files": [
-    "cacheDeleteFct.ts",
-    "ktesaOfflineDB.ts",
     "landing.ts",
-    "legacy.ts",
     "loginState.ts",
     "logo.ts",
     "mapOnly.ts",

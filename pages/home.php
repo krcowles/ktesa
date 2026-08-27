@@ -6,6 +6,9 @@
  * links, info, and a thumbnail for each hike in the side table.
  * NOTE: Due to googles ever-changing API, check 'Settings.php' to ensure the
  * appropriate script tag.
+ * OLD CODE: Previous versions of offline maps relied on service workers, which
+ * may still be functioning and disrupt page load and execution. The HTML <head>
+ * tag now contains one-time execution code to unregister any service workers.
  * PHP Version 8.3.9
  * 
  * @package Ktesa
@@ -61,12 +64,63 @@ if (isset($_SESSION['userid'])) {
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        // process skipped if localStorage item already exists...
+        if (localStorage.getItem('swPurged') === null) {
+            // Helper function to fetch and delete all Cache Storage keys
+            function clearAllCaches() {
+                if ('caches' in window) {
+                    return caches.keys()
+                    .then(cacheNames => {
+                        return Promise.all(
+                            cacheNames.map(cacheName => {
+                            //console.log(`Deleting cache: ${cacheName}`);
+                            return caches.delete(cacheName);
+                            })
+                        );
+                    });
+                } else {
+                    // Fallback if caches API isn't supported
+                    return Promise.resolve();
+                }
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations()
+                .then(function(registrations) {  
+                    if (registrations.length > 0) {            
+                        // 1. Create an array of service worker
+                        //    unregistration promises
+                        const unregisterPromises
+                            = registrations.map(reg => reg.unregister());
+                        // 2. Wait for service workers unregistered & caches deleted
+                        Promise.all([...unregisterPromises, clearAllCaches()])
+                        .then(() => {
+                            localStorage.setItem('swPurged', 'true');
+                            window.location.reload();
+                        }); 
+                    } else {
+                        // No service workers found, but clear caches in case...
+                        clearAllCaches().then(() => {
+                            localStorage.setItem('swPurged', 'true');
+                        });
+                    }
+                }).catch(err => {
+                    console.error('Error during purge:', err);
+                    // Fallback setting to prevent infinite redirect loops on error
+                    localStorage.setItem('swPurged', 'true'); 
+                });
+            } else {
+                localStorage.setItem('swPurged', 'true');
+            }
+        }
+    </script>
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/home.css" rel="stylesheet" />    
     <link href="../styles/jquery-ui.min.css" rel="stylesheet" />
     <?php require "../pages/favicon.html"; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.min.js"></script>
+
 </head>
 
 <body>

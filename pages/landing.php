@@ -1,7 +1,7 @@
 <?php
 /**
  * The landing page is the point of entry for mobile users.
- * This version eliminates the former service_worker-laden
+ * This version eliminates the former service_worker based offline
  * code and offers members a separate offline maps/gps tracking
  * app.
  * PHP Version 8.3.9
@@ -13,7 +13,7 @@
 session_start();
 require "../php/global_boot.php";
 require "../accounts/getLogin.php";
-$member_id = $_SESSION['userid'] ?? 0; // also see legacy.js
+$member_id = $_SESSION['userid'] ?? 0;
 $startup = "not_member";
 // If visitor is a member, check to see if the userid is in MEMBER_PREFS:
 // insert defaults if not; then read value of 'app' field
@@ -39,6 +39,56 @@ if ($member_id > 0) {
     <meta name="description" content="Mobile site for New Mexico Hikes" />
     <meta name="author" content="Ken Cowles" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        // process skipped if localStorage item already exists...
+        if (localStorage.getItem('swPurged') === null) {
+            // Helper function to fetch and delete all Cache Storage keys
+            function clearAllCaches() {
+                if ('caches' in window) {
+                    return caches.keys()
+                    .then(cacheNames => {
+                        return Promise.all(
+                            cacheNames.map(cacheName => {
+                            //console.log(`Deleting cache: ${cacheName}`);
+                            return caches.delete(cacheName);
+                            })
+                        );
+                    });
+                } else {
+                    // Fallback if caches API isn't supported
+                    return Promise.resolve();
+                }
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations()
+                .then(function(registrations) {  
+                    if (registrations.length > 0) {            
+                        // 1. Create an array of service worker
+                        //    unregistration promises
+                        const unregisterPromises
+                            = registrations.map(reg => reg.unregister());
+                        // 2. Wait for service workers unregistered & caches deleted
+                        Promise.all([...unregisterPromises, clearAllCaches()])
+                        .then(() => {
+                            localStorage.setItem('swPurged', 'true');
+                            window.location.reload();
+                        }); 
+                    } else {
+                        // No service workers found, but clear caches in case...
+                        clearAllCaches().then(() => {
+                            localStorage.setItem('swPurged', 'true');
+                        });
+                    }
+                }).catch(err => {
+                    console.error('Error during purge:', err);
+                    // Fallback setting to prevent infinite redirect loops on error
+                    localStorage.setItem('swPurged', 'true'); 
+                });
+            } else {
+                localStorage.setItem('swPurged', 'true');
+            }
+        }
+    </script>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -62,12 +112,12 @@ if ($member_id > 0) {
         <!-- minimal functionality "navbar" (all enabled by default) -->
         <div id="ctr">
             <select id="membership">
-                <option id="sao"         value="sao">Member Options:</option>
-                <option id="login"       value="login">Login</option>
-                <option id="logout"      value="logout">Logout</option>
+                <option id="sao"      value="sao">Member Options:</option>
+                <option id="login"    value="login">Login</option>
+                <option id="logout"   value="logout">Logout</option>
                 <option id="offline_app" value="offline_app">Get Mobile App</option> 
-                <option id="app_guide"   value="app_guide">Get App User Guide</option>
-                <option id="bam"         value="bam">Become a member</option>
+                <option id="app_guide" value="app_guide">Get App User Guide</option>
+                <option id="bam"      value="bam">Become a member</option>
             </select>
         </div>
 
@@ -82,19 +132,6 @@ if ($member_id > 0) {
 <p id="active">Landing</p>
 <p id="member"><?=$member_id;?></p>
 <p id="startup_modal" style="display:none;"><?=$startup;?></p>
-
-<dialog id="sw_issue">
-    <p>Service worker could not be deleted; admin notified</p><br />
-    <button id="sw_ok_btn" type="button" class="btn btn-sm btn-success">
-        OK
-    </button><br /><br />
-</dialog> 
-<dialog id="cache_issue">
-    <p>Service worker deleted; CACHE not deleted; admin notified</p><br />
-    <button id="cache_ok_btn" type="button" class="btn btn-sm btn-success">
-        OK
-    </button><br /><br />
-</dialog> 
 
 <h2 id="welcome">The New Mexico Hiking Site</h2>
 <div class="landing_content">
@@ -118,7 +155,7 @@ if ($member_id > 0) {
     <div id="bennies">
         <span id="mem_intro">Membership is free!</span><br />Benefits include :
         <ul id="memlist">
-            <li>Free Offline Map & GPS Tracking App</li>
+            <li>Free Offline Map <br />& GPS Tracking App</li>
             <li>Save/Display Favorites</li>
             <li>Create/Edit hike pages<br /><em>[Laptops/desktops only]</em></li>
         </ul>
@@ -130,8 +167,5 @@ if ($member_id > 0) {
 <script src="../scripts/loginState.js"></script>
 <script src="../scripts/viewMgr.js"></script>
 <script src="../scripts/landing.js"></script>
-<script src="../scripts/ktesaOfflineDB.js"></script>
-<script src="../scripts/cacheDeleteFct.js"></script>
-<script src="../scripts/legacy.js"></script>
 
 </body>
