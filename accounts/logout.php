@@ -47,7 +47,7 @@ if (isset($_SESSION['userid'])) {  // since session may have expired
                 'samesite' => 'Lax',
             ]
         );
-        unset($_COOKIE[$cookie_name]);
+        unset($_COOKIE['nmh_mstr']);
         $admin = true;
     }
 }
@@ -63,7 +63,7 @@ if (!$admin && !isset($_GET['sess_only'])) {
             'samesite' => 'Lax',
         ]
     );
-    unset($_COOKIE[$cookie_name]);
+    unset($_COOKIE['nmh_id']);
 }
 unset($_SESSION['username']);
 unset($_SESSION['userid']);
