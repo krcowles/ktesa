@@ -15,6 +15,14 @@ verifyAccess('ajax');
 
 $submitter = filter_input(INPUT_POST, 'submitter');
 
+// Required to properly handle cookie 'secure' argument
+if (file_exists(__DIR__ . '/env.local.php')) {
+    include_once __DIR__ . '/env.local.php';
+}
+if (!defined('APP_ENV')) {
+    define('APP_ENV', 'production'); // fail-safe default
+}
+
 $today = getdate();
 $year = $today['year'] + 2;
 $month = $today['mon'];
@@ -74,6 +82,15 @@ if ($submitter == 'create') {
 }
 $days = 730; // Number of days before cookie expires
 $expire = time() + 60*60*24*$days; // time is in seconds
-setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
+setcookie(
+    $cookie_name, $browser_cookie, [
+        'expires'  => $cookie_expire,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => (APP_ENV === 'production'),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]
+);
 
 echo "OK";

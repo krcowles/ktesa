@@ -17,6 +17,13 @@ define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
 $userid = filter_input(INPUT_POST, 'ix');
 
+// Required to properly handle cookie 'secure' argument
+if (file_exists(__DIR__ . '/env.local.php')) {
+    include_once __DIR__ . '/env.local.php';
+}
+if (!defined('APP_ENV')) {
+    define('APP_ENV', 'production'); // fail-safe default
+}
 $userReq = "SELECT `username` FROM `USERS` WHERE `userid`=?;";
 $user_data = $pdo->prepare($userReq);
 $user_data->execute([$userid]);
@@ -38,7 +45,13 @@ if ($userid == '1') {
     $cookie_expire  =  time() + UX_DAY * 365;
 }
 setcookie(
-    $cookie_name, $browser_cookie, $cookie_expire, "/", "", true, true
+    $cookie_name, $browser_cookie, [
+        'expires'  => $cookie_expire,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => (APP_ENV === 'production'),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]
 );
-
 echo "OK";

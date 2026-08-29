@@ -127,6 +127,14 @@ function reverseTrack($trknodes, $trkno)
  */
 function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = false)
 {
+    // Required to properly handle cookie 'secure' argument
+    if (file_exists('../accounts/env.local.php')) {
+        include_once '../accounts/env.local.php';
+    }
+    if (!defined('APP_ENV')) {
+        define('APP_ENV', 'production'); // fail-safe default
+    }
+    
     foreach ($tables as $table) {
         $tbl_data       = $pdo->query("SELECT * FROM {$table}");
         $tbl_fields     = $tbl_data->columnCount();
@@ -184,7 +192,16 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
             throw new Exception("Unrecognized parameter in query string");
         }
     } else {
-        setcookie("DownloadDisplayed", "1234", time() + 60);
+        setcookie(
+            'DownloadDisplayed', '1234', [
+                'expires'  => time() + 60,
+                'path'     => '/',
+                'domain'   => '',
+                'secure'   => (APP_ENV === 'production'),
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]
+        );
         header('Content-Type: application/octet-stream');
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"".$backup_name."\"");

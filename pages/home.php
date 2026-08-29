@@ -19,6 +19,7 @@ session_start();
 
 require "../php/global_boot.php";
 require "autoComplHikes.php";
+require_once "../accounts/getLogin.php";
 // find level at which pictures directory resides
 $current = getcwd();
 $startDir = $current;

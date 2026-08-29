@@ -13,6 +13,14 @@
 session_start();
 require "../php/global_boot.php";
 
+// Required to properly handle cookie 'secure' argument
+if (file_exists(__DIR__ . '/env.local.php')) {
+    include_once __DIR__ . '/env.local.php';
+}
+if (!defined('APP_ENV')) {
+    define('APP_ENV', 'production'); // fail-safe default
+}
+
 if (isset($_GET['expire']) && $_GET['expire'] === 'Y') {
     $removeReq = "DELETE FROM `USERS` WHERE `userid`=?;";
     $remove = $pdo->prepare($removeReq);
@@ -29,13 +37,33 @@ if (isset($_SESSION['userid'])) {  // since session may have expired
     if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2'
         || $_SESSION['userid'] === '14'
     ) {
-        setcookie('nmh_mstr', '', 0, '/');
+        setcookie(
+            'nmh_mstr', '', [
+                'expires'  => time() - 3600,
+                'path'     => '/',
+                'domain'   => '',
+                'secure'   => (APP_ENV === 'production'),
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]
+        );
+        unset($_COOKIE[$cookie_name]);
         $admin = true;
     }
 }
 // sess_only is for timeouts when session expires; don't unset cookie
 if (!$admin && !isset($_GET['sess_only'])) {
-    setcookie('nmh_id', '', 0, '/');
+    setcookie(
+        'nmh_id', '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'domain'   => '',
+            'secure'   => (APP_ENV === 'production'),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]
+    );
+    unset($_COOKIE[$cookie_name]);
 }
 unset($_SESSION['username']);
 unset($_SESSION['userid']);
