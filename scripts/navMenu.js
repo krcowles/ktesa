@@ -23,6 +23,7 @@ $(function () {
     const installer = new bootstrap.Modal(document.getElementById('install_instructions'));
     $('#offline_app').on('click', function (ev) {
         ev.preventDefault();
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     $('#no_show').on('click', () => {
@@ -55,6 +56,7 @@ $(function () {
         });
     });
     $('#yes_get').on('click', () => {
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     $('#get_app').on('click', () => {
@@ -232,9 +234,6 @@ $(function () {
                 $.post('../php/ajaxError.php', err);
             }
         });
-    });
-    $('#offline_app').on('click', () => {
-        offline_app.show();
     });
     $('#app_guide').on('click', () => {
         let app_link = document.createElement('A');

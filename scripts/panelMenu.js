@@ -83,6 +83,7 @@ $(function () {
     });
     $('#yes_get').on('click', () => {
         announce.hide();
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     $('#get_app').on('click', () => {

@@ -35,6 +35,7 @@ if($('#active').text() === 'Landing' && $('#startup_modal').text() === 'show') {
 }
 $('#offline_app').on('click', function(ev) {
     ev.preventDefault();
+    $('.radio_class').prop('checked', false);
     offline_app.show();
 });
 // Modal buttons
@@ -70,6 +71,7 @@ $('#no_show').on('click', () => {
 });
 $('#yes_get').on('click', () => {
     announce.hide();
+    $('.radio_class').prop('checked', false);
     offline_app.show();
 });
 $('#get_app').on('click', () => {
@@ -202,6 +204,7 @@ $('#membership').on('change', function() {
             }); 
             break;
         case 'offline_app':
+            $('.radio_class').prop('checked', false);
             offline_app.show();
             break;
         case 'app_guide':

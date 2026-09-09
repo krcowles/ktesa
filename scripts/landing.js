@@ -32,6 +32,7 @@ $(function () {
     }
     $('#offline_app').on('click', function (ev) {
         ev.preventDefault();
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     // Modal buttons
@@ -67,6 +68,7 @@ $(function () {
     });
     $('#yes_get').on('click', () => {
         announce.hide();
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     $('#get_app').on('click', () => {
@@ -198,6 +200,7 @@ $(function () {
                 });
                 break;
             case 'offline_app':
+                $('.radio_class').prop('checked', false);
                 offline_app.show();
                 break;
             case 'app_guide':

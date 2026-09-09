@@ -30,6 +30,7 @@ const installer = new bootstrap.Modal(<HTMLElement>document.getElementById('inst
 
 $('#offline_app').on('click', function(ev) {
     ev.preventDefault();
+    $('.radio_class').prop('checked', false);
     offline_app.show();
 });
 $('#no_show').on('click', () => {
@@ -62,6 +63,7 @@ $('#no_show').on('click', () => {
     });
 });
 $('#yes_get').on('click', () => {
+    $('.radio_class').prop('checked', false);
     offline_app.show();
 });
 $('#get_app').on('click', () => {
@@ -239,9 +241,6 @@ $('#send').on('click', function(ev) { // button in chg_modal
             $.post('../php/ajaxError.php', err);
         }
     });
-});
-$('#offline_app').on('click', () => {
-    offline_app.show();
 });
 $('#app_guide').on('click', () => {
     let app_link = document.createElement('A') as HTMLAnchorElement;
