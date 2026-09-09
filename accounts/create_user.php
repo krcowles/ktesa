@@ -28,12 +28,14 @@ $year = $today['year'] + 2;
 $month = $today['mon'];
 $day = $today['mday'];
 $exp_date = $year . "-" . $month . "-" . $day;
+$browser_cookie = '';
 
 if ($submitter == 'create') {
     // New member:
     $firstname = filter_input(INPUT_POST, 'firstname');
     $lastname  = filter_input(INPUT_POST, 'lastname');
     $username  = filter_input(INPUT_POST, 'username');
+    $browser_cookie = $username;
     $email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $clubber   = filter_input(INPUT_POST, 'cmem');
     $club_field = $clubber == 'on' ? 'Y' : 'N';
@@ -61,7 +63,7 @@ if ($submitter == 'create') {
     $code      = filter_input(INPUT_POST, 'code');
     $user_pass = filter_input(INPUT_POST, 'password');
     $password  = password_hash($user_pass, PASSWORD_DEFAULT);
-    $user      = filter_input(INPUT_POST, 'user');
+    $user      = filter_input(INPUT_POST, 'user'); // 'ix' field = uid
 
     $getUserReq = "SELECT * FROM `USERS` WHERE `userid`='{$user}';";
     $prereg = $pdo->query($getUserReq)->fetch(PDO::FETCH_ASSOC);
@@ -69,6 +71,7 @@ if ($submitter == 'create') {
         $_SESSION['username'] = $prereg['username'];
         $_SESSION['userid']   = $user;
         $_SESSION['cookie_state'] = "OK";
+        $browser_cookie = $prereg['username'];
     } else {
         echo "NOCODE";
         exit;
@@ -83,8 +86,8 @@ if ($submitter == 'create') {
 $days = 730; // Number of days before cookie expires
 $expire = time() + 60*60*24*$days; // time is in seconds
 setcookie(
-    $cookie_name, $browser_cookie, [
-        'expires'  => $cookie_expire,
+    'nmh_id', $browser_cookie, [
+        'expires'  => $expire,
         'path'     => '/',
         'domain'   => '',
         'secure'   => (APP_ENV === 'production'),
