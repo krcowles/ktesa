@@ -25,10 +25,15 @@ input[type="radio"] {
     transform: scale(1.2);
     margin: 8px;
 }
-#dist_note {
+.dist_note {
     font-style: italic;
 }
-#only_apple, #apple_email {
+.only_apple, #apple_email {
+    font-style: italic;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.google_instr, .apple_instr {
     font-style: italic;
     font-weight: bold;
 }
@@ -102,8 +107,8 @@ input[type="radio"] {
                         </label>
                     </div>
                 </div><br />
-                <p id="dist_note">NOTE: The app is not available on Apple
-                    Store or Google Play due to it's limited distribution.
+                <p class="dist_note">NOTE: The app is not available on Apple
+                    Store or Google Play due to its limited distribution.
                     Submit your phone type to receive instructions
                     on how to download the app for your phone type. Note that
                     the app is vetted by the phone supplier and is secure.
@@ -129,27 +134,25 @@ input[type="radio"] {
             </div>
             <div class="modal-body position-relative">
                 <p id="os" style="display:none;"></p>
-                <p>Use the following instructions to install the mobile app
-                    for Offline Maps and GPS Tracking:<br />
-                    <span id="user_phone">Your phone type is 
-                        <span id="installTo"></span></span>.
+                <p>
+                    <span class="only_apple">
+                        NOTE: Complete instructions will be automatically downloaded for
+                        <span id="installTo"></span> users.
+                    </span>
                 </p>
                 <div id="ios_phone">
                     <ol>
-                        <li style="font-weight:bold"></li>Install Apple's free "Test Flight" app on your phone
+                        <li class="apple_instr">Install Apple's free "Test Flight" app
+                            on your iPhone
                         </li>
                         <li>Enter below the email address associated with your
-                            Apple ID
+                            <span style="font-weight:bold;">Apple ID</span>
                         </li>
-                        <li>The admin will be notified, and you will receive an email
-                            invitation to be on the distribution list [this may take
-                            a day or two]
+                        <li>You will receive an email to join Apple's Users list.
                         </li>
-                        <li><span id="only_apple">Respond only on your laptop/desktop
+                        <li><span class="only_apple">Respond only on your laptop/desktop
                             </span>: Responding via your phone will nullify the
                             process
-                        </li>
-                        <li>Allow a day or two to be added to the distribution list
                         </li>
                         <li>You will receive a notification on Test Flight
                             to install the app
@@ -162,13 +165,12 @@ input[type="radio"] {
                     The system used for android phones is Google's "Firebase";
                     Use your mobile device for the following process:
                     <ol>
-                        <li>In a day or two you will recieve an invitation from
-                            Google Firebase
+                        <li>In about a day you will recieve an invitation from
+                            <span class="google_instr">Google Firebase</span>. Open
+                            the invitation and select 'Get Started'
                         </li>
-                        <li>Open the invitation and select 'Get Started'
-                        </li>
-                        <li>You will be directed to a Firebase App distribution
-                            page in your mobile browser. 
+                        <li>You will be directed to a <span class="dist_note">Firebase App distribution
+                            page</span> in your mobile browser. 
                         </li>
                         <li>Sign in with ANY of your Google accounts
                         </li>
@@ -196,3 +198,18 @@ input[type="radio"] {
         </div>
     </div>
 </div>
+<script>
+    function download_pdf(doc, name) {
+        const item = "../pdf/pdf_downloader.php?file=" + 
+            encodeURIComponent(doc) + "&name=" + 
+            encodeURIComponent(name);
+        let app_link = document.createElement('A');
+        app_link.href = item;
+        app_link.download = name;
+        app_link.style.display = "none";
+        document.body.appendChild(app_link);
+        app_link.click();
+        app_link.remove();
+        return;
+    }
+</script>

@@ -14,7 +14,7 @@
 require "../php/global_boot.php";
 // strip any path, avoid directory traversal:
 $requested = basename($_GET['file'] ?? '');
-$path = "../php/{$requested}";
+$path = "../pdf/{$requested}";
 
 if ($requested === '' || !is_file($path)
     || pathinfo($path, PATHINFO_EXTENSION) !== 'pdf'
@@ -22,9 +22,13 @@ if ($requested === '' || !is_file($path)
     http_response_code(404);
     exit('File not found.');
 }
+$downloadName = basename($_GET['name'] ?? $requested);
+if ($downloadName === '' || strtolower(pathinfo($downloadName, PATHINFO_EXTENSION)) !== 'pdf') {
+    $downloadName = pathinfo($downloadName, PATHINFO_FILENAME) . '.pdf';
+}
 
 header('Content-Type: application/octet-stream');
-header('Content-Disposition: attachment; filename="' . $requested . '"');
+header('Content-Disposition: attachment; filename="' . $downloadName . '"');
 header('Content-Length: ' . filesize($path));
 header('X-Content-Type-Options: nosniff');
 

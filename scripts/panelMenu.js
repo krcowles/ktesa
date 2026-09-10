@@ -92,7 +92,7 @@ $(function () {
         let type = "unspecified";
         if (ios.checked) {
             type = "ios";
-            $('ios_phone').css('display', 'block');
+            $('#ios_phone').css('display', 'block');
             $('#android_phone').css('display', 'none');
         }
         if (android.checked) {
@@ -140,6 +140,13 @@ $(function () {
                 installer.hide();
                 overlay.classList.add('d-none');
                 alert("Admin will process your request");
+                // delayed here to be able to see download result in browser:
+                if (os === 'ios') {
+                    download_pdf('ios_instr.pdf', 'Downloading iPhone App.pdf');
+                }
+                else {
+                    download_pdf('android_instr.pdf', 'Downloading Android App.pdf');
+                }
             },
             error: function (_jqXHR, _textStatus, _errorThrown) {
                 if (appMode === 'development') {
@@ -497,16 +504,11 @@ $(function () {
     });
     $('#offline_app').on('click', function (ev) {
         ev.preventDefault();
+        $('.radio_class').prop('checked', false);
         offline_app.show();
     });
     $('#app_guide').on('click', () => {
-        let app_link = document.createElement('A');
-        app_link.href = "../php/pdf_downloader.php?file=App_guide.pdf";
-        app_link.download = "App User Guide.pdf";
-        app_link.style.display = "none";
-        document.body.appendChild(app_link);
-        app_link.click();
-        app_link.remove();
+        download_pdf('App_guide.pdf', 'App User Guide.pdf');
     });
     $('#updte_sec').on('click', function () {
         // there is  no error callback for $.post()
