@@ -14,7 +14,7 @@ require "../php/global_boot.php";
 
 $hikeListReq = "SELECT `indxNo`,`pgTitle`FROM `HIKES`;";
 $hikeList = $pdo->query($hikeListReq)->fetchAll(PDO::FETCH_KEY_PAIR);
-$rows = [];
+$ulrows = [];
 $adds = [ 'add1', 'add2', 'add3' ];
 $cols = [ false, false ];
 $data = '';
@@ -49,7 +49,7 @@ foreach ($hikeList as $hikeNo => $title) {
                     $data .= "<td></td>";
                 }
                 $row = "<tr>" . $data . "</tr>";
-                array_push($rows, $row);
+                array_push($ulrows, $row);
             }
         }   
     }
@@ -122,7 +122,7 @@ foreach ($gpsGpxFiles as $gpx) {
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rows as $table_row) {
+            <?php foreach ($ulrows as $table_row) {
                 echo $table_row;
             }
             ?>
