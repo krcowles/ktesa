@@ -16,6 +16,7 @@
  * @version 4.3 Fixed #advisory positioning when scrolling
  * @version 5.0 Added echart measurement between points
  * @version 5.1 Modified $dnote for mobile compatibility
+ * @version 5.2 Difference modal now clears and closes simultaneously
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames = [];
@@ -29,7 +30,7 @@ var indxOfPt;
 var prevCHairs = false;
 var imageData = new ImageData(10, 10);
 var $dnote = $("<div></div>");
-if (!mobile) { // new in 5.0 (see clearPoints line #384)
+if (!mobile) { // new in 5.0 (see clearPoints line #400)
     var clearModal = document.getElementById('ediff');
     var clearPoints = new bootstrap.Modal(clearModal);
     $dnote
@@ -43,7 +44,6 @@ var chartHeight;
 if (!mobile) {
     var pointA = { set: false, miles: 0, elev: 0 };
     var pointB = { set: false, miles: 0, elev: 0 };
-    var clrBtn = document.getElementById('eclr');
 }
 // misc.
 var do_resize = true;

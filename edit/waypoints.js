@@ -6,6 +6,8 @@
  * @author Ken Cowles
  *
  * @version 1.0 Handling multiple formats for lat/lngs; first release
+ * @version 2.0 Added range checking for New Mexico; fixed issues with
+ *              'focusout' event
  */
 $(function () {
     // Display user-selected waypoint format
@@ -290,10 +292,15 @@ $(function () {
      * When a lat/lng value changes, in any format, all formats are recalculated for that wpt;
      * Also, fields are checked for legitimate values
      */
-    $(".deg, .dm, .dms").on('focusout', function () {
+    function resetVal(element) {
+        element.val("");
+        element.trigger('focus');
+    }
+    $(".deg, .dm, .dms").on('blur', function () {
         var type = 'none';
         var $jqTA = $(this);
         var raw_value = $jqTA.val();
+        var ta_type = $jqTA.hasClass('lng_neg') ? 'lng' : 'lat';
         /**
          * Multiple integrity checks are made on entry:
          * Some test cases may be missing, e.g. point too large or too small,
@@ -302,14 +309,14 @@ $(function () {
         // Tests non-numeric values
         if (non_num_entry.test(raw_value)) {
             alert("Please enter only numbers:\nNOTE: Other formats will not be recalculated!");
-            $jqTA.val("");
+            resetVal($jqTA);
             return;
         }
         // Will find '-' or '.' if not at the beginning
         if (raw_value !== "") {
             if (isNaN(raw_value)) {
                 alert("This is not a number:\nNOTE: Other formats will not be recalculated!");
-                $jqTA.val("");
+                resetVal($jqTA);
                 return;
             }
         }
@@ -321,32 +328,51 @@ $(function () {
         var nofract = $jqTA.hasClass('tstyle1') ? true : false;
         if (nofract) {
             if (checkForFractionalEntry(value)) {
-                $jqTA.val("");
+                resetVal($jqTA);
                 return;
             }
         }
-        // certain fields cannot be negative or have a value greater than 60
+        // certain fields cannot be negative
         if ($jqTA.hasClass('noneg')) {
             if (value < 0) {
                 alert("This field cannot be negative:\n" +
                     "NOTE: Other formats will not be recalculated");
-                $jqTA.val("");
-                return;
-            }
-            else if (value > 60) {
-                alert("Degrees/minutes/seconds can have a max value of 60:\n" +
-                    +"NOTE: Other formats will not be recalculated");
-                $jqTA.val("");
+                resetVal($jqTA);
                 return;
             }
         }
-        // lng values must be negative
+        // minute/second values must be 60 or less
+        if ($jqTA.hasClass('tstyle5') || $jqTA.hasClass('mid')) {
+            if (value > 60) {
+                alert("Max value for minutes or seconds is 60");
+                resetVal($jqTA);
+                return;
+            }
+        }
+        // 'leading' lng values must be negative
         if ($jqTA.hasClass('lng_neg')) {
             if (value > 0) {
-                alert("Longitude values must be negative\nNOTE: Other formats " +
-                    "will not be recalculated");
-                $jqTA.val("");
+                alert("Longitude values must be negative");
+                resetVal($jqTA);
                 return;
+            }
+        }
+        // in approx. range of New Mexico?
+        var ta_num = +raw_value;
+        if ($jqTA.hasClass('tstyle4') || ($jqTA.hasClass('tstyle1') && !$jqTA.hasClass('mid'))) {
+            if (ta_type === 'lat') {
+                if (ta_num > 37 || ta_num < 31.3) {
+                    alert("Latitude value [" + raw_value + "] out of range");
+                    resetVal($jqTA);
+                    return;
+                }
+            }
+            else if (ta_type === 'lng' && !$jqTA.hasClass('noneg')) {
+                if (ta_num < -109.04 || ta_num > -103.06) {
+                    alert("Longitude value [" + raw_value + "] out of range");
+                    resetVal($jqTA);
+                    return;
+                }
             }
         }
         // Finished integrity tests, proceed to recalculate data for all formats

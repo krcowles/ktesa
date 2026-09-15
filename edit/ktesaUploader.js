@@ -8,6 +8,7 @@
  * @version 2.0 Typescripted
  * @version 2.1 Updated per heic_convert.ts
  * @version 3.0 Added upload for webp photos and deployed new exif reader
+ * @version 3.1 Remove unsupported file types then proceed
  */
 // admin and server defined constants
 const MAX_UPLOAD_SIZE = 20000000; // no longer required
@@ -22,6 +23,32 @@ var imgNo = 0; // unique id for each validated image
 var meta = [];
 window.loaded_imgs = 0;
 window.exifdat = { ehike: '0', fname: '', lat: '', lng: '', date: '' };
+const supported_types = ["jpg", "jpeg", "webp"];
+const ftype_check = (incoming) => {
+    let new_file_list;
+    const fileArray = Array.from(incoming);
+    let delete_indices = [];
+    $.each(incoming, function (index, file) {
+        let ext = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+        if (!supported_types.includes(ext.toLowerCase())) {
+            delete_indices.push(index);
+            alert(ext + ": File type not supported for " + file.name);
+        }
+    });
+    if (delete_indices.length > 0) {
+        const removeSet = new Set(delete_indices);
+        const filteredFiles = fileArray.filter((_, index) => {
+            return !removeSet.has(index);
+        });
+        const dataXfr = new DataTransfer();
+        filteredFiles.forEach(file => dataXfr.items.add(file));
+        new_file_list = dataXfr.files;
+    }
+    else {
+        new_file_list = incoming;
+    }
+    return new_file_list;
+};
 /**
  * After every upload of one or more images, the editor is refreshed
  * with the following data
@@ -55,6 +82,7 @@ if (isAdvancedUpload) {
         let dfs = e.originalEvent;
         let dxfr = dfs.dataTransfer;
         droppedFiles = dxfr.files;
+        droppedFiles = ftype_check(droppedFiles);
         $.when(filechecks(droppedFiles)).then(function () {
             $.when(ldImgs(validated)).then(function () {
                 $.when(ldNodes(FR_Images)).then(function () {
@@ -62,14 +90,18 @@ if (isAdvancedUpload) {
                 });
             });
         });
+        return;
     });
 }
 else {
     alert("Dropping of images not supported for this browser.");
 }
 $('#file').on('change', function () {
-    let file_input = this;
-    previewImgs(file_input.files);
+    const file_input = this;
+    const incoming = file_input.files;
+    const inputFileList = ftype_check(incoming);
+    previewImgs(inputFileList);
+    return;
 });
 /**
  * This is the function which consecutively calls routines to:
@@ -85,6 +117,9 @@ const previewImgs = (flist) => {
     validated = [];
     FR_Images = [];
     imgNo = 0;
+    if (!ftype_check(flist)) {
+        alert();
+    }
     $.when(filechecks(flist)).then(function () {
         $.when(ldImgs(validated)).then(function () {
             $.when(ldNodes(FR_Images)).then(function () {

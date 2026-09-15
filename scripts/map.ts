@@ -11,6 +11,7 @@
  *
  * @version 8.0 Major mods to improve side table formation when multiple map events occur
  * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
+ * @version 9.1 Added margins to map when cluster is clicked
  */
 
 const hike_mrkr_icon = "../images/blue_nobg.png";
@@ -329,12 +330,32 @@ function initMap() {
     };
     
 	// /////////////////////// Marker Grouping in Clusterer /////////////////////////
+
 	new markerClusterer.MarkerClusterer({
-        markers: markers,
-        map: map,
-        algorithmOptions: {maxZoom: 12}, // no apparent effect...
-        renderer: renderer
+		map: map,
+		markers: markers,
+		// typescript typing is problematic for onClusterClick, so cluster type is 'any'
+		onClusterClick: (_event: Event | null, cluster: any, map: google.maps.Map) => {
+			const bounds = new google.maps.LatLngBounds();
+			cluster.markers.forEach((marker: google.maps.marker.AdvancedMarkerElement) => {
+				if (marker.position) {
+					bounds.extend(marker.position as google.maps.LatLng | google.maps.LatLngLiteral);
+				}
+			});
+		
+			const pixelPadding = {
+				top: 50,
+				right: 50,
+				bottom: 50,
+				left: 50
+			};
+			map.fitBounds(bounds, pixelPadding);
+		},
+		algorithmOptions: {maxZoom: 12}, // no apparent effect...
+		renderer: renderer
     });
+  	// 3. Zoom the map smoothly
+  
 	
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	/**

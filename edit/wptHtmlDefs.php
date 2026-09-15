@@ -73,7 +73,7 @@ $newdblatdm   = '<span class="show_dm"><textarea class="tstyle1 dm noneg">' .
     '</textarea> º <textarea class="tstyle5 dm noneg"></textarea> ' . "'" .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 $newdblatdms  = '<span class="show_dms"><textarea class="tstyle1 dms noneg">' .
-    '</textarea> º <textarea class="tstyle1 dms noneg"></textarea> ' . "' " .
+    '</textarea> º <textarea class="tstyle1 dms mid noneg"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms noneg"></textarea> "' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 // new database lng formats
@@ -84,13 +84,14 @@ $newdblngdm  = '<span class="show_dm"><textarea class="tstyle1 dm lng_neg">' .
     '</textarea> º <textarea class="tstyle5 dm noneg"></textarea> ' . 
     "'" . '</span>' . PHP_EOL;
 $newdblngdms = '<span class="show_dms"><textarea class="tstyle1 dms lng_neg">' .
-    '</textarea> º <textarea class="tstyle1 dms noneg"></textarea> ' . "' " .
+    '</textarea> º <textarea class="tstyle1 dms mid noneg"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms noneg"></textarea> '. '"' . '</span>' . PHP_EOL;
 
  /**
   * Formats for gpxfile <wpts>
   */
 // gpx lat formats
+$gpxlats = '<input type="hidden" name="glat[]" value="glatval"/>' . PHP_EOL;
 $gpxlatdeg  = '<span class="show_deg glat_deg">' .
     '<textarea class="tstyle4 deg"></textarea> º'
     . '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
@@ -100,10 +101,11 @@ $gpxlatdm   = '<span class="show_dm glat_dm">' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 $gpxlatdms  = '<span class="show_dms glat_dms">' .
     '<textarea class="tstyle1 dms"></textarea> º ' .
-    '<textarea class="tstyle1 dms"></textarea> ' . "' " .
+    '<textarea class="tstyle1 mid dms"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms"></textarea> "' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 // gpx lng formats
+$gpxlngs = '<input type="hidden" name="glng[]" value="glngval"/>' . PHP_EOL;
 $gpxlngdeg  = '<span class="show_deg glng_deg">' .
     '<textarea class="tstyle4 deg"></textarea> º</span>' . PHP_EOL;
 $gpxlngdm   = '<span class="show_dm glng_dm">' .
@@ -111,7 +113,7 @@ $gpxlngdm   = '<span class="show_dm glng_dm">' .
     '<textarea class="tstyle5 dm"></textarea> ' . "'" . '</span>' . PHP_EOL;
 $gpxlngdms  = '<span class="show_dms glng_dms">' .
     '<textarea class="tstyle1 dms"></textarea> º ' .
-    '<textarea class="tstyle1 dms noneg"></textarea> ' . "' " .
+    '<textarea class="tstyle1 dms mid noneg"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms"></textarea> '. '"' . '</span>' . PHP_EOL;
  /**
   * Formats for new gpxfile <wpts> to be added to the file
@@ -124,7 +126,7 @@ $newglatdm   = '<span class="show_dm"><textarea class="tstyle1 dm noneg">' .
     '</textarea> º <textarea class="tstyle5 dm noneg"></textarea> ' . "'" .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 $newglatdms  = '<span class="show_dms"><textarea class="tstyle1 dms noneg">' .
-    '</textarea> º <textarea class="tstyle1 dms noneg"></textarea> ' . "' " .
+    '</textarea> º <textarea class="tstyle1 dms mid noneg"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms noneg"></textarea> "' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 // new gpx lng formats
@@ -135,7 +137,7 @@ $newglngdm   = '<span class="show_dm">' .
     '<textarea class="tstyle1 dm lng_neg"></textarea> º ' .
     '<textarea class="tstyle5 dm noneg"></textarea> ' . "'" . '</span>' . PHP_EOL;
 $newglngdms  = '<span class="show_dms"><textarea class="tstyle1 dms lng_neg">' .
-    '</textarea>º <textarea class="tstyle1 dms noneg"></textarea> ' . "' " .
+    '</textarea>º <textarea class="tstyle1 dms mid noneg"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms noneg"></textarea> '. '"' . '</span>' . PHP_EOL;
 /**
  * Formats for existing database waypoint lat/lngs
@@ -151,7 +153,7 @@ $dblatdm  = '<span class="show_dm dlat_dm">' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 $dblatdms = '<span class="show_dms dlat_dms">' .
     '<textarea class="tstyle1 dms"></textarea> º ' .
-    '<textarea class="tstyle1 dms"></textarea> ' . "' " .
+    '<textarea class="tstyle1 mid dms"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms"></textarea> "' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 // database lng formats
@@ -163,5 +165,5 @@ $dblngdm   = '<span class="show_dm dlng_dm">' .
     '<textarea class="tstyle5 dm"></textarea> ' . "'" . '</span>' . PHP_EOL;
 $dblngdms  = '<span class="show_dms dlng_dms">' .
     '<textarea class="tstyle1 dms"></textarea> º ' .
-    '<textarea class="tstyle1 dms"></textarea> ' . "' " .
+    '<textarea class="tstyle1 mid dms"></textarea> ' . "' " .
     '<textarea class="tstyle5 dms"></textarea> '. '"' . '</span>' . PHP_EOL;

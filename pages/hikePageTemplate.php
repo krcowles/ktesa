@@ -216,15 +216,11 @@ if ($mobileTesting) {
                     <li>Miles: <span id="emiles"></span></li>
                     <li>Elevation: <span id="eelev"></span></li>
                 </ul>
-                <h5>Click on the 'Clear' Button to reset the
-                    chart before closing
-                </h5>  
             </div>
             <div class="modal-footer">
-                <button id="eclr" type="button" class="btn btn-success"
+                <button type="button" class="btn btn-success"
+                    data-bs-dismiss="modal"
                     onclick="clearChart()">Clear</button>
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
