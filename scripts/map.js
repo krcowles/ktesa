@@ -13,6 +13,7 @@
  * @version 8.0 Major mods to improve side table formation when multiple map events occur
  * @version 9.0 Modified to support new Google maps marker type (AdvancedMarkerElement)
  * @version 9.1 Added margins to map when cluster is clicked
+ * @version 10.0 Replaced the deprecated kmlLayer call in Google Maps with a google.Polygon.
  */
 const hike_mrkr_icon = "../images/blue_nobg.png";
 // <a href="https://www.flaticon.com/free-icons/marker" title="marker icons">Marker icons created by Vector Stall - Flaticon</a>
@@ -53,6 +54,12 @@ var kill_table = false;
  * Because the map, adjustWidth, and sideTable divs are floats, height
  * needs to be specified for the divs to be visible; 'panel' is also used
  * in locateGeoSymbol().
+ * NOTE: The sizes of the <img> icons in ktesaPanel.php must now be specified
+ * explicitly in order to eliminate a timing problem rendering the side table.
+ * The new method of using a polygon instead of a kml layer call (which is now
+ * deprecated), resolves much faster, introducing a timing change. It is worth
+ * noting that Firefox may report numerous info messages regarding the new
+ * method, while Chrome does not. These can be safely ignored.
  */
 var panel = $('#nav').height() + $('#logo').height();
 const initDivParms = () => {
@@ -218,10 +225,121 @@ function initMap() {
         mapTypeId: 'terrain',
     };
     map = new google.maps.Map(mapEl, options);
-    new google.maps.KmlLayer({
-        url: "https://nmhikes.com/maps/NM_Borders.kml",
+    /**
+     * In order to reduce the somewhat extensive comments explaining map
+     * listeners, use the ordinal to refer to the list of comments at the
+     * end of the file.
+     */
+    // 1. [References at end of file]
+    google.maps.event.addListenerOnce(map, 'idle', function () {
+        kill_table = false;
+        first_load = false;
+        var bounds = String(map.getBounds());
+        var hike_result = IdTableElements(bounds, false, 7);
+        formTbl(hike_result[0]);
+    });
+    // 2. [References at end of file]
+    map.addListener('dragstart', function () {
+        kill_table = true;
+        panning = true;
+    });
+    map.addListener('dragend', function () {
+        setIdleListener('de'); // Drag End...
+    });
+    // 3. [References at end of file]
+    map.addListener('center_changed', function () {
+        if (panning) { // when panning, simply wait for the dragend event
+            return;
+        }
+        else {
+            if (!first_load) {
+                kill_table = true;
+            }
+            if (window.newBounds) {
+                // if a center change only, initiate side table formation
+                setIdleListener('cc'); // Center Change
+                window.newBounds = false;
+            }
+        }
+    });
+    // 4. [References at end of file]
+    map.addListener('zoom_changed', function () {
+        if (!first_load) {
+            kill_table = true;
+        }
+        setIdleListener('zm'); // ZooM
+    });
+    // New method to replace deprecated kml layer	
+    const nmBorderPath = [
+        { lat: 32.4420444958635, lng: -109.049495308693 },
+        { lat: 31.3434530504803, lng: -109.045615049533 },
+        { lat: 31.3438536159949, lng: -108.210647795015 },
+        { lat: 31.7869032382901, lng: -108.203254915468 },
+        { lat: 31.7850830856735, lng: -107.283567177026 },
+        { lat: 31.7863052774039, lng: -106.539514775671 },
+        { lat: 31.8178343839605, lng: -106.614986549809 },
+        { lat: 31.8447405331725, lng: -106.61612370633 },
+        { lat: 31.8952054369513, lng: -106.64407909206 },
+        { lat: 31.9141010099202, lng: -106.633748923526 },
+        { lat: 31.9722199884253, lng: -106.632605287073 },
+        { lat: 31.9803297275266, lng: -106.650061890884 },
+        { lat: 32.0010887853062, lng: -106.623625658904 },
+        { lat: 32.0007470652221, lng: -106.378387283311 },
+        { lat: 32.0016580242852, lng: -106.00324037618 },
+        { lat: 32.004382108736, lng: -104.922304814538 },
+        { lat: 32.0032650272727, lng: -104.85106805229 },
+        { lat: 32.0074034895819, lng: -104.019296949948 },
+        { lat: 32.0060152222294, lng: -103.981377077849 },
+        { lat: 32.0062289025373, lng: -103.729444279739 },
+        { lat: 32.0042814747499, lng: -103.332549418381 },
+        { lat: 32.0020227787787, lng: -103.058413767661 },
+        { lat: 32.0851168230641, lng: -103.055640531826 },
+        { lat: 32.5155455179839, lng: -103.060018185604 },
+        { lat: 32.9536389141087, lng: -103.049330863501 },
+        { lat: 33.3778314740626, lng: -103.043100992793 },
+        { lat: 33.5658431867775, lng: -103.038736452727 },
+        { lat: 33.8261815911813, lng: -103.033258497866 },
+        { lat: 34.3078204763021, lng: -103.029645833697 },
+        { lat: 34.7453327558501, lng: -103.022657024631 },
+        { lat: 34.9647798759331, lng: -103.025251273923 },
+        { lat: 35.1772655150643, lng: -103.026151164684 },
+        { lat: 35.6236480179456, lng: -103.02229404801 },
+        { lat: 35.742327299615, lng: -103.022612263713 },
+        { lat: 36.0560618512093, lng: -103.024047954518 },
+        { lat: 36.4915918464103, lng: -103.027286789536 },
+        { lat: 36.4923701848871, lng: -102.997400999016 },
+        { lat: 36.9985238353847, lng: -102.997709442614 },
+        { lat: 36.9997601837273, lng: -103.07786588474 },
+        { lat: 36.9944690622369, lng: -103.993635035945 },
+        { lat: 36.9932073726899, lng: -105.146172547082 },
+        { lat: 36.992604521715, lng: -105.213091465415 },
+        { lat: 36.9945603614965, lng: -105.713459997846 },
+        { lat: 36.992289650437, lng: -105.992000086492 },
+        { lat: 36.9915042439681, lng: -106.472176939021 },
+        { lat: 36.9895015941857, lng: -106.86124887722 },
+        { lat: 36.9990837907051, lng: -106.89037023567 },
+        { lat: 36.9975257849804, lng: -107.410820543541 },
+        { lat: 36.9987767566937, lng: -107.472460293817 },
+        { lat: 36.999471575633, lng: -108.372472924296 },
+        { lat: 36.9966409005893, lng: -109.048480115363 },
+        { lat: 35.9966639816639, lng: -109.047846506598 },
+        { lat: 34.9546462439613, lng: -109.046640810431 },
+        { lat: 34.5917805775226, lng: -109.048652751175 },
+        { lat: 33.7833019238717, lng: -109.050349253456 },
+        { lat: 33.205164822801, lng: -109.050525833602 },
+        { lat: 32.7795505537932, lng: -109.051346155985 },
+        { lat: 32.4420444958635, lng: -109.049495308693 }
+    ];
+    new google.maps.Polygon({
+        paths: nmBorderPath,
+        strokeColor: '#00cc00',
+        strokeOpacity: 0.4,
+        strokeWeight: 2,
+        fillColor: '#002200',
+        fillOpacity: 0,
         map: map
     });
+    // end new method
     const infoWindow = new google.maps.InfoWindow({
         content: "",
         disableAutoPan: true,
@@ -347,84 +465,6 @@ function initMap() {
         algorithmOptions: { maxZoom: 12 }, // no apparent effect...
         renderer: renderer
     });
-    // 3. Zoom the map smoothly
-    // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
-    /**
-     * NOTE: Loading the map on page load/reload causes an initial center_change AND
-     * zoom_change event [with or without the markerclusterer.js and/or kml overlay
-     * (NM Boundary on map)]; The 'center_change' occurs first. All map event trigger
-     * code in this script has been arranged to call setCenter() before setZoom().
-     * The 'first_load' condition invokes a simplified 'idle' listener
-     */
-    /**
-     * PANNING: a 'center_change' event will obviously occur, so a variable called
-     * 'panning' is set to prevent the 'center_change' listener from repeatedly
-     * responding as the pan progresses.
-     */
-    map.addListener('dragstart', function () {
-        kill_table = true;
-        panning = true;
-    });
-    map.addListener('dragend', function () {
-        setIdleListener('de'); // Drag End...
-    });
-    /**
-     * The goal is to create a side table once and only once per user-initiated
-     * map event. If a follow-on event occurs while the side table is still under
-     * construction, it will be aborted and started anew with the new bounds.
-     *                    ---- Other considerations ----
-     * When there is only a center change (not resulting from a pan event,
-     * which is handled separately), form the side table. This will happen, e.g., when
-     * the map is already zoomed in to zoomThresh level (or greater). When a zoom is to
-     * follow the center change, then let only the zoom form the side table in order
-     * to reduce invocations of side table formation.
-     *
-     * 1. Since page load/reload triggers a center_change & zoom, the var "newBounds"
-     *    is set false on initialization to prevent the load from invoking both
-     *    center_change and zoom invocations of the side table.
-     * 2. When completing a search in the searchbar, the "newBounds" may be set to
-     *    indicate that only a center change is occurring.
-     * 3. A click on any clusterer (see markerclusterer.js) will shift center via
-     *    'map.fitBounds' - the bounds which were established by the clusterer and
-     *    assigned during creation, and when zoomOnClick option is 'true'. This
-     *    seems to register two consecutive 'center change/zoom's the first time
-     *    a cluster is clicked, but only one 'center change/zoom' thereafter. The
-     *    3rd party software has been modified to set the var "newBounds" false so
-     *    that only the zoom event controls the side table formation.
-     * 4. A click on any marker will shift center. This is determined by the order of
-     *    code execution as defined in the marker listeners. [NOTE: even if the marker
-     *    were already 'dead center', the click would shift it out then back again];
-     *    Note that when the zoom is already at zoomThresh or greater, the marker
-     *    click will not be followed by a zoom.
-     *
-     * Lastly, the setIdleListener function has an argument to indicate the event
-     * invoking the function, but only the 'pan' event requires it. It was originally
-     * used to understand event synchronization.
-     */
-    map.addListener('center_changed', function () {
-        if (panning) { // when panning, simply wait for the dragend event
-            return;
-        }
-        else {
-            if (!first_load) {
-                kill_table = true;
-            }
-            if (window.newBounds) {
-                // if a center change only, initiate side table formation
-                setIdleListener('cc'); // Center Change
-                window.newBounds = false;
-            }
-        }
-    });
-    /**
-     * Zoom change will always initiate the side table formation.
-     */
-    map.addListener('zoom_changed', function () {
-        if (!first_load) {
-            kill_table = true;
-        }
-        setIdleListener('zm'); // ZooM
-    });
     /**
      * NOTE: 'idle' does not mean the map is displayed!
      *
@@ -446,7 +486,6 @@ function initMap() {
             });
         }
         else {
-            console.log('Idle');
             var idle = google.maps.event.addListener(map, 'idle', async function () {
                 var curZoom = map.getZoom();
                 var zoomTracks = curZoom >= zoomThresh ? true : false;
@@ -618,3 +657,64 @@ $(window).on('resize', function () {
     google.maps.event.trigger(map, "resize");
 });
 // //////////////////////////////////////////////////////////////
+/**
+ * List of referenced comments from initMap()
+ */
+// 1.
+/**
+ * Due to a recent change in the google maps api, the occasions when
+ * the 'idle' event fires, the following function was added, as the
+ * new api resulted in the side tables not being displayed.
+ */
+// 2.
+// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
+/**
+ * NOTE: Loading the map on page load/reload causes an initial center_change AND
+ * zoom_change event [with or without the markerclusterer.js and/or kml overlay
+ * (NM Boundary on map)]; The 'center_change' occurs first. All map event trigger
+ * code in this script has been arranged to call setCenter() before setZoom().
+ * The 'first_load' condition invokes a simplified 'idle' listener
+ */
+/**
+ * PANNING: a 'center_change' event will obviously occur, so a variable called
+ * 'panning' is set to prevent the 'center_change' listener from repeatedly
+ * responding as the pan progresses.
+ */
+// 3.
+/**
+ * The goal is to create a side table once and only once per user-initiated
+ * map event. If a follow-on event occurs while the side table is still under
+ * construction, it will be aborted and started anew with the new bounds.
+ *                    ---- Other considerations ----
+ * When there is only a center change (not resulting from a pan event,
+ * which is handled separately), form the side table. This will happen, e.g., when
+ * the map is already zoomed in to zoomThresh level (or greater). When a zoom is to
+ * follow the center change, then let only the zoom form the side table in order
+ * to reduce invocations of side table formation.
+ *
+ * 1. Since page load/reload triggers a center_change & zoom, the var "newBounds"
+ *    is set false on initialization to prevent the load from invoking both
+ *    center_change and zoom invocations of the side table.
+ * 2. When completing a search in the searchbar, the "newBounds" may be set to
+ *    indicate that only a center change is occurring.
+ * 3. A click on any clusterer (see markerclusterer.js) will shift center via
+ *    'map.fitBounds' - the bounds which were established by the clusterer and
+ *    assigned during creation, and when zoomOnClick option is 'true'. This
+ *    seems to register two consecutive 'center change/zoom's the first time
+ *    a cluster is clicked, but only one 'center change/zoom' thereafter. The
+ *    3rd party software has been modified to set the var "newBounds" false so
+ *    that only the zoom event controls the side table formation.
+ * 4. A click on any marker will shift center. This is determined by the order of
+ *    code execution as defined in the marker listeners. [NOTE: even if the marker
+ *    were already 'dead center', the click would shift it out then back again];
+ *    Note that when the zoom is already at zoomThresh or greater, the marker
+ *    click will not be followed by a zoom.
+ *
+ * Lastly, the setIdleListener function has an argument to indicate the event
+ * invoking the function, but only the 'pan' event requires it. It was originally
+ * used to understand event synchronization.
+ */
+// 4.
+/**
+ * Zoom change will always initiate the side table formation.
+ */
