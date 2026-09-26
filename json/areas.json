@@ -1,5 +1,6 @@
 { "areas":
     [
+        {"loc": "Ruidoso", "lat": 33.333860, "lng": -105.681382},
         {"loc": "Cedar Crest", "lat": 35.107546, "lng": -106.372802},
         {"loc": "San Antonito", "lat": 35.163100, "lng": -106.347524},
         {"loc": "Cloudcroft", "lat": 32.957313, "lng": -105.742486},
