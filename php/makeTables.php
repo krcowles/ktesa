@@ -2,7 +2,7 @@
 /**
  * The html for the specified hike table is created here by first collecting the
  * table type and its associated data from the tableData.php script.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>

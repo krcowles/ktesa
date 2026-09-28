@@ -15,7 +15,7 @@
  * When the 'Apply' on tab1 is hit, '$form_saved' will be false, and all user
  * data will be saved. When the script is being re-invoked after an 'interrupt'
  * to fix a symbol issue, '$form_saved' will be true.
- * PHP Version 7.4
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -109,6 +109,18 @@ if (!$form_saved) {
         } else {
             include "requestNewLoc.php";  // advise admin to update areas.json
         }
+        // add the files (areas.json & localeBox.html) to the git actions
+        if (file_exists("../admin/changed.txt")) {
+            $prev_changes = file_get_contents("../admin/changed.txt");
+            $changes = explode(",", $prev_changes);
+        } else {
+            $changes = [];
+        }
+        array_push($changes, "L:Locations");
+        // In some instances, this may result in more than one changed entry...
+        file_put_contents(
+            "../admin/changed.txt", implode(",", $changes)
+        );
     }
     /**
      * CLUSTER ASSIGNMENT PROCESSING:

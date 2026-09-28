@@ -60,7 +60,16 @@ $xfrdJson  = file_exists("pub_xfrs.txt") ? file_get_contents("pub_xfrs.txt") : '
 $changes   = empty($changed) ? [] : explode(",", $changed);
 $deletions = empty($deleted) ? [] : explode(",", $deleted);
 $xfrs      = empty($xfrdJson) ? [] :explode(",", $xfrdJson);
-
+/**
+ * New locales may be entered for any 1 or more EHIKES
+ */
+$new_locs = false;
+foreach ($changes as $isloc) {
+    if (substr($isloc, 0, 1) === 'L') {
+        $new_locs = true;
+        break;
+    }
+}
 $followup = true;
 if (count($changes) === 0 && count($deletions) === 0) {
     $followup = false;
@@ -126,6 +135,10 @@ foreach ($current_json as $json) {
 </head>
 <body>
     <div id="contents">
+        <?php if ($new_locs) : ?>
+            <h4>One or more locations has been added:</h4>
+            <h5>--- Download 'json/areas.json' and 'edit/localeBox.html'</h5>
+        <?php endif; ?>
         <?php if ($ehikes_entries > 0) : ?>
         <h4>The EHIKES Table Has Unpublished Entries:</h4>
         <h5>The following ejson files are associated with EHIKES:</h5>
