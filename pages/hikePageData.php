@@ -38,7 +38,6 @@ foreach ($iterator as $file) {
  * Data for displaying on hikePageTemplate.php
  */
 $tbl = filter_input(INPUT_GET, 'age');
-$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
 $clusterPage = isset($_GET['clus']) ? filter_input(INPUT_GET, 'clus') : false;
 
 // assign tables based on whether published or in-edit

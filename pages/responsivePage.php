@@ -12,8 +12,12 @@ session_start();
 $respPg = true;
 $geoloc = "../../images/mobileloc.png";
 require "../php/global_boot.php";
+$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_VALIDATE_INT);
+if ($hikeIndexNo === false || $hikeIndexNo === null) {
+    header('HTTP/1.1 400 Bad Request');
+    die("Invalid hike reference.");
+}
 require "hikePageData.php";
-$hikeno = filter_input(INPUT_GET, 'hikeIndx');
 
 $userfav = false;
 if (isset($_SESSION['userid'])) {
@@ -22,7 +26,7 @@ if (isset($_SESSION['userid'])) {
     $getFavs->execute([$_SESSION['userid']]);
     $favs = $getFavs->fetchAll(PDO::FETCH_COLUMN);
     if (count($favs) > 0) {
-        if (in_array($hikeno, $favs)) {
+        if (in_array($hikeIndexNo, $favs)) {
             $userfav = true;
         }
     }
@@ -80,7 +84,7 @@ function off() {
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="gpx" style="display:none">$gpxfile;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
-<p id="hikeno" style="display:none;"><?=$hikeno;?></p>
+<p id="hikeno" style="display:none;"><?=$hikeIndexNo;?></p>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <!-- Hike Stats -->

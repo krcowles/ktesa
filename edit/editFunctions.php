@@ -33,29 +33,19 @@ function getIpAddress()
  * Check to see if a visitor is logged in & session has not expired;
  * Due to numerous emails from certain robot-searching sites trying 
  * to access members-only pages, this function has been modified to
- * suppress admin emails. The function is only invoked in the 
- * hikeEditor.php, startNewPg.php, and favTable.php scripts.
- * 
- * @param string $page_loc From which editor page the error occurred
- * 
+ * suppress admin emails and simply die. The function is only invoked
+ * in the hikeEditor.php, startNewPg.php, and favTable.php scripts.
+ *
  * @return string User's logged in userid
  */
-function validSession($page_loc)
+function validSession()
 {
-    $ip = getIpAddress();
     if (!isset($_SESSION['userid'])) {
         echo "Your session has expired, or you are not a registered user...";
         exit;
-        /*
-        throw new Exception(
-            "Page {$page_loc}: No userid id - session expired" .
-                " or illegal access: {$ip}"
-        );
-        */
     } else {
         return $_SESSION['userid'];
     }
-    
 }
 /**
  * If there are non-empty string elements in an array, return

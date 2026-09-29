@@ -1,11 +1,10 @@
 <?php
 /**
  * This page displays site visitor data for the incoming date range.
- * Do to limitations imposed by the ipinfo site, this script now uses
- * the MaxMind geolocation db and software library to access key data.
- * The download and scripting information is provided by CodexWorld:
- * https://www.codexworld.com/get-geolocation-from-ip-address-using-php/
- * PHP Version 7.4
+ * All visitor data is stored in the VISITORS table by the utility
+ * botScreen.php which is included in global_boot.php. All public-facing
+ * pages will invoke the script (other than admins).
+ * PHP Version 8.3.9
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -13,7 +12,6 @@
  */
 session_start();
 require "../php/global_boot.php";
-use GeoIp2\Database\Reader;
 
 date_default_timezone_set('America/Denver');
 $curr_yr   = date("Y");
@@ -51,37 +49,6 @@ if (count($visitor_data) === 0) {
     echo '<span id="nodat">There is no visitation data to display</span>';
     exit;
 }
-// find locations of IP addresses (Not done in getLogin.php to improve performance)
-$vloc = [];
-$vreg = [];
-$vcnt = [];
-foreach ($visitor_data as $row) {
-    try {
-        $cityDbReader = new Reader('../GeoLite2-City.mmdb'); 
-        $record = $cityDbReader->city($row['vip']); 
-    } catch(Exception $e) {
-        $api_error = $e->getMessage(); 
-    }
-    // Get geolocation data 
-    if (empty($api_error)) { 
-        $country_code = !empty($record->country->isoCode) ?
-            $record->country->isoCode : '';
-        array_push($vcnt, $country_code);
-        $state_name
-            = !empty($record->mostSpecificSubdivision->name) ?
-                $record->mostSpecificSubdivision->name : ''; 
-        $city_name = !empty($record->city->name)?$record->city->name : '';
-        if (empty($state_name) || empty($city_name)) {
-            $state_name = empty($state_name) ? 'Proxy?' : $state_name;
-            $city_name  = empty($city_name)  ? 'Proxy?' : $city_name;
-        } 
-        array_push($vreg, $state_name);
-        array_push($vloc, $city_name);
-    } else { 
-        echo $api_error; 
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -130,10 +97,10 @@ foreach ($visitor_data as $row) {
                 <td><?=$visitor_data[$k]['vplatform'];?></td>
                 <td><?=$visitor_data[$k]['vdatetime'];?></td>
                 <td><?=$visitor_data[$k]['vpage'];?></td>
-                <td><?=$vloc[$k];?></td>
+                <td><?=$visitor_data[$k]['vcity'];?></td>
                 <td><?=$visitor_data[$k]['memid'];?></td>
-                <td><?=$vreg[$k];?></td>
-                <td><?=$vcnt[$k];?></td>
+                <td><?=$visitor_data[$k]['vregion'];?></td>
+                <td><?=$visitor_data[$k]['vcountry']?></td>
         </tr>
     <?php endfor; ?>
     </tbody>

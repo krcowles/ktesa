@@ -17,7 +17,9 @@
  */
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
-$master = isset($_COOKIE['nmh_mstr']) ? true : false;
+$master = isset($_COOKIE['nmh_mstr'])
+    && in_array($_COOKIE['nmh_mstr'], MASTER_SECRETS, true);
+// $regusr => registered user
 $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
 $cookie_state = "NOLOGIN";  // default
 $admin = false;
@@ -74,15 +76,19 @@ if (!isset($_SESSION['username'])) { // No login yet...
     } elseif ($master) { // Currently 3 masters...
         $cookie_state = "OK";
         $_SESSION['club_member'] = "Y";
-        if ($_COOKIE['nmh_mstr'] === 'mstr') {
-            $_SESSION['userid'] = '1';
-            $_SESSION['username'] = 'tom';
-        } elseif ($_COOKIE['nmh_mstr'] === 'Rockcogar') {
-            $_SESSION['userid'] = '14';
-            $_SESSION['username'] = 'Rockcogar';
-        } else {
+        switch ($_COOKIE['nmh_mstr']) {
+        case 'mstr2':
             $_SESSION['userid'] = '2';
             $_SESSION['username'] = 'kc';
+            break;
+        case 'mstr':
+            $_SESSION['userid'] = '1';
+            $_SESSION['username'] = 'tom';
+            break;
+        case 'Rockcogar':
+            $_SESSION['userid'] = '14';
+            $_SESSION['username'] = 'Rockcogar';
+            break;
         }
         $admin = true;
     }
@@ -95,109 +101,4 @@ if (!isset($_SESSION['username'])) { // No login yet...
         $admin = true;
         $cookie_state = "OK";
     } 
-}
-if (!$admin) {
-    /**
-     * Capture visitor tracking info; Functions are contained in editFunctions.php
-     * and in adminFunctions.php. For browser type identification:
-     * https://stackoverflow.com/questions/2199793/php-get-the-browser-name
-     * For page url identification: [PSR syntax corrections made]
-     * http://geeklabel.com/tutorial/track-visitors-php-tutorial/ 
-     * Using country identification method [ipv4] outlined in 
-     * http://www.phptutorial.info/iptocountry/the_script.html#example1
-     * which is a free downloadable library not requiring http:// lookups.
-     */
-    $user_ip = getIpAddress(); // can be null!
-    $user_ip = $user_ip ?? 'no ipaddr';
-    $iptype = 'not defined';
-    $numbers = [];
-    if ($user_ip !== 'no ipaddr') {
-        if (strpos($user_ip, ":") !== false) {
-            $iptype = 'ipv6';
-            $numbers = explode(":", $user_ip);
-        } else {
-            $iptype = 'ipv4';
-            $numbers = explode(".", $user_ip); // ipv4
-        }
-    }
-    /**
-     * The author has not deciphered ipv6 country origins yet, as they are very
-     * different in ipv6, and utilize the Regional Internet Registry - there are
-     * 5 regions:
-     *   AFRINIC  => African Network Information Center
-     *   ARIN     => American Registry for Internet Numbers
-     *   APNIC    => Asia Pacific Network Information Center
-     *   LACNIC   => Latin America and Caribbean Network Information Center
-     *   RIPE NCC => Rḗsaux IP Europḗens Network Coordination Centre
-     * In order to exclude foreign access to this site, the author would like to
-     * permit the ARIN region exclusively. The first 48 bits of ipv6 is the
-     * 'site prefix' (xxxx:yyyy:zzzz), but doesn't contain the region codes.
-     * The author is looking for a service to decode region/country not requiring
-     * fees...
-     */
-    if ($iptype === 'ipv4') {
-        if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
-            die("Access not permitted");
-        }
-        // Formerly used 'ipinfo' website, but it limits no. of requests
-        if ($user_ip !== '127.0.0.1' && $user_ip !== '::1'
-        ) { // browser's localhost addresses are excluded
-            $country = '';
-            // The variable array '$ranges' is defined in the following
-            include "../ip_files/" . $numbers[0] . ".php";
-            if (empty($ranges)) {
-                $ascii_arr = array_map(
-                    function ($char) {
-                        return ord($char);
-                    }, str_split($numbers[0])
-                );
-                $ascii = implode(",", $ascii_arr);
-                $msg = "Ranges array not loaded for numbers[0]: {$numbers[0]}; " .
-                    "ASCII: {$ascii}";
-                throw new Exception($msg);
-            }
-            $code = $numbers[0] * 16777216 + $numbers[1] * 65536 +
-                $numbers[2] * 256 + $numbers[3];   
-            foreach ($ranges as $key => $value) {
-                if ($key <= $code) {
-                    if ($ranges[$key][0] >= $code) {
-                        $country = $ranges[$key][1];
-                        break;
-                    }
-                }
-            }
-            if ($country !== 'US') {
-                die("Access not permitted");
-            }
-            // Bad robot...
-            if (strpos($user_ip, '52.167.144') !== false
-                || strpos($user_ip, '40.77.167') !== false
-                || strpos($user_ip, '20.26.44') !== false
-            ) {
-                die("Access not permitted");
-            }
-            $browser = getBrowserType(); // can be null!
-            if (!isset($browser)) {
-                $browser['name'] = "no name";
-                $browser['patform'] = "no platform";
-            }
-            date_default_timezone_set('America/Denver');
-            $visit_time = date('Y-m-d h:i:s');
-            $vpage = selfURL(); // can be null
-            $vpage = $vpage ?? "no page";
-            $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
-                "`vplatform`,`vdatetime`,`vpage`) VALUES (?,?,?,?,?,?);";
-            $visitor_data = $pdo->prepare($visitor_data_req);
-            $visitor_data->execute(
-                [
-                    $user_ip,
-                    $memid,
-                    $browser['name'],
-                    $browser['platform'],
-                    $visit_time,
-                    $vpage
-                ]
-            );
-        }
-    }
 }

@@ -13,7 +13,7 @@
  */
 session_start();
 require "../php/global_boot.php";
-$userid  = validSession('favTable');
+$userid  = validSession();
 
 $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
 $usrfavs = $pdo->prepare($favreq);

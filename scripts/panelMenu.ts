@@ -208,7 +208,7 @@ submitBtn.addEventListener('click', () => {
  * panelMenu.js script, hence it was deemed appropriate for inclusion here instead of
  * adding it as a separate module
  */
-const activity_timeout = 40 * 60 * 1000; // 2=40 minutes of inactivity
+const activity_timeout = 45 * 60 * 1000; // 45 minutes of inactivity
 var activity = setTimeout(function() {
     $.get('../accounts/logout.php?sess_only=Y');
     window.open('../accounts/session_expired.php', '_self');

@@ -167,6 +167,7 @@ if (isset($_SESSION['userid'])) {
                             href="../pages/favTable.php">Show Favorites</a>
                         </li>
                         <div id="admintools">
+                            <!-- Protected w/.htaccess --->
                             <div class="dropdown-divider"></div>
                             <li><a id="adminpg" class="dropdown-item"
                                 href="#">Admintools</a></li>

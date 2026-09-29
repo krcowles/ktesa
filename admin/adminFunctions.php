@@ -67,6 +67,35 @@ function isAdmin()
     return $admin;
 }
 /**
+ * This function logs a blocked attempt and auto-bans an IP after repeated
+ * strikes. Hence, blocked traffic isn't invisible, and repeat offenders stop
+ * costing a GeoIP lookup every time.
+ * 
+ * @param PDO    $pdo    caller's PDO connection object
+ * @param string $ip     caller's ip address
+ * @param string $reason reason for blocking
+ * 
+ * @return void;
+ */
+function blockAndStrike($pdo, $ip, $reason)
+{
+    if ($ip === 'No ipaddr') {
+        return;
+    }
+    $ins = $pdo->prepare(
+        "INSERT INTO `BLOCK_LOG` (`bip`,`breason`,`bdatetime`) VALUES (?,?,NOW())"
+    );
+    $ins->execute([$ip, $reason]);
+    $strikes = $pdo->prepare("SELECT COUNT(*) FROM `BLOCK_LOG` WHERE `bip` = ?");
+    $strikes->execute([$ip]);
+    if ((int)$strikes->fetchColumn() >= 3) {
+        $ban = $pdo->prepare(
+            "INSERT IGNORE INTO `IP_BLOCKLIST` (`bip`,`bdatetime`) VALUES (?,NOW())"
+        );
+        $ban->execute([$ip]);
+    }
+}
+/**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
  * reversed. When there are multiple segments within the subject track, 

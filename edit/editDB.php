@@ -13,6 +13,7 @@
  * @license No license to date
  */
 session_start();
+validSession();
 
 require "../php/global_boot.php";
 require "dataForEditor.php";

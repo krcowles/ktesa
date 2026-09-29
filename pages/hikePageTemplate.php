@@ -13,11 +13,16 @@
 session_start();
 $geoloc = "../../images/geoloc.png";
 require "../php/global_boot.php";
+$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_VALIDATE_INT);
+if ($hikeIndexNo === false || $hikeIndexNo === null) {
+    header('HTTP/1.1 400 Bad Request');
+    die("Invalid hike reference.");
+}
 require "hikePageData.php";
 if ($mobileTesting) {
     $hdr = "../pages/responsivePage.php?hikeIndx={$hikeIndexNo}";
     if ($ehikes) {
-        $hdr .= "&tbl={$tbl}";
+        $hdr .= "&age={$tbl}";
     }
     if ($clusterPage) {
         $hdr .= "&clus={$clusterPage}";
@@ -64,7 +69,7 @@ if ($mobileTesting) {
     if (mobile) {
         // redirect to mobile page
         window.open(
-            "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?$tbl;?>",
+            "responsivePage.php?hikeIndx=<?=$hikeIndexNo;?>&age=<?=$tbl;?>",
             "_self"
         ); // Safari did not got to the mobile page with target of "_blank"
     }

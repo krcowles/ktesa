@@ -77,3 +77,11 @@ $dsn = sprintf(
     $HOSTNAME, $PORT, $DATABASE, $CHARSET
 );
 $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
+
+// bot screening - AFTER autoload & function modules have loaded
+$skipScreening = isset($_COOKIE['nmh_mstr'])
+    && in_array($_COOKIE['nmh_mstr'], MASTER_SECRETS, true);
+if (!$skipScreening) {
+    // file must exist in same dir as global_boot.php
+    include_once __DIR__ . '/botScreen.php'; 
+}
