@@ -79,14 +79,13 @@ if (count($visitor_data) === 0) {
     <thead>
         <tr>
             <th>User IP</th>
-            <th>User Browser</th>
+            <th>Browser</th>
             <th>Platform</th>
-            <th>Time of Visit</th>
-            <th>Page Visited</th>
-            <th>IP Location</th>
-            <th>ID</th>
+            <th>Time</th>
+            <th>Page</th>
+            <th>City</th>
             <th>Region</th>
-            <th>Country</th>
+            <th>Code</th>
         </tr>
     </thead>
     <tbody>
@@ -98,9 +97,8 @@ if (count($visitor_data) === 0) {
                 <td><?=$visitor_data[$k]['vdatetime'];?></td>
                 <td><?=$visitor_data[$k]['vpage'];?></td>
                 <td><?=$visitor_data[$k]['vcity'];?></td>
-                <td><?=$visitor_data[$k]['memid'];?></td>
                 <td><?=$visitor_data[$k]['vregion'];?></td>
-                <td><?=$visitor_data[$k]['vcountry']?></td>
+                <td><?=$visitor_data[$k]['vloc']?></td>
         </tr>
     <?php endfor; ?>
     </tbody>

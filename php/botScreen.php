@@ -60,7 +60,7 @@ if (!$isLocalOrUnknown) {
         $reader = new Reader('../GeoLite2-City.mmdb');
         $record = $reader->city($user_ip);
         $country_code = $record->country->isoCode;
-        if ($record->country->name !== 'US') {
+        if ($country_code !== 'US') {
             die("Access denied");
         }
         $region = $record->mostSpecificSubdivision->name;
@@ -68,8 +68,7 @@ if (!$isLocalOrUnknown) {
     } catch (\GeoIp2\Exception\AddressNotFoundException $e) {
         die("IP address not found");
     } catch (\Exception $e) {
-        die("Could not apply address to Geolite database");
-        //echo "Error: " . $e->getMessage();
+        die($e->getMessage());
     }
     date_default_timezone_set('America/Denver');
     $visit_time = date('Y-m-d h:i:s');
@@ -80,14 +79,14 @@ if (!$isLocalOrUnknown) {
         $browser['name'] = "No Name";
         $browser['patform'] = "No Platform";
     }
-    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
-        "`vplatform`,`vdatetime`,`vpage`,`vcity`,`vregion`,`vcountry`) " .
-        "VALUES (?,?,?,?,?,?,?,?,?);";
+    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`," .
+        "`vplatform`,`vdatetime`,`vpage`,`vcity`,`vregion`,`vloc`) " .
+        "VALUES (?,?,?,?,?,?,?,?);";
     $visitor_data = $pdo->prepare($visitor_data_req);
+    // Note - previous assignment of memid no longer applies...
     $visitor_data->execute(
         [
             $user_ip,
-            $memid,
             $browser['name'],
             $browser['platform'],
             $visit_time,
