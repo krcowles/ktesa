@@ -169,11 +169,11 @@ require "getFavorites.php";
             </div>
             <div class="modal-body">
                 AllTrails is a great app developed by a great team of designers. Why
-                would anyone (in New Mexico) therefore, choose to use this app? While
+                would anyone (in New Mexico) therefore, choose to use this app instead? While
                 the authors (just two of us) cannot and are not competing with
                 AllTrails, there are a few pluses to using this site:
                 <ol id="nmhikes">
-                    <li>The site contains multiplw New Mexico hikes not
+                    <li>The site contains multiple New Mexico hikes not
                         listed on AllTrails</li>
                     <li>Many of our hike pages offer alternative hikes:
                         longer, shorter, or unique extensions or shortcuts to
@@ -187,7 +187,7 @@ require "getFavorites.php";
                         various points on the map. (These might be, for example, 
                         Waypoints from a Garmin or other device)
                     </li>
-                    <li>You can edit a gpx file with the gpxEditor GUI
+                    <li>You can edit any gpx file with the gpxEditor GUI on any page
                     </li>
                     <li>The hike page maps have many (over 50) map 'overlays'
                         available - these allow looking at the trail from aerial,
@@ -198,14 +198,14 @@ require "getFavorites.php";
                     <li>The 'Table Page' (menu option) allows searching, sorting, and
                         filtering of hikes a selectable distance from either a
                         location, or another hike. It also allows a user the
-                        opportunity to view several user-selected hikes on a separate
-                        page.
+                        opportunity to view several user-selected hikes ("favorites")
+                        on a separate page.
                     </li>
                     <li>Hike pages also list references - books, websites, blogs,
                         apps, magazine articles, on-line maps, etc.
                     </li>
                     <li>Members can obtain a free mobile app that offers
-                        offline maps and allows background GPS tracking
+                        offline maps and allows background GPS tracking.
                     </li>
                 </ol>
                 These are features not found on AllTrails. The author may still use

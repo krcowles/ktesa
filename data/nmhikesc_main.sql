@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `last_hiked` date DEFAULT NULL,
   `pubreq` char(1) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EHIKES VALUES
@@ -103,7 +103,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -369,7 +369,9 @@ INSERT INTO CLUSHIKES VALUES
 ('275','382','Y','83'),
 ('276','207','Y','83'),
 ('277','404','Y','84'),
-('278','109','Y','84');
+('278','109','Y','84'),
+('280','416','Y','85'),
+('281','414','Y','85');
 
 
 
@@ -382,7 +384,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -467,7 +469,8 @@ INSERT INTO CLUSTERS VALUES
 ('81','De Na Zin Group','363121570','-1080027920','Y','0'),
 ('82','Seismosaurus Group','354954800','-1069061800','Y','0'),
 ('83','Holiday Mesa Group','357670200','-1067892100','Y','0'),
-('84','Galisteo Basin Group','354730700','-1059269440','Y','0');
+('84','Galisteo Basin Group','354730700','-1059269440','Y','0'),
+('85','Grindstone Group','333244000','-1056853200','Y','0');
 
 
 
@@ -482,25 +485,25 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2026-09-15 16:33:35'),
-('2','CLUB_ASSETS','3922877042','2026-09-15 16:33:35'),
-('3','CLUSHIKES','2398293445','2026-09-15 16:33:35'),
-('4','CLUSTERS','2685739131','2026-09-15 16:33:35'),
-('5','EGPSDAT','0','2026-09-15 16:33:35'),
-('6','EHIKES','265844630','2026-09-15 16:33:35'),
-('7','EREFS','412318052','2026-09-15 16:33:35'),
-('8','ETSV','4100166543','2026-09-15 16:33:35'),
-('9','EWAYPTS','0','2026-09-15 16:33:35'),
-('10','FAVORITES','3651041965','2026-09-15 16:33:35'),
-('11','GPSDAT','286446949','2026-09-15 16:33:35'),
-('12','HIKES','2310106068','2026-09-15 16:33:35'),
-('13','LOCKS','1511673494','2026-09-15 16:33:35'),
-('14','MEMBER_PREFS','3866058092','2026-09-15 16:33:35'),
-('15','POLYLINES','0','2026-09-15 16:33:35'),
-('16','REFS','641924956','2026-09-15 16:33:35'),
-('17','TSV','1802742571','2026-09-15 16:33:35'),
-('18','USERS','2180544237','2026-09-15 16:33:35'),
-('19','WAYPTS','4270719384','2026-09-15 16:33:35');
+('1','BOOKS','381683775','2026-09-26 16:46:11'),
+('2','CLUB_ASSETS','3922877042','2026-09-26 16:46:11'),
+('3','CLUSHIKES','2678790197','2026-09-26 16:46:11'),
+('4','CLUSTERS','16943730','2026-09-26 16:46:11'),
+('5','EGPSDAT','0','2026-09-26 16:46:11'),
+('6','EHIKES','265844630','2026-09-26 16:46:11'),
+('7','EREFS','412318052','2026-09-26 16:46:11'),
+('8','ETSV','4100166543','2026-09-26 16:46:11'),
+('9','EWAYPTS','0','2026-09-26 16:46:11'),
+('10','FAVORITES','3651041965','2026-09-26 16:46:11'),
+('11','GPSDAT','286446949','2026-09-26 16:46:11'),
+('12','HIKES','1487795024','2026-09-26 16:46:11'),
+('13','LOCKS','1511673494','2026-09-26 16:46:11'),
+('14','MEMBER_PREFS','3866058092','2026-09-26 16:46:11'),
+('15','POLYLINES','0','2026-09-26 16:46:11'),
+('16','REFS','3428090358','2026-09-26 16:46:11'),
+('17','TSV','2764655699','2026-09-26 16:46:11'),
+('18','USERS','2180544237','2026-09-26 16:46:11'),
+('19','WAYPTS','3176427238','2026-09-26 16:46:11');
 
 
 
@@ -530,7 +533,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=427 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO EREFS VALUES
@@ -560,7 +563,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2753 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2788 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO ETSV VALUES
@@ -589,7 +592,7 @@ CREATE TABLE `EWAYPTS` (
   PRIMARY KEY (`wptId`),
   KEY `EWAYPTS_Constraint` (`indxNo`),
   CONSTRAINT `EWAYPTS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=930 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=932 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -702,7 +705,7 @@ CREATE TABLE `HIKES` (
   `info` text DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=417 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO HIKES VALUES
@@ -1110,7 +1113,10 @@ INSERT INTO HIKES VALUES
 ('411','Grasshopper Canyon','2','Santa Fe','Out-and-back','3.20','236','Easy','None','Streamside trail and formations','Not Winter','Good shade','{\"main\":{\"GrasshopperCanyon.gpx\":[\"pmn411_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','355607169','-1058104594','35.57756,35.56072,-105.81024,-105.81534','Gras3b80e6.jpg',NULL,NULL,'https://www.google.com/maps/place/Grasshopper+Canyon+Parking/@35.5595878,-105.8255276,14.21z/data=!4m6!3m5!1s0x871855002b7c133b:0x80f875d18082b9ac!8m2!3d35.5606098!4d-105.810846!16s%2Fg%2F11yjcpx1wf!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <em><span style=\"color: #236fa1;\">Grasshopper Canyon Trail </span></em>is very well shaded and makes for a pleasant hike even in summer months. Although it begins literally adjacent to I-25, the freeway sounds are quickly dampened as you begin to hike down the trail. For a somewhat short trail, there is a variety of scenery from streambeds to canyon walls, and pines to blue sky above. It appears that the hike proceeds further than what was explored on this venture, making it ripe for a re-visit!&nbsp;</p>','2026-07-18'),
 ('412','HIdden Valley','2','Valles Caldera','Out-and-back','6.26','191','Moderate','None','Perrenial waters in a spruce-lined valley','Not Winter','Full sun','{\"main\":{\"HIdden_Valley.gpx\":[\"pmn412_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:778/752','358385908','-1064918872','35.83918,35.81569,-106.49184,-106.52475','HIddcb46f6.jpg',NULL,NULL,'https://www.google.com/maps/place/Jemez+River+Trailhead/@35.83886,-106.4933392,811m/data=!3m2!1e3!4b1!4m6!3m5!1s0x87180b006a942e21:0x30ea355d1763117a!8m2!3d35.8388576!4d-106.491923!16s%2Fg%2F11nhb87jdb?entry=ttu&g_ep=EgoyMDI2MDgxMC4wIKXMDSoASAFQAw%3D%3D','<p>&nbsp;Note that some hiking websites include only the portion of the trail that stays within the boundary of the Valles Caldera, whereas this hike continues to NM 4 at the Las Conchas Day Use Area.</p>','<p>This gorgeous riverside hike begins in the <em>Valles Caldera</em> at a site now marked by the sign: <em>Jemez River Trailhead</em>. The site was originally labelled <span style=\"color: #236fa1;\"><em>Hidden Valley </em></span>due to the fact that the cabin there, where some filming had occurred, was not visible from the entrance road. Regardless, it is an almost magical hike along the <em>E Fork of the Jemez River</em>, travelling to the&nbsp;<em>Las Conchas Day Use</em> area on NM 4, just east of the <em>Las Conchas Trailhead <a href=\"../pages/hikePageTemplate.php?hikeIndx=54\">(Las Conchas Hike)</a></em>. While mostly easy, there are periodic hills and over a dozen river crossings to navigate - some with stones, some with trees, some with cut logs, and even one with a man-made footbridge.&nbsp;</p>\r\n<p>In addition to the fabulous views of the river, volcanic crags and monoliths appear along the way - and in the summer, some lovely wildflowers can be seen, as well as the occasional mushroom. The hike is reminiscent of the&nbsp;<em>Las Conchas</em> trail, but more rugged, and with fewer hikers, making for a rewarding outing.</p>','2026-08-11');
 INSERT INTO HIKES VALUES
-('413','Challenge - King of Mtn Loop','2','San Antonito','Loop','5.77','921','Moderate','Picnic Grounds','Long views from the Crest and of the ski slopes','Not Winter','Mixed sun/shade','{\"main\":{\"KOM.gpx\":[\"pmn413_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','352152297','-1064231346','35.21527,35.19734,-106.4231,-106.43433','Chaledb58e.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.2152298,-106.4231347/@35.2014893,-106.4300923,5026m/data=!3m1!1e3!4m6!1m5!3m4!2zMzXCsDEyJzU0LjgiTiAxMDbCsDI1JzIzLjMiVw!8m2!3d35.2152298!4d-106.4231347?entry=ttu&g_ep=EgoyMDI2MDkwOS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>This loop hike begins at the <em>9-Mile Picnic Area</em> off of the Crest Highway, <em>Hwy 536</em>. Begin by hiking southwest on the <em>Challenge Trail</em> and head up toward the <em>Double Eagle</em>&nbsp;junction. For a shorter version with minimal elevation change, park at the 10K lot and do the loop from there. The loop portion of the hike is probably around 2.5 miles, and elevation change is less than 200 ft.</p>\r\n<p>For the hike as shown, the elevation changes add up to over 2,000 ft, but it is never steep and doesn\'t \'feel\' like you\'re doing a significant amount of ascent.&nbsp;</p>\r\n<p>The <em>Double Eagle Trail </em>starts the loop portion of the hike, and is somewhat new, apparently named after the <em>Double Eagle </em>ski slope. From there, the elevation changes are minor as you approach the <em>King of the Mountain Trail. King of the Mountain</em> is not a maintained trail - but given the traffic from hikers, is in good shape. This trail zigs-zags significantly as it slowly lowers to the <em>South 10K</em>. Head north on the <em>South 10K</em> back to the&nbsp;<em>Challenge Trail</em> and return to the <em>9-Mile Picnic Area</em> from there.</p>\r\n<p>The trails are often well-shaded except on the ski slopes. At the hike altitude, there are beautiful Aspens, and some long views from high on the Sandias, making for a very pleasant environment.</p>','2026-09-04');
+('413','Challenge - King of Mtn Loop','2','San Antonito','Loop','5.77','921','Moderate','Picnic Grounds','Long views from the Crest and of the ski slopes','Not Winter','Mixed sun/shade','{\"main\":{\"KOM.gpx\":[\"pmn413_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','352152297','-1064231346','35.21527,35.19734,-106.4231,-106.43433','Chaledb58e.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.2152298,-106.4231347/@35.2014893,-106.4300923,5026m/data=!3m1!1e3!4m6!1m5!3m4!2zMzXCsDEyJzU0LjgiTiAxMDbCsDI1JzIzLjMiVw!8m2!3d35.2152298!4d-106.4231347?entry=ttu&g_ep=EgoyMDI2MDkwOS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>This loop hike begins at the <em>9-Mile Picnic Area</em> off of the Crest Highway, <em>Hwy 536</em>. Begin by hiking southwest on the <em>Challenge Trail</em> and head up toward the <em>Double Eagle</em>&nbsp;junction. For a shorter version with minimal elevation change, park at the 10K lot and do the loop from there. The loop portion of the hike is probably around 2.5 miles, and elevation change is less than 200 ft.</p>\r\n<p>For the hike as shown, the elevation changes add up to over 2,000 ft, but it is never steep and doesn\'t \'feel\' like you\'re doing a significant amount of ascent.&nbsp;</p>\r\n<p>The <em>Double Eagle Trail </em>starts the loop portion of the hike, and is somewhat new, apparently named after the <em>Double Eagle </em>ski slope. From there, the elevation changes are minor as you approach the <em>King of the Mountain Trail. King of the Mountain</em> is not a maintained trail - but given the traffic from hikers, is in good shape. This trail zigs-zags significantly as it slowly lowers to the <em>South 10K</em>. Head north on the <em>South 10K</em> back to the&nbsp;<em>Challenge Trail</em> and return to the <em>9-Mile Picnic Area</em> from there.</p>\r\n<p>The trails are often well-shaded except on the ski slopes. At the hike altitude, there are beautiful Aspens, and some long views from high on the Sandias, making for a very pleasant environment.</p>','2026-09-04'),
+('414','Grindstone Lake Loop','2','Ruidoso','Loop','6.62','488','Moderate','Picnic Area','Lake Views and Forest','Spring, Fall','Mixed sun/shade','{\"main\":{\"GrindstoneLake.gpx\":[\"pmn414_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','333240997','-1056848013','33.32643,33.31479,-105.68453,-105.70514','Grin81ee5f.jpg',NULL,NULL,'https://www.google.com/maps/place/Grindstone+Lake+Picnic+Area/@33.3317429,-105.6926175,14.1z/data=!4m6!3m5!1s0x86e1cfb074902db1:0x95634247efbc9a13!8m2!3d33.323594!4d-105.6843929!16s%2Fg%2F11j2cb9l1x!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"color: #236fa1;\"><em>Grindsone Lake Trail </em></span>begins at the namesake picnic area. The trail is well-defined and easy to follow, and twists and turns into the wooded area, with numerous gully-avoiding U-bends. Although the trail wanders into the forested area, it can become rather exposed, so this hike is not recommended for summer days.</p>\r\n<p>The forest itself consists largely of Ponderosa Pines and Alligator Juniper. As you progress on the trail, there are multiple scenic views.&nbsp;Note that at one point, the trail intersects an \"Administrative Road\", and a <em>Grindstone Trail </em>sign on the south side can misrepresent how to proceed (red triangle on map). At the intersection with the road, heading east, proceed a short distance up on the left and look for a small sign&nbsp; marked T76 - follow that route. It is marked by the green flag on the interactive map.</p>','2026-09-21'),
+('415','Moon Mountain Majesty','2','Ruidoso','Loop','4.46','613','Easy-Moderate','Public toilet','Forest with long-distance views','Spring, Fall','Mixed sun/shade','{\"main\":{\"MoonMountain.gpx\":[\"pmn415_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','333458346','-1056444764','33.34758,33.34053,-105.64443,-105.65618','Moon16dc36.jpg',NULL,NULL,'https://www.google.com/maps/dir//Moon+Mountain+Disc+Golf+Course,+685+Gavilan+Canyon+Rd,+Ruidoso,+NM+88345/@33.3407799,-105.6680834,13.59z/data=!4m16!1m7!3m6!1s0x86e1d1f3bf6e2f73:0xbf7b35e573fa01d4!2sMoon+Mountain+Disc+Golf+Course!8m2!3d33.345997!4d-105.644374!16s%2Fg%2F11jntb3c57!4m7!1m0!1m5!1m1!1s0x86e1d1f3bf6e2f73:0xbf7b35e573fa01d4!2m2!1d-105.644374!2d33.345997?entry=ttu&g_ep=EgoyMDI2MDkyMS4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"background-color: #ffffff; color: #236fa1;\"><em>Moon Mountain </em></span>area hosts both hiking trails and disc golf, accessible directly from the parking area. During the early portions of the hiking trail, be alert to disc golf course trail crossings - use of a gps track viewer is recommended.&nbsp;</p>\r\n<p>The trail quickly heads into a forested area and gains elevation at a moderate rate. Look for the sign indicating \'Summit Loop\' when the trail splits (see photos). The summit loop doesn\'t gain elevation, but provides some scenic views of the area. It makes for a pleasant hike with views of the nearby Sierra Blanca.</p>','2026-09-22'),
+('416','Sawmill Trail','2','Ruidoso','Out-and-back','3.72','530','Easy-Moderate','None','Scenic Views','Spring, Fall','Mixed sun/shade','{\"main\":{\"Sawmill.gpx\":[\"pmn416_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','1:0/0','333113748','-1056724001','33.31507,33.31026,-105.6724,-105.68526','Sawm55437e.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sawmill+Trailhead,+115+Black+Hawk+Dr,+Ruidoso,+NM+88345/@33.3114783,-105.6747332,885m/data=!3m1!1e3!4m16!1m7!3m6!1s0x86e1cfc5d27348dd:0x20786e546bba8f58!2sSawmill+Trailhead!8m2!3d33.3114783!4d-105.6721583!16s%2Fg%2F11s3tzhycw!4m7!1m0!1m5!1m1!1s0x86e1cfc5d27348dd:0x20786e546bba8f58!2m2!1d-105.6721583!2d33.3114783?entry=ttu&g_ep=EgoyMDI2MDkyMC4wIKXMDSoASAFQAw%3D%3D',NULL,'<p>The <span style=\"color: #236fa1;\"><em>Sawmill Trail </em></span>is a shorter but pleasant hike in the forest with occasional mountain views. It proceeds uphill at a moderate rate until it joins the Grindstone Ridge Trail. From there, you can continue northeast to the Grindstone Lake area for a longer out-and-back.&nbsp;</p>','2026-09-22');
 
 
 
@@ -1177,7 +1183,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3723 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3730 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO REFS VALUES
@@ -2330,7 +2336,14 @@ INSERT INTO REFS VALUES
 ('3718','19','App: ','http://www.alltrails.com/trail/us/new-mexico/tesuque-creek','AllTrails'),
 ('3719','19','Blog: ','http://www.prajnazendo.org/news/off-the-path/2-uncategorised/60-august-2014-north-fork-of-tesuque-creek','Prajna Zendo Blog'),
 ('3720','412','Website:','https://www.nps.gov/thingstodo/hike-the-jemez-river-trail.htm','National Park Service - Jemez River Trail'),
-('3721','412','App:','https://www.alltrails.com/trail/us/new-mexico/hidden-valley-trail--2','Alltrails.com');
+('3721','412','App:','https://www.alltrails.com/trail/us/new-mexico/hidden-valley-trail--2','Alltrails.com'),
+('3723','414','Website:','https://www.fs.usda.gov/sites/nfs/files/legacy-media/lincoln/ROG%20Grindstone%20Lake%20Trails.pdf','Grindstone Lake Trails: USDA'),
+('3724','414','App:','https://www.alltrails.com/trail/us/new-mexico/grindstone-lake-loop','Alltrails.com'),
+('3725','414','App:','https://www.onxmaps.com/backcountry/trails/hiking/us/new-mexico/grindstone-lake-trail-dwz7npdrmql5','On X Maps'),
+('3726','415','App:','https://www.alltrails.com/explore/trail/us/new-mexico/moon-mountain-majesty','Alltrails.com'),
+('3727','416','App:','https://www.alltrails.com/trail/us/new-mexico/sawmill-trail','Alltrails.com'),
+('3728','416','Website:','https://www.discoverruidoso.com/info/sawmill-trailhead-and-connector-trail','Ruidoso Tourism'),
+('3729','416','App:','https://www.facebook.com/RuidosoNM/videos/sawmill-trail/1438252376595295/','Facebook');
 
 
 
@@ -2354,7 +2367,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=14477 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14514 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO TSV VALUES
@@ -7591,7 +7604,41 @@ INSERT INTO TSV VALUES
 ('14473','413',NULL,'IMG_4189','Y','N','A big burl','351990389','-1064267278','5569',NULL,'2026-08-26 10:44:40','IMG_4189','640','480',NULL,'12'),
 ('14474','413',NULL,'IMG_4205','Y','N','Looking up to the Tram terminus','351983139','-1064294194','5570',NULL,'2026-09-04 11:39:19','IMG_4205','480','640',NULL,'8'),
 ('14475','413',NULL,'IMG_4207','N','Y','On the S10K - often nicely shaded','352052028','-1064323111','5573',NULL,'2026-09-04 12:17:35','IMG_4207','480','640',NULL,'13'),
-('14476','413',NULL,'IMG_4203','Y','N','To the Tram from Double Eagle','352017611','-1064325639','5575',NULL,'2026-09-04 11:12:03','IMG_4203','480','640',NULL,'6');
+('14476','413',NULL,'IMG_4203','Y','N','To the Tram from Double Eagle','352017611','-1064325639','5575',NULL,'2026-09-04 11:12:03','IMG_4203','480','640',NULL,'6'),
+('14477','414',NULL,'IMG_4239','Y','Y','The author nears the end','333219111','-1056889500','5576',NULL,'2026-09-21 14:55:59','IMG_4239','480','640',NULL,'12'),
+('14478','414',NULL,'IMG_4223','Y','Y','A valley view looking north','333240056','-1056972278','5577',NULL,'2026-09-21 12:51:02','IMG_4223','480','640',NULL,'3'),
+('14479','414',NULL,'IMG_4236','Y','Y','Back to the lake','333198611','-1056857833','5578',NULL,'2026-09-21 14:37:14','IMG_4236','480','640',NULL,'9'),
+('14480','414',NULL,'IMG_4227','Y','Y','Circling the western end of the loop','333226611','-1057045444','5579',NULL,'2026-09-21 13:09:26','IMG_4227','480','640',NULL,'6'),
+('14481','414',NULL,'IMG_4224','Y','Y','A glimpse of Grindstone Lake','333235861','-1056969000','5580',NULL,'2026-09-21 12:52:36','IMG_4224','480','640',NULL,'4'),
+('14482','414',NULL,'IMG_4231','Y','Y','The trail heads away from the lake again','333186500','-1056913306','5581',NULL,'2026-09-21 14:07:13','IMG_4231','480','640',NULL,'8'),
+('14483','414',NULL,'IMG_4220','Y','Y','An early view of the lake','333247222','-1056880639','5582',NULL,'2026-09-21 12:25:35','IMG_4220','480','640',NULL,'1'),
+('14484','414',NULL,'IMG_4218','Y','Y','The trail heads towards the woods','333245361','-1056854944','5583',NULL,'2026-09-21 12:19:17','IMG_4218','480','640',NULL,'0'),
+('14485','414',NULL,'IMG_4221','Y','Y','Bill pauses next to the alligator junipers','333247611','-1056922833','5584',NULL,'2026-09-21 12:34:42','IMG_4221','640','480',NULL,'2'),
+('14486','414',NULL,'IMG_4233','Y','Y','Clusters of wildflowers','333155556','-1056888194','5585',NULL,'2026-09-21 14:18:50','IMG_4233','640','480',NULL,'10'),
+('14487','414',NULL,'IMG_4235','Y','Y','Closing the loop','333191444','-1056868444','5586',NULL,'2026-09-21 14:34:48','IMG_4235','480','640',NULL,'11'),
+('14488','414',NULL,'IMG_4228','Y','Y','Open forest exposes the trail','333188556','-1057027889','5587',NULL,'2026-09-21 13:24:25','IMG_4228','480','640',NULL,'7'),
+('14489','414',NULL,'IMG_4226','Y','Y','Ponderosas prevails','333230361','-1057033000','5588',NULL,'2026-09-21 13:04:43','IMG_4226','640','480',NULL,'5'),
+('14492','415',NULL,'IMG_4255','Y','Y','Towards the Sierra Blanca ','333410861','-1056528472','5589',NULL,'2026-09-22 08:48:37','IMG_4255','480','640',NULL,'11'),
+('14493','415',NULL,'IMG_4257','Y','Y','Misty morning mountains from the summit loop','333451917','-1056518639','5590',NULL,'2026-09-22 09:09:47','IMG_4257','480','640',NULL,'13'),
+('14494','415',NULL,'IMG_4253','Y','Y','A higher view of the Sierra','333413056','-1056537111','5591',NULL,'2026-09-22 08:42:51','IMG_4253','480','640',NULL,'10'),
+('14495','415',NULL,'IMG_4250','Y','Y','The views towards Sierra Blanca increase','333435361','-1056555111','5592',NULL,'2026-09-22 08:34:12','IMG_4250','480','640',NULL,'8');
+INSERT INTO TSV VALUES
+('14496','415',NULL,'IMG_4256','Y','Y','Valley views and the western range','333423389','-1056527389','5593',NULL,'2026-09-22 09:00:10','IMG_4256','480','640',NULL,'12'),
+('14497','415',NULL,'IMG_4249','Y','Y','The trail splits toward the Summit Loop','333445639','-1056552583','5594',NULL,'2026-09-22 08:32:02','IMG_4249','480','640',NULL,'7'),
+('14498','415',NULL,'IMG_4251','Y','Y','Wildflowers adorn the trail','333424833','-1056561972','5595',NULL,'2026-09-22 08:37:09','IMG_4251','640','480',NULL,'9'),
+('14499','415',NULL,'IMG_4241','Y','Y','The trail begins coincident with the \'Disc Golf\' trails','333459806','-1056443556','5596',NULL,'2026-09-22 07:45:56','IMG_4241','480','640',NULL,'0'),
+('14500','415',NULL,'IMG_4243','Y','Y','Curving down to the disc golf space','333443861','-1056479556','5597',NULL,'2026-09-22 07:56:32','IMG_4243','480','640',NULL,'2'),
+('14501','415',NULL,'IMG_4242','Y','Y','The trail enters the forested area','333463028','-1056456917','5598',NULL,'2026-09-22 07:49:28','IMG_4242','480','640',NULL,'1'),
+('14502','415',NULL,'IMG_4245','Y','Y','Beware of intersecting disc golf trails','333456306','-1056499639','5600',NULL,'2026-09-22 08:12:35','IMG_4245','480','640',NULL,'4'),
+('14503','415',NULL,'IMG_4247','Y','Y','A Ponderosa moment for Bill','333472222','-1056529694','5601',NULL,'2026-09-22 08:20:28','IMG_4247','640','480',NULL,'6'),
+('14504','415',NULL,'IMG_4246','Y','Y','Open forest and grass','333461139','-1056506194','5602',NULL,'2026-09-22 08:14:34','IMG_4246','640','480',NULL,'5'),
+('14505','415',NULL,'IMG_4244','Y','Y','Often shaded by Ponderosas','333469306','-1056499333','5603',NULL,'2026-09-22 08:04:36','IMG_4244','480','640',NULL,'3'),
+('14507','416',NULL,'IMG_4260','Y','Y','Higher up, more mountains make their appearance','333104306','-1056768889','5604',NULL,'2026-09-22 11:46:20','IMG_4260','480','640',NULL,'3'),
+('14508','416',NULL,'IMG_4259','Y','Y','The trail ascends slowly providing nice views','333113556','-1056759194','5605',NULL,'2026-09-22 11:39:08','IMG_4259','480','640',NULL,'2'),
+('14509','416',NULL,'IMG_4264','Y','Y','Take a right here, soon after the trail begins','333108639','-1056736000','5606',NULL,'2026-09-22 13:13:45','IMG_4264','480','640',NULL,'1'),
+('14510','416',NULL,'IMG_4258','Y','Y','At the trailhead','333113556','-1056724306','5607',NULL,'2026-09-22 11:25:52','IMG_4258','480','640',NULL,'0'),
+('14511','416',NULL,'IMG_4261','Y','Y','Bill enjoys an open meadow','333103528','-1056773972','5608',NULL,'2026-09-22 11:47:25','IMG_4261','480','640',NULL,'4'),
+('14512','416',NULL,'IMG_4262','Y','Y','The end of Sawmill: continue northeast to get to Grindstone Lake','333149417','-1056850667','5609',NULL,'2026-09-22 12:27:26','IMG_4262','480','640',NULL,'5');
 
 
 
@@ -7662,7 +7709,7 @@ CREATE TABLE `WAYPTS` (
   `lng` int(10) DEFAULT NULL,
   `sym` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`wptId`)
-) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO WAYPTS VALUES
@@ -8045,7 +8092,9 @@ INSERT INTO WAYPTS VALUES
 ('569','29','gps','Buckman Trailhead Parking','358354022','-1061606956','Parking Area'),
 ('570','411','gpx','Fork','355764852','-1058118299','googlemini'),
 ('571','19','gpx','Hike Turn-around','357655571','-1057996089','googlemini'),
-('572','413','db','Unmarked Diablo Jct','352025999','-1064338700','Flag, Green');
+('572','413','db','Unmarked Diablo Jct','352025999','-1064338700','Flag, Green'),
+('573','414','db','Look for T76','333195800','-1056973500','Flag, Green'),
+('574','414','db','Misleading sign','333193000','-1056975500','Triangle, Red');
 
 
 

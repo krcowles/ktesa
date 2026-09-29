@@ -147,7 +147,8 @@ if (isset($_SESSION['userid'])) {
         <div class="collapse navbar-collapse" id="ktesaMenu">
             <!-- Hidden brand when collapsed -->
             <a class="navbar-brand" href="../pages/about.php">
-                <img src="../images/logos/logo32.png" alt="Brand Icon" />
+                <img src="../images/logos/logo32.png" alt="Brand Icon"
+                width="30" height="32" />
             </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
@@ -315,12 +316,14 @@ if (isset($_SESSION['userid'])) {
 <div id="logo">
     <div id="pattern"></div> <!-- ktesa pattern bar -->
     <div id="leftside" class="logo_items">
-        <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+        <img id="hikers" src="../images/hikers.png" alt="hikers icon" 
+            width="24" height="24" />
         <p id="logo_left">Hike New Mexico</p>
     </div>
     <div id="ctr" class="logo_items"></div>
-    <div id="rightside" class="logo_items">
-        <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+    <div id="rightside" class="logo_items"> 
+        <img id="tmap" src="../images/trail.png" alt="trail map icon"
+            width="24" height="24" />
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>

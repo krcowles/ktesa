@@ -25,16 +25,15 @@ var appMode = $('#appMode').text() as string;
  * First, reduce space consumed by the table: alter column widths and eliminate 
  * 'Exposure' and Driving Directions columns; makes room for buttons
  */
-var columns = document.getElementsByTagName('col');
-var headers = document.getElementsByTagName('th');
-var $rows    = $('table.sortable tbody').find('tr');
-if (columns.length !== 8) {
-	alert("Unexpected table in editor!")
-}
+var table   = document.querySelector('table.sortable') as HTMLTableElement;
+var columns = table.querySelectorAll('col');
+var headers = table.querySelectorAll('thead th');
+var $rows   = $('table.sortable tbody').find('tr');
+
 // reduce table width to allow for buttons
 columns[7].parentNode?.removeChild(columns[7]);
-columns[6].parentNode?.removeChild(columns[6]);
 headers[7].parentNode?.removeChild(headers[7]);
+columns[6].parentNode?.removeChild(columns[6]);
 headers[6].parentNode?.removeChild(headers[6]);
 $rows.each(function() {
 	let colspec = columns[0] as HTMLTableColElement;

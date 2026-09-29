@@ -36,7 +36,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
+$userid = $_SESSION['userid'] ?? '';
 $sort   = isset($act) ? false : true;
 
 // Icons used for table display:
@@ -55,18 +55,18 @@ $clusReq = "SELECT `group`,`page` FROM `CLUSTERS` WHERE `page` <> 0;";
 $clusters = $pdo->query($clusReq)->fetchAll(PDO::FETCH_KEY_PAIR);
 
 // HTML data- attributes, not visible to user
-$hikeHiddenDat = array();
+$hikeHiddenDat = [];
 // displayed data:
-$hikeLocale = array();
-$hikeName = array();
-$hikeWow = array(); 
-$pgLink = array();
-$hikeLgth = array();
-$hikeElev = array();
-$hikeDiff = array();
-$hikeExpIcon = array();
-$hikeDirections = array();
-$hikeAlbum = array();
+$hikeLocale = [];
+$hikeName = [];
+$hikeWow = [];
+$pgLink = [];
+$hikeLgth = [];
+$hikeElev = [];
+$hikeDiff = [];
+$hikeExpIcon = [];
+$hikeDirections = [];
+$hikeAlbum = [];
 $table = $age === 'new' ? 'EHIKES' : 'HIKES';
 $state = $age === 'new' ? 'edit' : 'pub';
 $query = "SELECT * FROM {$table}";
