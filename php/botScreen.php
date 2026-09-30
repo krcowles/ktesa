@@ -63,8 +63,9 @@ if (!$isLocalOrUnknown) {
         if ($country_code !== 'US') {
             die("Access denied");
         }
-        $region = $record->mostSpecificSubdivision->name;
-        $city   = $record->city->name;
+        // GeoLite2-City can legitimally return nullls for $region and $city
+        $region = $record->mostSpecificSubdivision->name ?? 'Unknown';
+        $city   = $record->city->name ?? 'Unknown';
     } catch (\GeoIp2\Exception\AddressNotFoundException $e) {
         die("IP address not found");
     } catch (\Exception $e) {
