@@ -258,6 +258,13 @@ legend {
   width: 180px;
 }
 
+#new_commit {
+  width: 110px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
 #sites {
   padding-top: 6px;
 }

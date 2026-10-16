@@ -5,6 +5,13 @@
  */
 $( function() {  // wait until document is loaded...
 
+// Dialog box shows the current version of the site:
+const vbox = document.getElementById('vno') as HTMLDialogElement;
+const dismiss_btn = document.getElementById('dismiss') as HTMLButtonElement;
+dismiss_btn.addEventListener('click', function() {
+    vbox.close();
+});
+vbox.show();
 /**
  * This section manages the 'twisty' text on the bottom of the page
  */

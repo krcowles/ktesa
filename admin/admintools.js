@@ -79,6 +79,32 @@ $(function () {
             });
         }
     });
+    /**
+     * The user version will be updated after a sucessful install via
+     * this function:
+     */
+    function versionUpdate(platform, type, commit) {
+        let ajaxdata = { platform: platform, type: type, commit: commit };
+        $.ajax({
+            url: '../php/versionUpdate.php',
+            method: 'post',
+            data: ajaxdata,
+            dataType: "json",
+            success: (response) => {
+                if (response.includes("Failed")) {
+                    alert("Problem: " + response);
+                }
+                else {
+                    let oldv = response.old;
+                    let newv = response.new;
+                    alert(`Updated from ${oldv} to ${newv}`);
+                }
+            },
+            error: (_jqXHR, _textStatus, _errorThrown) => {
+                alert("Failed to updata version: " + _jqXHR.responseText);
+            }
+        });
+    }
     // main site installation
     $('#install').on('click', function () {
         if (hostIs === 'LOCALHOST') {
@@ -91,6 +117,16 @@ $(function () {
         }
         if (typeof auth !== 'undefined') {
             alert("There is no authorization to run this utility");
+            return false;
+        }
+        let rev_type = $('#rev_type').val();
+        if (rev_type === 'none') {
+            alert("Please select a revision type");
+            return false;
+        }
+        let new_commit = $('#new_commit').val();
+        if (new_commit == '') {
+            alert("Please supply a commit number");
             return false;
         }
         let deletions = [];
@@ -182,6 +218,7 @@ $(function () {
                     success: function (result) {
                         $('#loading').hide();
                         alert(result);
+                        versionUpdate('site', rev_type, new_commit);
                     },
                     error: function (_jqXHR) {
                         if (current_state === 'development') {

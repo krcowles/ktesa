@@ -145,6 +145,13 @@ if (isset($_SESSION['alerts'][0])) {
         <button id="install" type="button" class="btn
             btn-danger">Install main</button>&nbsp;&nbsp;[From server]<br />
         <div style="margin-left:24px;">
+            Select Revision Type: 
+            <select id="rev_type"
+                    style="height:26px;background-color:blanchedalmond";>
+                <option value="none">Select One:</option>
+                <option value="major">Major Rev</option>
+                <option value="minor">Minor Rev<Ri:viewport></Ri:viewport></option>
+            </select>&nbsp;&nbsp;Short Commit #: <input id="new_commit" type="text"><br />
             <span>Delete the following <strong>test site</strong>
             directories (comma-separated list)<br />[NOTE:]
             the <em>install</em> directory is always saved</span>

@@ -32,6 +32,11 @@ require "../php/global_boot.php";
 <?php require "ktesaPanel.php"; ?>
 <p id="active" style="display:none">About</p>
 
+<dialog id="vno">
+<p>Version 10.0</p>
+    <button id="dismiss" type="button">Dismiss</button>
+</dialog>
+
 <div id="mainabout">
     <img id="tompic" src="../images/TomAndKenSummit.JPG"
         alt="Authors on Deception Peak"

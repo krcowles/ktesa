@@ -92,6 +92,30 @@ $('#upld').on('click', function() {
         });
     }
 });
+/**
+ * The user version will be updated after a sucessful install via
+ * this function:
+ */
+function versionUpdate(
+        platform: string, type: string, commit: string, preview: string) {
+    let ajaxdata = {platform: platform, type: type, commit: commit, preview: preview};
+    $.ajax({
+        url: '../php/versionUpdate.php',
+        method: 'post',
+        data: ajaxdata,
+        dataType: "json",
+        success: (response) => {
+            if (response.error) {
+                alert("Problem encountered: " + response.error);
+            } else {
+                alert(`Updated from ${response.old} to ${response.new}`);
+            }    
+        },
+        error: (_jqXHR, _textStatus, _errorThrown) => {
+            alert(`Failed (${_jqXHR.status} ${_textStatus}): ${_jqXHR.responseText ?? _errorThrown}`);
+        }
+    });
+}
 // main site installation
 $('#install').on('click', function() {
     if (hostIs === 'LOCALHOST') {
@@ -103,6 +127,16 @@ $('#install').on('click', function() {
     }
     if (typeof auth !== 'undefined') {
         alert("There is no authorization to run this utility");
+        return false;
+    }
+    let rev_type = $('#rev_type').val() as string;
+    if (rev_type === 'none') {
+        alert("Please select a revision type");
+        return false;
+    }
+    let new_commit = $('#new_commit').val() as string;
+    if (new_commit == '') {
+        alert("Please supply a commit number");
         return false;
     }
     let deletions:string[] = [];
@@ -192,6 +226,7 @@ $('#install').on('click', function() {
                 success: function(result) {
                     $('#loading').hide();
                     alert(result);
+                    versionUpdate('site', rev_type, new_commit, "no");
                 },
                 error: function(_jqXHR) {
                     if (current_state === 'development') {

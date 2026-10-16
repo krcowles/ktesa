@@ -8,6 +8,12 @@ $(function () {
     /**
      * This section manages the 'twisty' text on the bottom of the page
      */
+    const vbox = document.getElementById('vno');
+    const dismiss_btn = document.getElementById('dismiss');
+    dismiss_btn.addEventListener('click', function () {
+        vbox.close();
+    });
+    vbox.show();
     function toggleTwisty(tid, ttxt, dashed) {
         var feature = $('#' + ttxt);
         var twisty = $('#' + tid);
