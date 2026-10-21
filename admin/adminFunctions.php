@@ -66,6 +66,40 @@ function isAdmin()
     }
     return $admin;
 }
+/** 
+ * This function is used to extract the subnet from an ipv4 address, allowing
+ * for a smaller 'BLOCK_LOG' table in the db
+ * 
+ * @param string $ip Visitor's ip address
+ * 
+ * @return string;
+ */
+function subnet24(string $ip)
+{
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        return implode('.', array_slice(explode('.', $ip), 0, 3));
+    }
+    return $ip;
+}
+/**
+ * This function enters info into the BLOCK_LOG db when ip is bounced
+ * 
+ * @param PDO    $pdo    caller's PDO connection object
+ * @param string $ip     Visitor's ipv4 address
+ * @param string $reason Reson ip address bounced
+ * 
+ * @return void
+ */
+function logBlock(PDO $pdo, string $ip, string $reason): void
+{
+    date_default_timezone_set('America/Denver');
+    $sql = "INSERT INTO `BLOCK_LOG` (`bip`, `breason`, `bdatetime`, `subnet`, " .
+        "`hits`, `last_seen`) VALUES (?, ?, NOW(), ?, 1, NOW()) " .
+        "ON DUPLICATE KEY UPDATE `hits` = `hits` + 1, `last_seen` = NOW(), " .
+        "`breason` = VALUES(`breason`)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$ip, $reason, subnet24($ip)]);
+}
 /**
  * This function logs a blocked attempt and auto-bans an IP after repeated
  * strikes. Hence, blocked traffic isn't invisible, and repeat offenders stop
@@ -82,12 +116,12 @@ function blockAndStrike($pdo, $ip, $reason)
     if ($ip === 'No ipaddr') {
         return;
     }
-    $ins = $pdo->prepare(
-        "INSERT INTO `BLOCK_LOG` (`bip`,`breason`,`bdatetime`) VALUES (?,?,NOW())"
-    );
-    $ins->execute([$ip, $reason]);
-    $strikes = $pdo->prepare("SELECT COUNT(*) FROM `BLOCK_LOG` WHERE `bip` = ?");
-    $strikes->execute([$ip]);
+    $subnet = subnet24($ip);
+
+    logBlock($pdo, $ip, $reason);
+
+    $strikes = $pdo->prepare("SELECT `hits` FROM `BLOCK_LOG` WHERE `subnet` = ?");
+    $strikes->execute([$subnet]);
     if ((int)$strikes->fetchColumn() >= 3) {
         $ban = $pdo->prepare(
             "INSERT IGNORE INTO `IP_BLOCKLIST` (`bip`,`bdatetime`) VALUES (?,NOW())"
@@ -95,6 +129,7 @@ function blockAndStrike($pdo, $ip, $reason)
         $ban->execute([$ip]);
     }
 }
+
 /**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be

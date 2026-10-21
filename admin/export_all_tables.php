@@ -26,9 +26,10 @@ if ($download === 'V') {
     $data = $pdo->query("SHOW TABLES;");
     $tbls_list = $data->fetchALL(PDO::FETCH_BOTH);
     foreach ($tbls_list as $row) {
-        // don't download VISITORS
+        // don't download VISITORS, BLOCK_LOG, or IP_BLOCKLIST
         if (($row[0] !== 'EHIKES') && ($row[0] !== 'FAVORITES')
-            && $row[0] !== 'VISITORS'
+            && $row[0] !== 'VISITORS' && $row[0] !== 'BLOCK_LOG'
+            && $row[0] !== 'IP_BLOCKLIST'
         ) {
             array_push($tables, $row[0]);
         }

@@ -17,9 +17,9 @@
  require_once "../php/global_boot.php";
 // Read in entire file; whether a reload of main, or test db, input file is:
 $dbFile = "../data/nmhikesc_main.sql";
-$db_contents = file($dbFile);
-$lines = [];
-if (!$db_contents) {
+$lines = file($dbFile);
+//$lines = [];
+if (!$lines) {
     throw new Exception(
         __FILE__ . " Line: " . __LINE__ . 
         " Failed to read database from file: {$dbFile}."
@@ -27,6 +27,11 @@ if (!$db_contents) {
 }
 $totalQs = 0; // total Queries
 
+/**
+ * Database will no longer contain VISITORS, IP_BLOCKLIST, or BLOCK_LOG tables,
+ * hence the following code is no longer needed:
+ */
+/*
 // remove the lines containing VISITORS table data
 for ($k=0; $k<count($db_contents); $k++) {
     if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false) {
@@ -40,6 +45,8 @@ for ($k=0; $k<count($db_contents); $k++) {
         array_push($lines, $db_contents[$k]);
     }
 }
+*/
+
 // doing this twice, once just to get info for the progress bar:
 foreach ($lines as $line) {
     // Skip it if it's a comment

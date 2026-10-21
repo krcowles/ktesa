@@ -42,12 +42,57 @@ case 'range' :
     $start = date($dates[0]) . $begin_time;
     $end   = date($dates[1]) . $end_time;
 }
-$dataReq = "SELECT * FROM `VISITORS` WHERE `vdatetime` BETWEEN '{$start}' AND " .
-    "'{$end}';";
-$visitor_data = $pdo->query($dataReq)->fetchAll(PDO::FETCH_ASSOC);
-if (count($visitor_data) === 0) {
+
+$req = "SELECT *, DATE(`vdatetime`) AS vdate, " .
+    "TIME(`vdatetime`) AS vtime FROM `VISITORS` " .
+    "WHERE `vdatetime` BETWEEN ? AND ? " .
+    "ORDER BY `vdatetime` ASC";
+$vdata = $pdo->prepare($req);
+$vdata->execute([$start, $end]);
+$visitor_data = $vdata->fetchAll(PDO::FETCH_ASSOC);
+$visitors = count($visitor_data);
+if ($visitors === 0) {
     echo '<span id="nodat">There is no visitation data to display</span>';
     exit;
+} else {
+    $byDate = [];
+    foreach ($visitor_data as $visitor) {
+        $byDate[$visitor['vdate']][] = [
+            'ip'   => $visitor['vip'],
+            'time' => $visitor['vtime'],
+        ];
+    }
+    $no_of_dates= count($byDate);
+    $keys = array_keys($byDate);
+    $date_print = [];
+    foreach ($keys as $dt) {
+        $ip_collection = [];
+        $ip_times = [];
+        foreach ($byDate[$dt] as $entry) {
+            if (in_array($entry['ip'], $ip_collection)) {
+                array_push($ip_times[$entry['ip']], $entry['time']);
+            } else {
+                array_push($ip_collection, $entry['ip']);
+                $ip_times[$entry['ip']] = [];
+                array_push($ip_times[$entry['ip']], $entry['time']);
+            }
+        }
+        $ip_keys = array_keys($ip_times);
+        $repeats = [];
+        foreach ($ip_keys as $visitor) {
+            if (count($ip_times[$visitor]) > 1) {
+                $rip = '';
+                $occurrence = "<tr><td>" . $visitor . "</td><td>" .
+                    count($ip_times[$visitor]) . "</td><td>";
+                foreach ($ip_times[$visitor] as $rtime) {
+                    $rip .= $rtime . "  ";
+                }
+                $row = $occurrence . $rip . "</td></tr>";
+                $repeats[$visitor] = $row;
+            }
+        }
+        $date_print[$dt] = $repeats;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -74,7 +119,29 @@ if (count($visitor_data) === 0) {
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Display Selected Visitor Data</p>
 <p id="active" style="display:none">Admin</p>
- 
+
+<div id="summary"> REPEATERS</div>
+<?php
+foreach ($keys as $hdr) : ?>
+<table id="repeaters">
+    <thead>
+        <tr>
+            <th id="spanned" colspan="3" style="text-align:center;background-color:white;color:darkgreen;"><?=$hdr;?></th>
+        </tr>
+        <tr>
+            <th>ip address</th>
+            <th>occur.</th>
+            <th>times</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($date_print[$hdr] as $row) : ?>
+        <?=$row;?>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endforeach; ?>
+
 <table id="vdat" style="margin-top:24px;">
     <thead>
         <tr>
@@ -89,6 +156,7 @@ if (count($visitor_data) === 0) {
         </tr>
     </thead>
     <tbody>
+    
     <?php for ($k=0; $k<count($visitor_data); $k++) : ?>
         <tr>
                 <td><?=$visitor_data[$k]['vip'];?></td>

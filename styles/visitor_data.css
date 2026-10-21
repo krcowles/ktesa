@@ -210,6 +210,11 @@ input[id^=q] {
   margin-bottom: 4px;
 }
 
+#summary {
+    text-align: center;
+    position: relative;
+    top: 16px;
+}
 table {
   margin-top: 24px;
   margin-left: auto;
