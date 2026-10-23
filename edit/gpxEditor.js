@@ -21,10 +21,12 @@ var beginPreview;
 var changeTimer;
 var undos = [];
 var seqix = 0;
+// save modal
+const gpxsave = new bootstrap.Modal(document.getElementById('ged_save'));
 // position editbar text 
 var del_btn_pos = $('#del').offset();
 $('#dproc').css({
-    'left': del_btn_pos.left - 28,
+    'left': del_btn_pos.left - 46,
     'top': 60
 });
 // Set dimensions per window width
@@ -271,6 +273,30 @@ function setNewTrack() {
     });
     gpxtrack.setMap(map);
 }
+const return_pg = $('#return_url').text();
+$('#restart').on('click', function () {
+    window.open(return_pg, "_self");
+});
+$('#start_save').on('click', function () {
+    gpxsave.show();
+    $('#file2save').trigger('focus');
+});
+$('#edits_save').on('click', function () {
+    const alink = document.createElement('a');
+    var newgpxfile = $('#file2save').val();
+    if (newgpxfile == '') {
+        alert("No file name was specified");
+        return false;
+    }
+    newgpxfile += ".gpx";
+    alink.href = 'usergpx.gpx';
+    alink.download = newgpxfile;
+    document.body.appendChild(alink);
+    alink.click();
+    document.body.removeChild(alink);
+    gpxsave.hide();
+    return;
+});
 $('#del').on('click', function () {
     var deletions = document.getSelection();
     if (deletions.rangeCount === 0) {
@@ -291,6 +317,7 @@ $('#del').on('click', function () {
     document.getElementById('udel')?.removeAttribute('disabled');
     $('#udel').removeClass('udel_off');
     $('#udel').addClass('udel_on');
+    $('#udel').css('hover', 'blue');
     gpxtrack.setMap(null);
     setNewTrack();
     return;
@@ -331,5 +358,5 @@ function displayJson() {
     });
 }
 $('#back').on('click', function () {
-    window.open("../pages/home.php", "_self");
+    window.open(return_pg, "_self");
 });
