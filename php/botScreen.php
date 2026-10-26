@@ -75,6 +75,15 @@ if (!$isLocalOrUnknown) {
     $visit_time = date('Y-m-d h:i:s');
     $vpage = selfURL(); // can be null [see adminFunctions.php]
     $vpage = $vpage ?? "No Page";
+    if (strlen($vpage) > 254) {
+        /**
+         * Addresses a flood of recent dubious accesses
+         */
+        $tmpVpage = "../admin/tmpVpage.txt";
+        // temporarily save for analysis
+        file_put_contents($tmpVpage, $vpage, FILE_APPEND);
+        die("Access denied");
+    }
     $browser = getBrowserType(); // can be null [see adminFunctions.php]
     if (!isset($browser)) {
         $browser['name'] = "No Name";
