@@ -1,40 +1,47 @@
 <?php
 /**
- * This script is the essence of the action for loading all tables. It
- * can be called individually, or as a part of the reload action. NOTE:
- * if the sql file was created via a phpMyAdmin 'export', additional SQL
- * commands (ones not present when performing 'EXPORT ALL TABLES') may
- * be present and require modifications (e.g. a "COMMIT" statement at the
- * end of file, and/or C-style comment lines). The VISITORS table will not
+ * This script is the essence of the action for loading all tables. It can be
+ * called individually, or as a part of the reload action. NOTE: if the sql
+ * file was created via a phpMyAdmin 'export', additional SQL commands (ones
+ * not present when performing 'EXPORT ALL TABLES') may be present and require
+ * modifications (e.g. a "COMMIT" statement at the end of file, and/or C-style
+ * comment lines). The VISITORS, BLOCK_LOG, and IP_BLOCKLIST tables will not
  * have been dropped and will not be reloaded.
- * PHP Version 7.8
+ * PHP Version 8.3.30
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 
- require_once "../php/global_boot.php";
+require_once "../php/global_boot.php";
 // Read in entire file; whether a reload of main, or test db, input file is:
 $dbFile = "../data/nmhikesc_main.sql";
-$lines = file($dbFile);
-//$lines = [];
-if (!$lines) {
-    throw new Exception(
-        __FILE__ . " Line: " . __LINE__ . 
-        " Failed to read database from file: {$dbFile}."
-    );
+if (file_exists($dbFile)) {
+    $db_contents = file($dbFile);
+    if (!$db_contents) {
+        echo " Failed to read database from file: {$dbFile}.";
+        exit;
+    }
+} else {
+    echo "Can't find {$dbFile}";
+    exit;
 }
+
+$lines = [];
 $totalQs = 0; // total Queries
 
 /**
- * Database will no longer contain VISITORS, IP_BLOCKLIST, or BLOCK_LOG tables,
- * hence the following code is no longer needed:
+ * The following code filters out VISITORS, BLOCK_LOG, and IP_BLOCKLIST
+ * should those tables exist in the loading $dbFile. This code can be
+ * removed later when db reload and export are stable and already perform
+ * the filtering (i.e. the tables will no longer be present in $dbFile)
  */
-/*
-// remove the lines containing VISITORS table data
 for ($k=0; $k<count($db_contents); $k++) {
-    if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false) {
+    if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false
+        || strpos($db_contents[$k], "CREATE TABLE `BLOCK_LOG`") !== false
+        || strpos($db_contents[$k], "CREATE TABLE `IP_BLOCKLIST`") !== false
+    ) {
         // continue to skip lines until next "CREATE TABLE" is encountered
         $k++;
         while (strpos($db_contents[$k], "CREATE TABLE") === false) {
@@ -45,7 +52,7 @@ for ($k=0; $k<count($db_contents); $k++) {
         array_push($lines, $db_contents[$k]);
     }
 }
-*/
+// -------------  END TEMP CODE -----------
 
 // doing this twice, once just to get info for the progress bar:
 foreach ($lines as $line) {

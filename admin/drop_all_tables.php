@@ -6,7 +6,7 @@
  * is not set, then the module will first drop all tables and then reload them.
  * The EHIKES table is placed last in the drop list as it is the parent
  * for multiple foreign keys.
- * PHP Version 7.4
+ * PHP Version 8.3.30
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -17,8 +17,10 @@ require "../php/global_boot.php";
 $tables = [];
 $data = $pdo->query("SHOW TABLES");
 $tbl_list = $data->fetchALL(PDO::FETCH_NUM);
+// Some tables not dropped and won't be reloaded, except for EHIKES
 foreach ($tbl_list as $row) {
-    if ($row[0] !== 'EHIKES' && $row[0] !== 'VISITORS') {
+    if ($row[0] !== 'EHIKES' && $row[0] !== 'VISITORS'
+        && $row[0] !== 'BLOCK_LOG' && $row[0] !== 'IP_BLOCKLIST') {
         array_push($tables, $row[0]);
     }
 }
