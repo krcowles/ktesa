@@ -83,25 +83,23 @@ $(function () {
      * The user version will be updated after a sucessful install via
      * this function:
      */
-    function versionUpdate(platform, type, commit) {
-        let ajaxdata = { platform: platform, type: type, commit: commit };
+    function versionUpdate(platform, type, commit, preview) {
+        let ajaxdata = { platform: platform, type: type, commit: commit, preview: preview };
         $.ajax({
             url: '../php/versionUpdate.php',
             method: 'post',
             data: ajaxdata,
             dataType: "json",
             success: (response) => {
-                if (response.includes("Failed")) {
-                    alert("Problem: " + response);
+                if (response.error) {
+                    alert("Problem encountered: " + response.error);
                 }
                 else {
-                    let oldv = response.old;
-                    let newv = response.new;
-                    alert(`Updated from ${oldv} to ${newv}`);
+                    alert(`Updated from ${response.old} to ${response.new}`);
                 }
             },
             error: (_jqXHR, _textStatus, _errorThrown) => {
-                alert("Failed to updata version: " + _jqXHR.responseText);
+                alert(`Failed (${_jqXHR.status} ${_textStatus}): ${_jqXHR.responseText ?? _errorThrown}`);
             }
         });
     }
@@ -218,7 +216,7 @@ $(function () {
                     success: function (result) {
                         $('#loading').hide();
                         alert(result);
-                        versionUpdate('site', rev_type, new_commit);
+                        versionUpdate('site', rev_type, new_commit, "no");
                     },
                     error: function (_jqXHR) {
                         if (current_state === 'development') {
