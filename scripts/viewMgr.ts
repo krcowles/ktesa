@@ -28,10 +28,10 @@ function displayScreen () {
             break;
         case 'portrait-primary':
         case 'portrait-secondary':
-            pix[0].style.height = `${pix[0].naturalHeight}`;
-            pix[0].style.width  = 'auto';
-            pix[1].style.height = `${pix[1].naturalHeight}`;
-            pix[1].style.width  = 'auto';
+            pix[0].style.height = '';
+            pix[0].style.width  = '';
+            pix[1].style.height = '';
+            pix[1].style.width  = '';
             benniesDisplay();
             wwd = window.innerWidth;
             logoMgr();
@@ -91,7 +91,7 @@ const logoMgr = () => {
         }
     }
 };
-displayScreen();
+$(window).on('load', displayScreen);
 screen.orientation.addEventListener("change", () => {
-    displayScreen;
+    displayScreen();
 });

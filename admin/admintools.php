@@ -132,14 +132,9 @@ if (isset($_SESSION['alerts'][0])) {
 
         <!-- The following uploads or installs a test site -->
         <span class="cats">Upload Test Site:</span><br />
-        <button id="upld" type="button" class="btn btn-secondary">Upload</button>
-        &nbsp;&nbsp;[From Localhost]<br />
-        <div id="testsite">
-            <span>If not current master, specify git branch here:</span>
-            <input id="ubranch" class="installdat" type="text" 
-                placeholder="master" />&nbsp;&nbsp;
-            Commit# for upload: <input id="ucomm" class="installdat" type="text" />
-        </div>
+        <p>NOTE: Upload functionality using ftp.php no longer works, as Mocha always
+        erroneously tags the upload as having a virus. This seems to happen for any
+        large upload. Please use FileZilla or other 3rd party program.</p>
 
         <span class="cats">Install Test Site to Main</span><br />
         <button id="install" type="button" class="btn
