@@ -2,10 +2,12 @@
 /**
  * This script checks for any incoming site cookies. If cookies are
  * present, and the user has not already logged in, login credentials
- * are set up for this member. If the user is already logged in,
- * or a session is still in effect, essentially nothing else occurs.
- * session_start() must reside on the page from which this routine is
- * being invoked. The ktesaPanel/Navbar calls getLogin.php.
+ * are set up for this member. If the user is already logged in, or
+ * a session is still in effect, essentially nothing else occurs.
+ * "session_start()" must reside on the page from which this routine
+ * is being invoked. The ktesaPanel and mobileNavbar call getLogin.php,
+ * hence "global_boot.php" is always invoked prior to getLogin.php
+ * and thus $pdo is already defined and can be used by this routine.
  * Note: having a separate admin ('master') cookie allows admins
  * to have both an admin account and a user account to verify user
  * functionality.
@@ -70,6 +72,10 @@ if (!isset($_SESSION['username'])) { // No login yet...
                 $_SESSION['userid']       = $userid;
                 $_SESSION['club_member']  = $club;
             }
+            $visitUpdate
+                = "UPDATE `MEMBER_PREFS` SET visits = visits + 1 WHERE `userid`=?;";
+            $mem_visits = $pdo->prepare($visitUpdate);
+            $mem_visits->execute([$memid]);
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible
         }

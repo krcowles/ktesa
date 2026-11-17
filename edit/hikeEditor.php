@@ -11,7 +11,7 @@
  */
 session_start();
 require "../php/global_boot.php";
-$userid = validSession('editor');
+$userid = validSession();
 
 $include_previews = 'false';
 $age = filter_input(INPUT_GET, 'age');
