@@ -102,9 +102,9 @@ function assignPreviews(): void {
 	 */
 	var row1_loc= <JQuery.Coordinates>$rows.eq(0).offset();
 	$('#user_btns').offset({ top: row1_loc.top, left: row1_loc.left - 136 });
+	$('#user_btns').empty();
 	var $sorted_rows: JQuery<HTMLTableRowElement> | null;
 	$sorted_rows = null; // erase previous history
-	$('#user_btns').empty();
 	$sorted_rows = $('table.sortable tbody').find('tr');
 	$sorted_rows.each(function(indx) {
 		let trow_ht = <number>$(this).height();
@@ -173,9 +173,10 @@ $( function () { // DOM loaded
  * 	   generate an email to the admin for processing the request to publish the
  *     selected hike page.
  */
-var useHikeEd = 'editDB.php?tab=1&hikeNo=';
-var useClusEd = 'editClusterPage.php?hikeNo=';
-var xfrPage   = 'xfrPub.php?hikeNo=';
+const urlPrefix = "https://nmhikes.com/edit/";
+const useHikeEd = 'editDB.php?tab=1&hikeNo=';
+const useClusEd = 'editClusterPage.php?hikeNo=';
+const xfrPage   = 'xfrPub.php?hikeNo=';
 $('table.sortable').attr('id', 'editTbl');
 var hikeno: string;
 var lnk: string;
@@ -215,11 +216,12 @@ $rows.each(function() {
 	var pubpg = $anchor.text();
 	var clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
 	// find the hike no:
-	var hikeloc = ptr.indexOf('hikeIndx=') + 9;
-	if (ptr.indexOf('hikeIndx') == -1) {
+	var hikeindx = ptr.indexOf('hikeIndx=');
+	if (hikeindx == -1) {
 		alert("Could not locate hike");
 		return false;
 	}
+	var hikeloc = hikeindx + 9;
 	hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
 	if (page_type === 'PubReq') {
 		var hindx: string;
@@ -236,13 +238,13 @@ $rows.each(function() {
 		// *** THESE HIKES ARE NEW (EHIKES) ***
 		if (age === 'new') { // age is established in hikeEditor.php
 			if (clushike) {
-				lnk = useClusEd + hikeno; // includes &clus=
+				lnk = urlPrefix + useClusEd + hikeno; // includes &clus=
 			} else {
-				lnk = useHikeEd + hikeno;
+				lnk = urlPrefix + useHikeEd + hikeno;
 			}
 		// *** THESE HIKES ARE PUBLSIHED ***
 		} else {
-			lnk = xfrPage + hikeno;	// includes &clus=  if present
+			lnk = urlPrefix + xfrPage + hikeno;	// includes &clus=  if present
 		}
 		// gray out hikes already in-edit
 		if (age === 'old' && inEdits.indexOf(pubpg) !== -1) {
